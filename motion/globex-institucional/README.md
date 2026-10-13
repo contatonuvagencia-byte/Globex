@@ -6,7 +6,7 @@ Vídeo: [`export/globex-institucional.mp4`](export/globex-institucional.mp4) · 
 | Tempo | Cena | Texto |
 |---|---|---|
 | 0–4 s | Gancho | Comércio exterior não é custo. **É estratégia.** |
-| 4–9 s | Marca | DESDE 2006 · GLOBEX CARGO · Importação · Exportação · Comex |
+| 4–9 s | Marca | GLOBEX CARGO · Importação · Exportação · Comex |
 | 9–13 s | Quem somos | Mais do que movimentar cargas, **estruturamos operações.** (globo com rotas saindo de Santos) |
 | 13–20 s | O que fazemos | Importação · Exportação · Despacho Aduaneiro · Logística Internacional · Consultoria |
 | 20–25 s | Filosofia | A estratégia começa **antes da carga sair.** + 4 etapas do método |
@@ -22,7 +22,7 @@ Vídeo: [`export/globex-institucional.mp4`](export/globex-institucional.mp4) · 
 ## Legenda sugerida
 > Comércio exterior não é custo. É estratégia. 🌍
 >
-> Desde 2006, a Globex Cargo planeja cada operação antes da carga sair: importação, exportação, despacho aduaneiro, logística internacional e consultoria.
+> A Globex Cargo planeja cada operação antes da carga sair: importação, exportação, despacho aduaneiro, logística internacional e consultoria.
 >
 > Quem planeja melhor, opera melhor. Fale com a gente pelo direct.
 >

@@ -49,7 +49,7 @@
   #s1 .bar{height:12px;background:linear-gradient(90deg,var(--verde),var(--oliva));margin-top:34px;width:620px;transform-origin:left}
 
   /* S2 */
-  #s2 .center{position:absolute;left:0;right:0;top:700px;text-align:center}
+  #s2 .center{position:absolute;left:0;right:0;top:760px;text-align:center}
   #s2 .tagwrap{display:flex;justify-content:center;margin-bottom:60px}
   .pill{border:2px solid var(--oliva);border-radius:999px;padding:16px 38px;font-weight:600;font-size:30px;
     letter-spacing:.3em;color:var(--areia)}
@@ -124,7 +124,6 @@
   <!-- S2 · marca -->
   <section class="scene" id="s2">
     <div class="center">
-      <div class="tagwrap"><div class="pill">DESDE 2006</div></div>
       <div class="word" id="w2">GLOBEX</div>
       <div class="sub">CARGO</div>
       <div class="rule"></div>
@@ -409,7 +408,6 @@ function render(t){
   const s2 = $('#s2');
   if (show(s2, t, 4.3, 8.8)){
     s2.style.opacity = 1; s2.style.transform = ''; s2.style.filter = 'none';
-    rise($('#s2 .pill'), t, 4.4, .8, 30);
     $$('#w2 span').forEach((c,i)=>{ const e=eOutX(prog(t, 4.6+i*.07, .9)); c.style.transform=`translateY(${(1-e)*120}px) scale(${.9+.1*e})`; c.style.opacity=e; });
     const sub = $('#s2 .sub'); const e2 = eOut(prog(t, 5.3, 1.2));
     sub.style.opacity = e2; sub.style.letterSpacing = `${lerp(1.1,.62,e2)}em`;
