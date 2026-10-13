@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carla Vieira Tours — Motion</title>
+<style>
+@font-face { font-family: "Cinzel"; src: url(fonts/Cinzel.woff2) format("woff2"); font-weight: 400 900; }
+@font-face { font-family: "Montserrat"; src: url(fonts/Montserrat.woff2) format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Cormorant"; src: url(fonts/CormorantItalic.woff2) format("woff2"); font-style: italic; font-weight: 300 700; }
+
+:root {
+  --wine: #8b0028;
+  --wine-deep: #4e0016;
+  --wine-soft: #b8536f;
+  --rose: #e8c3cc;
+  --charcoal: #231f20;
+  --ink: #2c2829;
+  --cream: #f6f1ec;
+  --silver-1: #e4e4e6;
+  --silver-2: #a7a8ab;
+  --silver-3: #5f6064;
+  --silver-grad: linear-gradient(180deg, #f1f1f2 0%, #b9babd 40%, #8a8b8f 62%, #d7d8da 100%);
+  --logo-grad: linear-gradient(90deg, #bdbdbf 0%, #9a9b9e 45%, #5a5b5f 100%);
+  --u: 10.8px; /* 1% do menor lado; recalculado em JS */
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--charcoal); }
+body { font-family: "Montserrat", sans-serif; -webkit-font-smoothing: antialiased; }
+#stage { position: relative; overflow: hidden; background: var(--charcoal); }
+.scene { position: absolute; inset: 0; display: none; overflow: hidden; }
+.abs { position: absolute; }
+.center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+.mask { overflow: hidden; display: block; padding: 0 0.08em; }
+.mask > span { display: inline-block; will-change: transform; }
+.serif { font-family: "Cinzel", serif; font-weight: 400; letter-spacing: 0.04em; }
+.ital { font-family: "Cormorant", serif; font-style: italic; font-weight: 400; }
+.label { font-family: "Montserrat"; font-weight: 500; letter-spacing: 0.42em; text-transform: uppercase; font-size: calc(var(--u) * 1.55); }
+.silver { background: var(--silver-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grain { position: absolute; inset: 0; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay; z-index: 50; }
+.vignette { position: absolute; inset: 0; pointer-events: none; z-index: 49;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.22) 100%); }
+#wipe { position: absolute; top: -20%; height: 140%; width: 160%; left: -30%; z-index: 40; display: none; }
+#wipe .band { position: absolute; top: 0; bottom: 0; }
+
+/* ---------- S1 abertura ---------- */
+#s1 { background: radial-gradient(ellipse at 50% 45%, #a10b36 0%, #8b0028 40%, #4e0016 100%); color: #fff; }
+#s1 .line { position: absolute; left: 50%; top: 50%; height: 1px; background: linear-gradient(90deg, transparent, #e7e7e9, transparent); }
+#s1 .big { font-size: calc(var(--u) * 9); line-height: 1.05; text-align: center; }
+#s1 .ital { font-size: calc(var(--u) * 10.5); line-height: 1; color: var(--rose); }
+#s1 .ring { position: absolute; border: 1px solid rgba(255,255,255,0.18); border-radius: 50%; left: 50%; top: 50%; }
+
+/* ---------- S2 experiências ---------- */
+#s2 .beat { position: absolute; inset: 0; display: none; }
+#s2 .wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 9); }
+.portrait #s2 .wrap { flex-direction: column; gap: calc(var(--u) * 7); }
+#s2 .window { position: relative; width: calc(var(--u) * 46); height: calc(var(--u) * 62); border-radius: calc(var(--u) * 23); overflow: hidden;
+  box-shadow: 0 0 0 calc(var(--u) * 1.6) #d9d9db, 0 0 0 calc(var(--u) * 2.1) #9c9da0, 0 calc(var(--u) * 3) calc(var(--u) * 6) rgba(0,0,0,0.35); }
+.portrait #s2 .window { width: calc(var(--u) * 50); height: calc(var(--u) * 66); border-radius: calc(var(--u) * 25); }
+#s2 .window svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+#s2 .shade { position: absolute; left: 0; right: 0; top: 0; height: 100%;
+  background: linear-gradient(180deg, #ededee 0%, #cfd0d2 92%, #b4b5b8 100%); border-bottom: calc(var(--u) * 0.6) solid #9fa0a3; }
+#s2 .shade::after { content: ""; position: absolute; left: 50%; bottom: calc(var(--u) * 1.6); width: calc(var(--u) * 8); height: calc(var(--u) * 1.1);
+  transform: translateX(-50%); border-radius: 99px; background: #9fa0a3; }
+#s2 .text { width: calc(var(--u) * 62); }
+.portrait #s2 .text { width: auto; text-align: center; }
+#s2 .num { font-family: "Montserrat"; font-weight: 400; letter-spacing: 0.4em; font-size: calc(var(--u) * 2); margin-bottom: calc(var(--u) * 2.4); }
+#s2 .h { font-size: calc(var(--u) * 7.6); line-height: 1.08; }
+#s2 .i { font-size: calc(var(--u) * 9); line-height: 1.05; }
+#s2 .bar { height: 2px; width: calc(var(--u) * 14); margin-top: calc(var(--u) * 3); transform-origin: left; }
+.portrait #s2 .bar { margin-left: auto; margin-right: auto; transform-origin: center; }
+#s2 .light { background: var(--cream); }
+#s2 .light .num { color: var(--wine); } #s2 .light .h { color: var(--charcoal); } #s2 .light .i { color: var(--wine); } #s2 .light .bar { background: var(--wine); }
+#s2 .dark { background: var(--charcoal); }
+#s2 .dark .num { color: var(--silver-2); } #s2 .dark .h { color: #fff; } #s2 .dark .i { color: var(--rose); } #s2 .dark .bar { background: var(--silver-2); }
+#s2 .wine { background: radial-gradient(ellipse at 30% 50%, #a10b36, #6a001e); }
+#s2 .wine .num { color: var(--rose); } #s2 .wine .h { color: #fff; } #s2 .wine .i { color: var(--rose); } #s2 .wine .bar { background: #fff; }
+
+/* ---------- S3 rota ---------- */
+#s3 { background: radial-gradient(ellipse at 50% 60%, #2f2a2b 0%, #1b1718 100%); }
+#s3 svg { position: absolute; inset: 0; }
+#s3 .head { position: absolute; left: 0; right: 0; top: 9%; text-align: center; }
+.portrait #s3 .head { top: 8%; }
+#s3 .head .serif { font-size: calc(var(--u) * 6.4); line-height: 1.1; }
+#s3 .head .ital { font-size: calc(var(--u) * 7.6); color: var(--rose); line-height: 1.05; }
+#s3 .city { position: absolute; transform: translate(-50%, 0); text-align: center; white-space: nowrap; }
+#s3 .city b { display: block; font-family: "Cinzel"; font-weight: 400; color: #fff; font-size: calc(var(--u) * 2.6); letter-spacing: 0.08em; }
+#s3 .city i { display: block; font-style: normal; font-family: "Montserrat"; font-weight: 300; color: var(--silver-2); letter-spacing: 0.3em; font-size: calc(var(--u) * 1.5); margin-top: calc(var(--u) * 0.6); text-transform: uppercase; }
+
+/* ---------- S4 pilares ---------- */
+#s4 { background: var(--cream); }
+#s4 .head { position: absolute; left: 0; right: 0; top: 11%; text-align: center; color: var(--charcoal); }
+.portrait #s4 .head { top: 12%; }
+#s4 .head .serif { font-size: calc(var(--u) * 5.6); line-height: 1.12; }
+.portrait #s4 .head .serif { font-size: calc(var(--u) * 4.6); }
+#s4 .head .ital { font-size: calc(var(--u) * 7); color: var(--wine); line-height: 1.05; }
+#s4 .grid { position: absolute; left: 0; right: 0; bottom: 14%; display: flex; justify-content: center; gap: calc(var(--u) * 2.6); }
+.portrait #s4 .grid { flex-wrap: wrap; bottom: 18%; padding: 0; gap: calc(var(--u) * 2.2); }
+#s4 .card { width: calc(var(--u) * 33); height: calc(var(--u) * 40); background: #fff; border-radius: calc(var(--u) * 1.4);
+  box-shadow: 0 calc(var(--u) * 1.6) calc(var(--u) * 4.5) rgba(78, 0, 22, 0.14); padding: calc(var(--u) * 3.6) calc(var(--u) * 3.2);
+  display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.portrait #s4 .card { width: calc(var(--u) * 35); height: calc(var(--u) * 33); }
+#s4 .card::before { content: ""; position: absolute; left: 0; top: 0; right: 0; height: calc(var(--u) * 0.7); background: var(--wine); }
+#s4 .card svg { width: calc(var(--u) * 9); height: calc(var(--u) * 9); }
+#s4 .card h3 { font-family: "Cinzel"; font-weight: 400; color: var(--charcoal); font-size: calc(var(--u) * 3.3); line-height: 1.1; letter-spacing: 0.03em; }
+#s4 .card p { font-family: "Montserrat"; font-weight: 300; color: #6b6566; font-size: calc(var(--u) * 1.75); line-height: 1.45; margin-top: calc(var(--u) * 1.4); }
+#s4 .card .idx { position: absolute; right: calc(var(--u) * 2.6); top: calc(var(--u) * 2.8); font-family: "Montserrat"; font-weight: 300; color: var(--silver-2); letter-spacing: 0.2em; font-size: calc(var(--u) * 1.4); }
+
+/* ---------- S5 do seu jeito ---------- */
+#s5 { background: radial-gradient(ellipse at 50% 50%, #9d0932 0%, #5a0019 100%); color: #fff; }
+#s5 .center { padding: 0 calc(var(--u) * 4); }
+#s5 .row { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 3); width: 100%; }
+#s5 .row > .fixed { flex: 1; text-align: right; }
+.portrait #s5 .row > .fixed { flex: none; text-align: center; }
+.portrait #s5 .row { flex-direction: column; align-items: center; gap: calc(var(--u) * 1); }
+#s5 .fixed { font-size: calc(var(--u) * 9); }
+#s5 .slot { position: relative; height: calc(var(--u) * 13); overflow: hidden; flex: 1; }
+.portrait #s5 .slot { flex: none; width: calc(var(--u) * 76); }
+.portrait #s5 .slot .w { font-size: calc(var(--u) * 9.5); }
+#s5 .slot .reel { position: absolute; left: 0; right: 0; top: 0; }
+#s5 .slot .w { height: calc(var(--u) * 13); display: flex; align-items: center; font-size: calc(var(--u) * 11.5); color: var(--rose); white-space: nowrap; }
+.portrait #s5 .slot .w { justify-content: center; }
+#s5 .sub { text-align: center; margin-top: calc(var(--u) * 5); color: rgba(255,255,255,0.8); }
+#s5 .tick { position: absolute; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.25); }
+
+/* ---------- S6 credenciais ---------- */
+#s6 { background: radial-gradient(ellipse at 50% 40%, #2d2829 0%, #171415 100%); color: #fff; }
+#s6 .stats { display: flex; gap: calc(var(--u) * 12); align-items: flex-start; }
+.portrait #s6 .stats { gap: calc(var(--u) * 9); }
+#s6 .stat { text-align: center; }
+#s6 .stat .n { font-family: "Cinzel"; font-size: calc(var(--u) * 19); line-height: 1; }
+#s6 .stat .t { margin-top: calc(var(--u) * 1.8); color: var(--silver-2); }
+#s6 .award { position: relative; margin-top: calc(var(--u) * 7); display: flex; align-items: center; justify-content: center; }
+#s6 .award svg { width: calc(var(--u) * 74); height: calc(var(--u) * 25.4); }
+#s6 .award .in { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#s6 .award .top { font-family: "Cinzel"; font-size: calc(var(--u) * 6.4); line-height: 1; color: #fff; }
+#s6 .award .d { margin-top: calc(var(--u) * 1.4); color: var(--rose); font-size: calc(var(--u) * 1.45); letter-spacing: 0.3em; }
+#s6 .award .e { margin-top: calc(var(--u) * 0.9); color: var(--silver-2); font-size: calc(var(--u) * 1.3); letter-spacing: 0.3em; }
+
+/* ---------- S7 assinatura ---------- */
+#s7 { background: radial-gradient(ellipse at 50% 45%, #ffffff 0%, #f3eeea 100%); }
+#s7 .tag { text-align: center; color: var(--charcoal); }
+#s7 .tag .ital { font-size: calc(var(--u) * 10); color: var(--wine); line-height: 1.05; }
+#s7 .tag .serif { font-size: calc(var(--u) * 6.4); line-height: 1.15; }
+#s7 .logo { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#s7 .word { display: flex; align-items: flex-end; font-family: "Cinzel"; font-weight: 400; line-height: 0.8; }
+#s7 .word span { display: inline-block; background: var(--logo-grad); background-size: var(--wordw) 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+#s7 .rule { height: 1px; background: #a7a8ab; margin-top: calc(var(--u) * 1.6); }
+#s7 .tours { margin-top: calc(var(--u) * 2.2); }
+#s7 .foot { position: absolute; left: 0; right: 0; bottom: 9%; text-align: center; color: var(--wine); }
+#s7 .foot .label { color: var(--silver-3); font-size: calc(var(--u) * 1.7); }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- S1 -->
+  <section class="scene" id="s1">
+    <div class="ring" id="s1r1"></div><div class="ring" id="s1r2"></div>
+    <div class="line" id="s1line"></div>
+    <div class="center" id="s1a">
+      <div class="mask big serif"><span>Não é sobre</span></div>
+      <div class="mask big serif"><span>o destino.</span></div>
+    </div>
+    <div class="center" id="s1b">
+      <div class="mask big serif"><span>É sobre o que</span></div>
+      <div class="mask ital"><span>você vive nele.</span></div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="scene" id="s2"></section>
+
+  <!-- S3 -->
+  <section class="scene" id="s3">
+    <svg id="s3svg"></svg>
+    <div class="head">
+      <div class="mask serif"><span class="silver">Cada roteiro,</span></div>
+      <div class="mask ital"><span>desenhado para você.</span></div>
+    </div>
+    <div id="s3cities"></div>
+  </section>
+
+  <!-- S4 -->
+  <section class="scene" id="s4">
+    <div class="head">
+      <div class="mask serif"><span>Aqui a gente não vende</span></div>
+      <div class="mask ital"><span>pacote pronto.</span></div>
+    </div>
+    <div class="grid" id="s4grid"></div>
+  </section>
+
+  <!-- S5 -->
+  <section class="scene" id="s5">
+    <div class="center">
+      <div class="row">
+        <div class="mask fixed serif"><span>Viaje</span></div>
+        <div class="slot" id="s5slot"><div class="reel ital" id="s5reel"></div></div>
+      </div>
+      <div class="label sub" id="s5sub">a gente cuida de cada viagem como se fosse a nossa</div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="scene" id="s6">
+    <div class="center">
+      <div class="stats">
+        <div class="stat" id="st1"><div class="n silver">0</div><div class="label t">anos viajando</div></div>
+        <div class="stat" id="st2"><div class="n silver">0</div><div class="label t">anos de agência</div></div>
+      </div>
+      <div class="award" id="award">
+        <svg viewBox="0 0 700 240" id="laurel"></svg>
+        <div class="in">
+          <div class="top silver">Top 12</div>
+          <div class="label d">melhores agências do Brasil</div>
+          <div class="label e">Fórum Panrotas · 2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="scene" id="s7">
+    <div class="center tag" id="s7tag">
+      <div class="mask ital"><span>A viagem dos seus sonhos</span></div>
+      <div class="mask serif"><span>começa aqui.</span></div>
+    </div>
+    <div class="logo" id="s7logo">
+      <div class="word" id="s7word"></div>
+      <div class="rule" id="s7rule"></div>
+      <svg class="tours" id="s7tours" viewBox="0 0 686.92 152.69">
+        <path fill="#8b0028" d="M19.31 55.52H0V43.07H19.31V0H33.66V43.07H54.71V55.52H33.66v92.57H19.31Zm157.25 83.56c11.52 0 21.29-4.16 29.29-12.48s12-18.51 12-30.59c0-12.24-4-22.46-11.96-30.75s-17.74-12.44-29.33-12.44c-11.52 0-21.25 4.16-29.21 12.44S135.4 83.76 135.4 96c0 12.08 4 22.26 11.96 30.59s17.7 12.48 29.21 12.48Zm-.48 13.62c-7.47 0-14.67-1.49-21.54-4.44s-13.09-7.19-18.71-12.73c-5.290-5.21-9.29-11.19-12.04-17.98-2.79-6.79-4.16-14.06-4.16-21.78 0-7.64 1.41-14.91 4.24-21.78 2.87-6.87 6.91-12.93 12.2-18.22 5.37-5.37 11.47-9.45 18.34-12.32 6.87-2.83 14.1-4.24 21.66-4.24 7.76 0 15.11 1.41 22.1 4.24 6.95 2.87 13.17 6.95 18.63 12.32s9.62 11.47 12.48 18.34 4.32 14.1 4.32 21.66c0 7.6-1.41 14.79-4.24 21.62-2.87 6.83-6.95 12.85-12.32 18.14-5.54 5.54-11.84 9.78-18.87 12.73-7.07 2.95-14.42 4.44-22.1 4.44ZM330.27 43.07V95.52c0 15.92 2.26 27.19 6.83 33.74 4.53 6.55 12.2 9.82 23.03 9.82 10.71 0 18.42-3.31 23.07-9.94s6.99-17.86 6.99-33.62V43.07h14.42v59.88c0 16.36-3.76 28.73-11.23 37.13-7.52 8.4-18.51 12.61-33.05 12.61-14.59 0-25.66-4.2-33.25-12.61-7.56-8.4-11.35-20.77-11.35-37.13V43.07ZM510.03 64.16c5.37-9.09 10.63-15.52 15.8-19.27 5.17-3.8 11.19-5.7 18.06-5.7 2.06 0 4.12.2 6.22.61 2.1.36 4.16.93 6.22 1.62L551.6 55.15c-1.58-.48-3.23-.85-4.93-1.17s-3.31-.49-4.89-.49c-8.77 0-16.28 4.12-22.46 12.32s-9.29 18.42-9.29 30.67v51.6H495.48V43.07h14.55Zm101.94 65.17l13.86-7.92c2.3 5.86 5.62 10.26 9.94 13.21 4.36 2.95 9.66 4.44 16 4.44 6.14 0 11.03-1.58 14.67-4.69s5.45-7.27 5.45-12.48c0-8.04-7.15-14.87-21.41-20.49-1.54-.53-2.71-1.01-3.56-1.41-11.07-4.32-18.79-8.81-23.23-13.41-4.4-4.61-6.63-10.34-6.63-17.09 0-8.93 3.15-16.24 9.5-21.98 6.3-5.7 14.46-8.57 24.48-8.57 8.53 0 15.8 1.86 21.82 5.58 5.98 3.72 10.38 8.97 13.13 15.84l-13.37 7.47c-1.66-4.97-4.44-8.77-8.32-11.35-3.84-2.63-8.57-3.92-14.18-3.92-5.05 0-9.21 1.49-12.48 4.44s-4.93 6.63-4.93 11.07c0 4.32 1.62 7.92 4.85 10.75s9.94 5.98 20.12 9.33c11.56 4.04 19.27 8.4 23.27 13.17 4 4.73 5.98 11.27 5.98 19.64 0 9.62-3.43 17.33-10.3 23.07-6.87 5.78-16.08 8.65-27.72 8.65-8.89 0-16.57-2.02-23.03-6.1-6.42-4.08-11.07-9.82-13.9-17.25"/>
+      </svg>
+    </div>
+    <div class="foot" id="s7foot"><div class="label">curadoria · concierge · suporte 24h</div></div>
+  </section>
+
+  <div id="wipe"></div>
+  <div class="vignette"></div>
+  <svg class="grain" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+</div>
+
+<script src="motion.js"></script>
+</body>
+</html>
