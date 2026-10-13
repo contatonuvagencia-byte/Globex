@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Globex Cargo — Motion institucional</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  /* Paleta oficial Globex (Notion › Identidade Visual & Moodboards) */
+  :root{
+    --preto:#131313;
+    --verde:#2e402b;
+    --oliva:#52573e;
+    --areia:#d9c9ba;
+    --gelo:#e7e7e6;
+    --W:1080px; --H:1920px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000}
+  body{width:var(--W);height:var(--H);overflow:hidden}
+  #stage{position:relative;width:var(--W);height:var(--H);overflow:hidden;background:var(--preto);
+    font-family:'Montserrat',sans-serif;color:var(--gelo)}
+  canvas#globe{position:absolute;inset:0}
+  .vignette{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(120% 80% at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%)}
+  .grain{position:absolute;inset:-50%;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+  .scene{position:absolute;inset:0;visibility:hidden}
+  .pad{position:absolute;left:96px;right:96px}
+
+  /* Tag: barra verde + texto em caixa alta (padrão dos posts) */
+  .tag{display:flex;align-items:center;gap:22px;font-weight:600;font-size:30px;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--areia)}
+  .tag i{display:block;height:7px;width:72px;background:var(--oliva);transform-origin:left center}
+  .tag.dark{color:var(--oliva)}
+  .tag.dark i{background:var(--verde)}
+
+  .h1{font-family:'Poppins',sans-serif;font-weight:800;line-height:1.08;letter-spacing:-.015em}
+  .h2{font-family:'Poppins',sans-serif;font-weight:500;line-height:1.2}
+  em{font-style:normal;color:var(--areia)}
+
+  /* revelação palavra a palavra */
+  .wm{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em .12em;margin-bottom:-.12em}
+  .wi{display:inline-block;will-change:transform}
+
+  /* S1 */
+  #s1 .pad{top:640px}
+  #s1 .h1{font-size:112px}
+  #s1 .bar{height:12px;background:linear-gradient(90deg,var(--verde),var(--oliva));margin-top:34px;width:620px;transform-origin:left}
+
+  /* S2 */
+  #s2 .center{position:absolute;left:0;right:0;top:700px;text-align:center}
+  #s2 .tagwrap{display:flex;justify-content:center;margin-bottom:60px}
+  .pill{border:2px solid var(--oliva);border-radius:999px;padding:16px 38px;font-weight:600;font-size:30px;
+    letter-spacing:.3em;color:var(--areia)}
+  .word{font-family:'Poppins',sans-serif;font-weight:800;font-size:200px;letter-spacing:.04em;line-height:1;color:var(--gelo)}
+  .word span{display:inline-block}
+  .sub{font-weight:500;font-size:46px;letter-spacing:.62em;margin-right:-.62em;color:var(--areia);margin-top:22px}
+  .rule{height:3px;background:var(--oliva);width:520px;margin:46px auto 0}
+  #s2 .line2{font-size:36px;font-weight:500;color:var(--gelo);opacity:.85;margin-top:46px;letter-spacing:.02em}
+
+  /* S3 */
+  #s3 .pad{top:330px}
+  #s3 .h1{font-size:96px;margin-top:40px}
+  #s3 .h2{font-size:42px;margin-top:36px;color:var(--gelo);opacity:.8}
+
+  /* S4 – painel claro */
+  #wipeG,#wipeL{position:absolute;inset:0}
+  #wipeG{background:var(--verde)}
+  #wipeL{background:var(--gelo)}
+  #s4{color:var(--preto)}
+  #s4 .pad{top:300px}
+  #s4 .h1{font-size:78px;margin-top:34px}
+  .list{margin-top:70px}
+  .row{display:flex;align-items:center;gap:34px;padding:30px 0;position:relative}
+  .row .sep{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(19,19,19,.14);transform-origin:left}
+  .row .num{font-weight:600;font-size:30px;color:var(--oliva);width:56px;letter-spacing:.06em}
+  .row .ic{width:104px;height:104px;border-radius:50%;background:var(--verde);display:flex;align-items:center;justify-content:center;flex:none}
+  .row .ic svg{width:58px;height:58px;fill:none;stroke:var(--areia);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .row .nm{font-family:'Poppins',sans-serif;font-weight:700;font-size:52px;line-height:1.1}
+
+  /* S5 */
+  #s5 .pad{top:330px}
+  #s5 .h1{font-size:96px;margin-top:40px}
+  .steps{margin-top:80px}
+  .step{display:flex;align-items:center;gap:34px;margin-bottom:46px}
+  .step .ck{width:84px;height:84px;flex:none}
+  .step .ck circle{fill:none;stroke:var(--oliva);stroke-width:3}
+  .step .ck path{fill:none;stroke:var(--areia);stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+  .step .tx{font-size:48px;font-weight:500;color:var(--gelo)}
+
+  /* S6 */
+  #s6 .pad{top:760px;text-align:center}
+  #s6 .h1{font-size:120px}
+
+  /* S7 – encerramento */
+  #endBg{position:absolute;inset:0;background:var(--verde)}
+  #s7 .center{position:absolute;left:0;right:0;top:560px;text-align:center}
+  #s7 .word{font-size:184px}
+  #s7 .claim{font-family:'Poppins',sans-serif;font-weight:500;font-size:50px;line-height:1.3;margin-top:80px;color:var(--gelo)}
+  .cta{display:inline-flex;align-items:center;gap:22px;margin-top:80px;background:var(--areia);color:var(--preto);
+    border-radius:999px;padding:34px 64px;font-family:'Poppins',sans-serif;font-weight:700;font-size:46px}
+  .cta svg{width:44px;height:44px;fill:none;stroke:var(--preto);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .handles{margin-top:60px;font-size:36px;font-weight:500;color:var(--areia);letter-spacing:.04em;line-height:1.7}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="globe" width="1080" height="1920"></canvas>
+
+  <!-- S1 · gancho / manifesto -->
+  <section class="scene" id="s1">
+    <div class="pad">
+      <div class="tag"><i></i><span>Globex Cargo</span></div>
+      <div class="h1 rv" style="margin-top:46px">
+        <div class="line">Comércio exterior</div>
+        <div class="line">não é custo.</div>
+        <div class="line"><em>É estratégia.</em></div>
+      </div>
+      <div class="bar"></div>
+    </div>
+  </section>
+
+  <!-- S2 · marca -->
+  <section class="scene" id="s2">
+    <div class="center">
+      <div class="tagwrap"><div class="pill">DESDE 2006</div></div>
+      <div class="word" id="w2">GLOBEX</div>
+      <div class="sub">CARGO</div>
+      <div class="rule"></div>
+      <div class="line2">Importação &nbsp;·&nbsp; Exportação &nbsp;·&nbsp; Comex</div>
+    </div>
+  </section>
+
+  <!-- S3 · posicionamento -->
+  <section class="scene" id="s3">
+    <div class="pad">
+      <div class="tag"><i></i><span>Quem somos</span></div>
+      <div class="h1 rv">
+        <div class="line">Mais do que</div>
+        <div class="line">movimentar cargas,</div>
+        <div class="line"><em>estruturamos</em></div>
+        <div class="line"><em>operações.</em></div>
+      </div>
+      <div class="h2 rv">
+        <div class="line">Do planejamento à liberação da carga.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 · serviços (painel claro) -->
+  <div id="wipeG" style="visibility:hidden"></div>
+  <div id="wipeL" style="visibility:hidden"></div>
+  <section class="scene" id="s4">
+    <div class="pad">
+      <div class="tag dark"><i></i><span>O que fazemos</span></div>
+      <div class="h1 rv">
+        <div class="line">Soluções completas</div>
+        <div class="line">em comércio exterior</div>
+      </div>
+      <div class="list">
+        <div class="row"><span class="num">01</span><span class="ic">
+          <svg viewBox="0 0 48 48"><path d="M24 6v20"/><path d="M16 18l8 8 8-8"/><path d="M8 30v10h32V30"/></svg></span>
+          <span class="nm">Importação</span><span class="sep"></span></div>
+        <div class="row"><span class="num">02</span><span class="ic">
+          <svg viewBox="0 0 48 48"><path d="M24 28V8"/><path d="M16 16l8-8 8 8"/><path d="M8 30v10h32V30"/></svg></span>
+          <span class="nm">Exportação</span><span class="sep"></span></div>
+        <div class="row"><span class="num">03</span><span class="ic">
+          <svg viewBox="0 0 48 48"><path d="M12 6h17l9 9v27H12z"/><path d="M29 6v9h9"/><path d="M18 29l5 5 9-10"/></svg></span>
+          <span class="nm">Despacho Aduaneiro</span><span class="sep"></span></div>
+        <div class="row"><span class="num">04</span><span class="ic">
+          <svg viewBox="0 0 48 48"><path d="M6 30h36l-5 9H11z"/><path d="M12 30V20h12v10"/><path d="M24 30V14h10v16"/><path d="M4 44c4 0 4-2 8-2s4 2 8 2 4-2 8-2 4 2 8 2 4-2 8-2"/></svg></span>
+          <span class="nm">Logística Internacional</span><span class="sep"></span></div>
+        <div class="row"><span class="num">05</span><span class="ic">
+          <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M30 18l-4 8-8 4 4-8z"/></svg></span>
+          <span class="nm">Consultoria</span><span class="sep"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5 · método -->
+  <section class="scene" id="s5">
+    <div class="pad">
+      <div class="tag"><i></i><span>Filosofia Globex</span></div>
+      <div class="h1 rv">
+        <div class="line">A estratégia começa</div>
+        <div class="line"><em>antes da carga sair.</em></div>
+      </div>
+      <div class="steps">
+        <div class="step"><svg class="ck" viewBox="0 0 84 84"><circle cx="42" cy="42" r="38"/><path d="M27 43l10 10 20-22"/></svg><span class="tx">Análise de cenário e custo real</span></div>
+        <div class="step"><svg class="ck" viewBox="0 0 84 84"><circle cx="42" cy="42" r="38"/><path d="M27 43l10 10 20-22"/></svg><span class="tx">Classificação fiscal correta</span></div>
+        <div class="step"><svg class="ck" viewBox="0 0 84 84"><circle cx="42" cy="42" r="38"/><path d="M27 43l10 10 20-22"/></svg><span class="tx">Modal definido com critério</span></div>
+        <div class="step"><svg class="ck" viewBox="0 0 84 84"><circle cx="42" cy="42" r="38"/><path d="M27 43l10 10 20-22"/></svg><span class="tx">Riscos mapeados</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 · frase da marca -->
+  <section class="scene" id="s6">
+    <div class="pad">
+      <div class="h1 rv">
+        <div class="line">Quem planeja</div>
+        <div class="line">melhor,</div>
+        <div class="line"><em>opera melhor.</em></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 · CTA -->
+  <div id="endBg" style="visibility:hidden"></div>
+  <section class="scene" id="s7">
+    <div class="center">
+      <div class="word" id="w7">GLOBEX</div>
+      <div class="sub">CARGO</div>
+      <div class="rule" style="background:var(--areia)"></div>
+      <div class="claim">Comércio exterior não é custo.<br><em>É estratégia.</em></div>
+      <div class="cta"><svg viewBox="0 0 48 48"><path d="M8 38l3-9a16 16 0 1 1 7 7z"/></svg>Fale com a Globex</div>
+      <div class="handles">@globexcargo<br>globexcargodobrasil.com.br</div>
+    </div>
+  </section>
+
+  <div class="vignette"></div>
+  <div class="grain"></div>
+</div>
+
+<script>
+const DURATION = 33;           // segundos
+const $ = s => document.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+
+/* ---------- easing ---------- */
+const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
+const prog  = (t,a,d) => clamp((t-a)/d);
+const eOut  = x => 1 - Math.pow(1-x, 3);
+const eOutX = x => x === 1 ? 1 : 1 - Math.pow(2, -10*x);
+const eIn   = x => x*x*x;
+const eIO   = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x+2, 3)/2;
+const lerp  = (a,b,x) => a + (b-a)*x;
+
+/* ---------- split words ---------- */
+function splitWords(root){
+  $$('.line', root).forEach(line => {
+    const frag = document.createDocumentFragment();
+    const push = (word, hl) => {
+      const m = document.createElement('span'); m.className = 'wm';
+      const i = document.createElement(hl ? 'em' : 'span'); i.className = 'wi'; i.textContent = word;
+      m.appendChild(i); frag.appendChild(m); frag.appendChild(document.createTextNode(' '));
+    };
+    [...line.childNodes].forEach(n => {
+      const hl = n.nodeType === 1 && n.tagName === 'EM';
+      n.textContent.split(/\s+/).filter(Boolean).forEach(w => push(w, hl));
+    });
+    line.textContent = ''; line.appendChild(frag);
+  });
+}
+$$('.rv').forEach(splitWords);
+['#w2','#w7'].forEach(sel => { const el=$(sel); el.innerHTML = [...el.textContent].map(c=>`<span>${c}</span>`).join(''); });
+
+/* ---------- animation helpers ---------- */
+function words(block, t, start, stagger=.075, dur=.75){
+  $$('.wi', block).forEach((w,i) => {
+    const e = eOutX(prog(t, start + i*stagger, dur));
+    w.style.transform = `translateY(${(1-e)*110}%)`;
+    w.style.opacity = Math.min(1, e*1.6);
+  });
+}
+function rise(el, t, start, dur=.8, dist=50){
+  const e = eOutX(prog(t, start, dur));
+  el.style.opacity = e; el.style.transform = `translateY(${(1-e)*dist}px)`;
+  return e;
+}
+function sceneOut(el, t, start, dur=.55){
+  const e = eIn(prog(t, start, dur));
+  el.style.opacity = 1 - e;
+  el.style.transform = `translateY(${-80*e}px)`;
+  el.style.filter = e > 0 ? `blur(${e*10}px)` : 'none';
+}
+function show(el, t, a, b){ el.style.visibility = (t >= a && t < b) ? 'visible' : 'hidden'; return t >= a && t < b; }
+function tag(el, t, start){
+  const bar = el.querySelector('i'), tx = el.querySelector('span');
+  bar.style.transform = `scaleX(${eOutX(prog(t, start, .7))})`;
+  const e = eOut(prog(t, start+.15, .7));
+  tx.style.opacity = e; tx.style.transform = `translateX(${(1-e)*-24}px)`;
+}
+
+/* ---------- globo pontilhado ---------- */
+const cv = $('#globe'), ctx = cv.getContext('2d');
+const DEG = Math.PI/180;
+const PTS = (() => { const n=1500, a=[], g=Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<n;i++){ const y=1-(i/(n-1))*2, r=Math.sqrt(1-y*y), th=g*i; a.push([Math.cos(th)*r, y, Math.sin(th)*r]); }
+  return a; })();
+const ll = (lat,lon) => [Math.cos(lat*DEG)*Math.sin(lon*DEG), Math.sin(lat*DEG), Math.cos(lat*DEG)*Math.cos(lon*DEG)];
+const SANTOS = ll(-23.96,-46.33);
+const ROUTES = [ll(51.9,4.5), ll(25.8,-80.2), ll(6.45,3.39), ll(-34.6,-58.4), ll(40.7,-74.0), ll(-29.9,31.0)];
+
+function rot(v, ry, rx){
+  let [x,y,z]=v;
+  const cy=Math.cos(ry), sy=Math.sin(ry);
+  [x,z] = [x*cy + z*sy, -x*sy + z*cy];
+  const cx=Math.cos(rx), sx=Math.sin(rx);
+  [y,z] = [y*cx - z*sx, y*sx + z*cx];
+  return [x,y,z];
+}
+function slerp(a,b,s){
+  const d = clamp(a[0]*b[0]+a[1]*b[1]+a[2]*b[2], -1, 1), om = Math.acos(d), so = Math.sin(om);
+  if (so < 1e-6) return a;
+  const k1 = Math.sin((1-s)*om)/so, k2 = Math.sin(s*om)/so;
+  return [a[0]*k1+b[0]*k2, a[1]*k1+b[1]*k2, a[2]*k1+b[2]*k2];
+}
+// posição/escala/opacidade do globo por cena
+const GK = [ // t, cx, cy, R, alpha
+  [0,    540, 1330, 470, .30],
+  [4.0,  540, 1330, 470, .30],
+  [5.0,  540, 1280, 560, .22],
+  [8.4,  540, 1280, 560, .22],
+  [9.4,  540, 1640, 640, .95],
+  [12.8, 540, 1640, 640, .95],
+  [19.6, 540, 1720, 760, .40],
+  [24.8, 540, 1720, 760, .40],
+  [25.6, 540, 960,  620, .20],
+  [33,   540, 960,  620, .20],
+];
+function gk(t){
+  for (let i=0;i<GK.length-1;i++){
+    const a=GK[i], b=GK[i+1];
+    if (t <= b[0]){ const x = eIO(clamp((t-a[0])/(b[0]-a[0]))); return a.map((v,j)=> j? lerp(v,b[j],x) : t); }
+  }
+  return GK[GK.length-1];
+}
+function drawGlobe(t){
+  ctx.clearRect(0,0,1080,1920);
+  const [,cx,cy,R,alpha] = gk(t);
+  if (alpha <= 0.01) return;
+  const ry = -(-46.33*DEG) + (t-10.5)*0.07;   // Brasil de frente na cena 3
+  const rx = -0.32;
+  // halo
+  const g = ctx.createRadialGradient(cx,cy,R*.2,cx,cy,R*1.25);
+  g.addColorStop(0, `rgba(46,64,43,${.55*alpha})`); g.addColorStop(1,'rgba(46,64,43,0)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx,cy,R*1.25,0,Math.PI*2); ctx.fill();
+  // contorno
+  ctx.strokeStyle = `rgba(82,87,62,${.6*alpha})`; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2); ctx.stroke();
+  // pontos
+  for (const p of PTS){
+    const [x,y,z] = rot(p, ry, rx);
+    if (z < -0.05) continue;
+    const a = alpha * (0.15 + 0.85*Math.max(0,z));
+    ctx.fillStyle = `rgba(217,201,186,${a*.85})`;
+    const s = 2 + 2.6*Math.max(0,z);
+    ctx.fillRect(cx + x*R - s/2, cy - y*R - s/2, s, s);
+  }
+  // rotas a partir de Santos
+  const arcA = t < 12.6 ? 1 : 1 - eIn(prog(t, 12.6, .6));
+  if (t < 8.6 || arcA <= 0) return;
+  const [s0x,s0y] = rot(SANTOS, ry, rx);
+  const P0 = [cx + s0x*R, cy - s0y*R];
+  ROUTES.forEach((dst, k) => {
+    const st = 9.2 + k*0.4;
+    const pr = eIO(prog(t, st, 1.5));
+    if (pr <= 0) return;
+    const [dx,dy,dz] = rot(dst, ry, rx);
+    const P1 = [cx + dx*R, cy - dy*R];
+    const mx = (P0[0]+P1[0])/2, my = (P0[1]+P1[1])/2;
+    const vx = P1[0]-P0[0], vy = P1[1]-P0[1], L = Math.hypot(vx,vy);
+    let nx = -vy/L, ny = vx/L; if (ny > 0){ nx = -nx; ny = -ny; }
+    const C = [mx + nx*L*.3, my + ny*L*.3];
+    const vis = alpha*arcA*clamp(dz/0.2 + .3);
+    ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.strokeStyle = `rgba(217,201,186,${vis*.9})`;
+    ctx.beginPath(); ctx.moveTo(P0[0],P0[1]);
+    const N = 60; let q = P0;
+    for (let i=1;i<=Math.ceil(N*pr);i++){
+      const u = Math.min(i/N, pr), w = 1-u;
+      q = [w*w*P0[0] + 2*w*u*C[0] + u*u*P1[0], w*w*P0[1] + 2*w*u*C[1] + u*u*P1[1]];
+      ctx.lineTo(q[0], q[1]);
+    }
+    ctx.stroke();
+    ctx.fillStyle = `rgba(231,231,230,${vis})`;
+    ctx.beginPath(); ctx.arc(q[0], q[1], pr < 1 ? 7 : 6, 0, Math.PI*2); ctx.fill();
+    if (pr >= 1){ ctx.strokeStyle = `rgba(217,201,186,${vis*.5})`; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(q[0], q[1], 14, 0, Math.PI*2); ctx.stroke(); }
+  });
+  // ponto de origem pulsando
+  const [sx,sy,sz] = rot(SANTOS, ry, rx);
+  if (sz > 0){
+    const px = cx + sx*R, py = cy - sy*R, ph = ((t*0.9)%1);
+    ctx.strokeStyle = `rgba(217,201,186,${alpha*(1-ph)})`; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(px,py,10+ph*46,0,Math.PI*2); ctx.stroke();
+    ctx.fillStyle = `rgba(217,201,186,${alpha})`; ctx.beginPath(); ctx.arc(px,py,10,0,Math.PI*2); ctx.fill();
+  }
+}
+
+/* ---------- timeline ---------- */
+function render(t){
+  drawGlobe(t);
+
+  // S1 · 0 – 4.4
+  const s1 = $('#s1');
+  if (show(s1, t, 0, 4.4)){
+    tag($('#s1 .tag'), t, .15);
+    words($('#s1 .rv'), t, .35, .11, .8);
+    // "É estratégia." entra com respiro
+    $$('#s1 .line:nth-child(3) .wi').forEach((w,i)=>{ const e=eOutX(prog(t, 1.9+i*.12, .8)); w.style.transform=`translateY(${(1-e)*110}%)`; w.style.opacity=Math.min(1,e*1.6); });
+    $('#s1 .bar').style.transform = `scaleX(${eOutX(prog(t, 2.2, 1.0))})`;
+    sceneOut(s1, t, 3.85);
+  }
+
+  // S2 · 4.3 – 8.8
+  const s2 = $('#s2');
+  if (show(s2, t, 4.3, 8.8)){
+    s2.style.opacity = 1; s2.style.transform = ''; s2.style.filter = 'none';
+    rise($('#s2 .pill'), t, 4.4, .8, 30);
+    $$('#w2 span').forEach((c,i)=>{ const e=eOutX(prog(t, 4.6+i*.07, .9)); c.style.transform=`translateY(${(1-e)*120}px) scale(${.9+.1*e})`; c.style.opacity=e; });
+    const sub = $('#s2 .sub'); const e2 = eOut(prog(t, 5.3, 1.2));
+    sub.style.opacity = e2; sub.style.letterSpacing = `${lerp(1.1,.62,e2)}em`;
+    $('#s2 .rule').style.transform = `scaleX(${eOutX(prog(t, 5.6, 1.1))})`;
+    rise($('#s2 .line2'), t, 6.0, .9, 30);
+    sceneOut(s2, t, 8.25);
+  }
+
+  // S3 · 8.7 – 13.2
+  const s3 = $('#s3');
+  if (show(s3, t, 8.7, 13.2)){
+    s3.style.opacity = 1; s3.style.transform=''; s3.style.filter='none';
+    tag($('#s3 .tag'), t, 8.75);
+    words($$('#s3 .rv')[0], t, 8.95, .1, .8);
+    words($$('#s3 .rv')[1], t, 10.4, .05, .8);
+    sceneOut(s3, t, 12.65);
+  }
+
+  // S4 · wipe claro 13.0 – 19.9
+  const wg = $('#wipeG'), wl = $('#wipeL'), s4 = $('#s4');
+  const inG = eIO(prog(t, 12.95, .7)), inL = eIO(prog(t, 13.1, .7));
+  const outL = eIO(prog(t, 19.15, .7)), outG = eIO(prog(t, 19.3, .7));
+  const wipeOn = t >= 12.95 && t < 20.0;
+  wg.style.visibility = wl.style.visibility = wipeOn ? 'visible' : 'hidden';
+  wg.style.clipPath = `inset(${(1-inG)*100}% 0 ${outG*100}% 0)`;
+  wl.style.clipPath = `inset(${(1-inL)*100}% 0 ${outL*100}% 0)`;
+  if (show(s4, t, 13.4, 19.9)){
+    s4.style.clipPath = `inset(0 0 ${outL*100}% 0)`;
+    tag($('#s4 .tag'), t, 13.5);
+    words($('#s4 .rv'), t, 13.65, .08, .8);
+    $$('#s4 .row').forEach((r,i)=>{
+      const st = 14.5 + i*.36;
+      const e = eOutX(prog(t, st, .9));
+      r.querySelector('.num').style.opacity = e;
+      const ic = r.querySelector('.ic'); ic.style.transform = `scale(${e})`; ic.style.opacity = e;
+      const nm = r.querySelector('.nm'); nm.style.opacity = e; nm.style.transform = `translateX(${(1-e)*60}px)`;
+      r.querySelector('.sep').style.transform = `scaleX(${eOutX(prog(t, st+.1, 1.1))})`;
+      // traço dos ícones
+      $$('path,circle', ic).forEach(p => { const L = 160; p.style.strokeDasharray = L; p.style.strokeDashoffset = L*(1-eOut(prog(t, st+.15, 1.0))); });
+    });
+  }
+
+  // S5 · 19.75 – 25.1
+  const s5 = $('#s5');
+  if (show(s5, t, 19.75, 25.1)){
+    s5.style.opacity = 1; s5.style.transform=''; s5.style.filter='none';
+    tag($('#s5 .tag'), t, 19.8);
+    words($('#s5 .rv'), t, 20.0, .1, .8);
+    $$('#s5 .step').forEach((s,i)=>{
+      const st = 21.3 + i*.45;
+      rise(s.querySelector('.tx'), t, st+.1, .8, 0);
+      s.querySelector('.tx').style.transform = `translateX(${(1-eOutX(prog(t, st+.1, .8)))*40}px)`;
+      const c = s.querySelector('circle'), p = s.querySelector('path');
+      c.style.strokeDasharray = 240; c.style.strokeDashoffset = 240*(1-eOut(prog(t, st, .7)));
+      p.style.strokeDasharray = 60;  p.style.strokeDashoffset = 60*(1-eOut(prog(t, st+.35, .5)));
+    });
+    sceneOut(s5, t, 24.55);
+  }
+
+  // S6 · 25.0 – 28.4
+  const s6 = $('#s6');
+  if (show(s6, t, 25.0, 28.4)){
+    s6.style.opacity = 1; s6.style.transform=''; s6.style.filter='none';
+    words($('#s6 .rv'), t, 25.1, .14, .85);
+    sceneOut(s6, t, 27.85);
+  }
+
+  // S7 · 28.1 – fim
+  const bg = $('#endBg'), s7 = $('#s7');
+  bg.style.visibility = t >= 28.0 ? 'visible' : 'hidden';
+  bg.style.clipPath = `circle(${eIO(prog(t, 28.0, 1.0))*120}% at 50% 50%)`;
+  if (show(s7, t, 28.5, 99)){
+    $$('#w7 span').forEach((c,i)=>{ const e=eOutX(prog(t, 28.6+i*.06, .9)); c.style.transform=`translateY(${(1-e)*110}px)`; c.style.opacity=e; });
+    const sub = $('#s7 .sub'); const e2 = eOut(prog(t, 29.1, 1.1));
+    sub.style.opacity = e2; sub.style.letterSpacing = `${lerp(1.1,.62,e2)}em`;
+    $('#s7 .rule').style.transform = `scaleX(${eOutX(prog(t, 29.3, 1.0))})`;
+    rise($('#s7 .claim'), t, 29.6, .9, 40);
+    const ce = rise($('#s7 .cta'), t, 30.3, .9, 50);
+    const pulse = t > 31.2 ? 1 + .025*Math.sin((t-31.2)*Math.PI*1.6) : 1;
+    $('#s7 .cta').style.transform += ` scale(${(.9+.1*ce)*pulse})`;
+    rise($('#s7 .handles'), t, 30.8, .9, 30);
+  }
+
+  $('.vignette').style.opacity = 1 - (wipeOn ? Math.min(inL, 1-outL) : 0);
+
+  // grão “vivo”
+  $('.grain').style.transform = `translate(${(Math.floor(t*12)*37)%120-60}px, ${(Math.floor(t*12)*53)%120-60}px)`;
+}
+
+window.DURATION = DURATION;
+window.render = render;
+window.ready = document.fonts.ready.then(() => true);
+
+// pré-visualização no navegador (sem ?render)
+if (!location.search.includes('render')){
+  const t0 = performance.now();
+  const loop = now => { render(((now - t0)/1000) % DURATION); requestAnimationFrame(loop); };
+  document.fonts.ready.then(() => requestAnimationFrame(loop));
+}
+</script>
+</body>
+</html>
