@@ -3,7 +3,6 @@
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { tmpdir } from 'node:os';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -12,8 +11,8 @@ const out = resolve(process.argv[2] && !process.argv[2].startsWith('--') ? proce
 const stillsIdx = process.argv.indexOf('--stills');
 const FPS = 30;
 
-const tmp = join(tmpdir(), 'motion-6x1'); mkdirSync(tmp, { recursive: true });
-const page_ = join(tmp, 'page.html');
+// a página temporária fica na mesma pasta para o logo (caminho relativo) carregar
+const page_ = join(here, '.render.html');
 writeFileSync(page_, '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0}</style></head><body>' + readFileSync(join(here, 'index.html'), 'utf8') + '</body></html>');
 
 const proxy = process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined;
