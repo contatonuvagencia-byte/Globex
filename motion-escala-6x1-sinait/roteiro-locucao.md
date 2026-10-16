@@ -8,11 +8,11 @@ As indicações de entonação estão entre parênteses e não são lidas. Os te
 
 (Respire e deixe a trilha soar por um instante. Depois assuma um tom de narrador, calmo e informativo, dando peso tranquilo ao "oito horas".) [4s] Em mil novecentos e trinta e dois, a jornada ganhou limite: oito horas por dia. (No mesmo ritmo, com a sensação de um passo adiante.) [8,6s] Em quarenta e três, a CLT consolidou: quarenta e oito horas por semana. (Com um leve tom de conquista, apoiando a voz no "caiu" e descendo no final.) [12,3s] Com a Constituição de oitenta e oito, o limite caiu para quarenta e quatro.
 
-(Aqui a voz muda de chave: fica mais grave e mais lenta. Faça uma pausa depois do "Mas" e diga o "um" de forma seca, deixando a frase cair.) [16,3s] Mas… a seis por um continua. Seis dias de trabalho, um de descanso.
+(Aqui a voz muda de chave: fica mais grave e mais lenta, lembrando o peso do que se viveu até agora. Faça uma pausa depois do "Mas" e diga o "um" de forma seca, deixando a frase cair.) [16,3s] Mas… a seis por um seguia. Seis dias de trabalho, um de descanso.
 
-(Retome a energia, decidido, como quem aponta o caminho. Dê força ao "acabar", que coincide com o risco na tela.) [20s] O próximo passo é acabar com a escala seis por um.
+(Virada de comemoração: a voz se abre e ganha energia, com orgulho e sem gritar. Dê força ao "aprovou", que coincide com o risco na tela.) [20s] Agora, o Congresso aprovou o fim da escala seis por um.
 
-(Comece a abrir um sorriso na voz. O "cento e quatro" acompanha o número girando na tela; depois de uma pequena pausa, diga "o dobro" curto e com peso.) [23s] Com duas folgas por semana, são cento e quatro por ano. O dobro.
+(Comece a abrir um sorriso na voz. O "cento e quatro" acompanha o número girando na tela; depois de uma pequena pausa, diga "o dobro" curto e com peso.) [23s] São duas folgas por semana, sem reduzir o salário: cento e quatro por ano. O dobro.
 
 (Tom caloroso e ritmado, uma ideia a cada troca de palavra na faixa laranja. Segure um pouco antes do "viver" e diga essa palavra mais suave, quase sorrindo.) [27s] Mais tempo pra descansar, pra família, pra estudar, pra cuidar da saúde… e pra viver.
 

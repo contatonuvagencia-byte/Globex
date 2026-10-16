@@ -116,7 +116,7 @@ body.export #frame, body.export #holder { width: 1080px !important; height: 1350
 
 <div id="frame">
   <div id="holder">
-    <div id="stage" role="img" aria-label="Animação do SINAIT DS/MG: o que muda com o fim da escala 6x1. A jornada caiu de 48 horas semanais, em 1932 e na CLT de 1943, para 44 horas na Constituição de 1988. O próximo passo é acabar com a escala 6x1: de 52 para 104 folgas por ano.">
+    <div id="stage" role="img" aria-label="Animação do SINAIT DS/MG: o que muda com o fim da escala 6x1. A jornada caiu de 48 horas semanais, em 1932 e na CLT de 1943, para 44 horas na Constituição de 1988. Em outubro de 2026, o Congresso aprovou o fim da escala 6x1: de 52 para 104 folgas por ano.">
       <div id="glow"></div>
       <canvas id="grain" width="540" height="675"></canvas>
 
@@ -131,7 +131,7 @@ body.export #frame, body.export #holder { width: 1080px !important; height: 1350
         <!-- Evolução -->
         <div class="abs caps" id="eyebrow">
           <span class="slot mask" id="ebA"><span>Limite: <b><span class="odo" id="hrs"></span>h</b> por semana</span></span>
-          <span class="slot mask" id="ebB"><span>O próximo passo</span></span>
+          <span class="slot mask" id="ebB"><span>Outubro de 2026 · <b>aprovado</b> o fim da</span></span>
         </div>
         <div class="abs mask" id="yearbox">
           <span id="yearIn"><span class="odo" id="year"></span></span>
@@ -141,8 +141,8 @@ body.export #frame, body.export #holder { width: 1080px !important; height: 1350
           <p class="c mask"><span>Decretos de 1932 limitam a jornada na indústria e no comércio a <strong>8 horas por dia</strong>.</span></p>
           <p class="c mask"><span>A CLT consolida a regra: <strong>8 horas por dia, 48 por semana</strong>.</span></p>
           <p class="c mask"><span>A Constituição reduz o limite para <strong>44 horas semanais</strong>.</span></p>
-          <p class="c mask"><span>Mas a escala 6x1 continua: <strong>seis dias de trabalho para um de descanso</strong>.</span></p>
-          <p class="c mask"><span>Garantir <strong>dois dias de descanso</strong> por semana para quem trabalha.</span></p>
+          <p class="c mask"><span>Mesmo assim, a escala 6x1 seguia: <strong>seis dias de trabalho para um de descanso</strong>.</span></p>
+          <p class="c mask"><span>Agora são <strong>dois dias de descanso</strong> por semana, sem redução de salário.</span></p>
         </div>
 
         <div id="bars">
@@ -261,7 +261,7 @@ body.export #frame, body.export #holder { width: 1080px !important; height: 1350
   const NEXT = X(2026) + 260;
   const track = $('#track');
   for (let y = 1920; y <= 2030; y += 10) { const k = document.createElement('i'); k.className = 'tick'; k.style.left = X(y) + 'px'; track.appendChild(k); }
-  const stops = [[X(1932), '1932'], [X(1943), '1943 · CLT'], [X(1988), '1988 · Constituição'], [X(2026), 'Hoje'], [NEXT, 'Próximo passo']];
+  const stops = [[X(1932), '1932'], [X(1943), '1943 · CLT'], [X(1988), '1988 · Constituição'], [X(2026), 'Até aqui'], [NEXT, '2026 · Aprovado']];
   const msEls = stops.map(([x, name]) => {
     const m = document.createElement('div'); m.className = 'ms'; m.style.left = x + 'px';
     m.innerHTML = `<span class="dot"></span><span class="name caps">${name}</span>`;
@@ -315,6 +315,7 @@ body.export #frame, body.export #holder { width: 1080px !important; height: 1350
     maskIO($('#yearIn'), t, 3.8, 19.8, .6);
     $('#yearIn').style.display = 'inline-block';
     maskIO($('#x61'), t, 19.8, 40, .6);
+    $('#x61').style.visibility = t >= 19.8 ? 'visible' : 'hidden';
     $('#strike').style.width = (108 * eInOut(p(t, 20.7, 21.2))) + '%';
 
     caps.forEach((c, i) => maskIO(c.firstElementChild, t, capWin[i][0], capWin[i][1], .5));
