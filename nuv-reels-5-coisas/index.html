@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>NUV motion</title>
+<style>
+  /* Perandory: coloque o arquivo em assets/fonts/Perandory.otf (ou .ttf) que ele passa a ser usado.
+     Enquanto não existir, cai na DM Serif Display. */
+  @font-face { font-family: 'Titulo'; src: url(assets/fonts/Perandory.otf), url(assets/fonts/Perandory.ttf),
+    url(assets/fonts/dm-serif-display-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Titulo'; unicode-range: U+0100-024F;
+    src: url(assets/fonts/dm-serif-display-latin-ext-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
+
+  :root {
+    --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65;
+    --navy-ink: #071a2e;
+  }
+  html, body { margin: 0; padding: 0; width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+  #stage.bg-navy { background: var(--navy); }
+  #stage.bg-off { background: var(--off); }
+  .abs { position: absolute; left: 0; top: 0; transform-origin: 50% 50%; will-change: transform, opacity; }
+  .serif { font-family: 'Titulo', serif; font-weight: 400; letter-spacing: -0.01em; }
+  .sans { font-family: 'Comfortaa', sans-serif; font-weight: 700; }
+  .pill { border-radius: 999px; padding: 18px 40px; white-space: nowrap; }
+  .card { border-radius: 44px; }
+  .shadow { box-shadow: 0 24px 60px rgba(7, 26, 46, .28); }
+  .word { display: inline-block; will-change: transform, opacity; }
+  svg { display: block; overflow: visible; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script src="scenes.js"></script>
+</body>
+</html>
