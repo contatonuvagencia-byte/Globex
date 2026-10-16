@@ -1,0 +1,324 @@
+<title>Fim da Escala 6x1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Layout: palco vertical 1080x1920 (Reels/Stories) com a semana em blocos, como um cartão de ponto; controles abaixo. */
+:root {
+  --navy: #0d1b36;      /* fundo: azul institucional profundo */
+  --navy-2: #13254a;    /* linhas e superfícies */
+  --sinal: #f5c518;     /* amarelo de sinalização: os dias de trabalho */
+  --papel: #f3f1ea;     /* texto e dias de folga */
+  --tinta: #8fa3c7;     /* texto secundário */
+  --alerta: #ff6b4a;    /* ênfase pontual */
+  --f-display: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+  --f-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: #081226; color: var(--papel); font-family: var(--f-body);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px; box-sizing: border-box; overflow: hidden;
+}
+#frame { position: relative; flex: 1 1 auto; width: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; }
+#holder { position: relative; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+#stage {
+  position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0;
+  background: var(--navy); overflow: hidden;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 59px, rgba(143,163,199,.07) 59px 60px),
+    repeating-linear-gradient(90deg, transparent 0 59px, rgba(143,163,199,.05) 59px 60px);
+}
+.layer { position: absolute; left: 90px; right: 90px; will-change: opacity, transform; }
+.mono { font-family: var(--f-mono); font-weight: 500; letter-spacing: .14em; text-transform: uppercase; }
+.display { font-family: var(--f-display); font-weight: 900; text-transform: uppercase; line-height: .9; letter-spacing: -.005em; text-wrap: balance; margin: 0; }
+
+/* Cabeçalho fixo */
+#topbar { top: 90px; display: flex; justify-content: space-between; align-items: center; font-size: 26px; color: var(--tinta); }
+#topbar b { color: var(--papel); font-weight: 500; }
+#ticks { position: absolute; top: 60px; left: 90px; right: 90px; display: flex; gap: 10px; }
+#ticks i { flex: 1; height: 6px; background: rgba(243,241,234,.18); border-radius: 3px; overflow: hidden; }
+#ticks i span { display: block; height: 100%; width: 0; background: var(--sinal); }
+
+/* Semana */
+#week { position: absolute; left: 66px; width: 948px; top: 700px; }
+#days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 18px; }
+.day { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.dlabel { font-size: 26px; color: var(--tinta); }
+.box {
+  width: 100%; height: 440px; border-radius: 10px; position: relative;
+  display: flex; align-items: center; justify-content: center; box-sizing: border-box;
+}
+.box .word { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--f-display); font-weight: 900; font-size: 64px; letter-spacing: .06em; text-transform: uppercase; }
+.box.work { background: var(--sinal); color: var(--navy); }
+.box.off { border: 5px solid var(--papel); color: var(--papel); }
+.box.off.lit { background: var(--papel); color: var(--navy); border-color: var(--papel); }
+.hours { font-size: 26px; color: var(--papel); }
+#weektotal { margin-top: 40px; display: flex; justify-content: space-between; font-size: 28px; color: var(--tinta); padding-inline: 4px; }
+#weektotal b { color: var(--sinal); font-weight: 500; }
+
+/* Títulos */
+.h-xl { font-size: 190px; }
+.h-l { font-size: 150px; }
+.h-m { font-size: 110px; }
+.lead { font-size: 46px; line-height: 1.3; color: var(--papel); max-width: 860px; margin: 0; }
+.lead em { font-style: normal; color: var(--sinal); }
+.note { font-size: 24px; color: var(--tinta); }
+.yellow { color: var(--sinal); }
+
+/* Cena 3: contador e barras */
+#count { margin-top: 50px; font-family: var(--f-display); font-weight: 900; font-size: 560px; line-height: .8; color: var(--sinal); font-variant-numeric: tabular-nums; }
+.bar { display: flex; flex-direction: column; gap: 14px; }
+.bar .track { height: 90px; background: rgba(243,241,234,.08); border-radius: 8px; overflow: hidden; }
+.bar .fill { height: 100%; width: 0; border-radius: 8px; }
+.bar .meta { display: flex; justify-content: space-between; font-size: 30px; }
+
+/* Cena 4: lista */
+.item { display: flex; align-items: baseline; gap: 30px; font-family: var(--f-display); font-weight: 700; font-size: 108px; text-transform: uppercase; line-height: 1; border-top: 3px solid rgba(243,241,234,.18); padding-top: 34px; }
+.item .n { font-family: var(--f-mono); font-weight: 500; font-size: 28px; color: var(--alerta); letter-spacing: .1em; flex: none; width: 70px; }
+
+/* Assinatura */
+.sig { display: flex; flex-direction: column; gap: 10px; border-top: 3px solid var(--sinal); padding-top: 30px; }
+.sig b { font-family: var(--f-display); font-weight: 900; font-size: 92px; line-height: .9; letter-spacing: .02em; }
+.sig span { font-size: 28px; color: var(--tinta); }
+.tag { display: inline-block; background: var(--sinal); color: var(--navy); font-family: var(--f-display); font-weight: 900; font-size: 84px; padding: 10px 26px 6px; border-radius: 8px; text-transform: uppercase; }
+
+/* Controles */
+#controls { flex: none; display: flex; align-items: center; gap: 12px; width: min(100%, 540px); }
+#controls button {
+  font: 600 14px var(--f-body); color: var(--navy); background: var(--sinal); border: 0; border-radius: 6px;
+  padding: 9px 14px; cursor: pointer; min-width: 84px;
+}
+#controls button.ghost { background: transparent; color: var(--papel); border: 1px solid rgba(243,241,234,.3); }
+#controls button:focus-visible, #scrub:focus-visible { outline: 3px solid var(--papel); outline-offset: 2px; }
+#scrub { flex: 1; min-width: 0; accent-color: var(--sinal); }
+#time { font: 500 13px var(--f-mono); color: var(--tinta); font-variant-numeric: tabular-nums; flex: none; }
+body.export { padding: 0; background: var(--navy); display: block; }
+body.export #controls { display: none; }
+body.export #frame, body.export #holder { width: 1080px !important; height: 1920px !important; box-shadow: none; display: block; }
+</style>
+
+<div id="frame">
+  <div id="holder">
+    <div id="stage" role="img" aria-label="Animação: o fim da escala 6x1. Seis dias de trabalho para um de descanso somam 52 folgas por ano, metade da escala 5x2. O SINAIT defende o fim da escala 6x1.">
+      <div id="ticks"><i><span></span></i><i><span></span></i><i><span></span></i><i><span></span></i><i><span></span></i><i><span></span></i></div>
+      <div class="layer mono" id="topbar"><b>SINAIT</b><span>Auditoria-Fiscal do Trabalho</span></div>
+
+      <!-- Cena 1 e 2 -->
+      <h1 class="layer display h-xl" id="s1t" style="top:250px">6 dias de<br><span class="yellow">trabalho.</span></h1>
+      <h1 class="layer display h-xl" id="s2t" style="top:250px">1 dia para<br><span class="yellow">viver.</span></h1>
+      <h1 class="layer display h-l" id="s6t" style="top:250px">Fim da<br><span class="yellow">escala 6x1.</span></h1>
+
+      <div id="week">
+        <div id="days"></div>
+        <div id="weektotal" class="mono"><span>Jornada semanal</span><b>44h · 7h20 por dia</b></div>
+      </div>
+
+      <div class="layer" id="s2sub" style="top:1500px">
+        <p class="lead">Descansar, cuidar da casa, ver a família, estudar, ir ao médico. <em>Tudo em 24 horas.</em></p>
+      </div>
+
+      <!-- Cena 3 -->
+      <div class="layer" id="s3" style="top:300px">
+        <div class="mono note" style="font-size:30px;color:var(--papel)">Folgas por ano na escala 6x1</div>
+        <div id="count">0</div>
+        <div style="display:flex;flex-direction:column;gap:40px;margin-top:60px">
+          <div class="bar" id="bar1"><div class="meta mono"><span>6x1</span><span class="yellow">52 dias</span></div><div class="track"><div class="fill" style="background:var(--sinal)"></div></div></div>
+          <div class="bar" id="bar2"><div class="meta mono"><span>5x2</span><span>104 dias</span></div><div class="track"><div class="fill" style="background:var(--papel)"></div></div></div>
+        </div>
+        <h2 class="display h-m" id="s3t" style="margin-top:80px">Metade do<br><span class="yellow">descanso.</span></h2>
+        <div class="note mono" id="s3n" style="margin-top:30px;letter-spacing:.08em">Cálculo: 1 folga por semana × 52 semanas, sem contar férias e feriados.</div>
+      </div>
+
+      <!-- Cena 4 -->
+      <div class="layer" id="s4" style="top:400px">
+        <h2 class="display h-l" id="s4t">Jornada<br>exaustiva<br><span class="yellow">cobra a conta.</span></h2>
+        <div style="display:flex;flex-direction:column;gap:40px;margin-top:110px">
+          <div class="item" id="i1"><span class="n">01</span>Fadiga acumulada</div>
+          <div class="item" id="i2"><span class="n">02</span>Mais risco de acidentes</div>
+          <div class="item" id="i3"><span class="n">03</span>Adoecimento físico e mental</div>
+        </div>
+      </div>
+
+      <!-- Cena 5 -->
+      <div class="layer" id="s5" style="top:430px">
+        <h2 class="display h-l" id="s5t">Quem fiscaliza<br><span class="yellow">vê de perto.</span></h2>
+        <p class="lead" id="s5a" style="margin-top:90px;font-size:54px">Auditoras e Auditores-Fiscais do Trabalho encontram, todos os dias, o custo das jornadas exaustivas nos locais de trabalho.</p>
+        <p class="lead" id="s5b" style="margin-top:80px;font-size:72px;font-weight:600;line-height:1.2">O <em>SINAIT</em> defende o fim da escala 6x1.</p>
+      </div>
+
+      <!-- Cena 6 -->
+      <div class="layer" id="s6" style="top:1390px">
+        <p class="lead" id="s6a" style="font-size:58px;font-weight:600">Mais vida além do trabalho.</p>
+        <div id="s6b" style="margin-top:36px"><span class="tag">#FimDaEscala6x1</span></div>
+      </div>
+      <div class="layer" id="sig" style="top:1660px">
+        <div class="sig"><b>SINAIT</b><span>Sindicato Nacional dos Auditores Fiscais do Trabalho</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="controls">
+  <button id="play" type="button">Pausar</button>
+  <button id="restart" type="button" class="ghost">Reiniciar</button>
+  <input id="scrub" type="range" min="0" max="30" step="0.01" value="0" aria-label="Posição na animação">
+  <span id="time">00,0 s</span>
+</div>
+
+<script>
+(() => {
+  const DUR = 30;
+  const $ = (s) => document.querySelector(s);
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const p = (t, a, b) => clamp((t - a) / (b - a));
+  const eOut = (x) => 1 - Math.pow(1 - x, 3);
+  const eInOut = (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const eBack = (x) => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+  // opacidade de uma janela [a, b] com entrada e saída suaves
+  const win = (t, a, b, fi = .45, fo = .45) => Math.min(eOut(p(t, a, a + fi)), 1 - eInOut(p(t, b - fo, b)));
+  const set = (el, o, y = 0, extra = '') => { el.style.opacity = o; el.style.transform = `translateY(${y}px) ${extra}`; el.style.visibility = o <= 0.001 ? 'hidden' : 'visible'; };
+
+  // Monta a semana
+  const names = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+  const days = names.map((n, i) => {
+    const d = document.createElement('div');
+    d.className = 'day';
+    d.innerHTML = `<span class="dlabel mono">${n}</span><div class="box ${i < 6 ? 'work' : 'off'}"><span class="word">${i < 6 ? 'Trabalho' : 'Folga'}</span></div><span class="hours mono">${i < 6 ? '7h20' : '—'}</span>`;
+    $('#days').appendChild(d);
+    return { el: d, box: d.querySelector('.box'), word: d.querySelector('.word'), hours: d.querySelector('.hours') };
+  });
+
+  const ticks = [...document.querySelectorAll('#ticks span')];
+  const marks = [0, 4.5, 9.5, 15.5, 20.5, 25, 30];
+
+  function render(t) {
+    // marcadores de progresso no topo
+    ticks.forEach((s, i) => { s.style.width = (p(t, marks[i], marks[i + 1]) * 100) + '%'; });
+
+    // Cena 1 (0–4.5) e 2 (4.5–9.5): a semana 6x1
+    set($('#s1t'), win(t, .1, 4.6, .5, .35), (1 - eOut(p(t, .1, .7))) * 40);
+    set($('#s2t'), win(t, 4.6, 9.5, .45, .4), (1 - eOut(p(t, 4.6, 5.1))) * 40);
+    set($('#s2sub'), win(t, 5.6, 9.5, .5, .4), (1 - eOut(p(t, 5.6, 6.1))) * 30);
+
+    const weekIn = win(t, 0, 9.7, .01, .5);
+    const weekBack = eOut(p(t, 25, 25.7));
+    const weekOp = Math.max(weekIn, weekBack);
+    const weekY = t < 20 ? -eInOut(p(t, 9.2, 9.7)) * 60 : (1 - weekBack) * 80 - 60;
+    $('#week').style.opacity = weekOp;
+    $('#week').style.visibility = weekOp <= .001 ? 'hidden' : 'visible';
+    $('#week').style.transform = `translateY(${weekY}px)`;
+    $('#weektotal').style.opacity = t < 20 ? eOut(p(t, 2.6, 3.1)) * (1 - p(t, 4.5, 5)) : 0;
+
+    // fim: o sábado vira folga (5x2)
+    const flip = p(t, 26, 26.7);
+    const satOff = flip >= .5;
+
+    days.forEach((d, i) => {
+      const start = .5 + i * .26;
+      let op, y, sx = 1, sc = 1;
+      if (i < 6) {
+        const k = p(t, start, start + .45);
+        op = k > 0 ? 1 : 0;
+        y = (1 - eBack(k)) * -260;
+        // Cena 2: dias de trabalho perdem força
+        op *= t < 20 ? 1 - .62 * eInOut(p(t, 4.6, 5.2)) : 1;
+      } else {
+        const k = p(t, 2.3, 2.8);
+        op = eOut(k);
+        y = (1 - eOut(k)) * 40;
+        // Cena 2: o domingo pulsa
+        if (t > 4.6 && t < 9.7) sc = 1 + .035 * Math.sin((t - 4.6) * 5) * eOut(p(t, 4.6, 5));
+      }
+      if (i === 5 && t >= 20) sx = Math.abs(Math.cos(flip * Math.PI));
+      const isOff = i === 6 || (i === 5 && t >= 20 && satOff);
+      d.box.className = 'box ' + (isOff ? 'off' : 'work') + (isOff && ((t > 4.6 && t < 9.7 && i === 6) || t >= 26.8) ? ' lit' : '');
+      d.word.textContent = isOff ? 'Folga' : 'Trabalho';
+      d.hours.textContent = isOff ? '—' : (t >= 20 ? '8h48' : '7h20');
+      d.box.style.opacity = op;
+      d.box.style.transform = `translateY(${y}px) scale(${sc}) scaleX(${sx})`;
+      d.hours.style.opacity = t < 20 ? eOut(p(t, start + .3, start + .6)) * (1 - p(t, 4.5, 5)) : 0;
+    });
+
+    // Cena 3 (9.5–15.5): contador e comparação
+    const s3 = win(t, 9.6, 15.5, .4, .45);
+    set($('#s3'), s3, (1 - eOut(p(t, 9.6, 10.1))) * 50);
+    $('#count').textContent = Math.round(52 * eOut(p(t, 9.9, 11.4)));
+    $('#bar1 .fill').style.width = (50 * eOut(p(t, 11.6, 12.4))) + '%';
+    $('#bar2 .fill').style.width = (100 * eOut(p(t, 12.2, 13.2))) + '%';
+    set($('#bar1'), eOut(p(t, 11.4, 11.8)), 0);
+    set($('#bar2'), eOut(p(t, 12, 12.4)), 0);
+    set($('#s3t'), eOut(p(t, 13.3, 13.8)), (1 - eOut(p(t, 13.3, 13.8))) * 30);
+    set($('#s3n'), eOut(p(t, 13.8, 14.2)), 0);
+
+    // Cena 4 (15.5–20.5): consequências
+    set($('#s4'), win(t, 15.6, 20.5, .4, .45), (1 - eOut(p(t, 15.6, 16.1))) * 50);
+    ['#i1', '#i2', '#i3'].forEach((s, i) => {
+      const k = eOut(p(t, 16.6 + i * .55, 17.1 + i * .55));
+      set($(s), k, (1 - k) * 40);
+    });
+
+    // Cena 5 (20.5–25): o papel da fiscalização
+    set($('#s5'), win(t, 20.6, 25.05, .4, .4), (1 - eOut(p(t, 20.6, 21.1))) * 50);
+    set($('#s5a'), eOut(p(t, 21.4, 21.9)), (1 - eOut(p(t, 21.4, 21.9))) * 30);
+    set($('#s5b'), eOut(p(t, 22.8, 23.3)), (1 - eOut(p(t, 22.8, 23.3))) * 30);
+
+    // Cena 6 (25–30): a nova semana e a assinatura
+    set($('#s6t'), eOut(p(t, 25.2, 25.7)), (1 - eOut(p(t, 25.2, 25.7))) * 40);
+    set($('#s6a'), eOut(p(t, 27, 27.5)), (1 - eOut(p(t, 27, 27.5))) * 30);
+    set($('#s6b'), eOut(p(t, 27.6, 28.1)), (1 - eOut(p(t, 27.6, 28.1))) * 30);
+    set($('#sig'), eOut(p(t, 28.2, 28.7)), (1 - eOut(p(t, 28.2, 28.7))) * 30);
+  }
+
+  // Escala do palco para caber na janela
+  const holder = $('#holder'), stage = $('#stage'), frame = $('#frame');
+  const exportMode = new URLSearchParams(location.search).has('export');
+  if (exportMode) document.body.classList.add('export');
+  function fit() {
+    if (exportMode) { stage.style.transform = 'none'; return; }
+    const s = Math.min(frame.clientWidth / 1080, frame.clientHeight / 1920);
+    holder.style.width = 1080 * s + 'px';
+    holder.style.height = 1920 * s + 'px';
+    stage.style.transform = `scale(${s})`;
+  }
+  addEventListener('resize', fit); fit();
+
+  // Reprodução
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t = 0, playing = !exportMode && !reduce, last = null;
+  const playBtn = $('#play'), scrub = $('#scrub'), time = $('#time');
+  const ui = () => {
+    playBtn.textContent = playing ? 'Pausar' : 'Assistir';
+    scrub.value = t;
+    time.textContent = t.toFixed(1).padStart(4, '0').replace('.', ',') + ' s';
+  };
+  function loop(now) {
+    if (playing) {
+      if (last != null) t += (now - last) / 1000;
+      if (t >= DUR) t = 0;
+      render(t); ui();
+    }
+    last = now;
+    requestAnimationFrame(loop);
+  }
+  playBtn.addEventListener('click', () => { playing = !playing; if (playing && t >= DUR - .05) t = 0; ui(); });
+  $('#restart').addEventListener('click', () => { t = 0; playing = true; render(t); ui(); });
+  scrub.addEventListener('input', () => { t = +scrub.value; playing = false; render(t); ui(); });
+
+  // Com movimento reduzido, abre parado no quadro final (completo)
+  t = reduce ? 29.5 : 0;
+  render(exportMode ? 0 : (reduce ? t : 29.5));
+  if (!reduce && !exportMode) render(0);
+  ui();
+  if (!exportMode) requestAnimationFrame(loop);
+
+  // Usado pelo script de renderização em vídeo
+  window.__seek = (s) => { t = s; render(s); };
+  window.__duration = DUR;
+})();
+</script>
