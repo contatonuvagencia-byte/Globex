@@ -1,4 +1,4 @@
-// Renderiza index.html em MP4 (1080x1920, 30 fps) quadro a quadro.
+// Renderiza index.html em MP4 (tamanho do palco, 30 fps) quadro a quadro.
 // Uso: node render.mjs [saida.mp4] [--stills dir]
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
@@ -17,7 +17,7 @@ writeFileSync(page_, '<!doctype html><html lang="pt-BR"><head><meta charset="utf
 
 const proxy = process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined;
 const browser = await chromium.launch({ proxy });
-const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
+const page = await browser.newPage({ viewport: { width: 1080, height: 1350 } });
 await page.goto(pathToFileURL(page_).href + '?export=1', { waitUntil: 'networkidle' });
 await page.evaluate(() => document.fonts.ready);
 const fonts = await page.evaluate(() => [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family + ' ' + f.weight));
@@ -27,7 +27,7 @@ const stage = page.locator('#stage');
 
 if (stillsIdx > -1) {
   const dir = resolve(process.argv[stillsIdx + 1]); mkdirSync(dir, { recursive: true });
-  for (const s of [3.5, 8, 14.5, 19.5, 24.5, 29.5]) {
+  for (const s of (process.env.STILLS || '1.5,3.6,6,10,12.6,14,18,21.5,23.6,26,29,32.3,35.5').split(',').map(Number)) {
     await page.evaluate((x) => window.__seek(x), s);
     await stage.screenshot({ path: join(dir, `t${String(s).replace('.', '_')}.png`) });
   }
