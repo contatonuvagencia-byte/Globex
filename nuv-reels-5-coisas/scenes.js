@@ -585,7 +585,7 @@ window.setup = id => {
 };
 window.frame = t => current(t);
 window.ready = async () => {
-  await Promise.all(["400 40px Titulo", "400 40px Comfortaa", "700 40px Comfortaa"].map(f => document.fonts.load(f, 'Aá')));
+  await Promise.all(["400 40px Titulo", "italic 400 40px Titulo", "400 40px Comfortaa", "700 40px Comfortaa", "400 40px UI", "600 40px UI", "700 40px UI"].map(f => document.fonts.load(f, 'Aá')));
   await document.fonts.ready;
   await Promise.all([...document.images].map(i => (i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))));
 };
