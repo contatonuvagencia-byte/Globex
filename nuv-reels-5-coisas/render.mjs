@@ -53,7 +53,7 @@ async function renderScene(browser, id) {
   const n = Math.round(dur * FPS);
   if (stills) {
     mkdirSync(`${ROOT}/out/stills`, { recursive: true });
-    for (const f of [0.15, 0.45, 0.8]) {
+    for (const f of (process.env.STILLS || '0.15,0.45,0.8').split(',').map(Number)) {
       const t = dur * f;
       await page.evaluate(x => window.frame(x), t);
       await page.screenshot({ path: `${ROOT}/out/stills/${id}_${Math.round(f * 100)}.png`, omitBackground: alpha });
