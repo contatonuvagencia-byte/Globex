@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Beawst Global Connect 2026</title>
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{
+  --roxo:#5B00D6; --magenta:#A3127F; --vermelho:#F0102A; --laranja:#F2542D;
+  --tinta:#0B0B0F; --cinza:#F7F5F9; --grad:linear-gradient(90deg,#5B00D6 0%,#A3127F 50%,#F0102A 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#fff}
+body{font-family:M,sans-serif;color:var(--tinta)}
+#stage{position:absolute;inset:0;overflow:hidden;background:#fff}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.abs{position:absolute}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.topbar{position:absolute;left:0;top:0;height:18px;width:100%;background:var(--grad);z-index:50;transform-origin:left}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.28}
+.wipe{position:absolute;left:-20%;width:140%;height:150%;z-index:40;transform:translateY(120%)}
+.k{font-weight:800;letter-spacing:.06em;font-size:40px}
+.huge{white-space:nowrap;font-weight:900;line-height:.95;letter-spacing:-.01em}
+/* S2 */
+.no{display:flex;align-items:center;gap:28px;font-weight:800;font-size:76px;color:#fff;white-space:nowrap}
+.no .x{width:64px;height:64px;border-radius:50%;background:#fff;color:var(--vermelho);display:grid;place-items:center;font-size:44px;font-weight:900}
+.no .strike{position:absolute;left:92px;right:-10px;top:50%;height:10px;background:#fff;border-radius:6px;transform-origin:left}
+/* S5 */
+.card{position:absolute;left:70px;width:940px;height:240px;background:var(--cinza);border:3px solid #ECE8F0;border-radius:44px;display:flex;align-items:center;gap:40px;padding:0 48px}
+.card .ic{width:140px;height:140px;flex:none;border-radius:32px;border:7px solid currentColor;display:grid;place-items:center}
+.card .ic svg{width:84px;height:84px;fill:none;stroke:currentColor;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.card h3{font-weight:800;font-size:46px;color:var(--tinta);line-height:1.05}
+.card p{font-weight:500;font-size:30px;color:#8A8592;margin-top:12px;line-height:1.25}
+/* S6 */
+.digits{display:flex;gap:6px}
+.dig{width:210px;height:360px;overflow:hidden;position:relative;border-radius:36px;background:rgba(255,255,255,.08);border:3px solid rgba(255,255,255,.15)}
+.dig .col{position:absolute;left:0;top:0;width:100%}
+.dig .col div{height:360px;display:grid;place-items:center;font-weight:900;font-size:260px;color:#fff;line-height:1}
+.chip{display:inline-flex;align-items:center;gap:20px;padding:26px 46px;border-radius:999px;font-weight:800;font-size:54px;color:#fff;border:4px solid rgba(255,255,255,.9)}
+/* S7 */
+.btn{position:absolute;left:50%;padding:44px 90px;background:var(--roxo);color:#fff;border-radius:40px;font-weight:900;font-size:84px;white-space:nowrap;overflow:hidden;letter-spacing:.01em}
+.btn .shine{position:absolute;top:-20%;width:120px;height:140%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg)}
+.ring{position:absolute;border-radius:50%;border:6px solid;left:50%;top:50%}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="topbar" id="topbar"></div>
+
+  <!-- S1: gancho -->
+  <div class="scene" id="s1">
+    <div class="blob" id="s1b1" style="width:700px;height:700px;background:#5B00D6;left:-200px;top:200px"></div>
+    <div class="blob" id="s1b2" style="width:700px;height:700px;background:#F0102A;right:-250px;top:1100px"></div>
+    <div class="abs k" id="s1k" style="left:90px;top:560px;color:var(--roxo)">PENSANDO EM</div>
+    <div class="abs huge" id="s1w1" style="left:84px;top:640px;font-size:176px">ESTUDAR</div>
+    <div class="abs huge grad-text" id="s1w2" style="left:84px;top:830px;font-size:250px">FORA?</div>
+    <div class="abs" id="s1sub" style="left:90px;top:1140px;font-size:52px;font-weight:700;line-height:1.25;width:880px">Ainda nem decidiu<br>o destino? <span class="grad-text" style="font-weight:900">Melhor ainda.</span></div>
+  </div>
+
+  <!-- S2: sem fila -->
+  <div class="scene" id="s2" style="background:var(--grad)">
+    <div class="abs k" id="s2k" style="left:90px;top:470px;color:#fff;opacity:.85">UMA FEIRA INTERNACIONAL</div>
+    <div class="abs no" id="s2n1" style="left:90px;top:580px"><span class="x">✕</span>SEM PASSAGEM<div class="strike"></div></div>
+    <div class="abs no" id="s2n2" style="left:90px;top:720px"><span class="x">✕</span>SEM HOSPEDAGEM<div class="strike"></div></div>
+    <div class="abs no" id="s2n3" style="left:90px;top:860px"><span class="x">✕</span>SEM FILA<div class="strike"></div></div>
+    <div class="abs huge" id="s2big" style="left:84px;top:1060px;font-size:215px;color:#fff">100%<br>ONLINE</div>
+  </div>
+
+  <!-- S3: logo -->
+  <div class="scene" id="s3">
+    <div class="ring" id="r1" style="border-color:#5B00D6"></div>
+    <div class="ring" id="r2" style="border-color:#A3127F"></div>
+    <div class="ring" id="r3" style="border-color:#F0102A"></div>
+    <img class="abs" id="s3logo" src="assets/logo.png" style="width:900px;left:90px;top:760px">
+    <div class="abs" id="s3tag" style="left:0;width:100%;top:1120px;text-align:center;font-weight:800;font-size:58px"></div>
+  </div>
+
+  <!-- S4: vários caminhos -->
+  <div class="scene" id="s4">
+    <div class="blob" id="s4b" style="width:900px;height:900px;background:#A3127F;left:300px;top:500px;opacity:.16"></div>
+    <div class="abs k" id="s4k" style="left:84px;top:520px">UM ECOSSISTEMA DE CONEXÕES</div>
+    <div class="abs huge" id="s4a" style="left:80px;top:600px;font-size:150px">UMA FEIRA.</div>
+    <div class="abs huge grad-text" id="s4b1" style="left:80px;top:770px;font-size:150px">VÁRIOS</div>
+    <div class="abs huge grad-text" id="s4b2" style="left:80px;top:920px;font-size:150px">CAMINHOS</div>
+    <div class="abs huge" id="s4c" style="left:80px;top:1100px;font-size:132px">INTERNA-<br>CIONAIS.</div>
+  </div>
+
+  <!-- S5: áreas -->
+  <div class="scene" id="s5">
+    <div class="abs k" id="s5k" style="left:70px;top:360px;color:var(--roxo)">O QUE VOCÊ ENCONTRA</div>
+    <div class="card" id="c1" style="top:440px"><div class="ic" style="color:#5B00D6"><svg viewBox="0 0 64 64"><path d="M4 24 32 12l28 12-28 12z"/><path d="M16 30v14c8 7 24 7 32 0V30"/><path d="M58 25v15"/></svg></div><div><h3>EDUCAÇÃO<br>INTERNACIONAL</h3><p>Instituições, aprendizado e experiências globais.</p></div></div>
+    <div class="card" id="c2" style="top:710px"><div class="ic" style="color:#A3127F"><svg viewBox="0 0 64 64"><path d="M6 36 58 14c3-1 5 3 2 5L30 40l-6 14-4-12-14-6z"/><path d="M30 40 20 42"/></svg></div><div><h3>INTERCÂMBIO</h3><p>Possibilidades para ampliar repertórios e horizontes.</p></div></div>
+    <div class="card" id="c3" style="top:980px"><div class="ic" style="color:#F2542D"><svg viewBox="0 0 64 64"><rect x="12" y="6" width="40" height="52" rx="5"/><circle cx="32" cy="27" r="9"/><path d="M23 27h18M32 18c-4 5-4 13 0 18M32 18c4 5 4 13 0 18M22 46h20"/></svg></div><div><h3>MOBILIDADE &amp; VISTOS</h3><p>Informação para decisões mais conscientes.</p></div></div>
+    <div class="card" id="c4" style="top:1250px"><div class="ic" style="color:#F0102A"><svg viewBox="0 0 64 64"><circle cx="22" cy="20" r="8"/><circle cx="44" cy="20" r="8"/><path d="M6 50c0-10 7-16 16-16s16 6 16 16M30 38c3-3 8-4 14-4 9 0 16 6 16 16"/></svg></div><div><h3>PARCEIROS &amp;<br>ESPECIALISTAS</h3><p>Quem ajuda a transformar planos em ação.</p></div></div>
+  </div>
+
+  <!-- S6: data -->
+  <div class="scene" id="s6" style="background:#0E0716">
+    <div class="blob" id="s6b1" style="width:900px;height:900px;background:#5B00D6;left:-300px;top:-100px;opacity:.55"></div>
+    <div class="blob" id="s6b2" style="width:900px;height:900px;background:#F0102A;left:500px;top:1200px;opacity:.45"></div>
+    <div class="abs k" id="s6k" style="left:0;width:100%;text-align:center;top:420px;color:#fff;opacity:.8">ANOTA NA AGENDA</div>
+    <div class="abs digits" id="s6d" style="left:50%;top:520px;transform:translateX(-50%)">
+      <div class="dig"><div class="col" id="d1"></div></div>
+      <div class="dig"><div class="col" id="d2"></div></div>
+      <div style="width:60px;display:grid;place-items:center;font-weight:900;font-size:200px;color:#fff" id="s6dot">.</div>
+      <div class="dig"><div class="col" id="d3"></div></div>
+      <div class="dig"><div class="col" id="d4"></div></div>
+    </div>
+    <div class="abs huge grad-text" id="s6mes" style="left:0;width:100%;text-align:center;top:930px;font-size:120px;background:linear-gradient(90deg,#B98CFF,#FF6B9A,#FF7A59);-webkit-background-clip:text;background-clip:text">NOVEMBRO</div>
+    <div class="abs" id="s6c1" style="left:0;width:100%;text-align:center;top:1130px"><span class="chip">⏰ 08H – 13H</span></div>
+    <div class="abs" id="s6c2" style="left:0;width:100%;text-align:center;top:1290px"><span class="chip" style="background:#fff;color:var(--roxo);border-color:#fff">🌍 100% ONLINE</span></div>
+  </div>
+
+  <!-- S7: CTA -->
+  <div class="scene" id="s7">
+    <div class="blob" id="s7b1" style="width:800px;height:800px;background:#5B00D6;left:-300px;top:1000px;opacity:.2"></div>
+    <div class="blob" id="s7b2" style="width:800px;height:800px;background:#F0102A;left:600px;top:200px;opacity:.18"></div>
+    <img class="abs" id="s7logo" src="assets/logo.png" style="width:760px;left:160px;top:420px">
+    <div class="abs huge" id="s7t" style="left:0;width:100%;text-align:center;top:760px;font-size:96px">CONEXÕES QUE<br><span class="grad-text">ABREM O MUNDO!</span></div>
+    <div class="btn" id="s7btn" style="top:1070px">SAVE THE DATE<div class="shine" id="s7shine"></div></div>
+    <div class="abs" id="s7f" style="left:0;width:100%;text-align:center;top:1300px;font-weight:800;font-size:50px">07.11.2026 • 08H-13H • 100% ONLINE</div>
+  </div>
+
+  <!-- transições -->
+  <div class="wipe" id="w1" style="background:linear-gradient(160deg,#5B00D6,#A3127F 55%,#F0102A)"></div>
+  <div class="wipe" id="w2" style="background:#0B0B0F"></div>
+</div>
+
+<script>
+const DUR = 25;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const outExpo = x => x >= 1 ? 1 : 1 - Math.pow(2, -10 * x);
+const outCubic = x => 1 - Math.pow(1 - x, 3);
+const inOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const outBack = x => { const c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const $ = id => document.getElementById(id);
+const set = (id, o) => { const s = $(id).style; for (const k in o) s[k] = o[k]; };
+
+// entrada padrão: desliza + desfoca
+function slideIn(id, t, a, d, dx, dy, ease = outExpo) {
+  const p = ease(seg(t, a, a + d));
+  set(id, { transform: `translate(${(1 - p) * dx}px,${(1 - p) * dy}px)`, opacity: clamp(seg(t, a, a + d * .4)), filter: `blur(${(1 - p) * 18}px)` });
+}
+function pop(id, t, a, d, extra = '') {
+  const x = seg(t, a, a + d), p = outBack(x);
+  set(id, { transform: `${extra} scale(${x === 0 ? .001 : p})`, opacity: x > 0 ? 1 : 0 });
+}
+
+const scenes = [['s1', 0, 3], ['s2', 3, 6], ['s3', 6, 9], ['s4', 9, 12], ['s5', 12, 17], ['s6', 17, 21], ['s7', 21, DUR + 1]];
+
+// colunas dos dígitos (slot machine)
+const digitCols = { d1: 0, d2: 7, d3: 1, d4: 1 };
+for (const id in digitCols) {
+  let h = ''; for (let r = 0; r < 3; r++) for (let n = 0; n < 10; n++) h += `<div>${n}</div>`;
+  $(id).innerHTML = h;
+}
+
+function render(t) {
+  for (const [id, a, b] of scenes) $(id).style.display = t >= a && t < b ? 'block' : 'none';
+
+  // barra superior
+  set('topbar', { transform: `scaleX(${outExpo(seg(t, 0, .8))})` });
+
+  // transições (cortes no meio da passagem)
+  const cuts = [[3, 'w1', 1], [6, 'w2', -1], [9, 'w1', 1], [12, 'w2', -1], [17, 'w1', 1], [21, 'w2', -1]];
+  let w1 = 120, w2 = 120, r1 = -8, r2 = -8;
+  for (const [c, w, dir] of cuts) {
+    const x = seg(t, c - .28, c + .28);
+    if (x > 0 && x < 1) {
+      const y = dir * (120 - inOut(x) * 240);
+      if (w === 'w1') { w1 = y; r1 = -8 * dir; } else { w2 = y; r2 = 8 * dir; }
+    }
+  }
+  set('w1', { transform: `translateY(${w1}%) rotate(${r1}deg)`, top: '-25%' });
+  set('w2', { transform: `translateY(${w2}%) rotate(${r2}deg)`, top: '-25%' });
+
+  // ---------- S1 ----------
+  if (t < 3) {
+    set('s1b1', { transform: `translate(${Math.sin(t * 1.3) * 80}px,${Math.cos(t) * 60}px)` });
+    set('s1b2', { transform: `translate(${Math.cos(t * 1.1) * 90}px,${Math.sin(t * 1.4) * 70}px)` });
+    slideIn('s1k', t, .15, .5, -200, 0);
+    const p1 = seg(t, .35, .7), p2 = seg(t, .85, 1.2);
+    set('s1w1', { transform: `scale(${p1 ? 1 + (1 - outExpo(p1)) * 1.6 : 0})`, opacity: p1 ? 1 : 0, transformOrigin: 'left center', filter: `blur(${(1 - outExpo(p1)) * 10}px)` });
+    set('s1w2', { transform: `scale(${p2 ? 1 + (1 - outExpo(p2)) * 1.8 : 0}) rotate(${(1 - outExpo(p2)) * -8}deg)`, opacity: p2 ? 1 : 0, transformOrigin: 'left center', filter: `blur(${(1 - outExpo(p2)) * 10}px)` });
+    // tremida no impacto
+    const sh = Math.max(0, 1 - Math.abs(t - 1.2) * 8) * 14;
+    set('s1', { transform: `translate(${Math.sin(t * 90) * sh}px,${Math.cos(t * 70) * sh}px) scale(${1 + t * .015})` });
+    slideIn('s1sub', t, 1.55, .6, 0, 120);
+  }
+
+  // ---------- S2 ----------
+  if (t >= 3 && t < 6) {
+    const lt = t - 3;
+    set('s2', { transform: `scale(${1.04 - lt * .013})` });
+    slideIn('s2k', t, 3.15, .5, -160, 0);
+    [['s2n1', 3.35], ['s2n2', 3.75], ['s2n3', 4.15]].forEach(([id, a]) => {
+      slideIn(id, t, a, .45, 400, 0);
+      $(id).querySelector('.strike').style.transform = `scaleX(${outExpo(seg(t, a + .3, a + .6))})`;
+    });
+    const p = seg(t, 4.65, 5.05);
+    set('s2big', { transform: `scale(${p ? outBack(p) : 0})`, transformOrigin: 'left center', opacity: p ? 1 : 0 });
+  }
+
+  // ---------- S3 ----------
+  if (t >= 6 && t < 9) {
+    [['r1', 6.2], ['r2', 6.45], ['r3', 6.7]].forEach(([id, a]) => {
+      const x = seg(t, a, a + 1.6), d = 200 + outCubic(x) * 1500;
+      set(id, { width: d + 'px', height: d + 'px', marginLeft: -d / 2 + 'px', marginTop: -d / 2 + 'px', opacity: x > 0 ? (1 - x) * .9 : 0, borderWidth: (1 - x) * 18 + 2 + 'px' });
+    });
+    const p = outExpo(seg(t, 6.25, 7.0));
+    set('s3logo', { clipPath: `inset(0 ${(1 - p) * 100}% 0 0)`, transform: `scale(${.85 + p * .15 + (t - 6) * .02})`, opacity: p ? 1 : 0 });
+    const tag = 'Conexões que abrem o mundo!';
+    const n = Math.floor(seg(t, 7.1, 7.9) * tag.length);
+    const shown = tag.slice(0, n);
+    const i0 = tag.indexOf('abrem');
+    $('s3tag').innerHTML = shown.slice(0, i0) + (n > i0 ? `<span class="grad-text">${shown.slice(i0)}</span>` : '') + (n < tag.length && n > 0 && Math.floor(t * 6) % 2 ? '|' : '');
+  }
+
+  // ---------- S4 ----------
+  if (t >= 9 && t < 12) {
+    set('s4b', { transform: `translate(${Math.sin(t) * 120}px,${Math.cos(t * 1.2) * 100}px)` });
+    set('s4', { transform: `scale(${1 + (t - 9) * .012})` });
+    slideIn('s4k', t, 9.15, .5, 0, -60);
+    slideIn('s4a', t, 9.3, .55, -900, 0);
+    slideIn('s4b1', t, 9.7, .55, 900, 0);
+    slideIn('s4b2', t, 9.85, .55, 900, 0);
+    slideIn('s4c', t, 10.25, .6, 0, 300);
+    // brilho do gradiente correndo
+    const gp = (t * 40) % 200;
+    ['s4b1', 's4b2'].forEach(id => set(id, { backgroundSize: '200% 100%', backgroundPosition: `${gp}% 0` }));
+  }
+
+  // ---------- S5 ----------
+  if (t >= 12 && t < 17) {
+    slideIn('s5k', t, 12.15, .5, -200, 0);
+    [['c1', 12.35, -1], ['c2', 13.0, 1], ['c3', 13.65, -1], ['c4', 14.3, 1]].forEach(([id, a, dir]) => {
+      const p = outExpo(seg(t, a, a + .6));
+      const float = Math.sin((t - a) * 2.4) * 6 * p;
+      set(id, { transform: `translate(${(1 - p) * dir * 1100}px,${float}px) rotate(${(1 - p) * dir * 6}deg)`, opacity: p ? 1 : 0 });
+      const ic = $(id).querySelector('.ic');
+      const q = seg(t, a + .25, a + .65);
+      ic.style.transform = `scale(${q ? outBack(q) : 0}) rotate(${(1 - outCubic(q)) * -30}deg)`;
+      const svg = ic.querySelector('svg');
+      svg.querySelectorAll('*').forEach(el => { el.style.strokeDasharray = 300; el.style.strokeDashoffset = 300 * (1 - outCubic(seg(t, a + .35, a + 1.1))); });
+    });
+    // destaque final passando pelos cards
+    const hl = Math.floor(seg(t, 15.2, 16.8) * 4.999);
+    ['c1', 'c2', 'c3', 'c4'].forEach((id, i) => {
+      const on = t > 15.2 && i === hl;
+      $(id).style.borderColor = on ? ['#5B00D6', '#A3127F', '#F2542D', '#F0102A'][i] : '#ECE8F0';
+      $(id).style.background = on ? '#fff' : 'var(--cinza)';
+    });
+  }
+
+  // ---------- S6 ----------
+  if (t >= 17 && t < 21) {
+    set('s6b1', { transform: `translate(${Math.sin(t * 1.4) * 140}px,${Math.cos(t) * 120}px)` });
+    set('s6b2', { transform: `translate(${Math.cos(t * 1.2) * 140}px,${Math.sin(t * 1.5) * 120}px)` });
+    slideIn('s6k', t, 17.15, .5, 0, -60);
+    [['d1', 17.3], ['d2', 17.42], ['d3', 17.6], ['d4', 17.72]].forEach(([id, a]) => {
+      const target = 20 + digitCols[id];
+      const p = outExpo(seg(t, a, a + 1.1));
+      $(id).style.transform = `translateY(${-p * target * 360}px)`;
+      $(id).parentElement.style.opacity = seg(t, a - .05, a + .1);
+    });
+    set('s6dot', { opacity: seg(t, 17.5, 17.6) });
+    const s = seg(t, 18.4, 18.85);
+    set('s6mes', { transform: `scale(${s ? outBack(s) : 0})`, letterSpacing: `${(1 - outExpo(s)) * .5}em` });
+    slideIn('s6c1', t, 18.9, .5, -700, 0);
+    slideIn('s6c2', t, 19.25, .5, 700, 0);
+    set('s6d', { transform: `translateX(-50%) scale(${1 + Math.max(0, 1 - Math.abs(t - 18.6) * 5) * .05})` });
+  }
+
+  // ---------- S7 ----------
+  if (t >= 21) {
+    set('s7b1', { transform: `translate(${Math.sin(t) * 120}px,${Math.cos(t * 1.3) * 90}px)` });
+    set('s7b2', { transform: `translate(${Math.cos(t * 1.1) * 120}px,${Math.sin(t) * 90}px)` });
+    const lp = outExpo(seg(t, 21.2, 21.9));
+    set('s7logo', { clipPath: `inset(0 ${(1 - lp) * 100}% 0 0)`, opacity: lp ? 1 : 0 });
+    slideIn('s7t', t, 21.6, .6, 0, 120);
+    const b = seg(t, 22.2, 22.65);
+    const pulse = t > 22.7 ? 1 + Math.max(0, Math.sin((t - 22.7) * Math.PI * 2)) * .045 : 1;
+    set('s7btn', { transform: `translateX(-50%) scale(${b ? outBack(b) * pulse : 0})` });
+    const sp = ((t - 22.6) % 1.6) / .7;
+    set('s7shine', { left: `${-20 + clamp(sp) * 140}%`, opacity: t > 22.6 ? 1 : 0 });
+    slideIn('s7f', t, 22.7, .5, 0, 80);
+  }
+}
+window.render = render;
+window.DUR = DUR;
+
+// pré-visualização em tempo real ao abrir o arquivo no navegador
+if (!location.search.includes('render')) {
+  const t0 = performance.now();
+  (function loop() { render(((performance.now() - t0) / 1000) % DUR); requestAnimationFrame(loop); })();
+} else render(0);
+</script>
+</body>
+</html>
