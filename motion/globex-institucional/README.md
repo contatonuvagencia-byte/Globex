@@ -22,11 +22,15 @@ Vídeo: [`export/globex-institucional.mp4`](export/globex-institucional.mp4) · 
 ## Legenda sugerida
 > Comércio exterior não é custo. É estratégia. 🌍
 >
-> A Globex Cargo planeja cada operação antes da carga sair: importação, exportação, despacho aduaneiro, logística internacional e consultoria.
+> Importar e exportar com segurança não depende de sorte. Depende do que acontece antes da carga sair: a análise do cenário, o custo real da operação, a classificação fiscal correta, o modal escolhido com critério e os riscos mapeados.
 >
-> Quem planeja melhor, opera melhor. Fale com a gente pelo direct.
+> É assim que a Globex Cargo trabalha. Mais do que movimentar cargas, estruturamos operações, do planejamento à liberação.
 >
-> #GlobexCargo #ComércioExterior #Comex #Importação #Exportação #DespachoAduaneiro #LogísticaInternacional
+> Importação · Exportação · Despacho Aduaneiro · Logística Internacional · Consultoria
+>
+> Sua empresa planeja antes de operar ou ainda resolve na hora? Manda uma mensagem no direct e a gente analisa a sua próxima operação.
+>
+> #GlobexCargo #ComércioExterior #Comex #Importação #Exportação #DespachoAduaneiro #LogísticaInternacional #ComexBrasil
 
 **Áudio:** escolha a música direto no Instagram (áudio em alta ajuda o alcance do Reels). Batidas por volta de 100–110 BPM combinam com o ritmo dos cortes.
 
