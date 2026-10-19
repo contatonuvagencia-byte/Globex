@@ -7,7 +7,7 @@ const dir = path.dirname(fileURLToPath(import.meta.url));
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: +W, height: +H } });
 page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));
-await page.goto(pathToFileURL(path.join(dir, 'index.html')).href + `?render&w=${W}&h=${H}`);
+await page.goto(pathToFileURL(path.join(dir, process.env.PAGE || 'index.html')).href + `?render&w=${W}&h=${H}`);
 await page.evaluate(() => document.fonts.ready);
 for (const t of ts) {
   await page.evaluate((t) => window.renderFrame(t), +t);

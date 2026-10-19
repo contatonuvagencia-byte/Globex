@@ -8,7 +8,7 @@ import path from 'node:path';
 const [W = 1920, H = 1080, FPS = 30] = process.argv.slice(2, 5).map(Number);
 const out = process.argv[5] || `carla-vieira-tours-${W}x${H}.mp4`;
 const dir = path.dirname(fileURLToPath(import.meta.url));
-const url = pathToFileURL(path.join(dir, 'index.html')).href + `?render&w=${W}&h=${H}`;
+const url = pathToFileURL(path.join(dir, process.env.PAGE || 'index.html')).href + `?render&w=${W}&h=${H}`;
 
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });

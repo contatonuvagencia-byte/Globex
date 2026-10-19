@@ -1,4 +1,4 @@
-# Carla Vieira Tours: vídeo motion "experiências"
+# Carla Vieira Tours: vídeos motion
 
 Vídeo motion de 35 s com a identidade visual da Carla Vieira Tours: vinho `#8b0028`, grafite `#231f20`, wordmark prateado e o "tours" em vinho, vetorizado a partir do logo no Canva.
 
@@ -28,3 +28,30 @@ node render.mjs 1920 1080 30 out/carla-vieira-tours-16x9.mp4
 node render.mjs 1080 1920 30 out/carla-vieira-tours-9x16.mp4
 ```
 Precisa de Node, Playwright (Chromium) e ffmpeg.
+
+---
+
+# Vídeo 2: "Embarque" (30 s, mais dinâmico)
+
+Os cortes seguem uma batida de 120 BPM, um a cada 0,5 s, para casar com trilhas nesse andamento.
+
+**Arquivos finais** (`out/`)
+- `carla-vieira-tours-embarque-16x9.mp4`: 1920×1080, 30 fps
+- `carla-vieira-tours-embarque-9x16.mp4`: 1080×1920, 30 fps
+
+| Tempo | Cena |
+|---|---|
+| 0–3,5 s | Painel de embarque com letras girando: destinos e horários, que viram "Embarque imediato para o extraordinário" |
+| 3,5–6 s | Uma palavra por batida: SINTA, PROVE, MERGULHE, CELEBRE, VIVA, cada uma com o destino |
+| 6–11 s | Passaporte da marca abrindo, com 6 carimbos batendo na batida e a câmera tremendo |
+| 11–15 s | Cartão de embarque: Você · Experiência · De: Rotina · Para: Seus sonhos, depois o carimbo "Confirmado" e o canhoto rasgado |
+| 15–19 s | Letreiros de experiências correndo, com o texto "Experiências que viram memória." |
+| 19–22,5 s | Tela dividida: 28 anos viajando · 16 anos de agência · Top 12 Panrotas 2025 |
+| 22,5–25,5 s | Globo girando, avião em órbita e o texto Curadoria, Concierge, Suporte 24h e Roteiro no app girando em volta: "A gente cuida de tudo. Você só vive." |
+| 25,5–30 s | Abertura em círculo para o logo e "A viagem dos seus sonhos começa aqui." |
+
+Os arquivos editáveis são `embarque.html` e `embarque.js`. Para renderizar:
+```bash
+PAGE=embarque.html node render.mjs 1920 1080 30 out/carla-vieira-tours-embarque-16x9.mp4
+PAGE=embarque.html node render.mjs 1080 1920 30 out/carla-vieira-tours-embarque-9x16.mp4
+```

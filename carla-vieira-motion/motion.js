@@ -38,7 +38,7 @@
   // Masked line reveal: rises in during [a, a+d], exits upward during [x, x+d2].
   function rise(span, t, a, d = 0.7, x = Infinity, d2 = 0.45) {
     const pin = eOut5(prog(t, a, a + d));
-    const pout = eIn3(prog(t, x, x + d2));
+    const pout = x === Infinity ? 0 : eIn3(prog(t, x, x + d2));
     const y = (1 - pin) * 110 - pout * 110;
     span.style.transform = `translateY(${y}%)`;
   }
