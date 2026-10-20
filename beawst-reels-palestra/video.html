@@ -6,21 +6,28 @@
 <script>
 /* =====================================================================
    CONFIGURAÇÃO — edite textos, cores e tempos aqui.
-   Textos aceitam HTML simples: <span class="lav">…</span> (lavanda)
-   e <span class="lima">…</span> (verde-lima). <br> quebra linha.
+   Identidade da feira: fundo branco, texto preto, gradiente roxo → magenta → vermelho.
+   Textos aceitam HTML simples: <span class="grad">…</span> (gradiente da feira)
+   e <span class="roxo">…</span> (roxo). <br> quebra linha.
+   Em "color" use: 'grad', 'roxo', 'magenta', 'vermelho', 'text' ou um hex.
    ===================================================================== */
 const CONFIG = {
   WIDTH: 1080, HEIGHT: 1920, FPS: 30,
   DURATION: 21.5,               // segundos (cena 6 segura parada no final)
 
   COLORS: {
-    bg: '#0A0F2C',
-    text: '#FFFFFF',
-    support: 'rgba(255,255,255,0.72)',
-    lavanda: '#A78BFF',
-    lima: '#D6FF5C',
-    lights: ['#6B3BFF', '#2E5BFF', '#8F5BFF'],   // manchas de luz do fundo
-    progressTrack: 'rgba(255,255,255,0.12)',
+    bg: '#FFFFFF',
+    text: '#0B0B0F',
+    support: '#6F6A78',
+    roxo: '#5B00D6',
+    magenta: '#A3127F',
+    vermelho: '#F0102A',
+    gradient: 'linear-gradient(90deg, #5B00D6 0%, #A3127F 50%, #F0102A 100%)',
+    card: '#F7F5F9', cardBorder: '#ECE8F0',
+    cardNumbers: ['#5B00D6', '#A3127F', '#F0102A'],
+    lights: ['#5B00D6', '#F0102A', '#A3127F'],   // manchas de luz do fundo
+    lightsOpacity: 0.14,
+    progressTrack: '#EFECF3',
   },
 
   // Área segura do Reels (nenhum texto fora dela)
@@ -38,22 +45,24 @@ const CONFIG = {
 
   // Foto da Camila (cena 3). null = sem foto. Ex.: 'assets/camila.jpg'
   PHOTO_CAMILA: null,
+  LOGO: 'assets/logo.png',
 
   SCENES: [
     { id: 'gancho', start: 0, end: 3.4, stagger: 0.28, items: [
       { type: 'kicker', text: 'INTERCÂMBIO É' },
       { type: 'huge', text: 'VIAGEM', color: 'text' },
       { type: 'kicker', text: 'OU É', gapTop: 28 },
-      { type: 'huge', text: 'CARREIRA?', color: 'lima' },
+      { type: 'huge', text: 'CARREIRA?', color: 'grad' },
     ]},
     { id: 'evento', start: 3.4, end: 6.8, items: [
+      { type: 'logo', width: 560 },
       { type: 'badge', text: 'FEIRA ONLINE E GRATUITA' },
-      { type: 'title', text: 'Beawst Global<br><span class="lav">Connect</span>' },
-      { type: 'year', text: '2026' },
+      { type: 'title', text: 'Beawst Global<br><span class="grad">Connect</span>' },
+      { type: 'year', text: '2026', color: 'grad' },
       { type: 'badgeOutline', text: '07.11 · 08h às 13h' },
     ]},
     { id: 'palestra', start: 6.8, end: 10.9, items: [
-      { type: 'kicker', text: 'PALESTRA PRINCIPAL', color: 'lima' },
+      { type: 'kicker', text: 'PALESTRA PRINCIPAL', color: 'roxo' },
       { type: 'title', text: 'Camila Fidélis' },
       { type: 'meta', text: 'Executiva de RH · 20 anos de mercado' },
       { type: 'body', text: 'Como o intercâmbio acelera a sua carreira global.' },
@@ -67,13 +76,14 @@ const CONFIG = {
     ]},
     { id: 'brindes', start: 15, end: 17.4, items: [
       { type: 'kicker', text: 'E AINDA' },
-      { type: 'huge', text: 'BRINDES', color: 'lima' },
+      { type: 'huge', text: 'BRINDES', color: 'grad' },
       { type: 'huge', text: 'AO VIVO', color: 'text' },
       { type: 'body', text: 'e condições exclusivas durante a transmissão.' },
     ]},
     { id: 'cta', start: 17.4, end: 21.5, stagger: 0.15, items: [
+      { type: 'logo', width: 420, gapBottom: 40 },
       { type: 'date', text: '07.11' },
-      { type: 'lead', text: '08h às 13h', color: 'lavanda' },
+      { type: 'lead', text: '08h às 13h', color: 'grad' },
       { type: 'meta', text: '100% online e gratuito' },
       { type: 'button', text: 'GARANTA SUA VAGA' },
       { type: 'meta', text: 'Link na bio', gapTop: 8 },
@@ -95,10 +105,12 @@ body{font-family:M,sans-serif;color:var(--text);-webkit-font-smoothing:antialias
 #stage{position:absolute;left:0;top:0;overflow:hidden;background:var(--bg)}
 .light{position:absolute;border-radius:50%;filter:blur(140px)}
 #progress{position:absolute;left:0;top:0;width:100%;background:var(--track);z-index:10}
-#progress i{position:absolute;left:0;top:0;bottom:0;background:var(--lima);transform-origin:left}
+#progress i{position:absolute;left:0;top:0;bottom:0;background:var(--gradient);transform-origin:left}
 .scene{position:absolute;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
 .item{will-change:transform,opacity}
-.lav{color:var(--lavanda)} .lima{color:var(--lima)}
+.roxo{color:var(--roxo)}
+.grad{background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo{display:block;margin-bottom:44px}
 .kicker{font-weight:800;font-size:34px;letter-spacing:.16em;margin-bottom:14px}
 .huge{font-weight:900;font-size:230px;line-height:.92;letter-spacing:-.02em;white-space:nowrap}
 .title{font-weight:900;font-size:112px;line-height:.98;letter-spacing:-.02em;margin-bottom:18px}
@@ -108,15 +120,14 @@ body{font-family:M,sans-serif;color:var(--text);-webkit-font-smoothing:antialias
 .body{font-weight:500;font-size:44px;line-height:1.3;max-width:100%;margin-top:10px}
 .lead{font-weight:800;font-size:72px;line-height:1.05;margin-bottom:14px}
 .date{font-weight:900;font-size:330px;line-height:.9;letter-spacing:-.04em;white-space:nowrap;margin-bottom:20px}
-.badge{font-weight:800;font-size:26px;letter-spacing:.14em;padding:16px 26px;border-radius:999px;background:rgba(167,139,255,.16);color:var(--lavanda);margin-bottom:40px}
-.badgeOutline{font-weight:700;font-size:36px;padding:18px 34px;border-radius:999px;border:2px solid rgba(255,255,255,.55)}
+.badge{font-weight:800;font-size:26px;letter-spacing:.14em;padding:16px 26px;border-radius:999px;background:var(--roxo);color:#fff;margin-bottom:40px}
+.badgeOutline{font-weight:700;font-size:36px;padding:18px 34px;border-radius:999px;border:3px solid var(--text)}
 .card{width:100%;display:flex;align-items:flex-start;gap:30px;padding:36px 38px;margin-bottom:20px;border-radius:28px;
-  background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1.5px solid rgba(255,255,255,.16);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
-.card .n{font-weight:800;font-size:36px;color:var(--lavanda);line-height:1.15;letter-spacing:.02em}
+  background:var(--card);border:3px solid var(--cardBorder)}
+.card .n{font-weight:900;font-size:40px;line-height:1.15;letter-spacing:.02em}
 .card .t{font-weight:800;font-size:40px;line-height:1.15}
 .card .s{font-weight:500;font-size:32px;line-height:1.3;color:var(--support);margin-top:8px}
-.button{margin-top:38px;margin-bottom:26px;padding:38px 60px;border-radius:22px;background:var(--lima);color:var(--bg);
+.button{margin-top:38px;margin-bottom:26px;padding:38px 60px;border-radius:22px;background:var(--roxo);color:#fff;
   font-weight:900;font-size:56px;letter-spacing:.02em;white-space:nowrap;transform-origin:left center}
 .photo{position:absolute;overflow:hidden;border-radius:44px}
 .photo img{width:100%;height:100%;object-fit:cover;display:block}
@@ -134,8 +145,7 @@ const root = document.documentElement.style;
 root.setProperty('--bg', C.COLORS.bg);
 root.setProperty('--text', C.COLORS.text);
 root.setProperty('--support', C.COLORS.support);
-root.setProperty('--lavanda', C.COLORS.lavanda);
-root.setProperty('--lima', C.COLORS.lima);
+for (const k of ['roxo', 'magenta', 'vermelho', 'gradient', 'card', 'cardBorder']) root.setProperty('--' + k, C.COLORS[k]);
 root.setProperty('--track', C.COLORS.progressTrack);
 
 const stage = document.getElementById('stage');
@@ -150,7 +160,7 @@ const lights = C.COLORS.lights.map((color, i) => {
   const el = document.createElement('div');
   el.className = 'light';
   const size = [900, 820, 700][i % 3];
-  Object.assign(el.style, { width: size + 'px', height: size + 'px', background: color, opacity: [.42, .42, .28][i % 3] });
+  Object.assign(el.style, { width: size + 'px', height: size + 'px', background: color, opacity: C.COLORS.lightsOpacity });
   stage.insertBefore(el, bar);
   return { el, size, base: [[-260, 120], [520, 1050], [380, 300]][i % 3], phase: i * 2.1 };
 });
@@ -163,14 +173,20 @@ const built = C.SCENES.map(sc => {
   const el = document.createElement('div');
   el.className = 'scene';
   Object.assign(el.style, { left: S.left + 'px', top: S.top + 'px', width: SAFE_W + 'px', height: C.HEIGHT - S.top - S.bottom + 'px' });
+  let cardIndex = 0;
   const items = sc.items.map(it => {
     const d = document.createElement('div');
     d.className = 'item ' + it.type;
     if (it.type === 'card') {
-      d.innerHTML = `<div class="n">${it.num}</div><div><div class="t">${it.title}</div>${it.sub ? `<div class="s">${it.sub}</div>` : ''}</div>`;
+      const nc = C.COLORS.cardNumbers[cardIndex++ % C.COLORS.cardNumbers.length];
+      d.innerHTML = `<div class="n" style="color:${nc}">${it.num}</div><div><div class="t">${it.title}</div>${it.sub ? `<div class="s">${it.sub}</div>` : ''}</div>`;
+    } else if (it.type === 'logo') {
+      d.innerHTML = `<img src="${C.LOGO}" style="width:${it.width}px;display:block">`;
     } else d.innerHTML = it.text;
-    if (it.color) d.style.color = colorOf(it.color);
+    if (it.color === 'grad') d.classList.add('grad');
+    else if (it.color) d.style.color = colorOf(it.color);
     if (it.gapTop) d.style.marginTop = it.gapTop + 'px';
+    if (it.gapBottom) d.style.marginBottom = it.gapBottom + 'px';
     el.appendChild(d);
     return { el: d, type: it.type };
   });
@@ -244,6 +260,7 @@ function render(t) {
 
 window.ready = (async () => {
   await Promise.all([500, 700, 800, 900].map(w => document.fonts.load(`${w} 100px M`, 'ÁÇãé')));
+  await Promise.all([...document.images].map(img => img.decode().catch(() => {})));
   fit();
   render(0);
 })();
