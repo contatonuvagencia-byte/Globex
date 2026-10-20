@@ -10,6 +10,7 @@
    Textos aceitam HTML simples: <span class="grad">…</span> (gradiente da feira)
    e <span class="roxo">…</span> (roxo). <br> quebra linha.
    Em "color" use: 'grad', 'roxo', 'magenta', 'vermelho', 'text' ou um hex.
+   Opções por item: gapTop / gapBottom (px), underline: true (sublinhado em gradiente).
    ===================================================================== */
 const CONFIG = {
   WIDTH: 1080, HEIGHT: 1920, FPS: 30,
@@ -27,6 +28,7 @@ const CONFIG = {
     cardNumbers: ['#5B00D6', '#A3127F', '#F0102A'],
     lights: ['#5B00D6', '#F0102A', '#A3127F'],   // manchas de luz do fundo
     lightsOpacity: 0.14,
+    globeLine: '#E6E1EE',                         // linhas do globo do fundo
     progressTrack: '#EFECF3',
   },
 
@@ -36,62 +38,71 @@ const CONFIG = {
   ANIM: {
     inDuration: 0.5,     // entrada de cada linha (sobe + fade, ease-out)
     rise: 36,            // px que a linha sobe ao entrar
-    cardSlide: 140,      // px que os cards deslizam vindos da esquerda
+    cardSlide: 160,      // px que os cards deslizam vindos da esquerda
     firstDelay: 0.15,    // atraso do primeiro elemento após o início da cena
     stagger: 0.2,        // intervalo padrão entre elementos (0,15 a 0,3)
     outDuration: 0.3,    // fade de saída da cena
+    outLift: 24,         // px que a cena sobe ao sair
     progressHeight: 6,
   },
+
+  // Cabeçalho fixo (logo + data) nas cenas listadas
+  HEADER: { logoWidth: 300, text: '07.11 · ONLINE E GRATUITA', scenes: ['gancho', 'palestra', 'feira', 'brindes'], height: 120 },
+
+  // Fundo animado: globo em linhas + rotas com ponto viajando
+  DECOR: { globe: true, routes: true },
 
   // Foto da Camila (cena 3). null = sem foto. Ex.: 'assets/camila.jpg'
   PHOTO_CAMILA: null,
   LOGO: 'assets/logo.png',
 
   SCENES: [
-    { id: 'gancho', start: 0, end: 3.4, stagger: 0.28, items: [
+    { id: 'gancho', start: 0, end: 3.4, stagger: 0.26, items: [
       { type: 'kicker', text: 'INTERCÂMBIO É' },
       { type: 'huge', text: 'VIAGEM', color: 'text' },
-      { type: 'kicker', text: 'OU É', gapTop: 28 },
-      { type: 'huge', text: 'CARREIRA?', color: 'grad' },
+      { type: 'kicker', text: 'OU É', gapTop: 34 },
+      { type: 'huge', text: 'CARREIRA?', color: 'grad', underline: true },
+      { type: 'lead', text: 'Spoiler: pode ser<br><span class="grad">os dois.</span>', gapTop: 56 },
     ]},
-    { id: 'evento', start: 3.4, end: 6.8, items: [
-      { type: 'logo', width: 560 },
+    { id: 'evento', start: 3.4, end: 6.8, stagger: 0.18, items: [
+      { type: 'logo', width: 620 },
       { type: 'badge', text: 'FEIRA ONLINE E GRATUITA' },
-      { type: 'title', text: 'Beawst Global<br><span class="grad">Connect</span>' },
-      { type: 'year', text: '2026', color: 'grad' },
+      { type: 'title', text: 'Beawst Global<br><span class="grad">Connect</span> 2026' },
       { type: 'badgeOutline', text: '07.11 · 08h às 13h' },
+      { type: 'chips', list: ['Ao vivo', '100% online', 'Sem sair de casa'] },
     ]},
     { id: 'palestra', start: 6.8, end: 10.9, items: [
       { type: 'kicker', text: 'PALESTRA PRINCIPAL', color: 'roxo' },
-      { type: 'title', text: 'Camila Fidélis' },
-      { type: 'meta', text: 'Executiva de RH · 20 anos de mercado' },
-      { type: 'body', text: 'Como o intercâmbio acelera a sua carreira global.' },
+      { type: 'title', text: 'Camila<br>Fidélis' },
+      { type: 'meta', text: 'Executiva de RH' },
+      { type: 'stat', value: 20, label: 'anos de<br>mercado' },
+      { type: 'quote', text: 'Como o intercâmbio acelera a sua <span class="grad">carreira global.</span>' },
     ]},
-    { id: 'feira', start: 10.9, end: 15, items: [
-      { type: 'kicker', text: 'E TEM MAIS' },
+    { id: 'feira', start: 10.9, end: 15, stagger: 0.22, items: [
+      { type: 'kicker', text: 'E TEM MAIS', color: 'roxo' },
       { type: 'subtitle', text: 'Na feira você vai' },
       { type: 'card', num: '01', title: 'Escolas internacionais ao vivo' },
       { type: 'card', num: '02', title: 'Gateway School, de Malta' },
       { type: 'card', num: '03', title: 'Dúvidas de visto e passaporte', sub: 'com o Mundo dos Vistos' },
     ]},
-    { id: 'brindes', start: 15, end: 17.4, items: [
-      { type: 'kicker', text: 'E AINDA' },
+    { id: 'brindes', start: 15, end: 17.4, particles: true, items: [
+      { type: 'kicker', text: 'E AINDA', color: 'roxo' },
       { type: 'huge', text: 'BRINDES', color: 'grad' },
-      { type: 'huge', text: 'AO VIVO', color: 'text' },
-      { type: 'body', text: 'e condições exclusivas durante a transmissão.' },
+      { type: 'huge', text: 'AO VIVO', color: 'text', underline: true },
+      { type: 'body', text: 'e <b>condições exclusivas</b> durante a transmissão.', gapTop: 44 },
     ]},
     { id: 'cta', start: 17.4, end: 21.5, stagger: 0.15, items: [
-      { type: 'logo', width: 420, gapBottom: 40 },
+      { type: 'logo', width: 440, gapBottom: 36 },
       { type: 'date', text: '07.11' },
       { type: 'lead', text: '08h às 13h', color: 'grad' },
       { type: 'meta', text: '100% online e gratuito' },
       { type: 'button', text: 'GARANTA SUA VAGA' },
-      { type: 'meta', text: 'Link na bio', gapTop: 8 },
+      { type: 'meta', text: 'Link na bio', gapTop: 4 },
     ]},
   ],
 
   // Pulso sutil do botão (cena 6). Depois disso a cena fica parada.
-  BUTTON_PULSE: { start: 18.75, duration: 0.7, scale: 0.035 },
+  BUTTON_PULSE: { start: 18.85, duration: 0.7, scale: 0.035 },
 };
 </script>
 <style>
@@ -104,31 +115,49 @@ html,body{overflow:hidden;background:var(--bg)}
 body{font-family:M,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
 #stage{position:absolute;left:0;top:0;overflow:hidden;background:var(--bg)}
 .light{position:absolute;border-radius:50%;filter:blur(140px)}
+#decor{position:absolute;left:0;top:0}
 #progress{position:absolute;left:0;top:0;width:100%;background:var(--track);z-index:10}
 #progress i{position:absolute;left:0;top:0;bottom:0;background:var(--gradient);transform-origin:left}
+#header{position:absolute;display:flex;justify-content:space-between;align-items:center;z-index:5}
+#header .t{font-weight:800;font-size:26px;letter-spacing:.12em;color:var(--text)}
 .scene{position:absolute;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
-.item{will-change:transform,opacity}
+.item{will-change:transform,opacity;position:relative}
 .roxo{color:var(--roxo)}
 .grad{background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mask{overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.mask>span{display:inline-block}
+.ul{position:absolute;left:0;bottom:-18px;height:14px;width:100%;border-radius:8px;background:var(--gradient);transform-origin:left}
 .logo{display:block;margin-bottom:44px}
-.kicker{font-weight:800;font-size:34px;letter-spacing:.16em;margin-bottom:14px}
-.huge{font-weight:900;font-size:230px;line-height:.92;letter-spacing:-.02em;white-space:nowrap}
-.title{font-weight:900;font-size:112px;line-height:.98;letter-spacing:-.02em;margin-bottom:18px}
-.subtitle{font-weight:800;font-size:64px;line-height:1.05;margin-bottom:36px;letter-spacing:-.01em}
-.year{font-weight:900;font-size:112px;line-height:1;color:var(--support);letter-spacing:-.01em;margin-bottom:40px}
-.meta{font-weight:500;font-size:36px;line-height:1.35;color:var(--support);margin-bottom:22px}
-.body{font-weight:500;font-size:44px;line-height:1.3;max-width:100%;margin-top:10px}
-.lead{font-weight:800;font-size:72px;line-height:1.05;margin-bottom:14px}
-.date{font-weight:900;font-size:330px;line-height:.9;letter-spacing:-.04em;white-space:nowrap;margin-bottom:20px}
-.badge{font-weight:800;font-size:26px;letter-spacing:.14em;padding:16px 26px;border-radius:999px;background:var(--roxo);color:#fff;margin-bottom:40px}
-.badgeOutline{font-weight:700;font-size:36px;padding:18px 34px;border-radius:999px;border:3px solid var(--text)}
-.card{width:100%;display:flex;align-items:flex-start;gap:30px;padding:36px 38px;margin-bottom:20px;border-radius:28px;
-  background:var(--card);border:3px solid var(--cardBorder)}
-.card .n{font-weight:900;font-size:40px;line-height:1.15;letter-spacing:.02em}
-.card .t{font-weight:800;font-size:40px;line-height:1.15}
-.card .s{font-weight:500;font-size:32px;line-height:1.3;color:var(--support);margin-top:8px}
-.button{margin-top:38px;margin-bottom:26px;padding:38px 60px;border-radius:22px;background:var(--roxo);color:#fff;
-  font-weight:900;font-size:56px;letter-spacing:.02em;white-space:nowrap;transform-origin:left center}
+.kicker{font-weight:800;font-size:38px;letter-spacing:.16em;margin-bottom:16px}
+.huge{font-weight:900;font-size:240px;line-height:.92;letter-spacing:-.02em;white-space:nowrap}
+.title{font-weight:900;font-size:128px;line-height:.98;letter-spacing:-.02em;margin-bottom:26px}
+.subtitle{font-weight:800;font-size:72px;line-height:1.05;margin-bottom:40px;letter-spacing:-.01em}
+.meta{font-weight:500;font-size:40px;line-height:1.35;color:var(--support);margin-bottom:24px}
+.body{font-weight:500;font-size:50px;line-height:1.3;max-width:100%}
+.body b{font-weight:800}
+.lead{font-weight:800;font-size:72px;line-height:1.08;margin-bottom:14px}
+.date{font-weight:900;font-size:340px;line-height:.9;letter-spacing:-.04em;white-space:nowrap;margin-bottom:22px}
+.badge{font-weight:800;font-size:28px;letter-spacing:.14em;padding:18px 28px;border-radius:999px;background:var(--roxo);color:#fff;margin-bottom:36px}
+.badgeOutline{font-weight:700;font-size:40px;padding:20px 36px;border-radius:999px;border:3px solid var(--text);margin-top:12px;margin-bottom:26px}
+.chips{display:flex;flex-wrap:wrap;gap:14px;max-width:100%}
+.chip{font-weight:700;font-size:32px;padding:16px 26px;border-radius:16px;background:var(--card);border:2px solid var(--cardBorder)}
+.chip::before{content:'';display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--gradient);margin-right:14px;vertical-align:middle;position:relative;top:-3px}
+.stat{display:flex;align-items:center;gap:28px;margin:10px 0 30px}
+.stat .v{font-weight:900;font-size:210px;line-height:.9;letter-spacing:-.04em}
+.stat .l{font-weight:800;font-size:48px;line-height:1.08}
+.quote{display:flex;gap:30px;align-items:stretch;max-width:100%}
+.quote .bar{width:10px;flex:none;border-radius:6px;background:linear-gradient(180deg,#5B00D6,#A3127F,#F0102A);transform-origin:top}
+.quote .q{font-weight:700;font-size:50px;line-height:1.22}
+.card{width:100%;display:flex;align-items:flex-start;gap:32px;padding:44px 42px;margin-bottom:22px;border-radius:30px;
+  background:var(--card);border:3px solid var(--cardBorder);overflow:hidden}
+.card .acc{position:absolute;left:0;top:0;bottom:0;width:10px;transform-origin:top}
+.card .n{font-weight:900;font-size:46px;line-height:1.1;letter-spacing:.02em}
+.card .t{font-weight:800;font-size:46px;line-height:1.12}
+.card .s{font-weight:500;font-size:36px;line-height:1.3;color:var(--support);margin-top:10px}
+.button{margin-top:40px;margin-bottom:26px;padding:40px 56px;border-radius:24px;background:var(--roxo);color:#fff;overflow:hidden;
+  font-weight:900;font-size:54px;letter-spacing:.02em;white-space:nowrap;transform-origin:left center}
+.button .shine{position:absolute;top:-30%;width:90px;height:160%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg)}
+.particle{position:absolute;border-radius:50%}
 .photo{position:absolute;overflow:hidden;border-radius:44px}
 .photo img{width:100%;height:100%;object-fit:cover;display:block}
 </style>
@@ -136,71 +165,148 @@ body{font-family:M,sans-serif;color:var(--text);-webkit-font-smoothing:antialias
 <body>
 <div id="stage"><div id="progress"><i></i></div></div>
 <script>
-const C = CONFIG, A = C.ANIM, S = C.SAFE;
+const C = CONFIG, A = C.ANIM, S = C.SAFE, W = C.WIDTH, H = C.HEIGHT;
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const seg = (t, a, d) => clamp((t - a) / d);
 const easeOut = x => 1 - Math.pow(1 - x, 3);
+const easeOutQuart = x => 1 - Math.pow(1 - x, 4);
+const NS = 'http://www.w3.org/2000/svg';
+const svgEl = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
 
 const root = document.documentElement.style;
-root.setProperty('--bg', C.COLORS.bg);
-root.setProperty('--text', C.COLORS.text);
-root.setProperty('--support', C.COLORS.support);
-for (const k of ['roxo', 'magenta', 'vermelho', 'gradient', 'card', 'cardBorder']) root.setProperty('--' + k, C.COLORS[k]);
+for (const k of ['bg', 'text', 'support', 'roxo', 'magenta', 'vermelho', 'gradient', 'card', 'cardBorder']) root.setProperty('--' + k, C.COLORS[k]);
 root.setProperty('--track', C.COLORS.progressTrack);
 
 const stage = document.getElementById('stage');
-stage.style.width = C.WIDTH + 'px'; stage.style.height = C.HEIGHT + 'px';
-document.body.style.width = C.WIDTH + 'px'; document.body.style.height = C.HEIGHT + 'px';
+stage.style.width = W + 'px'; stage.style.height = H + 'px';
+document.body.style.width = W + 'px'; document.body.style.height = H + 'px';
 const bar = document.getElementById('progress');
 bar.style.height = A.progressHeight + 'px';
 const barFill = bar.firstElementChild;
 
-// manchas de luz (movimento lento)
+// ---------- fundo: manchas de luz ----------
 const lights = C.COLORS.lights.map((color, i) => {
   const el = document.createElement('div');
   el.className = 'light';
   const size = [900, 820, 700][i % 3];
   Object.assign(el.style, { width: size + 'px', height: size + 'px', background: color, opacity: C.COLORS.lightsOpacity });
   stage.insertBefore(el, bar);
-  return { el, size, base: [[-260, 120], [520, 1050], [380, 300]][i % 3], phase: i * 2.1 };
+  return { el, base: [[-260, 120], [520, 1050], [380, 300]][i % 3], phase: i * 2.1 };
 });
 
-const SAFE_W = C.WIDTH - S.left - S.right;
-const colorOf = k => k ? (C.COLORS[k] || k) : null;
+// ---------- fundo: globo em linhas + rotas ----------
+const decor = svgEl('svg', { id: 'decor', width: W, height: H, viewBox: `0 0 ${W} ${H}` });
+stage.insertBefore(decor, bar);
+const defs = svgEl('defs', {}, decor);
+const lg = svgEl('linearGradient', { id: 'g', x1: 0, x2: 1, y1: 0, y2: 0 }, defs);
+[['0', C.COLORS.roxo], ['.5', C.COLORS.magenta], ['1', C.COLORS.vermelho]].forEach(([o, c]) => svgEl('stop', { offset: o, 'stop-color': c }, lg));
+const GLOBE = { cx: 900, cy: 1720, r: 560 };
+const globe = { meridians: [], parallels: [] };
+if (C.DECOR.globe) {
+  const g = svgEl('g', { fill: 'none', stroke: C.COLORS.globeLine, 'stroke-width': 3 }, decor);
+  svgEl('circle', { cx: GLOBE.cx, cy: GLOBE.cy, r: GLOBE.r }, g);
+  for (let i = 0; i < 7; i++) globe.meridians.push(svgEl('ellipse', { cx: GLOBE.cx, cy: GLOBE.cy, ry: GLOBE.r }, g));
+  for (let j = 1; j < 6; j++) {
+    const y = GLOBE.cy - GLOBE.r + (2 * GLOBE.r * j) / 6, dy = y - GLOBE.cy;
+    svgEl('ellipse', { cx: GLOBE.cx, cy: y, rx: Math.sqrt(GLOBE.r ** 2 - dy ** 2), ry: 28 }, g);
+  }
+  globe.accent = svgEl('ellipse', { cx: GLOBE.cx, cy: GLOBE.cy, ry: GLOBE.r, fill: 'none', stroke: 'url(#g)', 'stroke-width': 5, opacity: .3 }, decor);
+}
+const routes = [];
+if (C.DECOR.routes) {
+  [['M -40 1640 Q 300 1420 640 1600', 0], ['M 120 1880 Q 520 1560 1120 1500', 1.3], ['M 980 260 Q 1060 520 1120 700', .6]].forEach(([d, ph]) => {
+    const path = svgEl('path', { d, fill: 'none', stroke: 'url(#g)', 'stroke-width': 4, 'stroke-dasharray': '2 16', 'stroke-linecap': 'round', opacity: .55 }, decor);
+    const dot = svgEl('circle', { r: 11, fill: C.COLORS.roxo }, decor);
+    const halo = svgEl('circle', { r: 26, fill: C.COLORS.roxo, opacity: .15 }, decor);
+    routes.push({ path, dot, halo, len: path.getTotalLength(), ph });
+  });
+}
 
-// monta as cenas a partir do CONFIG
+// ---------- cabeçalho fixo ----------
+const header = document.createElement('div');
+header.id = 'header';
+Object.assign(header.style, { left: S.left + 'px', top: S.top + 'px', width: W - S.left - S.right + 'px', height: C.HEADER.height - 40 + 'px' });
+header.innerHTML = `<img src="${C.LOGO}" style="width:${C.HEADER.logoWidth}px;display:block"><div class="t">${C.HEADER.text}</div>`;
+stage.insertBefore(header, bar);
+
+const SAFE_W = W - S.left - S.right;
+const colorOf = k => k ? (C.COLORS[k] || k) : null;
+const MASKED = ['huge', 'date'];
+
+// ---------- monta as cenas a partir do CONFIG ----------
 const built = C.SCENES.map(sc => {
+  const hasHeader = C.HEADER.scenes.includes(sc.id);
+  const top = S.top + (hasHeader ? C.HEADER.height : 0);
   const el = document.createElement('div');
   el.className = 'scene';
-  Object.assign(el.style, { left: S.left + 'px', top: S.top + 'px', width: SAFE_W + 'px', height: C.HEIGHT - S.top - S.bottom + 'px' });
+  Object.assign(el.style, { left: S.left + 'px', top: top + 'px', width: SAFE_W + 'px', height: H - top - S.bottom + 'px' });
   let cardIndex = 0;
   const items = sc.items.map(it => {
     const d = document.createElement('div');
     d.className = 'item ' + it.type;
+    const extra = {};
     if (it.type === 'card') {
       const nc = C.COLORS.cardNumbers[cardIndex++ % C.COLORS.cardNumbers.length];
-      d.innerHTML = `<div class="n" style="color:${nc}">${it.num}</div><div><div class="t">${it.title}</div>${it.sub ? `<div class="s">${it.sub}</div>` : ''}</div>`;
+      d.innerHTML = `<div class="acc" style="background:${nc}"></div><div class="n" style="color:${nc}">${it.num}</div><div><div class="t">${it.title}</div>${it.sub ? `<div class="s">${it.sub}</div>` : ''}</div>`;
     } else if (it.type === 'logo') {
       d.innerHTML = `<img src="${C.LOGO}" style="width:${it.width}px;display:block">`;
+    } else if (it.type === 'chips') {
+      d.innerHTML = it.list.map(c => `<span class="chip">${c}</span>`).join('');
+    } else if (it.type === 'stat') {
+      d.innerHTML = `<div class="v grad">0</div><div class="l">${it.label}</div>`;
+    } else if (it.type === 'quote') {
+      d.innerHTML = `<div class="bar"></div><div class="q">${it.text}</div>`;
+    } else if (it.type === 'button') {
+      d.innerHTML = `${it.text}<div class="shine"></div>`;
+    } else if (MASKED.includes(it.type)) {
+      d.classList.add('mask');
+      d.innerHTML = `<span>${it.text}</span>`;
     } else d.innerHTML = it.text;
-    if (it.color === 'grad') d.classList.add('grad');
-    else if (it.color) d.style.color = colorOf(it.color);
+    const target = MASKED.includes(it.type) ? d.firstElementChild : d;
+    if (it.color === 'grad') target.classList.add('grad');
+    else if (it.color) target.style.color = colorOf(it.color);
     if (it.gapTop) d.style.marginTop = it.gapTop + 'px';
     if (it.gapBottom) d.style.marginBottom = it.gapBottom + 'px';
+    if (it.underline) {
+      // o sublinhado fica fora da máscara, num wrapper
+      const wrap = document.createElement('div');
+      wrap.className = 'item';
+      wrap.style.cssText = d.style.cssText; d.style.marginTop = ''; d.style.marginBottom = '';
+      wrap.appendChild(d);
+      extra.ul = document.createElement('div'); extra.ul.className = 'ul';
+      wrap.appendChild(extra.ul);
+      el.appendChild(wrap);
+      return { el: d, box: wrap, type: it.type, it, ...extra };
+    }
     el.appendChild(d);
-    return { el: d, type: it.type };
+    return { el: d, box: d, type: it.type, it, ...extra };
   });
-  stage.insertBefore(el, bar);
+  stage.insertBefore(el, header);
   let photo = null;
   if (sc.id === 'palestra' && C.PHOTO_CAMILA) {
     photo = document.createElement('div');
     photo.className = 'photo';
-    Object.assign(photo.style, { width: '470px', height: '600px', right: '60px', top: S.top + 20 + 'px' });
+    Object.assign(photo.style, { width: '420px', height: '540px', right: '60px', top: top + 20 + 'px' });
     photo.innerHTML = `<img src="${C.PHOTO_CAMILA}">`;
-    stage.insertBefore(photo, bar);
-    el.style.justifyContent = 'flex-end';   // texto abaixo da foto
+    stage.insertBefore(photo, el);
   }
-  return { ...sc, el, items, photo };
+  // confetes geométricos (cena de brindes)
+  const parts = [];
+  if (sc.particles) {
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const cols = [C.COLORS.roxo, C.COLORS.magenta, C.COLORS.vermelho];
+    for (let i = 0; i < 26; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = 14 + rnd() * 30;
+      Object.assign(p.style, { width: size + 'px', height: size + 'px', background: cols[i % 3], borderRadius: i % 2 ? '50%' : '8px', left: '0', top: '0' });
+      stage.insertBefore(p, el);
+      const ang = Math.PI * (-0.15 + rnd() * 1.3);   // para os lados e para baixo (não cobre o cabeçalho)
+      const speed = 500 + rnd() * 700;
+      parts.push({ el: p, vx: Math.cos(ang) * speed, vy: Math.sin(ang) * speed, rot: rnd() * 720 - 360, delay: rnd() * .25 });
+    }
+  }
+  return { ...sc, el, items, photo, parts, hasHeader };
 });
 
 // títulos gigantes: reduz a fonte até caber na largura segura
@@ -208,12 +314,17 @@ function fit() {
   for (const sc of built) {
     sc.el.style.display = 'flex';
     for (const it of sc.items) {
-      if (!['huge', 'date', 'title', 'button'].includes(it.type)) continue;
-      let fs = parseFloat(getComputedStyle(it.el).fontSize);
-      it.el.style.maxWidth = 'none';
-      while (it.el.scrollWidth > SAFE_W && fs > 20) { fs -= 2; it.el.style.fontSize = fs + 'px'; }
+      if (!['huge', 'date', 'title', 'button', 'lead'].includes(it.type)) continue;
+      const el = it.el;
+      let fs = parseFloat(getComputedStyle(el).fontSize);
+      while (el.scrollWidth > SAFE_W && fs > 20) { fs -= 2; el.style.fontSize = fs + 'px'; }
     }
   }
+}
+
+function sceneAlpha(t, sc, last) {
+  if (t < sc.start || (!last && t >= sc.end)) return 0;
+  return last ? 1 : 1 - seg(t, sc.end - A.outDuration, A.outDuration);
 }
 
 function render(t) {
@@ -225,29 +336,100 @@ function render(t) {
     const y = L.base[1] + Math.cos(t * 0.17 + L.phase) * 140;
     L.el.style.transform = `translate(${x}px,${y}px)`;
   }
+  // globo girando devagar
+  globe.meridians.forEach((m, i) => {
+    const th = (i / globe.meridians.length) * Math.PI + t * 0.35;
+    m.setAttribute('rx', Math.abs(Math.cos(th)) * GLOBE.r);
+  });
+  if (globe.accent) globe.accent.setAttribute('rx', Math.abs(Math.cos(t * 0.35 + 0.4)) * GLOBE.r);
+  // pontos viajando nas rotas
+  for (const r of routes) {
+    const u = ((t * 0.16 + r.ph) % 1.2) / 1.2;
+    const pt = r.path.getPointAtLength(easeOut(u) * r.len);
+    const vis = Math.sin(u * Math.PI);
+    for (const c of [r.dot, r.halo]) { c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y); }
+    r.dot.setAttribute('opacity', vis); r.halo.setAttribute('opacity', .15 * vis);
+  }
+
+  // cabeçalho: visível nas cenas configuradas, com o mesmo fade das cenas
+  let hA = 0;
+  built.forEach((sc, si) => {
+    if (!sc.hasHeader) return;
+    const a = sceneAlpha(t, sc, si === built.length - 1);
+    const inA = seg(t, sc.start, A.inDuration);
+    const prevHas = si > 0 && built[si - 1].hasHeader;
+    hA = Math.max(hA, a * (prevHas ? 1 : inA));
+  });
+  // entre duas cenas com cabeçalho ele não pisca
+  built.forEach((sc, si) => { if (sc.hasHeader && built[si + 1]?.hasHeader && t >= sc.end - A.outDuration && t < sc.end + 0.01) hA = 1; });
+  header.style.opacity = hA;
 
   built.forEach((sc, si) => {
     const last = si === built.length - 1;
     const on = t >= sc.start && (last || t < sc.end);
     sc.el.style.display = on ? 'flex' : 'none';
     if (sc.photo) sc.photo.style.display = on ? 'block' : 'none';
+    sc.parts.forEach(p => p.el.style.display = on ? 'block' : 'none');
     if (!on) return;
-    const out = last ? 1 : 1 - seg(t, sc.end - A.outDuration, A.outDuration);
+    const out = sceneAlpha(t, sc, last);
     sc.el.style.opacity = out;
+    sc.el.style.transform = `translateY(${-(1 - out) * A.outLift}px)`;
     const stagger = sc.stagger ?? A.stagger;
     sc.items.forEach((it, i) => {
-      const p = easeOut(seg(t, sc.start + A.firstDelay + i * stagger, A.inDuration));
-      const move = it.type === 'card'
-        ? `translateX(${(1 - p) * -A.cardSlide}px)`
-        : `translateY(${(1 - p) * A.rise}px)`;
-      let scale = '';
+      const a = sc.start + A.firstDelay + i * stagger;
+      const p = easeOut(seg(t, a, A.inDuration));
+      let tf;
+      if (it.type === 'card') tf = `translateX(${(1 - p) * -A.cardSlide}px)`;
+      else if (MASKED.includes(it.type)) {
+        // palavra sobe por trás de uma máscara
+        const q = easeOutQuart(seg(t, a, A.inDuration + 0.1));
+        it.el.firstElementChild.style.transform = `translateY(${(1 - q) * 105}%)`;
+        tf = 'none';
+      } else tf = `translateY(${(1 - p) * A.rise}px)`;
       if (it.type === 'button') {
         const q = seg(t, C.BUTTON_PULSE.start, C.BUTTON_PULSE.duration);
-        scale = ` scale(${1 + Math.sin(q * Math.PI) * C.BUTTON_PULSE.scale})`;
+        tf += ` scale(${1 + Math.sin(q * Math.PI) * C.BUTTON_PULSE.scale})`;
+        const sh = seg(t, a + 0.5, 0.7);
+        const shine = it.el.querySelector('.shine');
+        shine.style.left = `${-15 + sh * 130}%`;
+        shine.style.opacity = sh > 0 && sh < 1 ? 1 : 0;
       }
-      it.el.style.transform = move + scale;
-      it.el.style.opacity = p;
+      it.el.style.transform = tf;
+      it.el.style.opacity = MASKED.includes(it.type) ? clamp(seg(t, a, 0.2)) : p;
+      if (it.box !== it.el) it.box.style.opacity = 1;
+      if (it.ul) it.ul.style.transform = `scaleX(${easeOutQuart(seg(t, a + 0.35, 0.55))})`;
+      if (it.type === 'card') {
+        it.el.querySelector('.acc').style.transform = `scaleY(${easeOut(seg(t, a + 0.3, 0.45))})`;
+      }
+      if (it.type === 'chips') {
+        it.el.querySelectorAll('.chip').forEach((c, k) => {
+          const q = easeOut(seg(t, a + k * 0.12, A.inDuration));
+          c.style.display = 'inline-block';
+          c.style.transform = `translateY(${(1 - q) * A.rise}px)`; c.style.opacity = q;
+        });
+        it.el.style.transform = 'none'; it.el.style.opacity = 1;
+      }
+      if (it.type === 'stat') {
+        const q = easeOut(seg(t, a + 0.1, 1.0));
+        it.el.querySelector('.v').textContent = Math.round(q * it.it.value);
+      }
+      if (it.type === 'quote') {
+        it.el.querySelector('.bar').style.transform = `scaleY(${easeOut(seg(t, a + 0.15, 0.5))})`;
+      }
     });
+    // confetes: explodem de trás de "BRINDES" e caem devagar
+    if (sc.parts.length) {
+      const brindes = sc.items[1];
+      const t0 = sc.start + A.firstDelay + 1 * (sc.stagger ?? A.stagger) + 0.25;
+      const ox = 520, oy = sc.el.offsetTop + brindes.box.offsetTop + 110;
+      sc.parts.forEach(p => {
+        const tt = Math.max(0, t - t0 - p.delay);
+        const k = 1 - Math.exp(-tt * 3.2);              // desacelera
+        const x = ox + p.vx * k * 0.55, y = oy + p.vy * k * 0.55 + 70 * tt * tt;
+        p.el.style.transform = `translate(${x}px,${y}px) rotate(${p.rot * k}deg) scale(${tt > 0 ? 1 : 0})`;
+        p.el.style.opacity = (tt > 0 ? 0.9 : 0) * out;
+      });
+    }
     if (sc.photo) {
       const p = easeOut(seg(t, sc.start + A.firstDelay + 0.1, A.inDuration + 0.2));
       const zoom = 1 + ((t - sc.start) / (sc.end - sc.start)) * 0.06;

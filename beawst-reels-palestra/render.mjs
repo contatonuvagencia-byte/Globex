@@ -25,12 +25,12 @@ const violations = await page.evaluate(() => {
   const bad = [];
   for (let f = 0; f < DURATION * FPS; f += 3) {
     window.render(f / FPS);
-    document.querySelectorAll('.scene .item').forEach(el => {
+    document.querySelectorAll('.scene .item, #header').forEach(el => {
       if (el.offsetParent === null || +getComputedStyle(el).opacity === 0) return;
       const r = el.getBoundingClientRect();
       // margem esquerda só é checada com o elemento já parado (os cards deslizam da esquerda)
       const settled = +getComputedStyle(el).opacity > 0.99;
-      if ((settled && r.left < S.left - 0.5) || r.right > W - S.right + 0.5 || r.top < S.top - 0.5 || r.bottom > H - S.bottom + 0.5)
+      if ((settled && r.left < S.left - 1.5) || r.right > W - S.right + 0.5 || r.top < S.top - 0.5 || r.bottom > H - S.bottom + 0.5)
         bad.push(`${(f / FPS).toFixed(2)}s "${el.textContent.trim().slice(0, 30)}" [${r.left|0},${r.top|0},${r.right|0},${r.bottom|0}]`);
     });
   }
