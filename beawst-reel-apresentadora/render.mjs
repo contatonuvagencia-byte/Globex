@@ -52,7 +52,7 @@ const C = await page.evaluate(() => JSON.parse(JSON.stringify(window.CONFIG)));
 if (C.DURATION < 30 || C.DURATION > 60) console.warn('atenção: DURATION fora de 30–60s');
 
 // confere a zona segura (texto fora dos 250px do topo e dos 340px de baixo)
-const sel = '.w,.name,.badge,.cred,.date,.infos,.ctxl,.phrase,.flag,.ptitle,.prize,#s6t div,.ctaL,.ctaI,#caption';
+const sel = '.w,.name,.badge,.cred,.date,.infos,.ctxl,.phrase,.flag,.mlogo,.ptitle,.prize,#s6t div,.ctaL,.ctaI,#caption';
 const bad = await page.evaluate(async sel => {
   const { SAFE: S, WIDTH: W, HEIGHT: H, FPS, DURATION } = window.CONFIG;
   const r = [];
@@ -75,9 +75,9 @@ console.log(bad.length ? 'FORA DA ZONA SEGURA:\n' + bad.slice(0, 15).join('\n') 
 await page.evaluate(t => window.render(t), C.QUADRO_CAPA);
 await page.screenshot({ path: path.join(out, 'capa-reel-apresentadora.png') });
 const T = C.CENAS;
-const checks = { '1-gancho': 2.6, '2-revelacao': C.QUADRO_CAPA, '3-contexto': T.parceiros - 0.4, '4a-estudar': T.parceiros + 2.6,
-  '4b-irlanda': T.parceiros + 4.6, '4c-ferias': T.parceiros + 6.2, '4d-malta': T.parceiros + 8.5, '4e-ao-vivo': T.premio - 0.3,
-  '5a-titulo': T.premio + 1.3, '5b-kit': T.premio + 4.8, '5c-mala': T.cta - 0.4, '6-cta': C.DURATION - 0.1 };
+const checks = { '1-gancho': 2.6, '2-revelacao': C.QUADRO_CAPA, '3-contexto': T.parceiros - 0.4, '4a-trabalhar-fora': T.parceiros + 2.6,
+  '4b-escolas': T.parceiros + 4.6, '4c-irlanda-malta': T.parceiros + 6.8, '4d-gateway': T.parceiros + 9.3, '4e-mundo-dos-vistos': T.parceiros + 11.8,
+  '4f-ao-vivo': T.premio - 0.3, '5a-titulo': T.premio + 1.3, '5b-kit': T.premio + 4.8, '5c-mala': T.cta - 0.4, '6-cta': C.DURATION - 0.1 };
 for (const [n, t] of Object.entries(checks)) {
   await page.evaluate(t => window.render(t), t);
   await page.screenshot({ path: path.join(out, `cena-${n}.png`) });

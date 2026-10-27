@@ -18,13 +18,16 @@ const CONFIG = {
   gancho: ['Adivinha quem vai comandar', 'a Beawst Global Connect?'],
   contexto: ['escolas e especialistas', 'em estudo e trabalho no exterior'],  // [] para tirar
   // cena 4: frases no centro, uma por vez, no ritmo da música (duração em batidas; 120 BPM = 0,5s por batida)
-  // bandeira: 'irlanda', 'malta' ou null
+  // midia (opcional), aparece acima da frase:
+  //   { bandeiras: ['irlanda', 'malta'] }                      bandeiras desenhadas (irlanda, malta)
+  //   { logo: 'assets/parceiros/arquivo.jpg', fundo: '#fff' }  logo de parceiro num card
   frases: [
-    { texto: 'Estudar e <span class="grad">trabalhar fora?</span>', batidas: 4, bandeira: null },
-    { texto: '<b>Irlanda:</b> estude inglês e trabalhe até <span class="grad">20h por semana</span>', batidas: 5, bandeira: 'irlanda' },
-    { texto: 'e até <span class="grad">40h nas férias</span>', batidas: 3, bandeira: 'irlanda' },
-    { texto: '<b>Malta:</b> depois de 90 dias, trabalho de até <span class="grad">20h por semana</span>', batidas: 6, bandeira: 'malta' },
-    { texto: 'Visto, custo e destino: <span class="grad">tudo explicado ao vivo</span>', batidas: 5, bandeira: null },
+    { texto: 'Quer estudar e <span class="grad">trabalhar fora?</span>', batidas: 4 },
+    { texto: 'Na feira, <span class="grad">escolas internacionais</span> ao vivo', batidas: 4 },
+    { texto: 'Estudar e trabalhar na <span class="grad">Irlanda</span> e em <span class="grad">Malta</span>', batidas: 5, midia: { bandeiras: ['irlanda', 'malta'] } },
+    { texto: '<b>Gateway School</b>, direto de Malta', batidas: 5, midia: { logo: 'assets/parceiros/01-gateway-school.jpg', fundo: '#FFFFFF' } },
+    { texto: 'Dúvidas de visto e passaporte com o <b>Mundo dos Vistos</b>', batidas: 5, midia: { logo: 'assets/parceiros/02-mundo-dos-vistos.jpg', fundo: '#000000' } },
+    { texto: 'Visto, custo e destino: <span class="grad">tudo explicado ao vivo</span>', batidas: 5 },
   ],
   ctaTitulo: ['Garante', 'sua vaga'],
   cta: 'Link na bio',
@@ -35,13 +38,15 @@ const CONFIG = {
     { start: 0.0,  end: 3.0,  text: 'Sabe quem vai apresentar a feira de intercâmbio que você não pode perder?' },
     { start: 3.0,  end: 8.0,  text: 'Ela mesma: Samanta Lopes. Educadora, empreendedora e mais de 25 anos conectando pessoas, inovação e aprendizagem.' },
     { start: 8.0,  end: 15.0, text: 'Dia 7 de novembro, a partir das 8h30, online e de graça. Escolas e especialistas em estudo e trabalho no exterior, e você assiste de casa.' },
-    { start: 15.0, end: 18.5, text: 'Quer estudar e trabalhar fora?' },
-    { start: 18.5, end: 22.0, text: 'Na Irlanda, você estuda inglês e pode trabalhar até 20 horas por semana, e até 40 nas férias.' },
-    { start: 22.0, end: 25.0, text: 'Em Malta, depois de 90 dias, também dá pra trabalhar até 20 horas por semana.' },
-    { start: 25.0, end: 28.0, text: 'Visto, custo e destino: a gente explica tudo ao vivo.' },
-    { start: 28.0, end: 33.6, text: 'E tem presentes exclusivos: um kit viajante Beawst sorteado de hora em hora.' },
-    { start: 33.6, end: 38.0, text: 'E uma mala de viagem Beawst pra quem ficar até o fim.' },
-    { start: 38.0, end: 41.0, text: 'Garante sua vaga no link da bio. É de graça.' },
+    { start: 15.0, end: 18.0, text: 'Quer estudar e trabalhar fora?' },
+    { start: 18.0, end: 20.0, text: 'Na feira, você encontra escolas internacionais ao vivo,' },
+    { start: 20.0, end: 22.5, text: 'opções pra estudar e trabalhar na Irlanda e em Malta,' },
+    { start: 22.5, end: 25.0, text: 'a Gateway School, direto de Malta,' },
+    { start: 25.0, end: 27.5, text: 'e o Mundo dos Vistos pra tirar suas dúvidas de visto e passaporte.' },
+    { start: 27.5, end: 30.0, text: 'Visto, custo e destino: a gente explica tudo ao vivo.' },
+    { start: 30.0, end: 35.6, text: 'E tem presentes exclusivos: um kit viajante Beawst sorteado de hora em hora.' },
+    { start: 35.6, end: 40.0, text: 'E uma mala de viagem Beawst pra quem ficar até o fim.' },
+    { start: 40.0, end: 43.0, text: 'Garante sua vaga no link da bio. É de graça.' },
   ],
 
   CORES: {
@@ -75,11 +80,11 @@ const CONFIG = {
   },
 
   WIDTH: 1080, HEIGHT: 1920, FPS: 30,
-  DURATION: 41,                                       // segundos (máx. 60)
+  DURATION: 43,                                       // segundos (máx. 60)
   SAFE: { top: 250, bottom: 340, side: 80 },
 
   // início de cada cena em segundos (cortes no tempo da música: 120 BPM = 0,5s por batida)
-  CENAS: { gancho: 0, revelacao: 3, contexto: 8, parceiros: 15, premio: 28, cta: 38 },
+  CENAS: { gancho: 0, revelacao: 3, contexto: 8, parceiros: 15, premio: 30, cta: 40 },
   QUADRO_CAPA: 7.2,                                   // segundo usado para gerar a capa
   BPM: 120,
 };
@@ -128,7 +133,9 @@ body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased}
 .close{font-weight:900;font-size:104px;line-height:1.02;letter-spacing:-.02em;color:var(--texto)}
 .phrase{font-weight:900;font-size:96px;line-height:1.04;letter-spacing:-.02em;color:var(--texto)}
 .phrase b{font-weight:900;color:var(--principal)}
-.flag{display:inline-block;width:300px;height:200px;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px rgba(14,7,22,.18),0 0 0 3px #fff}
+.mlogo{display:inline-flex;align-items:center;justify-content:center;width:560px;height:230px;border-radius:30px;box-shadow:0 18px 40px rgba(14,7,22,.18);border:3px solid #ECE8F0}
+.mlogo img{max-width:82%;max-height:78%;object-fit:contain}
+.flag{display:inline-block;margin:0 14px;width:300px;height:200px;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px rgba(14,7,22,.18),0 0 0 3px #fff}
 .flag svg{display:block;width:100%;height:100%}
 .ptitle{font-weight:900;font-size:120px;line-height:1.02;letter-spacing:-.02em;color:#fff}
 /* cena 5 */
@@ -411,17 +418,22 @@ async function render(t) {
       const per = last ? T.premio - fStart : f.batidas * beat, lt = t - fStart;
       if (wd.dataset.i != idx) { wd.innerHTML = `<div class="phrase">${f.texto}</div>`; wd.dataset.i = idx; }
       const p = eOut4(seg(lt, 0, 0.22)), out = 1 - seg(lt, per - 0.12, 0.12);
-      // bandeira: entra junto com o primeiro texto do país e continua nas frases seguintes do mesmo país
+      // mídia (bandeiras ou logo do parceiro) entra junto com a frase; fica se a próxima frase usa a mesma
       const prev = C.frases[idx - 1], next = C.frases[idx + 1];
-      const flagIn = f.bandeira && !(prev && prev.bandeira === f.bandeira);
-      const flagOut = f.bandeira && !(next && next.bandeira === f.bandeira);
-      if (fl.dataset.b !== String(f.bandeira)) { fl.innerHTML = f.bandeira ? `<span class="flag">${BANDEIRAS[f.bandeira]}</span>` : ''; fl.dataset.b = String(f.bandeira); }
-      const fp = f.bandeira ? (flagIn ? eBack(seg(lt, 0, 0.4)) : 1) * (flagOut ? out : 1) : 0;
-      css(fl, { opacity: clamp(fp), transform: `scale(${0.7 + 0.3 * clamp(fp, 0, 1.2)}) rotate(${(1 - clamp(fp)) * -6}deg)` });
-      const blockH = wd.offsetHeight + (f.bandeira ? 240 : 0);
-      const top0 = H / 2 - blockH / 2 - 40;
+      const key = x => x && x.midia ? JSON.stringify(x.midia) : '';
+      const k = key(f), mIn = k && key(prev) !== k, mOut = k && key(next) !== k;
+      if (fl.dataset.k !== k) {
+        const md = f.midia || {};
+        fl.innerHTML = md.bandeiras ? md.bandeiras.map(b => `<span class="flag">${BANDEIRAS[b]}</span>`).join('')
+          : md.logo ? `<span class="mlogo" style="background:${md.fundo || '#fff'};border-color:${md.fundo || '#ECE8F0'}"><img src="${md.logo}"></span>` : '';
+        fl.dataset.k = k;
+      }
+      const fp = k ? (mIn ? eBack(seg(lt, 0, 0.4)) : 1) * (mOut ? out : 1) : 0;
+      css(fl, { opacity: clamp(fp), transform: `scale(${0.7 + 0.3 * clamp(fp, 0, 1.2)})` });
+      const mh = k ? fl.offsetHeight + 50 : 0;
+      const top0 = H / 2 - (wd.offsetHeight + mh) / 2 - 40;
       fl.style.top = top0 + 'px';
-      wd.style.top = top0 + (f.bandeira ? 240 : 0) + 'px';
+      wd.style.top = top0 + mh + 'px';
       css(wd, { opacity: p * out, transform: `scale(${1.08 - 0.08 * p})` });
     } else { wd.style.opacity = 0; fl.style.opacity = 0; }
   }
