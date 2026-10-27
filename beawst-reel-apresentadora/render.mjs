@@ -21,12 +21,29 @@ const MANIFEST = {
   locucao: has('locucao.mp3'),
   video: has('apresentadora.mp4'),
 };
-const faltando = ['apresentadora.jpg', 'logo-feira.png', 'kit.png', 'mala.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
+const faltando = ['apresentadora.jpg', 'logo-feira.png', 'logo-beawst.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
 if (!MANIFEST.parceiros.length) faltando.push('parceiros/ (vazia)');
 console.log('assets faltando (aparecem como placeholder):', faltando.join(', ') || 'nenhum');
 
 // --allow-file-access-from-files: deixa o canvas ler a cor de fundo das logos dos parceiros
 const browser = await chromium.launch({ args: ['--allow-file-access-from-files'], ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
+// ilustrações (assets/ilustracoes/*.svg -> .png). O logo usado nelas é assets/logo-beawst.png;
+// se ele não existir, usa o redesenho em assets/ilustracoes/logo-beawst.svg.
+{
+  const il = path.join(dir, 'assets', 'ilustracoes');
+  const ip = await browser.newPage({ viewport: { width: 800, height: 800 }, deviceScaleFactor: 2 });
+  const shot = async (svg, png, w, h) => {
+    await ip.setViewportSize({ width: w, height: h });
+    await ip.goto(pathToFileURL(path.join(il, svg)).href);
+    await ip.waitForLoadState('load');
+    await ip.screenshot({ path: path.join(il, png), omitBackground: true });
+  };
+  if (has('logo-beawst.png')) fs.copyFileSync(path.join(dir, 'assets', 'logo-beawst.png'), path.join(il, 'logo-beawst.png'));
+  else await shot('logo-beawst.svg', 'logo-beawst.png', 240, 340);
+  await shot('kit.svg', 'kit.png', 800, 800);
+  await shot('mala.svg', 'mala.png', 800, 800);
+  await ip.close();
+}
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
 await page.addInitScript(m => { window.MANIFEST = m; }, MANIFEST);
 await page.goto(pathToFileURL(path.join(dir, 'video.html')).href + '?render');
@@ -35,7 +52,7 @@ const C = await page.evaluate(() => JSON.parse(JSON.stringify(window.CONFIG)));
 if (C.DURATION < 30 || C.DURATION > 60) console.warn('atenção: DURATION fora de 30–60s');
 
 // confere a zona segura (texto fora dos 250px do topo e dos 340px de baixo)
-const sel = '.w,.name,.badge,.cred,.date,.infos,.ctxl,.word,.close,.prizeIntro,.prize,#s6t div,.ctaL,.ctaI,#caption';
+const sel = '.w,.name,.badge,.cred,.date,.infos,.ctxl,.phrase,.flag,.ptitle,.prize,#s6t div,.ctaL,.ctaI,#caption';
 const bad = await page.evaluate(async sel => {
   const { SAFE: S, WIDTH: W, HEIGHT: H, FPS, DURATION } = window.CONFIG;
   const r = [];
@@ -58,8 +75,9 @@ console.log(bad.length ? 'FORA DA ZONA SEGURA:\n' + bad.slice(0, 15).join('\n') 
 await page.evaluate(t => window.render(t), C.QUADRO_CAPA);
 await page.screenshot({ path: path.join(out, 'capa-reel-apresentadora.png') });
 const T = C.CENAS;
-const checks = { '1-gancho': 2.6, '2-revelacao': C.QUADRO_CAPA, '3-contexto': T.parceiros - 0.4, '4a-palavra': T.parceiros + 2.4,
-  '4b-fechamento': T.premio - 0.3, '5a-kit': T.premio + 3.0, '5b-mala': T.cta - 0.4, '6-cta': C.DURATION - 0.1 };
+const checks = { '1-gancho': 2.6, '2-revelacao': C.QUADRO_CAPA, '3-contexto': T.parceiros - 0.4, '4a-estudar': T.parceiros + 2.6,
+  '4b-irlanda': T.parceiros + 4.6, '4c-ferias': T.parceiros + 6.2, '4d-malta': T.parceiros + 8.5, '4e-ao-vivo': T.premio - 0.3,
+  '5a-titulo': T.premio + 1.3, '5b-kit': T.premio + 4.8, '5c-mala': T.cta - 0.4, '6-cta': C.DURATION - 0.1 };
 for (const [n, t] of Object.entries(checks)) {
   await page.evaluate(t => window.render(t), t);
   await page.screenshot({ path: path.join(out, `cena-${n}.png`) });

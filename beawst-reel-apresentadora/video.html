@@ -16,9 +16,16 @@ const CONFIG = {
   horario: 'a partir das 8h30',
   infos: ['online', 'e', 'gratuito'],              // cada item entra separado
   gancho: ['Adivinha quem vai comandar', 'a Beawst Global Connect?'],
-  contexto: ['escolas, faculdades e especialistas', 'do mundo todo, e você assiste de casa'],  // [] para tirar
-  palavras: ['visto', 'custo', 'destino', 'curso'],
-  fechamentoParceiros: ['tudo ao vivo,', 'com quem entende'],
+  contexto: ['escolas e especialistas', 'em estudo e trabalho no exterior'],  // [] para tirar
+  // cena 4: frases no centro, uma por vez, no ritmo da música (duração em batidas; 120 BPM = 0,5s por batida)
+  // bandeira: 'irlanda', 'malta' ou null
+  frases: [
+    { texto: 'Estudar e <span class="grad">trabalhar fora?</span>', batidas: 4, bandeira: null },
+    { texto: '<b>Irlanda:</b> estude inglês e trabalhe até <span class="grad">20h por semana</span>', batidas: 5, bandeira: 'irlanda' },
+    { texto: 'e até <span class="grad">40h nas férias</span>', batidas: 3, bandeira: 'irlanda' },
+    { texto: '<b>Malta:</b> depois de 90 dias, trabalho de até <span class="grad">20h por semana</span>', batidas: 6, bandeira: 'malta' },
+    { texto: 'Visto, custo e destino: <span class="grad">tudo explicado ao vivo</span>', batidas: 5, bandeira: null },
+  ],
   ctaTitulo: ['Garante', 'sua vaga'],
   cta: 'Link na bio',
   ctaInfo: '07/11 · a partir das 8h30 · online e gratuito',            // '' para tirar
@@ -27,11 +34,14 @@ const CONFIG = {
   legendas: [
     { start: 0.0,  end: 3.0,  text: 'Sabe quem vai apresentar a feira de intercâmbio que você não pode perder?' },
     { start: 3.0,  end: 8.0,  text: 'Ela mesma: Samanta Lopes. Educadora, empreendedora e mais de 25 anos conectando pessoas, inovação e aprendizagem.' },
-    { start: 8.0,  end: 15.0, text: 'Dia 7 de novembro, a partir das 8h30, online e de graça. E você assiste de casa.' },
-    { start: 15.0, end: 22.0, text: 'Visto, custo, destino, curso. Você tira dúvida ao vivo, com quem entende.' },
-    { start: 22.0, end: 25.5, text: 'E tem prêmio de hora em hora pra quem estiver ao vivo.' },
-    { start: 25.5, end: 30.0, text: 'Quem ficar até o fim ainda concorre a uma mala de viagem.' },
-    { start: 30.0, end: 33.0, text: 'Garante sua vaga no link da bio. É de graça.' },
+    { start: 8.0,  end: 15.0, text: 'Dia 7 de novembro, a partir das 8h30, online e de graça. Escolas e especialistas em estudo e trabalho no exterior, e você assiste de casa.' },
+    { start: 15.0, end: 18.5, text: 'Quer estudar e trabalhar fora?' },
+    { start: 18.5, end: 22.0, text: 'Na Irlanda, você estuda inglês e pode trabalhar até 20 horas por semana, e até 40 nas férias.' },
+    { start: 22.0, end: 25.0, text: 'Em Malta, depois de 90 dias, também dá pra trabalhar até 20 horas por semana.' },
+    { start: 25.0, end: 28.0, text: 'Visto, custo e destino: a gente explica tudo ao vivo.' },
+    { start: 28.0, end: 33.6, text: 'E tem presentes exclusivos: um kit viajante Beawst sorteado de hora em hora.' },
+    { start: 33.6, end: 38.0, text: 'E uma mala de viagem Beawst pra quem ficar até o fim.' },
+    { start: 38.0, end: 41.0, text: 'Garante sua vaga no link da bio. É de graça.' },
   ],
 
   CORES: {
@@ -54,19 +64,22 @@ const CONFIG = {
     parceirosPlaceholder: 9,                          // quantos quadros vazios mostrar se a pasta parceiros/ estiver vazia
   },
 
-  // Prêmios (cena 5). Ilustrações em assets/ (fontes editáveis em assets/ilustracoes/*.svg)
+  // Presentes (cena 5). Usa assets/kit.png e assets/mala.png se existirem; senão as ilustrações
+  // geradas de assets/ilustracoes/*.svg (com o logo assets/logo-beawst.png aplicado).
   PREMIOS: {
-    kit:  { imagem: 'assets/kit.png',  texto: ['kit viajante', '<span class="gradL">de hora em hora</span>'] },
-    mala: { imagem: 'assets/mala.png', texto: ['e uma <span class="gradL">mala de viagem</span>', 'pra quem ficar até o fim'] },
-    malaEntraEm: 3.5,                                 // segundos depois do início da cena
+    titulo: ['Presentes <span class="gradL">exclusivos</span>', 'pra você'],
+    tituloSozinho: 1.8,                               // segundos com o título sozinho na tela
+    kit:  { imagem: 'assets/kit.png',  texto: ['Kit viajante Beawst:', '<span class="gradL">sorteado de hora em hora</span>'] },
+    mala: { imagem: 'assets/mala.png', texto: ['<span class="gradL">Mala de viagem Beawst</span>', 'pra quem ficar até o fim'] },
+    malaEntraEm: 5.6,                                 // segundos depois do início da cena
   },
 
   WIDTH: 1080, HEIGHT: 1920, FPS: 30,
-  DURATION: 33,                                       // segundos (máx. 60)
+  DURATION: 41,                                       // segundos (máx. 60)
   SAFE: { top: 250, bottom: 340, side: 80 },
 
   // início de cada cena em segundos (cortes no tempo da música: 120 BPM = 0,5s por batida)
-  CENAS: { gancho: 0, revelacao: 3, contexto: 8, parceiros: 15, premio: 22, cta: 30 },
+  CENAS: { gancho: 0, revelacao: 3, contexto: 8, parceiros: 15, premio: 28, cta: 38 },
   QUADRO_CAPA: 7.2,                                   // segundo usado para gerar a capa
   BPM: 120,
 };
@@ -113,6 +126,11 @@ body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased}
 .tile .ph{position:absolute;inset:14px;font-size:22px;color:#9A94A5;border-width:3px}
 .word{font-weight:900;font-size:240px;line-height:1;letter-spacing:-.03em;white-space:nowrap}
 .close{font-weight:900;font-size:104px;line-height:1.02;letter-spacing:-.02em;color:var(--texto)}
+.phrase{font-weight:900;font-size:96px;line-height:1.04;letter-spacing:-.02em;color:var(--texto)}
+.phrase b{font-weight:900;color:var(--principal)}
+.flag{display:inline-block;width:300px;height:200px;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px rgba(14,7,22,.18),0 0 0 3px #fff}
+.flag svg{display:block;width:100%;height:100%}
+.ptitle{font-weight:900;font-size:120px;line-height:1.02;letter-spacing:-.02em;color:#fff}
 /* cena 5 */
 .prizeIntro{font-weight:800;font-size:58px;color:#fff;line-height:1.2}
 .prizeBox{position:absolute;left:50%;width:600px;height:600px;margin-left:-300px;display:flex;align-items:center;justify-content:center}
@@ -155,18 +173,19 @@ body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased}
     <div class="glow" id="g41" style="width:800px;height:800px;background:var(--principal);opacity:.10"></div>
     <div class="glow" id="g42" style="width:800px;height:800px;background:var(--vermelho);opacity:.08"></div>
     <div id="grid"></div>
-    <div class="abs center" id="s4word" style="top:770px"></div>
-    <div class="abs center" id="s4close" style="top:800px;padding:0 80px"></div>
+    <div class="abs center" id="s4flag" style="top:0"></div>
+    <div class="abs center" id="s4word" style="top:770px;padding:0 80px"></div>
   </div>
 
   <div class="scene" id="s5" style="background:var(--fundoEscuro)">
     <div class="glow" id="g51" style="width:900px;height:900px;background:var(--principal);opacity:.55"></div>
     <div class="glow" id="g52" style="width:800px;height:800px;background:var(--vermelho);opacity:.35"></div>
-    <div class="glow" id="malaGlow" style="width:760px;height:760px;left:160px;top:440px;background:radial-gradient(circle,#A3127F 0%,#5B00D6 45%,transparent 70%);filter:blur(40px);opacity:0"></div>
-    <div class="prizeBox" id="kitBox" style="top:360px;width:680px;height:680px;margin-left:-340px"></div>
-    <div class="abs center prize" id="kitTxt" style="top:1110px;padding:0 70px"></div>
-    <div class="prizeBox" id="malaBox" style="top:450px;width:760px;height:760px;margin-left:-380px;opacity:0"></div>
-    <div class="abs center prize" id="malaTxt" style="top:1250px;padding:0 50px;font-size:70px"></div>
+    <div class="glow" id="malaGlow" style="width:760px;height:760px;left:160px;top:410px;background:radial-gradient(circle,#A3127F 0%,#5B00D6 45%,transparent 70%);filter:blur(40px);opacity:0"></div>
+    <div class="abs center ptitle" id="s5title" style="top:0;padding:0 80px"></div>
+    <div class="prizeBox" id="kitBox" style="top:420px;width:660px;height:660px;margin-left:-330px;opacity:0"></div>
+    <div class="abs center prize" id="kitTxt" style="top:1110px;padding:0 60px;font-size:76px"></div>
+    <div class="prizeBox" id="malaBox" style="top:410px;width:760px;height:760px;margin-left:-380px;opacity:0"></div>
+    <div class="abs center prize" id="malaTxt" style="top:1200px;padding:0 50px;font-size:74px"></div>
   </div>
 
   <div class="scene" id="s6">
@@ -261,11 +280,13 @@ async function build() {
     $('grid').appendChild(el);
     return el;
   });
-  $('s4close').innerHTML = `<div class="close">${C.fechamentoParceiros[0]}</div><div class="close grad">${C.fechamentoParceiros[1]}</div>`;
   // cena 5: ilustrações dos prêmios (placeholder se faltar arquivo)
-  const kit = await loadImg(C.PREMIOS.kit.imagem), mala = await loadImg(C.PREMIOS.mala.imagem);
-  $('kitBox').innerHTML = kit ? `<img src="${C.PREMIOS.kit.imagem}">` : placeholder(C.PREMIOS.kit.imagem.split('/').pop());
-  $('malaBox').innerHTML = (mala ? `<img src="${C.PREMIOS.mala.imagem}" style="position:relative">` : placeholder(C.PREMIOS.mala.imagem.split('/').pop()));
+  // arquivo próprio em assets/ ou, se não houver, a ilustração gerada em assets/ilustracoes/
+  const pick = async src => (await loadImg(src)) ? src : (await loadImg(src.replace('assets/', 'assets/ilustracoes/'))) ? src.replace('assets/', 'assets/ilustracoes/') : null;
+  const kitSrc = await pick(C.PREMIOS.kit.imagem), malaSrc = await pick(C.PREMIOS.mala.imagem);
+  $('kitBox').innerHTML = kitSrc ? `<img src="${kitSrc}">` : placeholder(C.PREMIOS.kit.imagem.split('/').pop());
+  $('malaBox').innerHTML = malaSrc ? `<img src="${malaSrc}" style="position:relative">` : placeholder(C.PREMIOS.mala.imagem.split('/').pop());
+  $('s5title').innerHTML = C.PREMIOS.titulo.map(l => `<div>${l}</div>`).join('');
   $('kitTxt').innerHTML = C.PREMIOS.kit.texto.map(l => `<div>${l}</div>`).join('');
   $('malaTxt').innerHTML = C.PREMIOS.mala.texto.map(l => `<div>${l}</div>`).join('');
   // cena 6
@@ -366,7 +387,7 @@ async function render(t) {
     });
   }
 
-  // cena 4: parceiros + palavras no ritmo
+  // cena 4: parceiros + frases no ritmo (estudar e trabalhar fora)
   if (t >= T.parceiros && t < T.premio) {
     const a = T.parceiros, beat = 60 / C.BPM;
     css($('g41'), { transform: `translate(${-300 + Math.sin(t * .5) * 100}px,${200 + Math.cos(t * .4) * 80}px)` });
@@ -375,26 +396,34 @@ async function render(t) {
       const p = eBack(seg(t, a + 0.1 + i * (3 / C.FPS), 0.35));
       css(el, { opacity: clamp(p), transform: `scale(${0.85 + 0.15 * p})` });
     });
-    const wStart = a + 2 * beat;                              // primeira palavra na 2ª batida
-    const per = 2 * beat;                                      // troca a cada 2 batidas
-    const wordsEnd = wStart + C.palavras.length * per;
-    const idx = Math.floor((t - wStart) / per);
+    const wStart = a + 2 * beat;                              // primeira frase na 2ª batida
     const grid = $('grid');
     const dim = seg(t, wStart - 0.15, 0.2);
-    css(grid, { opacity: 1 - 0.6 * dim, filter: `blur(${dim * 4}px)` });
-    const wd = $('s4word');
-    if (t >= wStart && idx < C.palavras.length) {
-      const lt = (t - wStart) - idx * per;
-      if (wd.dataset.i != idx) { wd.innerHTML = `<span class="word grad">${C.palavras[idx]}</span>`; wd.dataset.i = idx; fitWord(wd.firstElementChild); }
-      const p = eOut4(seg(lt, 0, 0.18));
-      const out = 1 - seg(lt, per - 0.1, 0.1);
-      css(wd, { opacity: p * out, transform: `scale(${1.18 - 0.18 * p})` });
-    } else wd.style.opacity = 0;
-    const cl = $('s4close');
-    cl.querySelectorAll('.close').forEach((l, i) => {
-      const p = eOut(seg(t, wordsEnd + 0.05 + i * 0.18, 0.45)); css(l, { opacity: p, transform: `translateY(${(1 - p) * 50}px)` });
-    });
-    cl.style.top = (H / 2 - cl.offsetHeight / 2 - 40) + 'px';
+    css(grid, { opacity: 1 - dim, filter: `blur(${dim * 6}px)` });   // some enquanto as frases estão na tela
+    // qual frase está na tela
+    const starts = []; let acc = wStart;
+    C.frases.forEach(f => { starts.push(acc); acc += f.batidas * beat; });
+    let idx = -1; starts.forEach((s0, i) => { if (t >= s0) idx = i; });
+    const fStart = starts[idx];
+    const wd = $('s4word'), fl = $('s4flag');
+    if (idx >= 0) {
+      const f = C.frases[idx], last = idx === C.frases.length - 1;
+      const per = last ? T.premio - fStart : f.batidas * beat, lt = t - fStart;
+      if (wd.dataset.i != idx) { wd.innerHTML = `<div class="phrase">${f.texto}</div>`; wd.dataset.i = idx; }
+      const p = eOut4(seg(lt, 0, 0.22)), out = 1 - seg(lt, per - 0.12, 0.12);
+      // bandeira: entra junto com o primeiro texto do país e continua nas frases seguintes do mesmo país
+      const prev = C.frases[idx - 1], next = C.frases[idx + 1];
+      const flagIn = f.bandeira && !(prev && prev.bandeira === f.bandeira);
+      const flagOut = f.bandeira && !(next && next.bandeira === f.bandeira);
+      if (fl.dataset.b !== String(f.bandeira)) { fl.innerHTML = f.bandeira ? `<span class="flag">${BANDEIRAS[f.bandeira]}</span>` : ''; fl.dataset.b = String(f.bandeira); }
+      const fp = f.bandeira ? (flagIn ? eBack(seg(lt, 0, 0.4)) : 1) * (flagOut ? out : 1) : 0;
+      css(fl, { opacity: clamp(fp), transform: `scale(${0.7 + 0.3 * clamp(fp, 0, 1.2)}) rotate(${(1 - clamp(fp)) * -6}deg)` });
+      const blockH = wd.offsetHeight + (f.bandeira ? 240 : 0);
+      const top0 = H / 2 - blockH / 2 - 40;
+      fl.style.top = top0 + 'px';
+      wd.style.top = top0 + (f.bandeira ? 240 : 0) + 'px';
+      css(wd, { opacity: p * out, transform: `scale(${1.08 - 0.08 * p})` });
+    } else { wd.style.opacity = 0; fl.style.opacity = 0; }
   }
 
   // cena 5: prêmios (kit de hora em hora → mala pra quem ficar até o fim)
@@ -402,14 +431,18 @@ async function render(t) {
     const a = T.premio, L = t - a, m = a + C.PREMIOS.malaEntraEm;
     css($('g51'), { transform: `translate(${-200 + Math.sin(L * .6) * 120}px,${100 + Math.cos(L * .5) * 100}px)` });
     css($('g52'), { transform: `translate(${450 + Math.cos(L * .5) * 120}px,${1150 + Math.sin(L * .6) * 100}px)` });
+    // 0) título sozinho na tela, depois sobe para o topo
+    const k0 = a + C.PREMIOS.tituloSozinho, tt = $('s5title');
+    const ti = eOut4(seg(t, a + 0.1, 0.45)), tu = eOut4(seg(t, k0, 0.5));
+    const tH = tt.offsetHeight, yC = H / 2 - tH / 2 - 40, yT = C.SAFE.top + 22;                 // origem no topo: o topo visual fica em yT
+    css(tt, { top: (yC + (yT - yC) * tu) + 'px', opacity: ti, transform: `scale(${(0.92 + 0.08 * ti) * (1 - 0.56 * tu)}) translateY(${(1 - ti) * 40}px)`, transformOrigin: '50% 0' });
     // 1) kit entra com scale 0.8 → 1
-    const b = seg(t, a + 0.15, 0.6);
-    const mv = eOut4(seg(t, m - 0.1, 0.55));                        // kit vai pro canto quando a mala entra
-    const ks = (0.8 + 0.2 * eBack(b)) * (1 - 0.58 * mv);
-    css($('kitBox'), { opacity: clamp(b * 2), transform: `translate(${-290 * mv}px,${-330 * mv + Math.sin(L * 2) * 8 * (1 - mv)}px) scale(${ks})` });
+    const b = seg(t, k0 + 0.25, 0.6);
+    const kout = eOut(seg(t, m - 0.15, 0.35));                     // kit sai quando a mala entra
+    css($('kitBox'), { opacity: clamp(b * 2) * (1 - kout), transform: `scale(${(0.8 + 0.2 * eBack(b)) * (1 - 0.2 * kout)}) translateY(${Math.sin(L * 2) * 8}px)` });
     $('kitTxt').querySelectorAll('div').forEach((l, i) => {
-      const p = eOut4(seg(t, a + 0.55 + i * 0.15, 0.5)), o = 1 - seg(t, m - 0.2, 0.25);
-      css(l, { opacity: p * o, transform: `translateY(${(1 - p) * 50}px)` });
+      const p = eOut4(seg(t, k0 + 0.6 + i * 0.15, 0.5));
+      css(l, { opacity: p * (1 - kout), transform: `translateY(${(1 - p) * 50}px)` });
     });
     // 2) mala entra maior, com destaque
     const q = seg(t, m + 0.1, 0.7);
@@ -453,6 +486,11 @@ async function tileBg(el, src) {
   if (a > 200 && r + g + b < 690) { el.style.background = `rgb(${r},${g},${b})`; el.style.borderColor = `rgb(${r},${g},${b})`; }
   else el.querySelector('img').style.mixBlendMode = 'multiply';   // some com o fundo quase branco do arquivo
 }
+const BANDEIRAS = {
+  irlanda: '<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#FFFFFF"/><rect x="2" width="1" height="2" fill="#FF883E"/></svg>',
+  malta: '<svg viewBox="0 0 30 20"><rect width="15" height="20" fill="#FFFFFF"/><rect x="15" width="15" height="20" fill="#CF142B"/>' +
+    '<g transform="translate(2.2 2.2)"><path d="M2 0h2v2h2v2H4v2H2V4H0V2h2z" fill="#B0B0B0" stroke="#CF142B" stroke-width=".35"/></g></svg>',
+};
 function fitWord(el) {
   let fs = 240; el.style.fontSize = fs + 'px';
   while (el.scrollWidth > W - 2 * S.side && fs > 40) { fs -= 6; el.style.fontSize = fs + 'px'; }
