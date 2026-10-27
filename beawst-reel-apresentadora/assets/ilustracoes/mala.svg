@@ -16,9 +16,9 @@
   </g>
   <rect x="190" y="430" width="420" height="16" fill="#000" opacity=".12"/>
   <!-- adesivos -->
-  <!-- logo da Beawst na lateral da mala -->
-  <rect x="300" y="262" width="200" height="250" rx="26" fill="#FFFFFF"/>
-  <image href="logo-beawst.png" x="318" y="278" width="164" height="218" preserveAspectRatio="xMidYMid meet"/>
+  <!-- logo da feira na lateral da mala -->
+  <rect x="228" y="290" width="344" height="128" rx="24" fill="#FFFFFF"/>
+  <image href="logo-premios.png" x="244" y="302" width="312" height="104" preserveAspectRatio="xMidYMid meet"/>
   <rect x="455" y="520" width="110" height="64" rx="14" fill="#fff" transform="rotate(-10 510 552)"/>
   <path d="M478 560 l 22 -22 l 18 14 l 28 -26" fill="none" stroke="#F0102A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-10 510 552)"/>
   <!-- etiqueta -->

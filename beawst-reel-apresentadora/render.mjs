@@ -21,14 +21,15 @@ const MANIFEST = {
   locucao: has('locucao.mp3'),
   video: has('apresentadora.mp4'),
 };
-const faltando = ['apresentadora.jpg', 'logo-feira.png', 'logo-beawst.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
+const faltando = ['apresentadora.jpg', 'logo-feira.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
 if (!MANIFEST.parceiros.length) faltando.push('parceiros/ (vazia)');
 console.log('assets faltando (aparecem como placeholder):', faltando.join(', ') || 'nenhum');
 
 // --allow-file-access-from-files: deixa o canvas ler a cor de fundo das logos dos parceiros
 const browser = await chromium.launch({ args: ['--allow-file-access-from-files'], ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
-// ilustrações (assets/ilustracoes/*.svg -> .png). O logo usado nelas é assets/logo-beawst.png;
-// se ele não existir, usa o redesenho em assets/ilustracoes/logo-beawst.svg.
+// ilustrações (assets/ilustracoes/*.svg -> .png). O logo estampado nos prêmios é LOGO_PREMIOS
+// (hoje o logo da feira); trocar aqui se a cliente mandar outro.
+const LOGO_PREMIOS = 'logo-feira.png';
 {
   const il = path.join(dir, 'assets', 'ilustracoes');
   const ip = await browser.newPage({ viewport: { width: 800, height: 800 }, deviceScaleFactor: 2 });
@@ -38,8 +39,7 @@ const browser = await chromium.launch({ args: ['--allow-file-access-from-files']
     await ip.waitForLoadState('load');
     await ip.screenshot({ path: path.join(il, png), omitBackground: true });
   };
-  if (has('logo-beawst.png')) fs.copyFileSync(path.join(dir, 'assets', 'logo-beawst.png'), path.join(il, 'logo-beawst.png'));
-  else await shot('logo-beawst.svg', 'logo-beawst.png', 240, 340);
+  fs.copyFileSync(path.join(dir, 'assets', LOGO_PREMIOS), path.join(il, 'logo-premios.png'));
   await shot('kit.svg', 'kit.png', 800, 800);
   await shot('mala.svg', 'mala.png', 800, 800);
   await ip.close();
