@@ -27,9 +27,8 @@ console.log('assets faltando (aparecem como placeholder):', faltando.join(', ') 
 
 // --allow-file-access-from-files: deixa o canvas ler a cor de fundo das logos dos parceiros
 const browser = await chromium.launch({ args: ['--allow-file-access-from-files'], ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
-// ilustrações (assets/ilustracoes/*.svg -> .png). O logo estampado nos prêmios é LOGO_PREMIOS
-// (hoje o logo da feira); trocar aqui se a cliente mandar outro.
-const LOGO_PREMIOS = 'logo-feira.png';
+// ilustrações (assets/ilustracoes/*.svg -> .png). O logo estampado nos prêmios é o logo da feira
+// vetorizado (assets/logo-feira-cor.svg e assets/logo-feira-branco.svg).
 {
   const il = path.join(dir, 'assets', 'ilustracoes');
   const ip = await browser.newPage({ viewport: { width: 800, height: 800 }, deviceScaleFactor: 2 });
@@ -39,7 +38,6 @@ const LOGO_PREMIOS = 'logo-feira.png';
     await ip.waitForLoadState('load');
     await ip.screenshot({ path: path.join(il, png), omitBackground: true });
   };
-  fs.copyFileSync(path.join(dir, 'assets', LOGO_PREMIOS), path.join(il, 'logo-premios.png'));
   await shot('kit.svg', 'kit.png', 800, 800);
   await shot('mala.svg', 'mala.png', 800, 800);
   await ip.close();

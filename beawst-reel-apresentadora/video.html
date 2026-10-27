@@ -64,8 +64,8 @@ const CONFIG = {
   ASSETS: {
     fotoApresentadora: 'assets/apresentadora.jpg',
     videoApresentadora: 'assets/apresentadora.mp4',   // se existir, substitui a foto nas cenas 1 e 2
-    logoFeira: 'assets/logo-feira.png',
-    logoBeawst: 'assets/logo-feira.png',            // rodapé da cena final
+    logoFeira: 'assets/logo-feira-branco.svg',      // cena da data (sobre o roxo, sem fundo)
+    logoBeawst: 'assets/logo-feira-branco.svg',     // rodapé da cena final (sobre o roxo, sem fundo)
     parceirosPlaceholder: 9,                          // quantos quadros vazios mostrar se a pasta parceiros/ estiver vazia
   },
 
@@ -266,7 +266,7 @@ async function build() {
     <div class="cred" id="cred" style="margin-top:26px">${C.credencial.split('|').map(x => x.trim()).join('<br>')}</div>`;
   // cena 3
   const lf = await loadImg(C.ASSETS.logoFeira);
-  $('s3logo').innerHTML = lf ? `<span class="logoCard"><img src="${C.ASSETS.logoFeira}" style="width:470px;display:block"></span>`
+  $('s3logo').innerHTML = lf ? `<img src="${C.ASSETS.logoFeira}" style="width:560px;display:inline-block">`
     : `<div style="display:inline-block;width:560px;height:160px;color:#fff">${placeholder('logo-feira.png', 'style="height:100%"')}</div>`;
   $('s3date').innerHTML = `<span class="date">${C.data}</span>`;
   $('s3hora').textContent = C.horario;
@@ -302,7 +302,7 @@ async function build() {
     <svg id="arrow" width="70" height="90" viewBox="0 0 70 90" style="margin-top:22px"><path d="M35 6v70M10 52l25 26 25-26" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   $('s6i').textContent = C.ctaInfo;
   const lb = await loadImg(C.ASSETS.logoBeawst);
-  $('s6logo').innerHTML = lb ? `<span class="logoCard" style="padding:20px 32px"><img src="${C.ASSETS.logoBeawst}" style="height:120px;display:block"></span>`
+  $('s6logo').innerHTML = lb ? `<img src="${C.ASSETS.logoBeawst}" style="width:440px;display:inline-block">`
     : `<div style="display:inline-block;width:420px;height:150px;color:#fff">${placeholder('logo-beawst.png', 'style="height:100%"')}</div>`;
 
   // legenda (só com locução); com legenda, o bloco do nome sobe para não colidir

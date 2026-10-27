@@ -1,30 +1,76 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <!-- Mala de rodinhas (casco rígido) com o logo da feira estampado na frente -->
   <defs>
-    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6A12E8"/><stop offset=".55" stop-color="#A3127F"/><stop offset="1" stop-color="#F0102A"/></linearGradient>
+    <filter id="sombra" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="fino"><feGaussianBlur stdDeviation="3"/></filter>
+    <linearGradient id="casco" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6B10EA"/><stop offset=".5" stop-color="#A3127F"/><stop offset="1" stop-color="#EE1230"/>
+    </linearGradient>
+    <linearGradient id="lateral" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D0A8C"/><stop offset="1" stop-color="#7A0C25"/></linearGradient>
+    <linearGradient id="brilho" x1="0" y1="0" x2="1" y2=".6">
+      <stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".35" stop-color="#fff" stop-opacity=".06"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".18"/>
+    </linearGradient>
+    <linearGradient id="aluminio" x1="0" x2="1"><stop offset="0" stop-color="#8D8A99"/><stop offset=".45" stop-color="#F2F1F6"/><stop offset="1" stop-color="#9D9AAA"/></linearGradient>
+    <clipPath id="cortecasco"><rect x="200" y="196" width="400" height="508" rx="58"/></clipPath>
   </defs>
-  <ellipse cx="400" cy="735" rx="230" ry="26" fill="#000" opacity=".25"/>
+
+  <ellipse cx="420" cy="748" rx="250" ry="26" fill="#000" opacity=".5" filter="url(#sombra)"/>
+
   <!-- alça telescópica -->
-  <rect x="330" y="70" width="18" height="150" rx="9" fill="#C9C4D3"/>
-  <rect x="452" y="70" width="18" height="150" rx="9" fill="#C9C4D3"/>
-  <rect x="318" y="56" width="164" height="36" rx="18" fill="#2A2533"/>
-  <!-- corpo -->
-  <rect x="190" y="200" width="420" height="500" rx="56" fill="url(#body)"/>
-  <rect x="190" y="200" width="420" height="500" rx="56" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="6"/>
-  <!-- frisos -->
-  <g stroke="#fff" stroke-opacity=".22" stroke-width="14" stroke-linecap="round">
-    <line x1="300" y1="250" x2="300" y2="650"/><line x1="400" y1="250" x2="400" y2="650"/><line x1="500" y1="250" x2="500" y2="650"/>
+  <rect x="338" y="74" width="18" height="140" rx="6" fill="url(#aluminio)"/>
+  <rect x="444" y="74" width="18" height="140" rx="6" fill="url(#aluminio)"/>
+  <rect x="322" y="50" width="156" height="40" rx="20" fill="#1E1B26"/>
+  <rect x="332" y="54" width="136" height="10" rx="5" fill="#fff" opacity=".12"/>
+
+  <!-- profundidade (lateral) -->
+  <rect x="224" y="206" width="404" height="506" rx="58" fill="url(#lateral)"/>
+
+  <!-- rodinhas de trás -->
+  <g fill="#15131B"><rect x="572" y="700" width="40" height="22" rx="8"/><circle cx="592" cy="726" r="17"/></g>
+  <!-- casco -->
+  <rect x="200" y="196" width="400" height="508" rx="58" fill="url(#casco)"/>
+  <g clip-path="url(#cortecasco)">
+    <!-- frisos -->
+    <g stroke-linecap="round">
+      <line x1="252" y1="250" x2="252" y2="650" stroke="#fff" stroke-opacity=".22" stroke-width="8"/>
+      <line x1="262" y1="250" x2="262" y2="650" stroke="#000" stroke-opacity=".16" stroke-width="6"/>
+      <line x1="538" y1="250" x2="538" y2="650" stroke="#fff" stroke-opacity=".22" stroke-width="8"/>
+      <line x1="548" y1="250" x2="548" y2="650" stroke="#000" stroke-opacity=".16" stroke-width="6"/>
+    </g>
+    <!-- reflexo -->
+    <rect x="200" y="196" width="400" height="508" fill="url(#brilho)"/>
+    <path d="M200 196 L 330 196 L 200 420 Z" fill="#fff" opacity=".1"/>
   </g>
-  <rect x="190" y="430" width="420" height="16" fill="#000" opacity=".12"/>
-  <!-- adesivos -->
-  <!-- logo da feira na lateral da mala -->
-  <rect x="228" y="290" width="344" height="128" rx="24" fill="#FFFFFF"/>
-  <image href="logo-premios.png" x="244" y="302" width="312" height="104" preserveAspectRatio="xMidYMid meet"/>
-  <rect x="455" y="520" width="110" height="64" rx="14" fill="#fff" transform="rotate(-10 510 552)"/>
-  <path d="M478 560 l 22 -22 l 18 14 l 28 -26" fill="none" stroke="#F0102A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" transform="rotate(-10 510 552)"/>
-  <!-- etiqueta -->
-  <path d="M610 300 q 40 10 46 60" fill="none" stroke="#2A2533" stroke-width="6"/>
-  <rect x="628" y="356" width="56" height="84" rx="10" fill="#fff" transform="rotate(12 656 398)"/>
-  <!-- rodinhas -->
-  <circle cx="260" cy="712" r="22" fill="#2A2533"/><circle cx="540" cy="712" r="22" fill="#2A2533"/>
-  <circle cx="260" cy="712" r="8" fill="#8A8496"/><circle cx="540" cy="712" r="8" fill="#8A8496"/>
+  <!-- zíper -->
+  <rect x="214" y="210" width="372" height="480" rx="46" fill="none" stroke="#000" stroke-opacity=".28" stroke-width="5"/>
+  <rect x="219" y="215" width="362" height="470" rx="42" fill="none" stroke="#fff" stroke-opacity=".14" stroke-width="2"/>
+  <!-- cantoneiras -->
+  <g fill="#1E1B26" opacity=".7">
+    <path d="M200 268 V 254 a58 58 0 0 1 58 -58 h14 v18 h-14 a40 40 0 0 0 -40 40 v14 z"/>
+    <path d="M600 268 V 254 a58 58 0 0 0 -58 -58 h-14 v18 h14 a40 40 0 0 1 40 40 v14 z"/>
+    <path d="M200 632 V 646 a58 58 0 0 0 58 58 h14 v-18 h-14 a40 40 0 0 1 -40 -40 v-14 z"/>
+    <path d="M600 632 V 646 a58 58 0 0 1 -58 58 h-14 v-18 h14 a40 40 0 0 0 40 -40 v-14 z"/>
+  </g>
+  <!-- alça de mão no topo -->
+  <path d="M352 200 v-18 a14 14 0 0 1 14 -14 h68 a14 14 0 0 1 14 14 v18" fill="none" stroke="#1E1B26" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- logo estampado (branco): coruja em cima, nome embaixo -->
+  <svg x="339" y="298" width="122" height="193" viewBox="0 0 395 624"><image href="../logo-feira-branco.svg" width="2040" height="624"/></svg>
+  <svg x="278" y="506" width="244" height="95" viewBox="440 0 1600 624"><image href="../logo-feira-branco.svg" width="2040" height="624"/></svg>
+
+  <!-- etiqueta de bagagem -->
+  <path d="M448 186 q 70 -6 92 64" fill="none" stroke="#1E1B26" stroke-width="5"/>
+  <g transform="rotate(14 560 290)">
+    <rect x="530" y="244" width="62" height="94" rx="12" fill="#FFFFFF"/>
+    <circle cx="561" cy="260" r="6" fill="#1E1B26"/>
+    <rect x="542" y="284" width="38" height="6" rx="3" fill="#5B00D6" opacity=".6"/>
+    <rect x="542" y="298" width="28" height="6" rx="3" fill="#A3127F" opacity=".5"/>
+  </g>
+
+  <!-- rodinhas da frente -->
+  <g>
+    <rect x="226" y="700" width="44" height="24" rx="8" fill="#1E1B26"/><circle cx="248" cy="730" r="20" fill="#15131B"/><circle cx="248" cy="730" r="7" fill="#7F7B8C"/>
+    <rect x="530" y="700" width="44" height="24" rx="8" fill="#1E1B26"/><circle cx="552" cy="730" r="20" fill="#15131B"/><circle cx="552" cy="730" r="7" fill="#7F7B8C"/>
+  </g>
 </svg>
