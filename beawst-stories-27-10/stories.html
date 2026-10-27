@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Stories 27/10</title>
+<!--
+  Stories de 27/10 (revelação da apresentadora), 1080x1920.
+  Abrir com ?s=1, ?s=3 ou ?s=4 para ver uma arte; &guia=1 mostra onde colar os adesivos.
+  Gerar os PNGs: node render.mjs
+  Zona segura: nada de texto nos 250px de cima nem nos 340px de baixo.
+-->
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;
+  --grad:linear-gradient(90deg,#5B00D6 0%,#A3127F 50%,#F0102A 100%);
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+.story{position:absolute;inset:0;overflow:hidden;display:none}
+.abs{position:absolute}
+.c{left:0;width:100%;text-align:center;padding:0 80px;text-wrap:balance}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.photo{position:absolute;left:50%;top:50%;width:1306px;height:1920px;margin-left:-653px;margin-top:-960px;object-fit:cover}
+.glow{position:absolute;border-radius:50%;filter:blur(130px)}
+.logoCard{display:inline-block;background:#fff;border-radius:24px;padding:20px 32px}
+.logoCard img{display:block}
+.pill{display:inline-block;font-weight:800;font-size:30px;letter-spacing:.14em;text-transform:uppercase;background:var(--roxo);padding:16px 28px;border-radius:999px}
+.huge{font-weight:900;line-height:.95;letter-spacing:-.03em}
+.mid{font-weight:800;font-size:54px;line-height:1.18}
+.info{font-weight:700;font-size:36px;color:rgba(255,255,255,.9)}
+.hint{font-weight:800;font-size:46px}
+.arrow{display:inline-block;vertical-align:middle;margin-left:10px}
+/* guia de adesivos (só na versão &guia=1) */
+.guide{position:absolute;left:150px;right:150px;border:5px dashed rgba(255,255,255,.9);border-radius:36px;display:none;
+  align-items:center;justify-content:center;font-weight:800;font-size:34px;letter-spacing:.1em;background:rgba(255,255,255,.12)}
+body.guia .guide{display:flex}
+</style>
+</head>
+<body>
+
+<!-- 1. Teaser + enquete -->
+<div class="story" id="s1">
+  <img class="photo" src="assets/apresentadora.jpg" style="filter:blur(55px) brightness(.38) saturate(1.1);transform:scale(1.15)">
+  <div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(91,0,214,.35),rgba(14,7,22,.2) 45%,rgba(163,18,127,.35))"></div>
+  <div class="abs c" style="top:280px"><span class="logoCard"><img src="assets/logo-feira.png" style="width:300px"></span></div>
+  <div class="abs c" style="top:500px"><span class="pill">novidade na feira</span></div>
+  <div class="abs c huge" style="top:610px;font-size:160px">Hoje tem<br><span class="gradL">novidade</span><br>grande</div>
+  <div class="abs c mid" style="top:1120px">Chuta: quem vai apresentar<br>a Beawst Global Connect?</div>
+  <div class="guide" style="top:1300px;height:250px">ENQUETE</div>
+</div>
+
+<!-- 3. Sim, é ela + link -->
+<div class="story" id="s3">
+  <img class="photo" src="assets/apresentadora.jpg" style="transform:translateY(60px)">
+  <div class="abs" style="left:0;right:0;top:0;height:640px;background:linear-gradient(180deg,rgba(14,7,22,.92) 30%,rgba(14,7,22,0))"></div>
+  <div class="abs" style="left:0;right:0;bottom:0;height:1150px;background:linear-gradient(180deg,rgba(14,7,22,0),rgba(14,7,22,.8) 45%,rgba(14,7,22,.95))"></div>
+  <div class="abs c huge" style="top:270px;font-size:112px">Sim, <span style="background:var(--roxo);padding:0 22px 8px;border-radius:22px">é ela!</span></div>
+  <div class="abs" style="left:80px;right:80px;top:850px">
+    <div class="huge" style="font-size:140px;line-height:.92">Samanta<br>Lopes</div>
+    <div style="margin-top:28px"><span class="pill">apresentadora oficial</span></div>
+    <div class="info" style="margin-top:22px;font-size:38px;font-weight:800;color:#fff">da Beawst Global Connect 2026</div>
+    <div class="info" style="margin-top:8px">07/11 · a partir das 8h30 · online e gratuito</div>
+  </div>
+  <div class="abs c hint" style="top:1370px">Garanta sua vaga
+    <svg class="arrow" width="40" height="52" viewBox="0 0 70 90"><path d="M35 6v70M10 52l25 26 25-26" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="guide" style="top:1450px;height:115px">LINK DE INSCRIÇÃO</div>
+</div>
+
+<!-- 4. Contagem regressiva (reutilizável nos próximos dias) -->
+<div class="story" id="s4" style="background:var(--roxo)">
+  <div class="glow" style="width:900px;height:900px;background:var(--magenta);opacity:.55;left:-280px;top:-150px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.35;left:520px;top:1250px"></div>
+  <div class="abs c" style="top:280px"><span class="logoCard"><img src="assets/logo-feira.png" style="width:300px"></span></div>
+  <div class="abs c huge" style="top:500px;font-size:140px">A contagem<br>começou</div>
+  <div class="abs c huge" style="top:820px;font-size:320px;letter-spacing:-.05em">07/11</div>
+  <div class="abs c info" style="top:1130px;font-size:40px">a partir das 8h30 · online e gratuito</div>
+  <div class="abs c hint" style="top:1215px">Ativa o lembrete pra não perder
+    <svg class="arrow" width="40" height="52" viewBox="0 0 70 90"><path d="M35 6v70M10 52l25 26 25-26" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="guide" style="top:1310px;height:250px">CONTAGEM REGRESSIVA</div>
+</div>
+
+<script>
+const q = new URLSearchParams(location.search);
+document.getElementById('s' + (q.get('s') || '1')).style.display = 'block';
+if (q.get('guia')) document.body.classList.add('guia');
+</script>
+</body>
+</html>
