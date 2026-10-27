@@ -21,11 +21,12 @@ const MANIFEST = {
   locucao: has('locucao.mp3'),
   video: has('apresentadora.mp4'),
 };
-const faltando = ['apresentadora.jpg', 'logo-feira.png', 'logo-beawst.png', 'kit.png', 'mala.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
+const faltando = ['apresentadora.jpg', 'logo-feira.png', 'kit.png', 'mala.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
 if (!MANIFEST.parceiros.length) faltando.push('parceiros/ (vazia)');
 console.log('assets faltando (aparecem como placeholder):', faltando.join(', ') || 'nenhum');
 
-const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
+// --allow-file-access-from-files: deixa o canvas ler a cor de fundo das logos dos parceiros
+const browser = await chromium.launch({ args: ['--allow-file-access-from-files'], ...(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}) });
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
 await page.addInitScript(m => { window.MANIFEST = m; }, MANIFEST);
 await page.goto(pathToFileURL(path.join(dir, 'video.html')).href + '?render');

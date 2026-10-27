@@ -50,7 +50,7 @@ const CONFIG = {
     fotoApresentadora: 'assets/apresentadora.jpg',
     videoApresentadora: 'assets/apresentadora.mp4',   // se existir, substitui a foto nas cenas 1 e 2
     logoFeira: 'assets/logo-feira.png',
-    logoBeawst: 'assets/logo-beawst.png',
+    logoBeawst: 'assets/logo-feira.png',            // rodapé da cena final
     parceirosPlaceholder: 9,                          // quantos quadros vazios mostrar se a pasta parceiros/ estiver vazia
   },
 
@@ -248,8 +248,8 @@ async function build() {
   $('s3ctx').innerHTML = C.contexto.map(l => `<div class="ctxl">${l}</div>`).join('');
   // cena 4: grade de parceiros
   const list = (M.parceiros && M.parceiros.length) ? M.parceiros : Array.from({ length: C.ASSETS.parceirosPlaceholder }, () => null);
-  const cols = list.length <= 4 ? 2 : 3, rows = Math.ceil(list.length / cols);
-  const tw = cols === 2 ? 420 : 280, th = cols === 2 ? 240 : 190, gap = 26;
+  const cols = list.length <= 3 ? 1 : list.length <= 4 ? 2 : 3, rows = Math.ceil(list.length / cols);
+  const tw = [760, 420, 280][cols - 1], th = [270, 240, 190][cols - 1], gap = 30;
   const gw = cols * tw + (cols - 1) * gap, gh = rows * th + (rows - 1) * gap;
   const gx = (W - gw) / 2, gy = 250 + (H - 250 - 340 - gh) / 2;
   partners = list.map((file, i) => {
@@ -257,6 +257,7 @@ async function build() {
     el.className = 'tile';
     css(el, { width: tw + 'px', height: th + 'px', left: gx + (i % cols) * (tw + gap) + 'px', top: gy + Math.floor(i / cols) * (th + gap) + 'px' });
     el.innerHTML = file ? `<img src="assets/parceiros/${file}">` : placeholder(`parceiros/logo-${i + 1}.png`);
+    if (file) tileBg(el, `assets/parceiros/${file}`);
     $('grid').appendChild(el);
     return el;
   });
@@ -442,6 +443,15 @@ async function render(t) {
   const lg = M.locucao && C.legendas.find(l => t >= l.start && t < l.end);
   cap.style.display = lg ? 'block' : 'none';
   if (lg) cap.textContent = lg.text;
+}
+// logo com fundo próprio (ex.: preto): o card assume a cor do canto da imagem
+async function tileBg(el, src) {
+  const img = await loadImg(src); if (!img) return;
+  const c = document.createElement('canvas'); c.width = c.height = 1;
+  const x = c.getContext('2d'); x.drawImage(img, 2, 2, 1, 1, 0, 0, 1, 1);
+  const [r, g, b, a] = x.getImageData(0, 0, 1, 1).data;
+  if (a > 200 && r + g + b < 690) { el.style.background = `rgb(${r},${g},${b})`; el.style.borderColor = `rgb(${r},${g},${b})`; }
+  else el.querySelector('img').style.mixBlendMode = 'multiply';   // some com o fundo quase branco do arquivo
 }
 function fitWord(el) {
   let fs = 240; el.style.fontSize = fs + 'px';
