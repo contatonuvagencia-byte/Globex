@@ -21,7 +21,7 @@ const MANIFEST = {
   locucao: has('locucao.mp3'),
   video: has('apresentadora.mp4'),
 };
-const faltando = ['apresentadora.jpg', 'logo-feira.png', 'logo-beawst.png', 'premio.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
+const faltando = ['apresentadora.jpg', 'logo-feira.png', 'logo-beawst.png', 'kit.png', 'mala.png', 'trilha.mp3', 'locucao.mp3'].filter(f => !has(f));
 if (!MANIFEST.parceiros.length) faltando.push('parceiros/ (vazia)');
 console.log('assets faltando (aparecem como placeholder):', faltando.join(', ') || 'nenhum');
 
@@ -58,7 +58,7 @@ await page.evaluate(t => window.render(t), C.QUADRO_CAPA);
 await page.screenshot({ path: path.join(out, 'capa-reel-apresentadora.png') });
 const T = C.CENAS;
 const checks = { '1-gancho': 2.6, '2-revelacao': C.QUADRO_CAPA, '3-contexto': T.parceiros - 0.4, '4a-palavra': T.parceiros + 2.4,
-  '4b-fechamento': T.premio - 0.3, '5-premio': T.cta - 0.4, '6-cta': C.DURATION - 0.1 };
+  '4b-fechamento': T.premio - 0.3, '5a-kit': T.premio + 3.0, '5b-mala': T.cta - 0.4, '6-cta': C.DURATION - 0.1 };
 for (const [n, t] of Object.entries(checks)) {
   await page.evaluate(t => window.render(t), t);
   await page.screenshot({ path: path.join(out, `cena-${n}.png`) });

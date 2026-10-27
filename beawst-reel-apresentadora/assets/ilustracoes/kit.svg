@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="pil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2D5BA8"/><stop offset="1" stop-color="#1B3A78"/></linearGradient>
+    <linearGradient id="bot" x1="0" x2="1"><stop offset="0" stop-color="#E4E1EA"/><stop offset=".35" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D9D5E0"/></linearGradient>
+  </defs>
+  <!-- sombras -->
+  <ellipse cx="300" cy="690" rx="230" ry="26" fill="#000" opacity=".22"/>
+  <ellipse cx="560" cy="712" rx="110" ry="18" fill="#000" opacity=".25"/>
+  <!-- travesseiro de pescoço -->
+  <path d="M175 600 C 95 470, 140 300, 300 290 C 460 300, 505 470, 425 600" fill="none" stroke="url(#pil)" stroke-width="128" stroke-linecap="round"/>
+  <path d="M180 560 C 125 450, 165 335, 300 330" fill="none" stroke="#5E8BD6" stroke-width="22" stroke-linecap="round" opacity=".55"/>
+  <rect x="268" y="600" width="64" height="34" rx="12" fill="#163064"/>
+  <circle cx="300" cy="617" r="8" fill="#9FB6E0"/>
+  <!-- garrafinha -->
+  <rect x="490" y="140" width="140" height="570" rx="30" fill="url(#bot)"/>
+  <rect x="490" y="140" width="140" height="118" rx="30" fill="#F7F6FA"/>
+  <rect x="490" y="250" width="140" height="14" fill="#3A3A44"/>
+  <rect x="506" y="290" width="14" height="380" rx="7" fill="#fff" opacity=".8"/>
+  <!-- coruja (logo em traço) -->
+  <g fill="none" stroke="#E1262D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M538 470 C 528 440, 528 402, 540 386 L 537 364 L 552 377 Q 560 373 568 377 L 583 364 L 580 386 C 592 402, 592 440, 582 470"/>
+    <path d="M545 389 L 560 401 L 575 389"/>
+    <path d="M567 420 C 587 421, 590 452, 579 468 C 566 458, 562 438, 567 420 Z"/>
+    <rect x="524" y="470" width="72" height="15" rx="4"/>
+  </g>
+  <circle cx="549" cy="404" r="4" fill="#E1262D"/><circle cx="571" cy="404" r="4" fill="#E1262D"/>
+  <text x="560" y="522" text-anchor="middle" font-family="Montserrat,Arial" font-weight="800" font-size="24" fill="#E1262D" letter-spacing="2">BEAWST</text>
+</svg>

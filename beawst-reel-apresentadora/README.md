@@ -5,7 +5,7 @@ Entregas em `out/`: `reel-apresentadora.mp4` (1080×1920, 30fps, H.264 + AAC, 30
 ## Trocar textos e renderizar de novo
 1. Edite o `CONFIG` no topo de `video.html` (nome, credencial, prêmio, data, cores, tempos das cenas).
 2. Coloque os assets em `assets/` (os que faltam aparecem como retângulo "FALTA <arquivo>"):
-   `apresentadora.jpg` ou `.mp4`, `logo-feira.png`, `logo-beawst.png`, `premio.png`, `parceiros/*.png`, `trilha.mp3`, `locucao.mp3` (opcional).
+   `apresentadora.jpg` ou `.mp4`, `logo-feira.png`, `logo-beawst.png`, `kit.png`, `mala.png`, `parceiros/*.png`, `trilha.mp3`, `locucao.mp3` (opcional).
 3. `node render.mjs` (precisa de Playwright/Chromium, ffmpeg e python3 com numpy).
    `node render.mjs --stills` gera só a capa e os prints de conferência.
 

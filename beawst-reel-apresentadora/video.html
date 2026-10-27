@@ -12,26 +12,26 @@ const CONFIG = {
   apresentadora: 'Samanta Lopes',
   cargo: 'apresentadora oficial',
   credencial: 'educadora e empreendedora | +25 anos de mercado',
-  premio: '[PRÊMIO PRINCIPAL]',
-  premioIntro: 'quem estiver ao vivo concorre a',
   data: '07/11',
-  infos: ['online', '|', 'gratuita'],              // cada item entra separado
+  horario: 'a partir das 8h30',
+  infos: ['online', 'e', 'gratuito'],              // cada item entra separado
   gancho: ['Adivinha quem vai comandar', 'a Beawst Global Connect?'],
   contexto: ['escolas, faculdades e especialistas', 'do mundo todo, e você assiste de casa'],  // [] para tirar
   palavras: ['visto', 'custo', 'destino', 'curso'],
   fechamentoParceiros: ['tudo ao vivo,', 'com quem entende'],
   ctaTitulo: ['Garante', 'sua vaga'],
   cta: 'Link na bio',
-  ctaInfo: '07/11 · online e gratuita',            // '' para tirar
+  ctaInfo: '07/11 · a partir das 8h30 · online e gratuito',            // '' para tirar
 
   // Legendas: só aparecem se existir assets/locucao.mp3 (ajuste os tempos à locução)
   legendas: [
     { start: 0.0,  end: 3.0,  text: 'Sabe quem vai apresentar a feira de intercâmbio que você não pode perder?' },
-    { start: 3.0,  end: 8.0,  text: 'Ela mesma: Samanta Lopes. Educadora, empreendedora e mais de 25 anos conectando pessoas.' },
-    { start: 8.0,  end: 15.0, text: 'Dia 7 de novembro, online e de graça. E você assiste de casa.' },
+    { start: 3.0,  end: 8.0,  text: 'Ela mesma: Samanta Lopes. Educadora, empreendedora e mais de 25 anos conectando pessoas, inovação e aprendizagem.' },
+    { start: 8.0,  end: 15.0, text: 'Dia 7 de novembro, a partir das 8h30, online e de graça. E você assiste de casa.' },
     { start: 15.0, end: 22.0, text: 'Visto, custo, destino, curso. Você tira dúvida ao vivo, com quem entende.' },
-    { start: 22.0, end: 27.0, text: 'E quem estiver ao vivo ainda concorre a [prêmio].' },
-    { start: 27.0, end: 30.0, text: 'Garante sua vaga no link da bio. É de graça.' },
+    { start: 22.0, end: 25.5, text: 'E tem prêmio de hora em hora pra quem estiver ao vivo.' },
+    { start: 25.5, end: 30.0, text: 'Quem ficar até o fim ainda concorre a uma mala de viagem.' },
+    { start: 30.0, end: 33.0, text: 'Garante sua vaga no link da bio. É de graça.' },
   ],
 
   CORES: {
@@ -51,16 +51,22 @@ const CONFIG = {
     videoApresentadora: 'assets/apresentadora.mp4',   // se existir, substitui a foto nas cenas 1 e 2
     logoFeira: 'assets/logo-feira.png',
     logoBeawst: 'assets/logo-beawst.png',
-    premio: 'assets/premio.png',
     parceirosPlaceholder: 9,                          // quantos quadros vazios mostrar se a pasta parceiros/ estiver vazia
   },
 
+  // Prêmios (cena 5). Ilustrações em assets/ (fontes editáveis em assets/ilustracoes/*.svg)
+  PREMIOS: {
+    kit:  { imagem: 'assets/kit.png',  texto: ['kit viajante', '<span class="gradL">de hora em hora</span>'] },
+    mala: { imagem: 'assets/mala.png', texto: ['e uma <span class="gradL">mala de viagem</span>', 'pra quem ficar até o fim'] },
+    malaEntraEm: 3.5,                                 // segundos depois do início da cena
+  },
+
   WIDTH: 1080, HEIGHT: 1920, FPS: 30,
-  DURATION: 30,                                       // segundos (máx. 60)
+  DURATION: 33,                                       // segundos (máx. 60)
   SAFE: { top: 250, bottom: 340, side: 80 },
 
   // início de cada cena em segundos (cortes no tempo da música: 120 BPM = 0,5s por batida)
-  CENAS: { gancho: 0, revelacao: 3, contexto: 8, parceiros: 15, premio: 22, cta: 27 },
+  CENAS: { gancho: 0, revelacao: 3, contexto: 8, parceiros: 15, premio: 22, cta: 30 },
   QUADRO_CAPA: 7.2,                                   // segundo usado para gerar a capa
   BPM: 120,
 };
@@ -112,7 +118,7 @@ body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased}
 .prizeBox{position:absolute;left:50%;width:600px;height:600px;margin-left:-300px;display:flex;align-items:center;justify-content:center}
 .prizeBox img{max-width:100%;max-height:100%;object-fit:contain}
 .prizeBox .ph{width:100%;height:100%;color:rgba(255,255,255,.7);font-size:30px}
-.prize{font-weight:900;font-size:112px;line-height:1;color:#fff;letter-spacing:-.02em}
+.prize{font-weight:900;font-size:96px;line-height:1.02;color:#fff;letter-spacing:-.02em}
 /* cena 6 */
 .ctaT{font-weight:900;font-size:176px;line-height:.95;color:#fff;letter-spacing:-.03em}
 .ctaL{font-weight:800;font-size:64px;color:#fff}
@@ -140,8 +146,9 @@ body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased}
     <div class="glow" id="g32" style="width:800px;height:800px;background:var(--vermelho);opacity:.35"></div>
     <div class="abs center" id="s3logo" style="top:290px"></div>
     <div class="abs center mask" id="s3date" style="top:640px"></div>
-    <div class="abs center" id="s3infos" style="top:1040px"></div>
-    <div class="abs center ctx" id="s3ctx" style="top:1260px;padding:0 80px"></div>
+    <div class="abs center infos" id="s3hora" style="top:1030px"></div>
+    <div class="abs center" id="s3infos" style="top:1135px"></div>
+    <div class="abs center ctx" id="s3ctx" style="top:1300px;padding:0 80px"></div>
   </div>
 
   <div class="scene" id="s4" style="background:var(--fundoClaro)">
@@ -155,9 +162,11 @@ body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased}
   <div class="scene" id="s5" style="background:var(--fundoEscuro)">
     <div class="glow" id="g51" style="width:900px;height:900px;background:var(--principal);opacity:.55"></div>
     <div class="glow" id="g52" style="width:800px;height:800px;background:var(--vermelho);opacity:.35"></div>
-    <div class="abs center prizeIntro" id="s5intro" style="top:300px;padding:0 80px"></div>
-    <div class="prizeBox" id="s5box" style="top:470px"></div>
-    <div class="abs center" id="s5prize" style="top:1150px;padding:0 80px"></div>
+    <div class="glow" id="malaGlow" style="width:760px;height:760px;left:160px;top:440px;background:radial-gradient(circle,#A3127F 0%,#5B00D6 45%,transparent 70%);filter:blur(40px);opacity:0"></div>
+    <div class="prizeBox" id="kitBox" style="top:360px;width:680px;height:680px;margin-left:-340px"></div>
+    <div class="abs center prize" id="kitTxt" style="top:1110px;padding:0 70px"></div>
+    <div class="prizeBox" id="malaBox" style="top:450px;width:760px;height:760px;margin-left:-380px;opacity:0"></div>
+    <div class="abs center prize" id="malaTxt" style="top:1250px;padding:0 50px;font-size:70px"></div>
   </div>
 
   <div class="scene" id="s6">
@@ -234,7 +243,8 @@ async function build() {
   $('s3logo').innerHTML = lf ? `<span class="logoCard"><img src="${C.ASSETS.logoFeira}" style="width:470px;display:block"></span>`
     : `<div style="display:inline-block;width:560px;height:160px;color:#fff">${placeholder('logo-feira.png', 'style="height:100%"')}</div>`;
   $('s3date').innerHTML = `<span class="date">${C.data}</span>`;
-  $('s3infos').innerHTML = C.infos.map(w => `<span class="w infos" style="margin:0 14px;${w === '|' ? 'opacity:.55' : ''}">${w}</span>`).join('');
+  $('s3hora').textContent = C.horario;
+  $('s3infos').innerHTML = C.infos.map(w => `<span class="w infos" style="margin:0 12px;font-size:60px;${w === '|' || w === 'e' ? 'opacity:.7' : ''}">${w}</span>`).join('');
   $('s3ctx').innerHTML = C.contexto.map(l => `<div class="ctxl">${l}</div>`).join('');
   // cena 4: grade de parceiros
   const list = (M.parceiros && M.parceiros.length) ? M.parceiros : Array.from({ length: C.ASSETS.parceirosPlaceholder }, () => null);
@@ -251,11 +261,12 @@ async function build() {
     return el;
   });
   $('s4close').innerHTML = `<div class="close">${C.fechamentoParceiros[0]}</div><div class="close grad">${C.fechamentoParceiros[1]}</div>`;
-  // cena 5
-  $('s5intro').textContent = C.premioIntro;
-  const pr = await loadImg(C.ASSETS.premio);
-  $('s5box').innerHTML = pr ? `<img src="${C.ASSETS.premio}">` : placeholder('premio.png');
-  $('s5prize').innerHTML = `<div class="prize">${C.premio}</div><div class="ulbar" id="prizeUl" style="width:420px;background:var(--gradienteClaro)"></div>`;
+  // cena 5: ilustrações dos prêmios (placeholder se faltar arquivo)
+  const kit = await loadImg(C.PREMIOS.kit.imagem), mala = await loadImg(C.PREMIOS.mala.imagem);
+  $('kitBox').innerHTML = kit ? `<img src="${C.PREMIOS.kit.imagem}">` : placeholder(C.PREMIOS.kit.imagem.split('/').pop());
+  $('malaBox').innerHTML = (mala ? `<img src="${C.PREMIOS.mala.imagem}" style="position:relative">` : placeholder(C.PREMIOS.mala.imagem.split('/').pop()));
+  $('kitTxt').innerHTML = C.PREMIOS.kit.texto.map(l => `<div>${l}</div>`).join('');
+  $('malaTxt').innerHTML = C.PREMIOS.mala.texto.map(l => `<div>${l}</div>`).join('');
   // cena 6
   $('s6t').innerHTML = C.ctaTitulo.map(l => `<div>${l}</div>`).join('');
   $('s6l').innerHTML = `<div class="ctaL">${C.cta}</div>
@@ -345,11 +356,12 @@ async function render(t) {
     const lg = eOut(seg(t, a + 0.1, 0.5)); css($('s3logo'), { opacity: lg, transform: `translateY(${(1 - lg) * -30}px)` });
     const d = eOut4(seg(t, a + 0.3, 0.6));
     css($('s3date').firstElementChild, { transform: `translateY(${(1 - d) * 105}%) scale(${1 + 0.035 * seg(t, a + 0.9, 6)})` });
+    const hp = eOut(seg(t, a + 0.85, 0.45)); css($('s3hora'), { opacity: hp, transform: `translateY(${(1 - hp) * 40}px)` });
     $('s3infos').querySelectorAll('.w').forEach((w, i) => {
-      const p = eOut(seg(t, a + 1.0 + i * 0.25, 0.4)); css(w, { opacity: w.textContent === '|' ? p * .55 : p, transform: `translateY(${(1 - p) * 40}px)` });
+      const p = eOut(seg(t, a + 1.2 + i * 0.25, 0.4)); css(w, { opacity: ['|', 'e'].includes(w.textContent) ? p * .7 : p, transform: `translateY(${(1 - p) * 40}px)` });
     });
     $('s3ctx').querySelectorAll('.ctxl').forEach((l, i) => {
-      const p = eOut(seg(t, a + 2.2 + i * 0.3, 0.5)); css(l, { opacity: p, transform: `translateY(${(1 - p) * 30}px)` });
+      const p = eOut(seg(t, a + 2.4 + i * 0.3, 0.5)); css(l, { opacity: p, transform: `translateY(${(1 - p) * 30}px)` });
     });
   }
 
@@ -384,20 +396,31 @@ async function render(t) {
     cl.style.top = (H / 2 - cl.offsetHeight / 2 - 40) + 'px';
   }
 
-  // cena 5: prêmio
+  // cena 5: prêmios (kit de hora em hora → mala pra quem ficar até o fim)
   if (t >= T.premio && t < T.cta) {
-    const a = T.premio, L = t - a;
+    const a = T.premio, L = t - a, m = a + C.PREMIOS.malaEntraEm;
     css($('g51'), { transform: `translate(${-200 + Math.sin(L * .6) * 120}px,${100 + Math.cos(L * .5) * 100}px)` });
     css($('g52'), { transform: `translate(${450 + Math.cos(L * .5) * 120}px,${1150 + Math.sin(L * .6) * 100}px)` });
-    const i1 = eOut(seg(t, a + 0.1, 0.45)); css($('s5intro'), { opacity: i1, transform: `translateY(${(1 - i1) * 30}px)` });
-    const b = seg(t, a + 0.3, 0.6);
-    css($('s5box'), { opacity: clamp(b * 2), transform: `scale(${0.8 + 0.2 * eBack(b)}) translateY(${Math.sin(L * 2) * 8}px)` });
-    const pz = $('s5prize').firstElementChild, p = eOut4(seg(t, a + 0.75, 0.5));
-    css(pz, { opacity: p, transform: `translateY(${(1 - p) * 50}px)` });
-    $('prizeUl').style.transform = `scaleX(${eOut4(seg(t, a + 1.1, 0.5))})`;
+    // 1) kit entra com scale 0.8 → 1
+    const b = seg(t, a + 0.15, 0.6);
+    const mv = eOut4(seg(t, m - 0.1, 0.55));                        // kit vai pro canto quando a mala entra
+    const ks = (0.8 + 0.2 * eBack(b)) * (1 - 0.58 * mv);
+    css($('kitBox'), { opacity: clamp(b * 2), transform: `translate(${-290 * mv}px,${-330 * mv + Math.sin(L * 2) * 8 * (1 - mv)}px) scale(${ks})` });
+    $('kitTxt').querySelectorAll('div').forEach((l, i) => {
+      const p = eOut4(seg(t, a + 0.55 + i * 0.15, 0.5)), o = 1 - seg(t, m - 0.2, 0.25);
+      css(l, { opacity: p * o, transform: `translateY(${(1 - p) * 50}px)` });
+    });
+    // 2) mala entra maior, com destaque
+    const q = seg(t, m + 0.1, 0.7);
+    css($('malaBox'), { opacity: clamp(q * 2.5), transform: `scale(${0.7 + 0.3 * eBack(q)}) translateY(${Math.sin((t - m) * 2) * 8}px)` });
+    const g = eOut(seg(t, m + 0.1, 0.8));
+    css($('malaGlow'), { opacity: g * (0.75 + 0.25 * Math.sin((t - m) * 3)), transform: `scale(${0.6 + 0.4 * g})` });
+    $('malaTxt').querySelectorAll('div').forEach((l, i) => {
+      const p = eOut4(seg(t, m + 0.5 + i * 0.15, 0.5)); css(l, { opacity: p, transform: `translateY(${(1 - p) * 50}px)` });
+    });
   }
 
-  // cena 6: CTA (anima até ~29,6s e segura parado no final)
+  // cena 6: CTA (anima e segura parado nos últimos 10 quadros)
   if (t >= T.cta) {
     const a = T.cta, L = t - a;
     const stop = C.DURATION - 10 / C.FPS;
@@ -418,7 +441,7 @@ async function render(t) {
   const cap = $('caption');
   const lg = M.locucao && C.legendas.find(l => t >= l.start && t < l.end);
   cap.style.display = lg ? 'block' : 'none';
-  if (lg) cap.textContent = lg.text.replace('[prêmio]', C.premio);
+  if (lg) cap.textContent = lg.text;
 }
 function fitWord(el) {
   let fs = 240; el.style.fontSize = fs + 'px';
