@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Reel Só Apresentadora</title>
+<script>
+/* =====================================================================
+   CONFIGURAÇÃO — troque textos, cores e tempos aqui. Depois: node render.mjs
+   ===================================================================== */
+const CONFIG = {
+  apresentadora: 'Samanta Lopes',
+  cargo: 'apresentadora oficial',
+  credencial: 'educadora e empreendedora | +25 anos de mercado',
+  gancho: ['Adivinha quem vai comandar', 'a Beawst Global Connect?'],
+
+  // cena 3: quem é ela
+  anos: 25,                                   // número que conta na tela (aparece como "+25")
+  anosTexto: 'anos de mercado',
+  papeis: ['educadora', 'empreendedora'],
+  missao: 'conectando pessoas, inovação e aprendizagem.',
+
+  // cena 4: chamada
+  apresenta: 'apresenta a',
+  infoEvento: '07/11 · a partir das 8h30 · online e gratuito',
+  ctaTitulo: ['Garante', 'sua vaga'],
+  cta: 'Link na bio',
+
+  // Legendas: só aparecem se existir assets/locucao.mp3
+  legendas: [
+    { start: 0,  end: 3,  text: 'Sabe quem vai apresentar a feira de intercâmbio que você não pode perder?' },
+    { start: 3,  end: 8,  text: 'Ela mesma: Samanta Lopes.' },
+    { start: 8,  end: 13, text: 'Educadora, empreendedora e mais de 25 anos conectando pessoas, inovação e aprendizagem.' },
+    { start: 13, end: 18, text: 'Dia 7 de novembro, a partir das 8h30, online e gratuito. Garante sua vaga no link da bio.' },
+  ],
+
+  CORES: {
+    principal: '#5B00D6', magenta: '#A3127F', vermelho: '#F0102A',
+    gradiente: 'linear-gradient(90deg, #5B00D6 0%, #A3127F 50%, #F0102A 100%)',
+    gradienteClaro: 'linear-gradient(90deg, #B98CFF 0%, #FF6BB5 50%, #FF6B6B 100%)',
+    escuro: '#0E0716',
+  },
+
+  ASSETS: {
+    fotoApresentadora: 'assets/apresentadora.jpg',
+    logoFeira: 'assets/logo-feira.png',
+    // recorte do rosto para o círculo da cena 4 (em % da foto: centro x, centro y, zoom)
+    rosto: { x: 50, y: 30, zoom: 2.3 },
+  },
+
+  WIDTH: 1080, HEIGHT: 1920, FPS: 30,
+  DURATION: 18,
+  SAFE: { top: 250, bottom: 340, side: 80 },
+  CENAS: { gancho: 0, revelacao: 3, quem: 8, cta: 13 },
+  QUADRO_CAPA: 7.2,
+  BPM: 120,
+};
+</script>
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow:hidden;background:#000}
+body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased;color:#fff}
+#stage{position:absolute;left:0;top:0;overflow:hidden;background:#000}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.abs{position:absolute}
+.center{left:0;width:100%;text-align:center;text-wrap:balance}
+.gradL{background:var(--gradienteClaro);-webkit-background-clip:text;background-clip:text;color:transparent}
+.w{display:inline-block;white-space:pre}
+.glow{position:absolute;border-radius:50%;filter:blur(130px)}
+#bg{position:absolute;inset:0;overflow:hidden}
+#bg img{position:absolute;left:50%;top:50%;transform-origin:50% 35%}
+#shade{position:absolute;left:0;right:0;bottom:0;height:1100px;background:linear-gradient(180deg,rgba(14,7,22,0) 0%,rgba(14,7,22,.75) 55%,rgba(14,7,22,.92) 100%)}
+#veil{position:absolute;inset:0;background:var(--escuro)}
+.hook{font-weight:900;font-size:96px;line-height:1.08;letter-spacing:-.01em}
+.ulbar{height:12px;border-radius:8px;background:var(--gradiente);transform-origin:left;margin:22px auto 0}
+.name{font-weight:900;font-size:176px;line-height:.92;letter-spacing:-.025em;white-space:nowrap}
+.badge{display:inline-block;font-weight:800;font-size:32px;letter-spacing:.14em;text-transform:uppercase;background:var(--principal);padding:16px 28px;border-radius:999px}
+.cred{font-weight:700;font-size:38px;line-height:1.3;color:rgba(255,255,255,.92)}
+/* cena 3 */
+.big{font-weight:900;font-size:330px;line-height:.9;letter-spacing:-.05em;white-space:nowrap}
+.sub{font-weight:800;font-size:64px;line-height:1.05}
+.pill{display:inline-block;font-weight:800;font-size:46px;padding:20px 34px;border-radius:999px;border:4px solid #fff;margin:0 10px 18px}
+.mis{font-weight:700;font-size:50px;line-height:1.25}
+/* cena 4 */
+.face{position:absolute;left:50%;width:300px;height:300px;margin-left:-150px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 8px #fff,0 0 0 16px rgba(255,255,255,.25)}
+.face img{position:absolute}
+.logoCard{background:#fff;border-radius:28px;padding:24px 38px;display:inline-block}
+.ctaT{font-weight:900;font-size:136px;line-height:.95;letter-spacing:-.03em}
+.ctaL{font-weight:800;font-size:58px}
+.info{font-weight:700;font-size:38px;color:rgba(255,255,255,.88)}
+.small{font-weight:700;font-size:44px;color:rgba(255,255,255,.88)}
+#caption{position:absolute;z-index:20;text-align:center;font-weight:800;font-size:40px;line-height:1.25;background:rgba(14,7,22,.78);padding:14px 26px;border-radius:18px;display:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="shade"></div>
+  <div id="veil" style="opacity:0"></div>
+
+  <div class="scene" id="s1"><div class="abs center" id="hookBox" style="padding:0 80px"></div></div>
+  <div class="scene" id="s2"><div class="abs" id="nameBox" style="left:80px;right:80px"></div></div>
+
+  <div class="scene" id="s3">
+    <div class="abs center" id="s3box" style="padding:0 80px"></div>
+  </div>
+
+  <div class="scene" id="s4">
+    <div class="glow" id="g41" style="width:900px;height:900px;background:var(--magenta);opacity:.5"></div>
+    <div class="glow" id="g42" style="width:800px;height:800px;background:var(--vermelho);opacity:.3"></div>
+    <div class="face" id="face" style="top:260px"></div>
+    <div class="abs center small" id="s4ap" style="top:600px"></div>
+    <div class="abs center" id="s4logo" style="top:665px"></div>
+    <div class="abs center info" id="s4info" style="top:880px;padding:0 80px"></div>
+    <div class="abs center ctaT" id="s4t" style="top:975px"></div>
+    <div class="abs center" id="s4l" style="top:1290px"></div>
+  </div>
+
+  <div id="caption"></div>
+</div>
+
+<script>
+const C = CONFIG, K = C.CORES, T = C.CENAS, W = C.WIDTH, H = C.HEIGHT, S = C.SAFE;
+const M = window.MANIFEST || {};
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, d) => clamp((t - a) / d);
+const eOut = x => 1 - Math.pow(1 - x, 3);
+const eOut4 = x => 1 - Math.pow(1 - x, 4);
+const $ = id => document.getElementById(id);
+const css = (el, o) => Object.assign(el.style, o);
+const order = ['gancho', 'revelacao', 'quem', 'cta'];
+const endOf = k => { const i = order.indexOf(k); return i < order.length - 1 ? T[order[i + 1]] : C.DURATION; };
+const up = (el, p, d = 40) => css(el, { opacity: p, transform: `translateY(${(1 - p) * d}px)` });
+
+for (const k in K) document.documentElement.style.setProperty('--' + k, K[k]);
+css($('stage'), { width: W + 'px', height: H + 'px' }); css(document.body, { width: W + 'px', height: H + 'px' });
+$('s4').style.background = K.principal;
+
+const loadImg = src => new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+const placeholder = f => `<div style="border:4px dashed currentColor;border-radius:24px;height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:26px">FALTA ${f}</div>`;
+const words = lines => lines.map(l => `<div>${l.split(' ').map(w => `<span class="w hook">${w} </span>`).join('')}</div>`).join('');
+
+let photo = null;
+async function build() {
+  await Promise.all([500, 700, 800, 900].map(w => document.fonts.load(`${w} 100px M`, 'ÁÇãéÊ')));
+  photo = await loadImg(C.ASSETS.fotoApresentadora);
+  if (photo) {
+    const s = Math.max(W / photo.naturalWidth, H / photo.naturalHeight);
+    css(photo, { width: photo.naturalWidth * s + 'px', height: photo.naturalHeight * s + 'px', marginLeft: -photo.naturalWidth * s / 2 + 'px', marginTop: -photo.naturalHeight * s / 2 + 'px' });
+    $('bg').appendChild(photo);
+    // círculo do rosto (cena 4)
+    const r = C.ASSETS.rosto, fw = 300 * r.zoom, fh = fw * photo.naturalHeight / photo.naturalWidth;
+    $('face').innerHTML = `<img src="${C.ASSETS.fotoApresentadora}" style="width:${fw}px;left:${150 - fw * r.x / 100}px;top:${150 - fh * r.y / 100}px">`;
+  } else {
+    $('bg').innerHTML = `<div style="position:absolute;inset:300px 120px">${placeholder('apresentadora.jpg')}</div>`;
+    $('face').innerHTML = placeholder('foto');
+  }
+  $('hookBox').innerHTML = words(C.gancho) + '<div class="ulbar" id="hookUl" style="width:560px"></div>';
+  const nm = C.apresentadora.split(' ');
+  $('nameBox').innerHTML = `<div class="name" id="nm1">${nm[0]}</div><div class="name" id="nm2">${nm.slice(1).join(' ')}</div>
+    <div style="margin-top:34px"><span class="badge" id="cargo">${C.cargo}</span></div>
+    <div class="cred" id="cred" style="margin-top:26px">${C.credencial.split('|').map(x => x.trim()).join('<br>')}</div>`;
+  $('s3box').innerHTML = `<div class="big gradL" id="num">+0</div><div class="sub" id="anos" style="margin-top:6px">${C.anosTexto}</div>
+    <div id="papeis" style="margin-top:70px;white-space:nowrap;text-wrap:nowrap">${C.papeis.map(p => `<span class="pill">${p}</span>`).join('')}</div>
+    <div class="mis" id="mis" style="margin-top:40px">${C.missao}</div>`;
+  $('s4ap').textContent = C.apresenta;
+  const lf = await loadImg(C.ASSETS.logoFeira);
+  $('s4logo').innerHTML = lf ? `<span class="logoCard"><img src="${C.ASSETS.logoFeira}" style="width:440px;display:block"></span>`
+    : `<div style="display:inline-block;width:520px;height:150px">${placeholder('logo-feira.png')}</div>`;
+  $('s4info').textContent = C.infoEvento;
+  $('s4t').innerHTML = C.ctaTitulo.map(l => `<div>${l}</div>`).join('');
+  $('s4l').innerHTML = `<div class="ctaL">${C.cta}</div>
+    <svg id="arrow" width="64" height="84" viewBox="0 0 70 90" style="margin-top:18px"><path d="M35 6v70M10 52l25 26 25-26" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  css($('caption'), { left: '80px', right: '80px', bottom: S.bottom + 'px' });
+  window.__nameBottom = M.locucao ? S.bottom + 150 : S.bottom;
+  document.querySelectorAll('.name,.big').forEach(el => {
+    el.closest('.scene').style.display = 'block';
+    let fs = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollWidth > W - 2 * S.side && fs > 40) { fs -= 4; el.style.fontSize = fs + 'px'; }
+  });
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+}
+
+function render(t) {
+  order.forEach((k, i) => { $('s' + (i + 1)).style.display = t >= T[k] && (t < endOf(k) || i === order.length - 1) ? 'block' : 'none'; });
+  const inPhoto = t < T.cta;
+  $('bg').style.display = $('shade').style.display = $('veil').style.display = inPhoto ? 'block' : 'none';
+
+  // foto: desfocada no gancho, foco na revelação, escurece na cena 3
+  if (inPhoto && photo) {
+    const focus = eOut4(seg(t, T.revelacao, 0.22));
+    let scale = 1.18 + 0.07 * seg(t, 0, T.revelacao);
+    if (t >= T.revelacao) scale = 1.25 - 0.13 * eOut(seg(t, T.revelacao, 0.7)) + 0.03 * seg(t, T.revelacao + 0.7, T.cta - T.revelacao);
+    const dim = eOut(seg(t, T.quem - 0.1, 0.45));
+    css(photo, { filter: `blur(${44 * (1 - focus) + 8 * dim}px) brightness(${0.42 + 0.58 * focus})`, transform: `scale(${scale})` });
+    $('shade').style.opacity = eOut(seg(t, T.revelacao + 0.1, 0.5));
+    $('veil').style.opacity = 0.62 * dim;
+  }
+
+  // cena 1
+  if (t < T.revelacao) {
+    $('hookBox').querySelectorAll('.w').forEach((w, i) => up(w, eOut(seg(t, -0.3 + i * 0.12, 0.3))));
+    const box = $('hookBox');
+    box.style.top = (H / 2 - box.offsetHeight / 2 - 40) + 'px';
+    $('hookUl').style.transform = `scaleX(${eOut4(seg(t, 0.95, 0.5))})`;
+    box.style.opacity = 1 - seg(t, T.revelacao - 0.12, 0.12);
+  }
+
+  // cena 2
+  if (t >= T.revelacao && t < T.quem) {
+    const box = $('nameBox'), a = T.revelacao;
+    box.style.top = (H - window.__nameBottom - box.offsetHeight) + 'px';
+    [['nm1', a + 0.18], ['nm2', a + 0.3]].forEach(([id, s]) => up($(id), eOut4(seg(t, s, 0.55)), 90));
+    up($('cargo'), eOut(seg(t, a + 0.7, 0.45)), 30);
+    $('cred').style.opacity = eOut(seg(t, a + 1.25, 0.6));
+    box.style.opacity = 1 - seg(t, T.quem - 0.15, 0.15);
+  }
+
+  // cena 3: +25 anos, papéis, missão
+  if (t >= T.quem && t < T.cta) {
+    const a = T.quem, box = $('s3box');
+    box.style.top = (H / 2 - box.offsetHeight / 2 - 30) + 'px';
+    const n = eOut(seg(t, a + 0.15, 1.1));
+    $('num').textContent = '+' + Math.round(n * C.anos);
+    up($('num'), eOut4(seg(t, a + 0.1, 0.4)), 60);
+    up($('anos'), eOut(seg(t, a + 0.45, 0.45)));
+    $('papeis').querySelectorAll('.pill').forEach((p, i) => up(p, eOut(seg(t, a + 1.3 + i * 0.25, 0.45))));
+    up($('mis'), eOut(seg(t, a + 2.0, 0.55)));
+    box.style.opacity = 1 - seg(t, T.cta - 0.15, 0.15);
+  }
+
+  // cena 4: chamada (segura parada nos últimos 10 quadros)
+  if (t >= T.cta) {
+    const a = T.cta, stop = C.DURATION - 10 / C.FPS, tl = Math.min(t, stop);
+    css($('g41'), { transform: `translate(${-250 + Math.sin(tl * .6) * 120}px,${-150 + Math.cos(tl * .5) * 100}px)` });
+    css($('g42'), { transform: `translate(${500 + Math.cos(tl * .5) * 120}px,${1250 + Math.sin(tl * .6) * 100}px)` });
+    const f = eOut4(seg(t, a + 0.05, 0.5));
+    css($('face'), { opacity: f, transform: `scale(${0.85 + 0.15 * f})` });
+    up($('s4ap'), eOut(seg(t, a + 0.3, 0.4)), 30);
+    up($('s4logo'), eOut(seg(t, a + 0.45, 0.45)), 30);
+    up($('s4info'), eOut(seg(t, a + 0.65, 0.4)), 30);
+    $('s4t').querySelectorAll('div').forEach((l, i) => up(l, eOut4(seg(t, a + 0.9 + i * 0.15, 0.45)), 60));
+    up($('s4l'), eOut(seg(t, a + 1.4, 0.4)), 30);
+    const L = Math.min(t, stop) - a - 1.8;
+    $('arrow').style.transform = `translateY(${L > 0 ? Math.abs(Math.sin(L * Math.PI)) * 18 : 0}px)`;
+  }
+
+  const lg = M.locucao && C.legendas.find(l => t >= l.start && t < l.end);
+  $('caption').style.display = lg ? 'block' : 'none';
+  if (lg) $('caption').textContent = lg.text;
+}
+
+window.ready = build().then(() => render(0));
+window.render = render;
+window.CONFIG = CONFIG;
+if (!location.search.includes('render')) {
+  window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % C.DURATION); requestAnimationFrame(loop); })(); });
+}
+</script>
+</body>
+</html>
