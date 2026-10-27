@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Globex Cargo — 4 mudanças no comex</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  /* Paleta oficial Globex (Notion › GLOBEX › Identidade Visual & Moodboards) */
+  :root{ --preto:#131313; --verde:#2e402b; --oliva:#52573e; --areia:#d9c9ba; --gelo:#e7e7e6; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000}
+  body{width:1080px;height:1920px;overflow:hidden}
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--preto);
+    font-family:'Montserrat',sans-serif;color:var(--gelo)}
+
+  .scene{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+  .scene .content{position:absolute;inset:0;transform-origin:50% 45%}
+  .pad{position:absolute;left:96px;right:96px}
+  .bgnum{position:absolute;right:-60px;top:300px;font-family:'Poppins',sans-serif;font-weight:800;font-size:820px;line-height:1;
+    color:transparent;-webkit-text-stroke:3px currentColor;opacity:.13;letter-spacing:-.04em}
+
+  .tag{display:flex;align-items:center;gap:22px;font-weight:600;font-size:30px;letter-spacing:.24em;text-transform:uppercase}
+  .tag i{display:block;height:7px;width:72px;background:currentColor;transform-origin:left center}
+  .h1{font-family:'Poppins',sans-serif;font-weight:800;line-height:1.06;letter-spacing:-.015em}
+  .h2{font-family:'Poppins',sans-serif;font-weight:500;line-height:1.25}
+  .p{font-size:42px;font-weight:500;line-height:1.4}
+  .src{position:absolute;left:96px;right:96px;top:1470px;font-size:26px;font-weight:500;letter-spacing:.04em;opacity:.6}
+  em{font-style:normal}
+  .wm{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em .12em;margin-bottom:-.12em}
+  .wi{display:inline-block}
+
+  /* faixas de transição */
+  .band{position:absolute;left:-420px;top:0;width:1920px;height:3300px;visibility:hidden;transform-origin:50% 50%}
+
+  /* progresso dos 4 tópicos */
+  #prog{position:absolute;left:96px;right:96px;top:236px;display:flex;gap:14px;visibility:hidden}
+  #prog .seg{flex:1;height:8px;border-radius:8px;background:currentColor;opacity:1;position:relative;overflow:hidden}
+  #prog .seg::before{content:'';position:absolute;inset:0;background:currentColor;opacity:.25}
+  #prog .seg b{position:absolute;inset:0;background:currentColor;transform-origin:left;transform:scaleX(0)}
+  #prog .seg{background:none}
+
+  /* HOOK */
+  #hook .pad{top:560px}
+  #hook .big{font-size:142px;line-height:.95;white-space:nowrap}
+  #hook .big em{color:var(--areia)}
+  #hook .h2{font-size:60px;margin-top:40px}
+  .chip{display:inline-flex;align-items:center;gap:18px;margin-top:90px;border:2px solid var(--oliva);border-radius:999px;
+    padding:20px 40px;font-size:32px;font-weight:600;color:var(--areia)}
+  .chip svg{width:34px;height:34px;fill:none;stroke:var(--areia);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+
+  /* itens */
+  .item .pad{top:330px}
+  .item .h1{font-size:96px;margin-top:40px}
+  .swap{display:flex;align-items:center;gap:36px;margin-top:80px}
+  .old{position:relative;font-family:'Poppins',sans-serif;font-weight:700;font-size:110px;opacity:.55}
+  .old .line{position:absolute;left:-10px;right:-10px;top:52%;height:12px;background:var(--areia);transform-origin:left}
+  .arrow{width:110px;height:60px}
+  .arrow path{fill:none;stroke:currentColor;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+  .new{font-family:'Poppins',sans-serif;font-weight:800;font-size:110px;background:var(--areia);color:var(--preto);border-radius:28px;padding:6px 40px}
+  .item .p{margin-top:70px}
+  .bullet{display:flex;align-items:center;gap:26px;margin-top:44px;font-size:40px;font-weight:600}
+  .bullet svg{width:64px;height:64px;flex:none;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+
+  #i1{background:var(--verde);color:var(--gelo)}
+  #i1 .tag{color:var(--areia)} #i1 .bgnum{color:var(--areia)}
+
+  #i2{background:var(--gelo);color:var(--preto)}
+  #i2 .tag{color:var(--oliva)} #i2 .bgnum{color:var(--verde);opacity:.07}
+  .stat{font-family:'Poppins',sans-serif;font-weight:800;font-size:300px;line-height:1;margin-top:60px;color:var(--verde);letter-spacing:-.03em}
+  #i2 .p{margin-top:24px}
+  .note{margin-top:56px;padding:30px 36px;border-left:8px solid var(--verde);background:rgba(46,64,43,.08);font-size:36px;font-weight:500;line-height:1.45}
+
+  #i3{background:var(--preto);color:var(--gelo)}
+  #i3 .tag{color:var(--areia)} #i3 .bgnum{color:var(--oliva);opacity:.35}
+  .duo{display:flex;gap:40px;margin-top:80px}
+  .card{flex:1;border:2px solid var(--oliva);border-radius:32px;padding:40px 44px}
+  .card .v{font-family:'Poppins',sans-serif;font-weight:800;font-size:150px;line-height:1;color:var(--areia)}
+  .card .l{font-size:36px;font-weight:600;margin-top:16px;letter-spacing:.06em}
+  .tl{display:flex;align-items:center;gap:28px;margin-top:60px;font-size:40px;font-weight:500;line-height:1.35}
+  .tl .yr{font-family:'Poppins',sans-serif;font-weight:800;font-size:46px;background:var(--areia);color:var(--preto);border-radius:16px;padding:8px 24px;flex:none}
+
+  #i4{background:var(--oliva);color:var(--gelo)}
+  #i4 .tag{color:var(--areia)} #i4 .bgnum{color:var(--areia)}
+  #i4 .old{font-size:84px;opacity:.7}
+  .stack{margin-top:70px}
+  .stack .row2{display:flex;align-items:center;gap:30px;margin-top:40px}
+  .badge{font-family:'Poppins',sans-serif;font-weight:700;font-size:34px;padding:12px 26px;border-radius:999px;flex:none}
+  .badge.out{border:2px solid var(--areia);color:var(--areia)}
+  .badge.in{background:var(--areia);color:var(--preto)}
+  .row2 .tx{font-size:38px;font-weight:600;line-height:1.3}
+  .punch{font-family:'Poppins',sans-serif;font-weight:800;font-size:72px;line-height:1.12;margin-top:90px}
+  .punch em{color:var(--areia)}
+
+  /* CTA */
+  #cta{background:var(--areia);color:var(--preto)}
+  #cta .pad{top:470px}
+  #cta .h1{font-size:96px}
+  #cta .h1 em{color:var(--verde)}
+  #cta .svc{font-size:31px;font-weight:600;letter-spacing:.04em;margin-top:60px;color:var(--oliva)}
+  .btn{display:inline-flex;align-items:center;gap:24px;margin-top:90px;background:var(--preto);color:var(--areia);border-radius:999px;
+    padding:36px 66px;font-family:'Poppins',sans-serif;font-weight:700;font-size:48px}
+  .btn svg{width:46px;height:46px;fill:none;stroke:var(--areia);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .handle{margin-top:50px;font-size:38px;font-weight:600}
+  .mark{position:absolute;left:0;right:0;top:1420px;text-align:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:56px;letter-spacing:.08em}
+  .mark small{display:block;font-family:'Montserrat',sans-serif;font-weight:500;font-size:24px;letter-spacing:.6em;margin-right:-.6em;color:var(--oliva);margin-top:6px}
+
+  .grain{position:absolute;inset:-50%;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- GANCHO -->
+  <section class="scene" id="hook" data-s="0" data-e="3.5" data-fg="#e7e7e6">
+    <div class="content">
+      <div class="pad">
+        <div class="tag" style="color:var(--areia)" data-a="tag" data-t=".1"><i></i><span>Comex 2026</span></div>
+        <div class="h1 big" style="margin-top:50px" data-a="slam" data-t=".3"><em>4</em> mudanças</div>
+        <div class="h2 rv" data-a="words" data-t=".85" data-st=".07">
+          <div class="line">no comércio exterior que</div>
+          <div class="line">sua empresa precisa conhecer.</div>
+        </div>
+        <div class="chip" data-a="up" data-t="1.9"><svg viewBox="0 0 34 34"><path d="M9 4h16v26l-8-6-8 6z"/></svg>Salve para consultar depois</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 · DUIMP -->
+  <section class="scene item" id="i1" data-s="3.5" data-e="10" data-fg="#e7e7e6">
+    <div class="content">
+      <div class="bgnum" data-a="drift">01</div>
+      <div class="pad">
+        <div class="tag" data-a="tag" data-t=".2"><i></i><span>01 · Importação</span></div>
+        <div class="h1 rv" data-a="words" data-t=".35" data-st=".08">
+          <div class="line">A DI está saindo</div>
+          <div class="line">de cena.</div>
+        </div>
+        <div class="swap">
+          <div class="old" data-a="up" data-t="1.1">DI<span class="line" data-a="bar" data-t="1.5"></span></div>
+          <svg class="arrow" viewBox="0 0 110 60" data-a="left" data-t="1.7"><path d="M6 30h92M74 8l24 22-24 22"/></svg>
+          <div class="new" data-a="slam" data-t="1.9">DUIMP</div>
+        </div>
+        <div class="p rv" data-a="words" data-t="2.6" data-st=".03">
+          <div class="line">A Declaração Única de Importação,</div>
+          <div class="line">no Portal Único Siscomex, substitui</div>
+          <div class="line">a DI por etapas.</div>
+        </div>
+        <div class="bullet" data-a="left" data-t="3.6">
+          <svg viewBox="0 0 64 64"><rect x="8" y="12" width="48" height="44" rx="6"/><path d="M8 26h48M20 6v12M44 6v12M22 40l7 7 14-14"/></svg>
+          Migração avança até dez/2026
+        </div>
+      </div>
+      <div class="src" data-a="fade" data-t="2.0">Fonte: cronograma Duimp · Portal Único Siscomex</div>
+    </div>
+  </section>
+
+  <!-- 02 · MERCOSUL–UE -->
+  <section class="scene item" id="i2" data-s="10" data-e="16.5" data-fg="#131313">
+    <div class="content">
+      <div class="bgnum" data-a="drift">02</div>
+      <div class="pad">
+        <div class="tag" data-a="tag" data-t=".2"><i></i><span>02 · Acordo Mercosul–UE</span></div>
+        <div class="h1 rv" data-a="words" data-t=".35" data-st=".08">
+          <div class="line">O acordo com a</div>
+          <div class="line">Europa já vale.</div>
+        </div>
+        <div class="stat" data-a="count" data-t="1.1" data-to="80" data-pre="+" data-suf="%">+80%</div>
+        <div class="p rv" data-a="words" data-t="1.7" data-st=".035">
+          <div class="line">das exportações brasileiras para a UE</div>
+          <div class="line">com tarifa zerada logo no início.</div>
+        </div>
+        <div class="note" data-a="up" data-t="3.0">Em aplicação provisória desde 1º de maio de 2026. O benefício depende da comprovação de origem.</div>
+      </div>
+      <div class="src" data-a="fade" data-t="2.0">Fonte: Agência Brasil · Decreto nº 12.953/2026</div>
+    </div>
+  </section>
+
+  <!-- 03 · REFORMA TRIBUTÁRIA -->
+  <section class="scene item" id="i3" data-s="16.5" data-e="23" data-fg="#e7e7e6">
+    <div class="content">
+      <div class="bgnum" data-a="drift">03</div>
+      <div class="pad">
+        <div class="tag" data-a="tag" data-t=".2"><i></i><span>03 · Reforma tributária</span></div>
+        <div class="h1 rv" data-a="words" data-t=".35" data-st=".08">
+          <div class="line">CBS e IBS já</div>
+          <div class="line">estão nas notas.</div>
+        </div>
+        <div class="duo">
+          <div class="card" data-a="up" data-t="1.1"><div class="v" data-a="count" data-t="1.2" data-to="0.9" data-dec="1" data-suf="%">0,9%</div><div class="l">CBS</div></div>
+          <div class="card" data-a="up" data-t="1.3"><div class="v" data-a="count" data-t="1.4" data-to="0.1" data-dec="1" data-suf="%">0,1%</div><div class="l">IBS</div></div>
+        </div>
+        <div class="p rv" data-a="words" data-t="2.2" data-st=".04" style="margin-top:50px">
+          <div class="line">Alíquotas de teste em 2026,</div>
+          <div class="line">para ajustar sistemas e processos.</div>
+        </div>
+        <div class="tl" data-a="left" data-t="3.4"><span class="yr">2027</span><span>A CBS passa a ser cobrada e PIS/Cofins são extintos.</span></div>
+      </div>
+      <div class="src" data-a="fade" data-t="2.0">Fonte: LC nº 214/2025</div>
+    </div>
+  </section>
+
+  <!-- 04 · MULTAS -->
+  <section class="scene item" id="i4" data-s="23" data-e="29.5" data-fg="#e7e7e6">
+    <div class="content">
+      <div class="bgnum" data-a="drift">04</div>
+      <div class="pad">
+        <div class="tag" data-a="tag" data-t=".2"><i></i><span>04 · Multas aduaneiras</span></div>
+        <div class="h1 rv" data-a="words" data-t=".35" data-st=".08">
+          <div class="line">As regras de multa</div>
+          <div class="line">mudaram.</div>
+        </div>
+        <div class="stack">
+          <div class="row2" data-a="left" data-t="1.2"><span class="badge out">SAIU</span><span class="tx" style="position:relative">Multa de 1% do valor aduaneiro<span class="line" data-a="bar" data-t="1.7" style="position:absolute;left:0;right:0;top:52%;height:6px;background:var(--areia);transform-origin:left"></span></span></div>
+          <div class="row2" data-a="left" data-t="2.0"><span class="badge in">ENTROU</span><span class="tx">Nova penalidade por informação inexata ou incompleta</span></div>
+        </div>
+        <div class="punch rv" data-a="words" data-t="3.0" data-st=".07">
+          <div class="line">Informação errada</div>
+          <div class="line"><em>continua custando caro.</em></div>
+        </div>
+      </div>
+      <div class="src" data-a="fade" data-t="2.0">Fonte: LC nº 227/2026</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="scene" id="cta" data-s="29.5" data-e="99" data-fg="#131313">
+    <div class="content">
+      <div class="pad">
+        <div class="tag" style="color:var(--oliva)" data-a="tag" data-t=".2"><i></i><span>Globex Cargo</span></div>
+        <div class="h1 rv" data-a="words" data-t=".35" data-st=".08" style="margin-top:44px">
+          <div class="line">Muita coisa</div>
+          <div class="line">mudando?</div>
+          <div class="line"><em>A Globex acompanha</em></div>
+          <div class="line"><em>por você.</em></div>
+        </div>
+        <div class="svc" data-a="up" data-t="1.6">Importação · Exportação · Despacho · Consultoria</div>
+        <div class="btn" data-a="slam" data-t="2.1"><svg viewBox="0 0 48 48"><path d="M8 38l3-9a16 16 0 1 1 7 7z"/></svg>Fale com a Globex</div>
+        <div class="handle" data-a="up" data-t="2.6">@globexcargo</div>
+      </div>
+    </div>
+  </section>
+
+  <div id="prog"><div class="seg"><b></b></div><div class="seg"><b></b></div><div class="seg"><b></b></div><div class="seg"><b></b></div></div>
+
+  <div class="band" id="b0"></div><div class="band" id="b1"></div><div class="band" id="b2"></div>
+  <div class="grain"></div>
+</div>
+
+<script>
+const DURATION = 35;
+const $ = s => document.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
+const prog  = (t,a,d) => clamp((t-a)/d);
+const eOut  = x => 1 - Math.pow(1-x, 3);
+const eOutX = x => x === 1 ? 1 : 1 - Math.pow(2, -10*x);
+const eIO   = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x+2, 3)/2;
+const eBack = x => { const c1 = 1.9, c3 = c1 + 1; return 1 + c3*Math.pow(x-1,3) + c1*Math.pow(x-1,2); };
+
+/* palavras */
+$$('.rv').forEach(root => $$('.line', root).forEach(line => {
+  const frag = document.createDocumentFragment();
+  [...line.childNodes].forEach(n => {
+    const hl = n.nodeType === 1 && n.tagName === 'EM';
+    n.textContent.split(/\s+/).filter(Boolean).forEach(w => {
+      const m = document.createElement('span'); m.className = 'wm';
+      const i = document.createElement(hl ? 'em' : 'span'); i.className = 'wi'; i.textContent = w;
+      m.appendChild(i); frag.appendChild(m); frag.appendChild(document.createTextNode(' '));
+    });
+  });
+  line.textContent = ''; line.appendChild(frag);
+}));
+
+const SCENES = $$('.scene').map(el => ({ el, s:+el.dataset.s, e:+el.dataset.e, fg: el.dataset.fg,
+  bg: getComputedStyle(el).backgroundColor, els: $$('[data-a]', el), content: el.querySelector('.content') }));
+
+/* transições: 3 faixas diagonais; a última tem a cor da próxima cena */
+const TRANS = SCENES.slice(1).map((sc, i) => ({ at: sc.s, colors: [
+  ['#d9c9ba','#52573e', sc.bg], ['#2e402b','#d9c9ba', sc.bg], ['#d9c9ba','#131313', sc.bg],
+  ['#e7e7e6','#2e402b', sc.bg], ['#131313','#2e402b', sc.bg] ][i] }));
+const TD = .75, TDEL = [0, .07, .14];
+const tStart = at => at - TDEL[2] - TD*.5;   // a última faixa cobre a tela exatamente em `at`
+
+function anim(el, lt){
+  const a = el.dataset.a, t0 = +(el.dataset.t || 0);
+  if (a === 'words'){
+    const st = +(el.dataset.st || .07);
+    $$('.wi', el).forEach((w,i) => { const e = eOutX(prog(lt, t0 + i*st, .65));
+      w.style.transform = `translateY(${(1-e)*110}%)`; w.style.opacity = Math.min(1, e*1.6); });
+  } else if (a === 'slam'){
+    const p = prog(lt, t0, .55), e = eBack(p);
+    el.style.opacity = clamp(p*3); el.style.transform = `scale(${1.5 - .5*e})`;
+    el.style.transformOrigin = 'left center';
+  } else if (a === 'up'){
+    const e = eOutX(prog(lt, t0, .7)); el.style.opacity = e; el.style.transform = `translateY(${(1-e)*50}px)`;
+  } else if (a === 'left'){
+    const e = eOutX(prog(lt, t0, .7)); el.style.opacity = e; el.style.transform = `translateX(${(1-e)*-70}px)`;
+  } else if (a === 'fade'){
+    el.style.opacity = .6*eOut(prog(lt, t0, .8));
+  } else if (a === 'bar'){
+    el.style.transform = `scaleX(${eOutX(prog(lt, t0, .45))})`;
+  } else if (a === 'tag'){
+    el.querySelector('i').style.transform = `scaleX(${eOutX(prog(lt, t0, .6))})`;
+    const e = eOut(prog(lt, t0+.12, .6)), tx = el.querySelector('span');
+    tx.style.opacity = e; tx.style.transform = `translateX(${(1-e)*-24}px)`;
+  } else if (a === 'drift'){
+    const e = eOutX(prog(lt, 0, 1.0));
+    el.style.transform = `translate(${(1-e)*260 - lt*22}px, ${-lt*6}px)`;
+  } else if (a === 'count'){
+    const e = eOut(prog(lt, t0, 1.1)), to = +el.dataset.to, dec = +(el.dataset.dec || 0);
+    el.style.opacity = clamp(prog(lt, t0, .2));
+    el.textContent = (el.dataset.pre || '') + (to*e).toFixed(dec).replace('.', ',') + (el.dataset.suf || '');
+  }
+}
+
+function render(t){
+  // cenas
+  SCENES.forEach(sc => {
+    const on = t >= sc.s && t < sc.e;
+    sc.el.style.visibility = on ? 'visible' : 'hidden';
+    if (!on) return;
+    const lt = t - sc.s;
+    sc.content.style.transform = `scale(${1.06 - .06*eOutX(prog(lt, 0, 1.1)) + lt*.003})`;
+    sc.els.forEach(el => anim(el, lt));
+  });
+
+  // faixas
+  const tr = TRANS.find(x => t >= tStart(x.at) && t < tStart(x.at) + TDEL[2] + TD);
+  ['#b0','#b1','#b2'].forEach((id, k) => {
+    const b = $(id);
+    if (!tr){ b.style.visibility = 'hidden'; return; }
+    const p = prog(t, tStart(tr.at) + TDEL[k], TD);
+    b.style.visibility = (p > 0 && p < 1) ? 'visible' : 'hidden';
+    b.style.background = tr.colors[k];
+    const y = 2150 + (-3550 - 2150) * eIO(p);
+    b.style.transform = `translateY(${y}px) rotate(-9deg)`;
+  });
+
+  // progresso dos tópicos
+  const items = SCENES.slice(1, 5), pr = $('#prog');
+  const cur = SCENES.find(sc => t >= sc.s && t < sc.e);
+  const show = t >= items[0].s + .2 && t < items[3].e;
+  pr.style.visibility = show ? 'visible' : 'hidden';
+  pr.style.color = cur ? cur.fg : '#e7e7e6';
+  pr.style.opacity = show ? eOut(prog(t, items[0].s + .2, .5)) : 0;
+  $$('#prog .seg b').forEach((b, i) => { b.style.transform = `scaleX(${prog(t, items[i].s, items[i].e - items[i].s)})`; });
+
+  $('.grain').style.transform = `translate(${(Math.floor(t*12)*37)%120-60}px, ${(Math.floor(t*12)*53)%120-60}px)`;
+}
+
+window.DURATION = DURATION;
+window.render = render;
+window.ready = document.fonts.ready.then(() => true);
+if (!location.search.includes('render')){
+  const t0 = performance.now();
+  const loop = now => { render(((now - t0)/1000) % DURATION); requestAnimationFrame(loop); };
+  document.fonts.ready.then(() => requestAnimationFrame(loop));
+}
+</script>
+</body>
+</html>
