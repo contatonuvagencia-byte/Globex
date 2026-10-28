@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel Presentes</title>
+<!--
+  Carrossel "Presentes exclusivos" (8 slides, 1080x1350 / 4:5).
+  Abrir com ?s=1 ... ?s=8. Gerar os PNGs: node render.mjs
+-->
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;--tinta:#0B0B0F;--cinza:#6F6A78;
+  --grad:linear-gradient(90deg,#5B00D6 0%,#A3127F 50%,#F0102A 100%);
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#000}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+.slide{position:absolute;inset:0;overflow:hidden;display:none}
+.abs{position:absolute}
+.pad{left:90px;right:90px}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.glow{position:absolute;border-radius:50%;filter:blur(130px)}
+.pill{display:inline-block;font-weight:800;font-size:28px;letter-spacing:.14em;text-transform:uppercase;background:var(--roxo);color:#fff;padding:15px 26px;border-radius:999px}
+.huge{font-weight:900;line-height:1;letter-spacing:-.025em}
+.body{font-weight:600;font-size:44px;line-height:1.3}
+.foot{position:absolute;left:90px;right:90px;bottom:64px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:26px;letter-spacing:.1em}
+.foot img{height:54px;display:block}
+.step{display:flex;align-items:center;gap:34px;background:#F7F5F9;border:3px solid #ECE8F0;border-radius:32px;padding:34px 38px;margin-bottom:24px}
+.step .n{flex:none;width:96px;height:96px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:900;font-size:50px;color:#fff}
+.step .t{font-weight:800;font-size:44px;line-height:1.15;color:var(--tinta)}
+.chip{display:inline-block;font-weight:800;font-size:34px;padding:16px 30px;border-radius:999px;border:3px solid rgba(255,255,255,.85);margin:0 12px 14px 0}
+.li{display:flex;gap:22px;align-items:baseline;font-weight:700;font-size:42px;line-height:1.25;margin-bottom:18px}
+.li i{flex:none;width:18px;height:18px;border-radius:50%;background:var(--gradL);transform:translateY(-4px)}
+</style>
+</head>
+<body>
+
+<!-- 1 | Capa -->
+<div class="slide" id="s1" style="background:var(--escuro)">
+  <div class="glow" style="width:900px;height:900px;background:var(--roxo);opacity:.65;left:-250px;top:-250px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.4;left:480px;top:760px"></div>
+  <div class="abs" style="left:90px;top:80px"><img src="assets/logo-feira-branco.svg" style="width:330px;display:block"></div>
+  <div class="abs pad huge" style="top:210px;font-size:92px">Feira de intercâmbio com <span class="gradL">presente de hora em hora.</span></div>
+  <div class="abs" style="left:90px;top:610px"><span class="pill" style="font-size:34px;padding:18px 32px">Sim, é sério.</span></div>
+  <div class="abs" style="left:530px;top:640px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,#A3127F 0%,#5B00D6 45%,transparent 70%);filter:blur(30px);opacity:.9"></div>
+  <img class="abs" src="assets/kit.png" style="left:-10px;top:700px;width:600px">
+  <img class="abs" src="assets/mala.png" style="left:470px;top:620px;width:640px;transform:rotate(6deg)">
+  <div class="abs" style="right:90px;bottom:70px;font-weight:800;font-size:30px;letter-spacing:.06em">arrasta →</div>
+</div>
+
+<!-- 2 -->
+<div class="slide" id="s2" style="background:var(--roxo)">
+  <div class="glow" style="width:900px;height:900px;background:var(--magenta);opacity:.6;left:-300px;top:-200px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.35;left:520px;top:800px"></div>
+  <div class="abs pad huge" style="top:150px;font-size:96px">Dia 7/11 tem<br>Beawst Global Connect.</div>
+  <div class="abs pad body" style="top:520px;font-size:54px;font-weight:800">Online, gratuita, e você participa do sofá.</div>
+  <!-- sofá -->
+  <svg class="abs" style="left:150px;top:690px" width="820" height="458" viewBox="0 0 680 380" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M120 170 V110 a50 50 0 0 1 50 -50 h340 a50 50 0 0 1 50 50 v60"/>
+    <path d="M70 300 V200 a40 40 0 0 1 80 0 v40 h380 v-40 a40 40 0 0 1 80 0 v100 z" fill="rgba(255,255,255,.12)"/>
+    <path d="M150 240 v-40 a30 30 0 0 1 30 -30 h120 a30 30 0 0 1 30 30 v40 M350 240 v-40 a30 30 0 0 1 30 -30 h120 a30 30 0 0 1 30 30 v40"/>
+    <path d="M110 300 v40 M570 300 v40"/>
+    <!-- notebook com a transmissão -->
+    <rect x="240" y="120" width="200" height="110" rx="12" fill="#fff" stroke="none" transform="rotate(-4 340 175)"/>
+    <circle cx="340" cy="172" r="22" fill="#F0102A" stroke="none"/><path d="M333 160 l20 12 -20 12z" fill="#fff" stroke="none"/>
+  </svg>
+  <div class="foot"><img src="assets/logo-feira-branco.svg"><span>2/8</span></div>
+</div>
+
+<!-- 3 | Título -->
+<div class="slide" id="s3" style="background:#fff">
+  <div class="glow" style="width:800px;height:800px;background:var(--roxo);opacity:.14;left:-250px;top:-150px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.1;left:520px;top:700px"></div>
+  <div class="abs pad" style="top:300px;color:var(--tinta)">
+    <span class="pill">só pra quem estiver ao vivo</span>
+    <div class="huge" style="font-size:150px;margin-top:40px">Presentes</div>
+    <div class="huge grad" style="font-size:150px">exclusivos</div>
+    <div class="huge" style="font-size:150px">pra você</div>
+    <div style="width:420px;height:16px;border-radius:8px;background:var(--grad);margin-top:40px"></div>
+  </div>
+  <div class="foot" style="color:var(--tinta)"><img src="assets/logo-feira-cor.svg"><span>arrasta →</span></div>
+</div>
+
+<!-- 4 | Kit viajante -->
+<div class="slide" id="s4" style="background:var(--escuro)">
+  <div class="glow" style="width:900px;height:900px;background:var(--roxo);opacity:.6;left:-200px;top:150px"></div>
+  <div class="glow" style="width:700px;height:700px;background:var(--vermelho);opacity:.3;left:600px;top:-150px"></div>
+  <div class="abs" style="left:90px;top:90px"><span class="pill">kit viajante</span></div>
+  <img class="abs" src="assets/kit.png" style="left:110px;top:150px;width:860px">
+  <div class="abs pad huge" style="top:900px;font-size:66px;line-height:1.08">De hora em hora, um kit viajante Beawst vai pra <span class="gradL">alguém que estiver ao vivo.</span></div>
+  <div class="foot"><img src="assets/logo-feira-branco.svg"><span>4/8</span></div>
+</div>
+
+<!-- 5 | O grande presente -->
+<div class="slide" id="s5" style="background:var(--escuro)">
+  <div class="glow" style="width:900px;height:900px;background:var(--magenta);opacity:.7;left:90px;top:120px"></div>
+  <div class="glow" style="width:700px;height:700px;background:var(--roxo);opacity:.5;left:-300px;top:700px"></div>
+  <div class="abs" style="left:90px;top:90px"><span class="pill" style="background:var(--grad)">o grande presente</span></div>
+  <img class="abs" src="assets/mala.png" style="left:170px;top:120px;width:740px">
+  <div class="abs pad" style="top:880px">
+    <div class="huge" style="font-size:70px">E no final, uma <span class="gradL">mala de viagem Beawst.</span></div>
+    <div class="body" style="margin-top:24px;color:rgba(255,255,255,.88)">Porque intercâmbio começa pela mala.</div>
+  </div>
+  <div class="foot"><img src="assets/logo-feira-branco.svg"><span>5/8</span></div>
+</div>
+
+<!-- 6 | Como concorrer -->
+<div class="slide" id="s6" style="background:#fff">
+  <div class="glow" style="width:800px;height:800px;background:var(--roxo);opacity:.12;left:520px;top:-200px"></div>
+  <div class="abs pad" style="top:130px;color:var(--tinta)">
+    <div class="huge" style="font-size:110px">Como <span class="grad">concorrer</span></div>
+    <div style="margin-top:70px">
+      <div class="step"><div class="n">1</div><div class="t">Faz sua inscrição no link da bio</div></div>
+      <div class="step"><div class="n">2</div><div class="t">Entra ao vivo no dia 7/11</div></div>
+      <div class="step"><div class="n">3</div><div class="t">Fica até o fim pra concorrer à mala</div></div>
+    </div>
+  </div>
+  <div class="foot" style="color:var(--tinta)"><img src="assets/logo-feira-cor.svg"><span>6/8</span></div>
+</div>
+
+<!-- 7 | O que tem na feira -->
+<div class="slide" id="s7" style="background:var(--roxo)">
+  <div class="glow" style="width:900px;height:900px;background:var(--magenta);opacity:.55;left:-300px;top:500px"></div>
+  <div class="abs" style="left:640px;top:110px;width:350px;height:420px;border-radius:36px;overflow:hidden;border:8px solid #fff;transform:rotate(4deg);box-shadow:0 30px 70px rgba(14,7,22,.4)">
+    <img src="assets/apresentadora.jpg" style="width:100%;height:100%;object-fit:cover;object-position:50% 20%;transform:scale(1.5);transform-origin:50% 28%">
+  </div>
+  <div class="abs" style="left:90px;top:120px">
+    <div class="huge" style="font-size:210px;letter-spacing:-.05em">5</div>
+    <div class="huge" style="font-size:96px;margin-top:-10px">horas</div>
+  </div>
+  <div class="abs pad" style="top:600px">
+    <div class="li"><i></i><span>com escolas e especialistas falando de estudo e trabalho no exterior,</span></div>
+    <div class="li"><i></i><span>apresentação da Samanta Lopes</span></div>
+    <div class="li"><i></i><span>e presente no caminho.</span></div>
+  </div>
+  <div class="foot"><img src="assets/logo-feira-branco.svg"><span>7/8</span></div>
+</div>
+
+<!-- 8 | CTA -->
+<div class="slide" id="s8" style="background:var(--escuro)">
+  <div class="glow" style="width:900px;height:900px;background:var(--roxo);opacity:.7;left:-200px;top:-250px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.4;left:500px;top:750px"></div>
+  <svg class="abs" style="left:90px;top:120px" width="96" height="120" viewBox="0 0 96 120"><path d="M10 10 h76 v100 l-38 -28 -38 28z" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/></svg>
+  <div class="abs pad" style="top:290px">
+    <div class="huge" style="font-size:104px">Salva esse post</div>
+    <div class="body" style="margin-top:26px;font-size:52px;font-weight:800">e manda pra aquele amigo que vive dizendo</div>
+  </div>
+  <div class="abs" style="left:90px;right:90px;top:690px">
+    <div style="display:inline-block;background:#fff;color:var(--tinta);border-radius:44px 44px 44px 10px;padding:40px 52px;font-weight:900;font-size:62px;line-height:1.1;box-shadow:0 26px 60px rgba(0,0,0,.35)">
+      "um dia eu faço <span class="grad">intercâmbio</span>"</div>
+  </div>
+  <div class="abs pad" style="top:1000px;font-weight:700;font-size:36px;color:rgba(255,255,255,.88)">Inscrição gratuita no link da bio · 07/11</div>
+  <div class="foot"><img src="assets/logo-feira-branco.svg"><span>8/8</span></div>
+</div>
+
+<script>
+document.getElementById('s' + (new URLSearchParams(location.search).get('s') || '1')).style.display = 'block';
+</script>
+</body>
+</html>
