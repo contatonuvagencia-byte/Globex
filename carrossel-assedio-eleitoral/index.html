@@ -1,0 +1,162 @@
+<title>Carrossel Voto Livre</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600&display=swap">
+<style>
+/* Identidade SINAIT DS/MG: laranja #cc4e00, creme #F6F4F2, preto #200100; Anton + Montserrat.
+   Layout: 6 slides 1080x1350 (feed 4:5), texto centralizado, faixas laranja inclinadas nos destaques. */
+:root {
+  --preto: #200100;
+  --laranja: #cc4e00;
+  --laranja-logo: #f37c28;
+  --creme: #F6F4F2;
+  --creme-70: rgba(246, 244, 242, .74);
+  --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --f-body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+body { background: #0e0000; color: var(--creme); font-family: var(--f-body); padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+#strip { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+.wrap { width: min(100%, 432px); aspect-ratio: 1080 / 1350; position: relative; overflow: hidden; max-width: 100%; }
+.slide { position: absolute; left: 0; top: 0; width: 1080px; height: 1350px; transform-origin: 0 0; overflow: hidden;
+  background: var(--preto); color: var(--creme); box-sizing: border-box; padding: 0 96px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+body.export { padding: 0; background: var(--preto); }
+body.export #strip { display: block; }
+body.export .wrap { width: 1080px; height: 1350px; aspect-ratio: auto; }
+
+/* fundos */
+.slide::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.s-escuro::before { background:
+  radial-gradient(70% 45% at 85% 105%, rgba(204,78,0,.6) 0%, rgba(204,78,0,.16) 50%, transparent 78%),
+  radial-gradient(45% 30% at 0% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-escuro.alt::before { background:
+  radial-gradient(70% 45% at 10% 105%, rgba(204,78,0,.55) 0%, rgba(204,78,0,.14) 50%, transparent 78%),
+  radial-gradient(45% 30% at 100% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-creme { background: var(--creme); color: var(--preto); }
+.s-laranja { background: var(--laranja); }
+.s-laranja::before { background: radial-gradient(70% 50% at 100% 0%, rgba(243,124,40,.65) 0%, transparent 70%), radial-gradient(60% 40% at 0% 100%, rgba(32,1,0,.35) 0%, transparent 70%); }
+.slide > * { position: relative; }
+
+.logo { width: 170px; margin-top: 70px; flex: none; }
+.body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 44px; width: 100%; padding-bottom: 40px; }
+.foot { flex: none; width: 100%; display: flex; justify-content: space-between; align-items: center; padding-bottom: 56px; font-size: 22px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.foot .src { letter-spacing: .02em; text-transform: none; font-weight: 500; font-size: 20px; text-align: left; max-width: 760px; }
+
+.eyebrow { font-size: 26px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--laranja-logo); }
+.s-creme .eyebrow { color: var(--laranja); }
+.s-laranja .eyebrow { color: var(--preto); }
+h1, h2 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 { font-size: 150px; }
+h2 { font-size: 104px; }
+.faixa { display: inline-block; background: var(--laranja); color: var(--creme); padding: .02em .16em .06em; transform: rotate(-3deg); margin-block: .1em .2em; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
+.faixa.preta { background: var(--preto); }
+.lar { color: var(--laranja-logo); }
+.s-creme .lar { color: var(--laranja); }
+p { margin: 0; }
+.lead { font-size: 44px; line-height: 1.32; font-weight: 600; max-width: 860px; text-wrap: balance; }
+.txt { font-size: 38px; line-height: 1.4; font-weight: 500; max-width: 860px; text-wrap: balance; }
+.txt b, .lead b { font-weight: 800; }
+.alerta { font-style: italic; font-weight: 600; font-size: 38px; line-height: 1.38; max-width: 860px; border-top: 4px solid var(--laranja); padding-top: 34px; text-wrap: balance; }
+
+/* fundo tipográfico da capa */
+.ghost { position: absolute !important; left: -40px; right: -40px; bottom: 120px; font-family: var(--f-display); font-size: 300px; line-height: .9; text-transform: uppercase; color: transparent; -webkit-text-stroke: 2px rgba(246,244,242,.07); white-space: nowrap; text-align: center; }
+
+/* lista */
+.lista { list-style: none; margin: 0; padding: 0; width: 100%; text-align: left; }
+.lista li { display: grid; grid-template-columns: 70px 1fr; align-items: start; gap: 20px; padding-block: 30px; border-top: 3px solid rgba(246,244,242,.16); font-size: 40px; line-height: 1.3; font-weight: 600; }
+.lista li:last-child { border-bottom: 3px solid rgba(246,244,242,.16); }
+.lista .seta { font-family: var(--f-display); color: var(--laranja-logo); font-size: 52px; line-height: 1; }
+
+.pill { display: inline-block; background: var(--creme); color: var(--laranja); font-weight: 800; font-size: 46px; padding: 20px 46px; border-radius: 999px; letter-spacing: -.005em; }
+.share { display: flex; align-items: center; gap: 18px; font-style: italic; font-weight: 600; font-size: 31px; white-space: nowrap; color: var(--creme-70); }
+.share svg { flex: none; }
+</style>
+
+<div id="strip">
+
+  <!-- 1 · capa -->
+  <div class="wrap"><section class="slide s-escuro" id="s1">
+    <div class="ghost">Voto livre</div>
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <div class="body">
+      <h1>A eleição<br><span class="lar">acabou.</span></h1>
+      <p class="lead">O direito ao <span class="faixa" style="font-family:var(--f-display);font-weight:400;font-size:64px;text-transform:uppercase">voto livre</span> continua valendo.</p>
+      <p class="alerta">Demitir, ameaçar ou perseguir trabalhador por posição política é ilegal.</p>
+    </div>
+    <div class="foot"><span>Educação trabalhista</span><span>Arraste →</span></div>
+  </section></div>
+
+  <!-- 2 -->
+  <div class="wrap"><section class="slide s-escuro alt" id="s2">
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <div class="body">
+      <h2>O voto é<br><span class="faixa">livre e secreto.</span></h2>
+      <p class="lead">E a opinião política de quem trabalha <span class="lar">não é assunto do patrão.</span></p>
+      <p class="txt">Nenhuma empresa pode punir, cobrar ou retaliar por isso. <b class="lar">Nem antes, nem depois das eleições.</b></p>
+    </div>
+    <div class="foot"><span>2/6</span><span>Arraste →</span></div>
+  </section></div>
+
+  <!-- 3 -->
+  <div class="wrap"><section class="slide s-creme" id="s3">
+    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
+    <div class="body">
+      <span class="eyebrow">O que é assédio político</span>
+      <h2 style="font-size:92px">É qualquer <span class="faixa">discriminação</span><br>por convicção, posicionamento ou manifestação política.</h2>
+      <p class="txt" style="font-weight:600">Pode acontecer a qualquer tempo, com ou sem eleição em andamento.*</p>
+    </div>
+    <div class="foot"><span class="src">*Fonte: Guia da Secretaria de Inspeção do Trabalho (SIT/MTE), Anexo I, p. 19 a 24.</span><span>3/6</span></div>
+  </section></div>
+
+  <!-- 4 -->
+  <div class="wrap"><section class="slide s-escuro" id="s4">
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <div class="body" style="gap:50px">
+      <h2 style="font-size:96px">Fique atento<br><span class="faixa">se acontecer</span></h2>
+      <ul class="lista">
+        <li><span class="seta">→</span><span>Demissão por causa da opinião ou do voto</span></li>
+        <li><span class="seta">→</span><span>Ameaças ligadas ao resultado da eleição</span></li>
+        <li><span class="seta">→</span><span>Cobrança mais rígida pra quem pensa diferente da chefia</span></li>
+        <li><span class="seta">→</span><span>Humilhação, isolamento ou silenciamento no trabalho*</span></li>
+      </ul>
+    </div>
+    <div class="foot"><span class="src">*Fonte: Guia da Secretaria de Inspeção do Trabalho (SIT/MTE), Anexo I, p. 19 a 24.</span><span>4/6</span></div>
+  </section></div>
+
+  <!-- 5 -->
+  <div class="wrap"><section class="slide s-laranja" id="s5">
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <div class="body">
+      <span class="eyebrow">Quem fiscaliza</span>
+      <h2 style="font-size:92px">Isso é caso para a<br><span class="faixa preta">Inspeção do Trabalho.</span></h2>
+      <p class="txt" style="font-weight:500">Os <b>Auditores-Fiscais do Trabalho</b> estão intensificando as fiscalizações e recebendo denúncias de assédio eleitoral em todo o país, <b>inclusive em Minas.</b></p>
+    </div>
+    <div class="foot"><span>5/6</span><span>Arraste →</span></div>
+  </section></div>
+
+  <!-- 6 -->
+  <div class="wrap"><section class="slide s-escuro alt" id="s6">
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <div class="body">
+      <h2 style="font-size:96px">Aconteceu com você ou com alguém que <span class="faixa">você conhece?</span></h2>
+      <p class="txt">Preencha o formulário com as informações e evidências:</p>
+      <span class="pill">assedioeleitoral.trabalho.gov.br</span>
+      <p class="share"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>Compartilhe. Essa informação protege quem trabalha.</p>
+    </div>
+    <div class="foot"><span class="src">Fonte: Guia da Secretaria de Inspeção do Trabalho (SIT/MTE), Anexo I, p. 19 a 24.</span><span>6/6</span></div>
+  </section></div>
+
+</div>
+
+<script>
+(() => {
+  const exp = new URLSearchParams(location.search).has('export');
+  if (exp) document.body.classList.add('export');
+  const fit = () => document.querySelectorAll('.wrap').forEach(w => {
+    w.querySelector('.slide').style.transform = exp ? 'none' : `scale(${w.clientWidth / 1080})`;
+  });
+  addEventListener('resize', fit); fit();
+})();
+</script>
