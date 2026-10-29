@@ -123,13 +123,6 @@ const SLIDES = [
    <div class="abs lead" style="left:96px;top:1120px;width:700px;font-size:26px"><span class="box">me chama no direct, me conta o que você precisa e eu te mando um orçamento${HEART(C.navy)}</span></div>
    <img class="abs" src="assets/logo/nuv-agencia-offwhite.png" style="right:90px;bottom:84px;width:132px">`,
 ];
-const LIGHT = [false, true, false, true, false, true, false];
-SLIDES.forEach((html, i) => {
-  const d = document.createElement('div');
-  d.className = 'slide' + (LIGHT[i] ? ' light' : ''); d.id = 's' + (i + 1);
-  d.innerHTML = html;
-  document.body.appendChild(d);
-});
 // ---------- opções de capa e fechamento ----------
 const PLANE = c => `<svg width="34" height="34" viewBox="0 0 24 24"><path d="M21.5 2.5 2.8 9.6l7.4 3.3 3.3 7.4z" fill="${c}"/></svg>`;
 const DM_BTN = (bg, fg, txt = 'me chama no direct') => `<div style="display:inline-flex;align-items:center;gap:18px;background:${bg};color:${fg};font-weight:700;font-size:32px;padding:26px 44px;border-radius:999px">${PLANE(fg)}${txt}${HEART(fg)}</div>`;
@@ -182,7 +175,17 @@ const OPTIONS = {
     <div class="abs" style="left:0;right:0;top:1060px;text-align:center">${DM_BTN(C.beige, C.navy)}</div>
     <img class="abs" src="assets/logo/nuv-simbolo-offwhite.png" style="left:495px;bottom:70px;width:90px">`],
 };
-Object.entries(OPTIONS).forEach(([id, [light, html]]) => {
+// escolhidas: capa A (clara) e fechamento B (dividido)
+SLIDES[0] = OPTIONS.capa_A[1];
+SLIDES[6] = OPTIONS.fim_B[1];
+const LIGHT = [true, true, false, true, false, true, false];
+SLIDES.forEach((html, i) => {
+  const d = document.createElement('div');
+  d.className = 'slide' + (LIGHT[i] ? ' light' : ''); d.id = 's' + (i + 1);
+  d.innerHTML = html;
+  document.body.appendChild(d);
+});
+if (location.hash === '#opcoes') Object.entries(OPTIONS).forEach(([id, [light, html]]) => {
   const d = document.createElement('div');
   d.className = 'slide opt' + (light ? ' light' : ''); d.id = id;
   d.innerHTML = html;
