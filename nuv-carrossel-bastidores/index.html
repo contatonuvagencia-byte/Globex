@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>NUV bastidores</title>
+<style>
+  /* Estética "editorial de criadora" com a identidade NUV:
+     - texto de apoio e frases curtas em Comfortaa (negrito, minúsculas)
+     - palavra-chave em Perandory Condensed (caixa alta) ou serifa itálica fina
+     - elementos de interface (pílulas, notas, calendário, aprovação) em Inter, como telas reais
+     Regra: texto sempre sobre área escurecida/sólida ou dentro de cartão. */
+  @font-face { font-family: 'Display'; src: url(assets/fonts/Perandory-Condensed.otf); }
+  @font-face { font-family: 'Accent'; font-style: italic; src: url(assets/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'UI'; font-weight: 400; src: url(assets/fonts/inter-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'UI'; font-weight: 600; src: url(assets/fonts/inter-latin-600-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'UI'; font-weight: 700; src: url(assets/fonts/inter-latin-700-normal.woff2) format('woff2'); }
+
+  :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #222; display: flex; flex-direction: column; gap: 40px; padding: 40px; }
+  .slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'Comfortaa', sans-serif; flex: none; background: var(--navy); color: var(--off); }
+  .slide.light { background: var(--off); color: var(--navy); }
+  .abs { position: absolute; }
+  .ph { position: absolute; background-repeat: no-repeat; }
+  .fade { position: absolute; left: 0; right: 0; pointer-events: none; }
+
+  .kick { font-weight: 700; font-size: 46px; line-height: 1.15; letter-spacing: -.01em; }
+  .big { font-family: 'Display', serif; font-weight: 400; text-transform: uppercase; line-height: 1; letter-spacing: .01em; }
+  .it { font-family: 'Accent', serif; font-style: italic; font-weight: 400; letter-spacing: -.01em; line-height: 1; }
+  .body { font-size: 28px; line-height: 1.45; }
+  .body b { font-weight: 700; }
+  .shadow-t { text-shadow: 0 2px 24px rgba(10,37,64,.55); }
+
+  .tape { display: inline-block; background: var(--beige); color: var(--navy); font-weight: 700; font-size: 22px; letter-spacing: .02em; padding: 10px 18px; transform: rotate(-2deg); box-shadow: 0 6px 16px rgba(0,0,0,.18); }
+  .step { display: inline-flex; align-items: center; gap: 10px; border: 1.6px solid currentColor; border-radius: 999px; padding: 10px 20px; font-weight: 700; font-size: 18px; letter-spacing: .24em; text-transform: uppercase; }
+  .handle { position: absolute; left: 50%; bottom: 58px; transform: translateX(-50%); border: 1.4px solid currentColor; border-radius: 999px; padding: 9px 22px; font-weight: 700; font-size: 17px; letter-spacing: .12em; opacity: .9; display: flex; align-items: center; gap: 10px; }
+  .handle img { height: 20px; }
+
+  .pill { display: flex; align-items: center; gap: 16px; background: rgba(239,234,228,.95); color: var(--navy); border-radius: 999px; padding: 16px 28px 16px 16px; font-family: 'UI', sans-serif; font-weight: 600; font-size: 25px; box-shadow: 0 10px 26px rgba(10,37,64,.25); width: fit-content; }
+  .pill i { width: 36px; height: 36px; border-radius: 50%; background: var(--navy); display: flex; align-items: center; justify-content: center; flex: none; }
+  .card { position: absolute; background: #fbf9f6; color: #1d2433; border-radius: 30px; font-family: 'UI', sans-serif; box-shadow: 0 30px 70px rgba(10,37,64,.35), 0 6px 14px rgba(10,37,64,.15); }
+  .polaroid { position: absolute; background: #fbf9f6; padding: 12px 12px 46px; box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+  .polaroid .cap { position: absolute; left: 0; right: 0; bottom: 12px; text-align: center; font-family: 'Accent', serif; font-style: italic; font-size: 26px; color: var(--navy); }
+  .hl { background: var(--beige); padding: 1px 6px; border-radius: 4px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+</style>
+</head>
+<body>
+<script>
+const C = { off: '#EFEAE4', beige: '#CBC5B9', navy: '#0A2540', indigo: '#313D65' };
+const IMG = {
+  cafe: ['fotos-originais/cafe-mesa.webp', 941, 1672], close: ['fotos-originais/close-celular.webp', 941, 1672],
+  livro: ['fotos-originais/livro-xicara.jpg', 736, 981], bolsa: ['fotos-originais/bolsa-notebook.jpg', 736, 1308],
+};
+// mostra a região da foto que começa em (sx,sy) com largura sw, numa caixa w x h
+const crop = (key, sx, sy, sw, w, h, extra = '') => {
+  const [src, iw] = IMG[key], k = w / sw;
+  return `<div class="ph" style="left:0;top:0;width:${w}px;height:${h}px;background-image:url(${src});background-size:${iw * k}px auto;background-position:${-sx * k}px ${-sy * k}px;${extra}"></div>`;
+};
+const full = (key, sx, sy, sw, extra = '') => `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;overflow:hidden">${crop(key, sx, sy, sw, 1080, 1350, extra)}</div>`;
+const grad = g => `<div class="fade" style="top:0;bottom:0;background:linear-gradient(180deg,${g})"></div>`;
+const HANDLE = light => `<div class="handle"><img src="assets/logo/nuv-simbolo-${light ? 'navy' : 'offwhite'}.png">@nuv.social</div>`;
+const STEP = (n, x, y) => `<div class="abs step" style="left:${x}px;top:${y}px">passo ${n}</div>`;
+const CHECK = c => `<svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const HEART = c => `<svg width="26" height="23" viewBox="0 0 24 21" style="display:inline-block;vertical-align:-3px;margin-left:6px"><path d="M12 20s-7.6-4.6-9.6-9.4C.9 7 3.3 3.4 7 3.4c2.1 0 3.6 1.1 5 3 1.4-1.9 2.9-3 5-3 3.7 0 6.1 3.6 4.6 7.2C19.6 15.4 12 20 12 20z" fill="${c}"/></svg>`;
+const PLANE = c => `<svg width="30" height="30" viewBox="0 0 24 24"><path d="M21.5 2.5 2.8 9.6l7.4 3.3 3.3 7.4z" fill="${c}"/></svg>`;
+
+const SLIDES = [
+  // 1 · capa
+  [false, `${full('close', 0, 140, 941)}
+   ${grad('rgba(10,37,64,.35) 0%,rgba(10,37,64,0) 22%,rgba(10,37,64,0) 50%,rgba(10,37,64,.75) 66%,rgba(10,37,64,.95) 82%,#0A2540 100%')}
+   <div class="polaroid" style="left:70px;top:110px;width:230px;transform:rotate(-5deg)"><div style="position:relative;width:206px;height:220px;overflow:hidden">${crop('cafe', 360, 880, 480, 206, 220)}</div><div class="cap">reunião</div></div>
+   <div class="polaroid" style="right:70px;top:150px;width:230px;transform:rotate(4deg)"><div style="position:relative;width:206px;height:220px;overflow:hidden">${crop('bolsa', 220, 430, 500, 206, 220)}</div><div class="cap">planejamento</div></div>
+   <div class="abs tape" style="left:96px;top:880px">[ os bastidores da NUV, passo a passo ]</div>
+   <div class="abs kick shadow-t" style="left:96px;top:960px;width:900px">o que acontece entre você dizer</div>
+   <div class="abs big shadow-t" style="left:90px;top:1022px;font-size:150px">“fechado”</div>
+   <div class="abs kick shadow-t" style="left:96px;top:1180px;width:900px">e o seu <span class="it" style="font-size:66px">primeiro post</span> sair</div>`],
+
+  // 2 · primeiro, a gente conversa
+  [false, `${full('cafe', 0, 0, 941)}
+   ${grad('#0A2540 0%,rgba(10,37,64,.92) 26%,rgba(10,37,64,.55) 40%,rgba(10,37,64,.1) 55%,rgba(10,37,64,.15) 70%,rgba(10,37,64,.7) 100%')}
+   ${STEP('01', 96, 90)}
+   <div class="abs kick" style="left:96px;top:180px">primeiro,</div>
+   <div class="abs big" style="left:92px;top:236px;font-size:132px">a gente conversa</div>
+   <div class="abs body" style="left:96px;top:400px;width:820px">Antes de criar qualquer coisa, a gente marca uma reunião pra entender:</div>
+   <div class="abs" style="left:96px;top:820px;display:flex;flex-direction:column;gap:16px">
+     ${['seu negócio', 'quem é o seu cliente', 'o que você vende melhor', 'onde você quer chegar com o Instagram'].map(t => `<div class="pill"><i>${CHECK(C.off)}</i>${t}</div>`).join('')}</div>
+   ${HANDLE()}`],
+
+  // 3 · depois, a gente estuda seu perfil (foto clara, texto azul + cartão de notas)
+  [true, `${full('bolsa', 0, 120, 736)}
+   ${grad('rgba(239,234,228,.96) 0%,rgba(239,234,228,.9) 30%,rgba(239,234,228,0) 46%,rgba(239,234,228,0) 100%')}
+   ${STEP('02', 96, 90)}
+   <div class="abs kick" style="left:96px;top:180px">depois, a gente</div>
+   <div class="abs big" style="left:92px;top:236px;font-size:132px">estuda seu perfil</div>
+   <div class="abs body" style="left:96px;top:400px;width:860px">pra saber <b>de onde partir.</b></div>
+   <div class="card" style="left:96px;top:560px;width:600px;padding:30px 34px 34px">
+     <div style="display:flex;align-items:center;gap:10px;color:#b8873a;font-size:20px;font-weight:600"><span style="font-size:26px">‹</span> Notas <span style="margin-left:auto;display:flex;gap:14px;color:#b8873a">⋯</span></div>
+     <div style="font-weight:700;font-size:32px;margin-top:16px;color:${C.navy}">Estudo do perfil</div>
+     <div style="font-size:16px;color:#8a8f99;margin-top:4px">análise inicial · NUV</div>
+     <div style="margin-top:20px;display:flex;flex-direction:column;gap:14px;font-size:22px;line-height:1.35">
+       ${['o que já existe no seu Instagram', 'o que funcionou', 'o que ficou parado', 'como seus concorrentes estão se comunicando'].map((t, i) => `<div style="display:flex;gap:14px;align-items:flex-start"><span style="flex:none;width:28px;height:28px;border-radius:50%;border:2px solid ${C.indigo};display:flex;align-items:center;justify-content:center;margin-top:1px">${i < 3 ? CHECK(C.indigo) : ''}</span><span>${i === 3 ? `<span class="hl">${t}</span>` : t}</span></div>`).join('')}</div></div>
+   <div class="abs" style="left:0;right:0;bottom:58px;display:flex;justify-content:center"><div class="handle" style="position:static;transform:none;background:rgba(239,234,228,.92);color:${C.navy};border-color:${C.navy}"><img src="assets/logo/nuv-simbolo-navy.png">@nuv.social</div></div>`],
+
+  // 4 · aí vem a estratégia (slide claro, sem foto de fundo)
+  [true, `${STEP('03', 96, 90)}
+   <div class="abs kick" style="left:96px;top:190px">aí vem a</div>
+   <div class="abs it" style="left:90px;top:250px;font-size:200px">estratégia.</div>
+   <div class="abs body" style="left:96px;top:500px;width:888px"><span style="background:${C.beige};padding:4px 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone;font-weight:700">Com tudo isso em mãos, definimos</span></div>
+   <div class="abs" style="left:96px;top:590px;width:888px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+     ${[['01', 'os assuntos', 'que a sua marca vai falar'], ['02', 'o tom de voz', 'de cada conversa'], ['03', 'a cara', 'que o seu feed vai ter']].map(([n, a, b]) => `
+       <div style="background:${C.navy};color:${C.off};border-radius:26px;padding:30px 26px;height:300px;display:flex;flex-direction:column">
+         <span class="big" style="font-size:64px;color:${C.beige}">${n}</span>
+         <span style="font-weight:700;font-size:30px;margin-top:auto">${a}</span>
+         <span style="font-size:22px;line-height:1.35;margin-top:8px;opacity:.85">${b}</span></div>`).join('')}</div>
+   <div class="abs" style="left:96px;top:950px;width:888px;display:flex;gap:30px;align-items:center">
+     <div class="polaroid" style="position:relative;width:250px;transform:rotate(-4deg);flex:none"><div style="position:relative;width:226px;height:200px;overflow:hidden">${crop('livro', 160, 280, 520, 226, 200)}</div><div class="cap">tom de voz</div></div>
+     <div class="body" style="font-size:30px">pra tudo seguir <span class="it" style="font-size:52px;color:${C.indigo}">um caminho só.</span></div></div>
+   ${HANDLE(true)}`],
+
+  // 5 · o mês inteiro planejado (foto escura + calendário)
+  [false, `${full('livro', 0, 0, 736)}
+   ${grad('#0A2540 0%,rgba(10,37,64,.9) 28%,rgba(10,37,64,.35) 46%,rgba(10,37,64,.35) 100%')}
+   ${STEP('04', 96, 90)}
+   <div class="abs kick" style="left:96px;top:180px">o mês inteiro</div>
+   <div class="abs big" style="left:92px;top:236px;font-size:150px">planejado</div>
+   <div class="abs body" style="left:96px;top:410px;width:860px">Você recebe o calendário <b>antes de qualquer post sair</b>, então sempre sabe o que vai ser publicado e quando.</div>
+   <div class="card" style="left:150px;top:640px;width:780px;padding:30px 34px">
+     <div style="display:flex;align-items:baseline;gap:14px"><span style="font-weight:700;font-size:34px;color:${C.navy}">Calendário</span><span style="color:#8a8f99;font-size:20px">do mês · NUV</span></div>
+     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:18px;font-size:16px;color:#8a8f99;text-align:center">${['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'].map(d => `<div>${d}</div>`).join('')}</div>
+     <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:8px">
+       ${Array.from({ length: 28 }, (_, i) => { const tag = { 2: 'reels', 4: 'carrossel', 9: 'post', 11: 'reels', 16: 'carrossel', 18: 'post', 23: 'reels', 25: 'carrossel' }[i];
+         return `<div style="height:76px;border-radius:12px;background:${tag ? C.navy : '#efebe5'};color:${tag ? C.off : '#6b7180'};padding:8px 10px;font-size:17px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-weight:600">${i + 1}</span>${tag ? `<span style="font-size:13px;font-weight:600;background:${C.beige};color:${C.navy};border-radius:6px;padding:2px 6px;align-self:flex-start">${tag}</span>` : ''}</div>`; }).join('')}</div></div>
+   ${HANDLE()}`],
+
+  // 6 · aprovação fácil (azul + tela da plataforma)
+  [false, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;filter:blur(18px) brightness(.55);transform:scale(1.08)">${crop('close', 300, 900, 600, 1080, 1350)}</div>
+   ${grad('rgba(10,37,64,.85) 0%,rgba(10,37,64,.6) 40%,rgba(10,37,64,.85) 100%')}
+   ${STEP('05', 96, 90)}
+   <div class="abs kick" style="left:96px;top:180px">você aprova tudo</div>
+   <div class="abs big" style="left:92px;top:236px;font-size:132px">de um jeito fácil</div>
+   <div class="abs body" style="left:96px;top:400px;width:880px">As artes chegam prontas numa plataforma nossa, e você aprova ou pede ajuste ali mesmo, <b>por comentário ou até por áudio.</b></div>
+   <div class="card" style="left:96px;top:640px;width:888px;padding:28px;display:flex;gap:26px">
+     <div style="position:relative;flex:none;width:300px;height:375px;border-radius:16px;overflow:hidden">${crop('cafe', 120, 380, 640, 300, 375)}
+       <div style="position:absolute;left:14px;top:14px;background:rgba(239,234,228,.95);color:${C.navy};font-weight:700;font-size:15px;padding:6px 12px;border-radius:999px">arte 03 de 12</div></div>
+     <div style="flex:1;display:flex;flex-direction:column;gap:16px">
+       <div style="font-weight:700;font-size:24px;color:${C.navy}">Post · carrossel</div>
+       <div style="background:#efebe5;border-radius:18px 18px 18px 4px;padding:14px 18px;font-size:19px;line-height:1.35">pode deixar o título um pouco maior?</div>
+       <div style="background:#efebe5;border-radius:18px 18px 18px 4px;padding:12px 16px;display:flex;align-items:center;gap:12px">
+         <span style="width:34px;height:34px;border-radius:50%;background:${C.navy};display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M7 4v16l13-8z" fill="${C.off}"/></svg></span>
+         <span style="display:flex;gap:4px;align-items:center">${[10, 18, 26, 14, 30, 22, 12, 24, 16, 28, 10, 20, 14, 8].map(h => `<i style="display:block;width:4px;height:${h}px;border-radius:2px;background:${C.indigo}"></i>`).join('')}</span>
+         <span style="font-size:16px;color:#8a8f99">0:12</span></div>
+       <div style="margin-top:auto;display:flex;gap:12px">
+         <div style="flex:1;border:2px solid ${C.navy};color:${C.navy};border-radius:14px;padding:14px;text-align:center;font-weight:700;font-size:19px">pedir ajuste</div>
+         <div style="flex:1;background:${C.navy};color:${C.off};border-radius:14px;padding:14px;text-align:center;font-weight:700;font-size:19px;display:flex;gap:8px;justify-content:center;align-items:center">${CHECK(C.off)}aprovar</div></div></div></div>
+   <div class="abs body" style="left:96px;top:1100px;width:880px;font-size:26px;opacity:.9">sem precisar ficar caçando mensagem no WhatsApp.</div>
+   ${HANDLE()}`],
+
+  // 7 · e só então vai pro ar (claro)
+  [true, `${STEP('06', 96, 90)}
+   <div class="abs kick" style="left:96px;top:180px">e só então</div>
+   <div class="abs big" style="left:92px;top:236px;font-size:170px">vai pro ar</div>
+   <div class="abs body" style="left:96px;top:440px;width:888px">Com tudo aprovado, a gente <b>publica e acompanha os resultados</b> pra ajustar o que for preciso no mês seguinte.</div>
+   <div class="card" style="left:96px;top:640px;width:420px;padding:18px;transform:rotate(-2deg)">
+     <div style="display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;margin-bottom:12px"><span style="width:34px;height:34px;border-radius:50%;background:${C.navy};display:flex;align-items:center;justify-content:center"><img src="assets/logo/nuv-simbolo-offwhite.png" style="width:24px"></span>suamarca</div>
+     <div style="position:relative;width:384px;height:384px;border-radius:12px;overflow:hidden">${crop('close', 120, 300, 700, 384, 384)}</div>
+     <div style="display:flex;align-items:center;gap:10px;margin-top:14px;font-weight:700;font-size:18px;color:${C.navy}"><span style="width:26px;height:26px;border-radius:50%;background:${C.navy};display:flex;align-items:center;justify-content:center">${CHECK(C.off)}</span>publicado</div></div>
+   <div class="card" style="left:560px;top:700px;width:424px;padding:28px">
+     <div style="font-weight:700;font-size:24px;color:${C.navy}">acompanhamento</div>
+     <div style="font-size:16px;color:#8a8f99;margin-top:4px">resultados do mês</div>
+     <div style="display:flex;align-items:flex-end;gap:14px;height:180px;margin-top:22px;border-bottom:2px solid #e3ddd4">${[70, 95, 82, 120, 108, 150].map((h, i) => `<div style="flex:1;height:${h}px;border-radius:8px 8px 0 0;background:${i === 5 ? C.navy : C.beige}"></div>`).join('')}</div>
+     <div style="display:flex;justify-content:space-between;font-size:14px;color:#8a8f99;margin-top:8px"><span>sem 1</span><span>sem 2</span><span>sem 3</span><span>sem 4</span></div>
+     <div style="margin-top:20px;background:#efebe5;border-radius:14px;padding:14px 16px;font-size:18px;line-height:1.35"><b>ajustes pro próximo mês</b><br>o que funcionou melhor ganha mais espaço</div></div>
+   ${HANDLE(true)}`],
+
+  // 8 · fechamento
+  [false, `${full('cafe', 120, 300, 700)}
+   ${grad('rgba(10,37,64,.4) 0%,rgba(10,37,64,0) 18%,rgba(10,37,64,0) 42%,rgba(10,37,64,.82) 56%,rgba(10,37,64,.96) 66%,#0A2540 100%')}
+   <div class="abs kick" style="left:96px;top:800px;width:888px;font-size:42px">enquanto isso, você continua cuidando do seu negócio,</div>
+   <div class="abs it" style="left:92px;top:918px;font-size:84px;width:900px">que é o que você faz de melhor.</div>
+   <div class="abs body" style="left:96px;top:1036px;width:840px">Se quiser começar esse processo, me conta o que você precisa e eu te mando um orçamento.</div>
+   <div class="abs" style="left:96px;top:1150px;display:inline-flex;align-items:center;gap:16px;background:${C.beige};color:${C.navy};font-weight:700;font-size:30px;padding:22px 38px;border-radius:999px">${PLANE(C.navy)}me chama no direct${HEART(C.navy)}</div>
+   ${HANDLE()}`],
+];
+SLIDES.forEach(([light, html], i) => {
+  const d = document.createElement('div');
+  d.className = 'slide' + (light ? ' light' : ''); d.id = 's' + (i + 1);
+  d.innerHTML = html;
+  document.body.appendChild(d);
+});
+</script>
+</body>
+</html>
