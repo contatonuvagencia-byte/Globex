@@ -10,7 +10,7 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 1500 } });
 await page.goto('file://' + ROOT + '/index.html');
 await page.evaluate(async () => {
-  await Promise.all(["400 40px Display", "italic 400 40px Display", "400 40px Script", "500 40px Sans", "600 40px Sans", "700 40px Sans"].map(f => document.fonts.load(f, 'Aá')));
+  await Promise.all(["400 40px Display", "italic 400 40px Display", "400 40px Script", "400 40px Comfortaa", "700 40px Comfortaa"].map(f => document.fonts.load(f, 'Aá')));
   await document.fonts.ready;
   await new Promise(r => setTimeout(r, 400));
 });
