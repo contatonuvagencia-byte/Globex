@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Post Faltam 9 dias</title>
+<!-- Post único de 29/10 (1080x1350, 4:5). Gerar o PNG: node render.mjs -->
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:var(--escuro)}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased;position:relative}
+.abs{position:absolute}
+.glow{position:absolute;border-radius:50%;filter:blur(130px)}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{display:inline-block;font-weight:800;font-size:30px;letter-spacing:.12em;background:var(--roxo);padding:16px 28px;border-radius:999px}
+.cards{display:flex;gap:22px}
+.card{flex:1 1 0;min-width:0;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.16);border-radius:30px;padding:28px 26px;min-height:220px}
+.card svg{display:block;margin-bottom:20px}
+.card .t{font-weight:800;font-size:33px;line-height:1.18}
+</style>
+</head>
+<body>
+  <div class="glow" style="width:900px;height:900px;background:var(--roxo);opacity:.7;left:-300px;top:-250px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.38;left:520px;top:700px"></div>
+
+  <div class="abs" style="left:90px;top:84px"><img src="assets/logo-feira-branco.svg" style="width:330px;display:block"></div>
+  <div class="abs" style="right:90px;top:96px"><span class="pill">07/11</span></div>
+
+  <div class="abs" style="left:90px;top:225px;font-weight:900;font-size:84px;letter-spacing:-.02em">Faltam</div>
+  <div class="abs" style="left:78px;top:330px;display:flex;align-items:flex-end;gap:26px">
+    <span class="gradL" style="font-weight:900;font-size:480px;line-height:.86;letter-spacing:-.05em">9</span>
+    <span style="font-weight:900;font-size:160px;line-height:1;letter-spacing:-.03em;margin-bottom:20px">dias</span>
+  </div>
+  <div class="abs" style="left:90px;right:90px;top:760px;font-weight:700;font-size:44px;line-height:1.28">
+    pra feira de intercâmbio <b style="font-weight:900">online e gratuita</b> da Beawst.
+  </div>
+
+  <div class="abs cards" style="left:90px;right:90px;top:900px">
+    <div class="card">
+      <svg width="58" height="58" viewBox="0 0 64 64" fill="none" stroke="#FF6BB5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 32 12l28 12-28 12z"/><path d="M16 30v14c8 7 24 7 32 0V30"/></svg>
+      <div class="t">Escolas e especialistas ao vivo</div>
+    </div>
+    <div class="card">
+      <svg width="58" height="58" viewBox="0 0 64 64" fill="none" stroke="#FF6BB5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><rect x="22" y="6" width="20" height="32" rx="10"/><path d="M12 30a20 20 0 0 0 40 0M32 50v8M22 58h20"/></svg>
+      <div class="t">Apresentação de Samanta Lopes</div>
+    </div>
+    <div class="card">
+      <svg width="58" height="58" viewBox="0 0 64 64" fill="none" stroke="#FF6BB5" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="24" width="48" height="34" rx="5"/><path d="M4 16h56v8H4zM32 16v42M32 16c-4-10-18-10-14 0M32 16c4-10 18-10 14 0"/></svg>
+      <div class="t">Presente de hora em hora</div>
+    </div>
+  </div>
+
+  <div class="abs" style="left:90px;right:90px;top:1185px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:34px">
+    <span>a partir das 8h · online</span>
+    <span style="background:#fff;color:var(--roxo);padding:16px 30px;border-radius:999px">Inscrição no link da bio</span>
+  </div>
+</body>
+</html>
