@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>NUV carrossel</title>
+<style>
+  /* Títulos: Perandory quando o arquivo existir em assets/fonts; até lá, Instrument Serif (mesma família visual: serifa fina e condensada) */
+  @font-face { font-family: 'Display'; src: url(assets/fonts/Perandory.otf), url(assets/fonts/Perandory.ttf), url(assets/fonts/instrument-serif-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Display'; font-style: italic; src: url(assets/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'Script'; src: url(assets/fonts/allura-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Sans'; font-weight: 400; src: url(assets/fonts/inter-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Sans'; font-weight: 500; src: url(assets/fonts/inter-latin-500-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Sans'; font-weight: 600; src: url(assets/fonts/inter-latin-600-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Sans'; font-weight: 700; src: url(assets/fonts/inter-latin-700-normal.woff2) format('woff2'); }
+
+  :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; --ink: #fff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #222; display: flex; flex-direction: column; gap: 40px; padding: 40px; }
+  .slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--ink); font-family: 'Sans', sans-serif; flex: none; }
+
+  /* foto: real (fotos/slideN.jpg) ou ambiente desfocado provisório */
+  .photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
+  .amb { position: absolute; inset: -60px; filter: blur(46px) saturate(1.05); }
+  .amb i { position: absolute; border-radius: 50%; display: block; }
+  .grain { position: absolute; inset: 0; opacity: .22; mix-blend-mode: overlay; pointer-events: none; }
+  .shade { position: absolute; inset: 0; pointer-events: none; }
+
+  .frame { position: absolute; inset: 74px 66px; border: 1.6px solid rgba(255,255,255,.78); border-radius: 30px; pointer-events: none; }
+  .tag { position: absolute; font-weight: 500; font-size: 15px; letter-spacing: .42em; line-height: 1.45; text-transform: uppercase; }
+  .tag b { font-weight: 700; }
+  .h { font-family: 'Display', serif; font-weight: 400; line-height: .9; letter-spacing: -.012em; text-shadow: 0 4px 30px rgba(0,0,0,.25); }
+  .h i { font-style: italic; letter-spacing: -.02em; }
+  .script { font-family: 'Script', cursive; line-height: .85; transform: rotate(-7deg); text-shadow: 0 2px 16px rgba(0,0,0,.3); }
+  .lead { font-weight: 600; font-size: 31px; line-height: 1.28; letter-spacing: -.005em; text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+  .lead b { font-weight: 700; }
+  .u { font-weight: 500; font-size: 28px; line-height: 1.32; text-transform: uppercase; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; letter-spacing: .005em; text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+  .box { display: inline; background: rgba(10,37,64,.72); padding: 4px 12px; box-decoration-break: clone; -webkit-box-decoration-break: clone; font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .abs { position: absolute; }
+  .num { font-family: 'Display', serif; font-style: italic; font-size: 44px; opacity: .9; }
+  .rule { display: inline-block; width: 70px; height: 1.6px; background: currentColor; vertical-align: middle; margin: 0 14px; opacity: .8; }
+</style>
+</head>
+<body>
+<script>
+const SV_GRAIN = `<svg class="grain" width="1080" height="1350"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>`;
+// ambientes provisórios (luz quente de café/escritório desfocada) até as fotos chegarem
+const AMB = [
+  { base: 'linear-gradient(160deg,#2f3a2c,#1d231c 55%,#3b2c22)', dots: [[150, 160, 260, '#f6d39a', .55], [520, 90, 180, '#f9e2b8', .45], [900, 220, 300, '#e9b980', .4], [260, 820, 420, '#6c7a4f', .5], [820, 1050, 520, '#7a5a40', .55], [640, 600, 260, '#d9b38a', .25]] },
+  { base: 'linear-gradient(170deg,#4a3a2e,#2a201a 60%,#1c1612)', dots: [[200, 260, 380, '#c9a27a', .45], [860, 180, 260, '#f0d6b0', .35], [540, 980, 520, '#8a6346', .5], [120, 1180, 300, '#e8c49a', .25]] },
+  { base: 'linear-gradient(160deg,#c9b9a6,#a8937c 50%,#6d5b4a)', dots: [[820, 200, 360, '#f7efe4', .7], [200, 700, 420, '#e2d4c2', .55], [700, 1100, 460, '#8b7460', .45]] },
+  { base: 'linear-gradient(165deg,#1d2a3c,#0A2540 55%,#2c2a35)', dots: [[180, 220, 260, '#f3cf95', .5], [880, 380, 300, '#d8a96c', .4], [520, 1100, 520, '#313D65', .7], [300, 640, 240, '#efe2c8', .2]] },
+  { base: 'linear-gradient(160deg,#8a7a69,#5e5144 55%,#3a322b)', dots: [[780, 260, 420, '#f0e4d2', .5], [180, 980, 380, '#c7ab8b', .45], [600, 640, 240, '#fff4e0', .25]] },
+  { base: 'linear-gradient(170deg,#3a3430,#24201d 60%,#463a30)', dots: [[300, 300, 340, '#d7b48a', .45], [860, 860, 420, '#f5dfbf', .35], [160, 1120, 300, '#8a6a4d', .5]] },
+  { base: 'linear-gradient(160deg,#2b3b30,#1b241d 50%,#0A2540)', dots: [[160, 200, 260, '#f6d39a', .5], [900, 160, 220, '#f9e2b8', .45], [760, 1040, 520, '#313D65', .6], [300, 900, 380, '#556b45', .45]] },
+];
+function photoLayer(n) {
+  const a = AMB[n - 1];
+  return `<div class="photo" style="background:${a.base}"><div class="amb">${a.dots.map(([x, y, s, c, o]) => `<i style="left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;background:${c};opacity:${o}"></i>`).join('')}</div></div>
+    <div class="photo real" data-n="${n}"></div>${SV_GRAIN}`;
+}
+const TAG_TOP = (x, y, align = 'left') => `<div class="tag" style="left:${x}px;top:${y}px;text-align:${align}">por <b>nuv</b><br>agência</div>`;
+const TAG_BOT = (x, y, align = 'right') => `<div class="tag" style="left:${x}px;top:${y}px;text-align:${align};font-size:14px"><b>social</b><br>media</div>`;
+const HEART = `<svg width="34" height="30" viewBox="0 0 24 21" style="display:inline-block;vertical-align:-3px;margin-left:8px"><path d="M12 20s-7.6-4.6-9.6-9.4C.9 7 3.3 3.4 7 3.4c2.1 0 3.6 1.1 5 3 1.4-1.9 2.9-3 5-3 3.7 0 6.1 3.6 4.6 7.2C19.6 15.4 12 20 12 20z" fill="#fff"/></svg>`;
+
+const SLIDES = [
+  // 1 · capa
+  `<div class="shade" style="background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.05) 40%,rgba(0,0,0,.45))"></div>
+   <div class="frame"></div>
+   ${TAG_TOP(118, 120)}
+   <div class="abs h" style="left:110px;top:360px;font-size:182px;width:880px">O que eu olho <i>primeiro</i></div>
+   <div class="abs h" style="left:116px;top:720px;font-size:74px;line-height:1;width:820px">quando um cliente novo me passa o Instagram dele</div>
+   <div class="abs script" style="left:560px;top:930px;font-size:84px;width:460px">e você pode fazer esse teste</div>
+   <div class="abs u" style="left:118px;top:1110px;width:560px">no seu agora mesmo.</div>
+   <div class="abs" style="right:118px;top:1150px;font-weight:600;font-size:22px;letter-spacing:.2em;text-transform:uppercase">arrasta <span style="font-size:30px">→</span></div>`,
+  // 2 · bio
+  `<div class="shade" style="background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.15) 50%,rgba(0,0,0,.6))"></div>
+   <div class="frame"></div>
+   ${TAG_TOP(118, 120)}
+   <div class="abs num" style="right:118px;top:112px">01<span class="rule"></span></div>
+   <div class="abs h" style="left:104px;top:250px;font-size:300px">A <i>bio</i></div>
+   <div class="abs script" style="left:590px;top:440px;font-size:80px">três perguntas</div>
+   <div class="abs lead" style="left:118px;top:640px;width:820px"><span class="box">Eu leio e tento responder três perguntas:</span></div>
+   <div class="abs u" style="left:118px;top:740px;width:820px;font-size:34px;line-height:1.45">o que a empresa faz,<br>pra quem faz<br>e como eu chamo.</div>
+   <div class="abs lead" style="right:118px;top:990px;width:700px;text-align:right">Se eu precisei pensar pra descobrir, o cliente dele também vai precisar, <b>e quase ninguém tem essa paciência.</b></div>
+   ${TAG_BOT(860, 1190)}`,
+  // 3 · 9 primeiros posts
+  `<div class="shade" style="background:linear-gradient(180deg,rgba(0,0,0,.4),rgba(0,0,0,.1) 45%,rgba(0,0,0,.55))"></div>
+   <div class="frame" style="inset:150px 66px 74px 66px"></div>
+   <div class="abs num" style="left:118px;top:108px">02<span class="rule"></span></div>
+   <div class="abs h" style="left:100px;top:200px;font-size:176px;text-transform:uppercase;letter-spacing:-.01em;line-height:.86">Os 9<br>primeiros<br>posts</div>
+   <div class="abs script" style="left:640px;top:610px;font-size:86px">a vitrine</div>
+   <div class="abs u" style="left:118px;top:820px;width:520px">eles são a vitrine do perfil.</div>
+   <div class="abs lead" style="right:118px;top:960px;width:640px;text-align:right">Olhando só pra eles, eu já percebo se a marca tem <b>uma cara definida</b> ou se cada post parece ter sido feito por uma pessoa diferente.</div>
+   ${TAG_TOP(118, 1180)}`,
+  // 4 · destaques
+  `<div class="shade" style="background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,.08) 70%)"></div>
+   <div class="frame"></div>
+   ${TAG_TOP(118, 120)}
+   <div class="abs num" style="right:118px;top:112px">03<span class="rule"></span></div>
+   <div class="abs h" style="left:104px;top:230px;font-size:190px;line-height:.88">Os<br><i>destaques</i></div>
+   <div class="abs u" style="left:118px;top:720px;width:520px;font-weight:700">é onde muita venda acontece em silêncio.</div>
+   <div class="abs lead" style="left:118px;top:860px;width:520px;font-weight:500">Quando tem depoimento, bastidor e “como funciona”, a pessoa tira as dúvidas sozinha</div>
+   <div class="abs lead" style="right:118px;top:1060px;width:520px;text-align:right">e já chega no direct <span style="text-decoration:underline;text-underline-offset:6px">pronta pra fechar.</span></div>
+   <div class="abs script" style="left:600px;top:610px;font-size:74px">venda silenciosa</div>
+   ${TAG_BOT(860, 1190)}`,
+  // 5 · comentários
+  `<div class="shade" style="background:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.1) 40%,rgba(0,0,0,.6))"></div>
+   <div class="frame" style="inset:74px 66px 150px 66px"></div>
+   ${TAG_TOP(118, 120)}
+   <div class="abs num" style="right:118px;top:112px">04<span class="rule"></span></div>
+   <div class="abs h" style="left:104px;top:250px;font-size:200px;line-height:.86">Os<br><i>comentários</i></div>
+   <div class="abs script" style="left:560px;top:620px;font-size:70px;width:440px">o atendimento começa aqui</div>
+   <div class="abs lead" style="left:118px;top:800px;width:760px">Eu vejo <b>se o dono responde, como responde e quanto tempo demora.</b></div>
+   <div class="abs u" style="right:118px;top:1000px;width:640px;text-align:right">pra quem tá chegando, isso mostra como vai ser o atendimento depois da compra.</div>`,
+  // 6 · data do último post
+  `<div class="shade" style="background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.2) 50%,rgba(0,0,0,.6))"></div>
+   <div class="frame"></div>
+   ${TAG_TOP(118, 120)}
+   <div class="abs num" style="right:118px;top:112px">05<span class="rule"></span></div>
+   <div class="abs h" style="left:104px;top:300px;font-size:168px;line-height:.9;width:880px">A data do <i>último post</i></div>
+   <div class="abs script" style="left:118px;top:690px;font-size:80px">parece bobo, mas…</div>
+   <div class="abs lead" style="left:118px;top:860px;width:760px"><span class="box">perfil parado há meses passa a impressão de empresa parada,</span></div>
+   <div class="abs u" style="right:118px;top:1060px;width:600px;text-align:right;font-weight:700">mesmo quando a agenda tá lotada.</div>
+   ${TAG_BOT(860, 1190)}`,
+  // 7 · fechamento
+  `<div class="shade" style="background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.15) 45%,rgba(0,0,0,.65))"></div>
+   <div class="frame"></div>
+   ${TAG_TOP(118, 120)}
+   <div class="abs h" style="left:104px;top:240px;font-size:150px;line-height:.9;width:880px">Esses cinco pontos dizem <i>muito</i></div>
+   <div class="abs lead" style="left:118px;top:690px;width:640px;font-weight:500;font-size:34px">sobre quanto o seu Instagram tá ajudando a vender.</div>
+   <div class="abs script" style="left:620px;top:800px;font-size:84px">com cuidado</div>
+   <div class="abs lead" style="left:118px;top:930px;width:820px">Se quiser que a gente olhe o seu com esse cuidado,</div>
+   <div class="abs u" style="left:118px;top:1020px;width:760px;font-weight:700;font-size:31px">me chama no direct, me conta o que você precisa e eu te mando um orçamento${HEART}</div>
+   <img class="abs" src="assets/logo/nuv-agencia-offwhite.png" style="right:112px;bottom:112px;width:170px;opacity:.95">`,
+];
+SLIDES.forEach((html, i) => {
+  const d = document.createElement('div');
+  d.className = 'slide'; d.id = 's' + (i + 1);
+  d.innerHTML = photoLayer(i + 1) + html;
+  document.body.appendChild(d);
+});
+// usa fotos/slideN.jpg (ou .png) quando existir
+document.querySelectorAll('.photo.real').forEach(el => {
+  const n = el.dataset.n;
+  for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
+    const img = new Image();
+    img.onload = () => { el.style.backgroundImage = `url(${img.src})`; };
+    img.src = `fotos/slide${n}.${ext}`;
+  }
+});
+</script>
+</body>
+</html>
