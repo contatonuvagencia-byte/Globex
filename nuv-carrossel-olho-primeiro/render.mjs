@@ -14,11 +14,12 @@ await page.evaluate(async () => {
   await document.fonts.ready;
   await new Promise(r => setTimeout(r, 400));
 });
-const n = await page.evaluate(() => document.querySelectorAll('.slide').length);
-for (let i = 1; i <= n; i++) {
-  const png = `${ROOT}/out/slide-${i}.png`;
-  await page.locator('#s' + i).screenshot({ path: png });
-  execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', png, '-q:v', '2', `${ROOT}/out/slide-${i}.jpg`]);
-  console.log('ok slide', i);
+const ids = await page.evaluate(() => [...document.querySelectorAll('.slide')].map(e => e.id));
+for (const id of ids) {
+  const name = id.startsWith('s') && /^s\d+$/.test(id) ? 'slide-' + id.slice(1) : 'opcao-' + id;
+  const png = `${ROOT}/out/${name}.png`;
+  await page.locator('#' + id).screenshot({ path: png });
+  execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-y', '-i', png, '-q:v', '2', `${ROOT}/out/${name}.jpg`]);
+  console.log('ok', name);
 }
 await browser.close();

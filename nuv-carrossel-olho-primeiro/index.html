@@ -130,6 +130,64 @@ SLIDES.forEach((html, i) => {
   d.innerHTML = html;
   document.body.appendChild(d);
 });
+// ---------- opções de capa e fechamento ----------
+const PLANE = c => `<svg width="34" height="34" viewBox="0 0 24 24"><path d="M21.5 2.5 2.8 9.6l7.4 3.3 3.3 7.4z" fill="${c}"/></svg>`;
+const DM_BTN = (bg, fg, txt = 'me chama no direct') => `<div style="display:inline-flex;align-items:center;gap:18px;background:${bg};color:${fg};font-weight:700;font-size:32px;padding:26px 44px;border-radius:999px">${PLANE(fg)}${txt}${HEART(fg)}</div>`;
+const SUB = 'quando um cliente novo me passa o Instagram dele';
+const TESTE = 'e você pode fazer esse teste no seu agora mesmo';
+const OPTIONS = {
+  // Capa A · clara, título grande, foto em moldura
+  capa_A: [true, `${HDR('arrasta →', true)}
+    <div class="abs t" style="left:96px;top:180px;font-size:168px;line-height:1.12">O que eu olho<br><em>primeiro</em></div>
+    <div class="abs lead" style="left:96px;top:580px;width:888px;font-size:32px">${SUB}</div>
+    <div class="pic" style="left:96px;top:660px;width:888px;height:500px">${crop('cafe', 0, 430, 941, 888, 500)}</div>
+    <div class="abs u" style="left:96px;top:1200px">${TESTE}</div>`],
+  // Capa B · tela dividida: azul com texto + foto
+  capa_B: [false, `<div class="abs" style="left:540px;top:0;width:540px;height:1350px">${crop('close', 140, 0, 610, 540, 1350)}</div>
+    ${HDR('arrasta →').replace('class="hdr"', 'class="hdr" style="right:590px"')}
+    <div class="abs t" style="left:96px;top:250px;font-size:132px;width:420px;line-height:1.12">O que eu olho <em>primeiro</em></div>
+    <div class="abs bar" style="left:96px;top:740px"></div>
+    <div class="abs lead" style="left:96px;top:780px;width:400px">${SUB}</div>
+    <div class="abs u" style="left:96px;top:1060px;width:400px;color:${C.beige}">${TESTE}</div>`],
+  // Capa C · foto inteira com cartão off-white
+  capa_C: [false, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px">${crop('cafe', 0, 60, 941, 1080, 1350)}</div>
+    <div class="fade" style="top:0;bottom:0;background:rgba(10,37,64,.25)"></div>
+    <div class="fade" style="top:0;height:260px;background:linear-gradient(180deg,rgba(10,37,64,.7),rgba(10,37,64,0))"></div>
+    ${HDR('arrasta →')}
+    <div class="abs" style="left:96px;top:760px;width:888px;height:500px;background:${C.off};border-radius:30px;box-shadow:0 30px 70px rgba(0,0,0,.35)"></div>
+    <div class="abs t" style="left:150px;top:800px;font-size:126px;line-height:1.12;color:${C.navy}">O que eu olho<br><em style="color:${C.indigo}">primeiro</em></div>
+    <div class="abs lead" style="left:150px;top:1100px;width:780px;color:${C.navy};font-size:28px">${SUB}</div>
+    <div class="abs u" style="left:150px;top:1180px;color:${C.navy};font-size:21px">${TESTE}</div>`],
+  // Fechamento A · claro, foto redonda e botão do direct
+  fim_A: [true, `${HDR('fim', true)}
+    <div class="abs t" style="left:96px;top:180px;font-size:132px;line-height:1.1;width:900px">Esses cinco pontos dizem <em>muito</em></div>
+    <div class="abs lead" style="left:96px;top:500px;width:888px;font-size:32px">sobre quanto o seu Instagram tá ajudando a vender.</div>
+    <div class="abs" style="left:96px;top:640px;width:300px;height:300px;border-radius:50%;padding:8px;border:3px solid ${C.indigo}"><div style="position:relative;width:280px;height:280px;border-radius:50%;overflow:hidden">${crop('close', 230, 420, 520, 280, 280)}</div></div>
+    <div class="abs lead" style="left:450px;top:700px;width:534px">Se quiser que a gente olhe o seu <b>com esse cuidado,</b> me conta o que você precisa e eu te mando um orçamento.</div>
+    <div class="abs" style="left:96px;top:1010px">${DM_BTN(C.navy, C.off)}</div>
+    <img class="abs" src="assets/logo/nuv-agencia-indigo.png" style="right:96px;bottom:90px;width:150px">`],
+  // Fechamento B · tela dividida espelhada
+  fim_B: [false, `<div class="abs" style="left:0;top:0;width:540px;height:1350px">${crop('close', 140, 0, 610, 540, 1350)}</div>
+    ${HDR('fim').replace('class="hdr"', 'class="hdr" style="left:590px"')}
+    <div class="abs t" style="left:590px;top:240px;font-size:112px;width:400px;line-height:1.1">Esses cinco pontos dizem <em>muito</em></div>
+    <div class="abs lead" style="left:590px;top:700px;width:400px;font-size:28px">sobre quanto o seu Instagram tá ajudando a vender.</div>
+    <div class="abs lead" style="left:590px;top:850px;width:400px;font-size:26px">Se quiser que a gente olhe o seu com esse cuidado, me conta o que você precisa e eu te mando um orçamento.</div>
+    <div class="abs" style="left:590px;top:1080px">${DM_BTN(C.beige, C.navy, 'me chama no direct').replace('font-size:32px;padding:26px 44px', 'font-size:25px;padding:20px 30px')}</div>
+    <img class="abs" src="assets/logo/nuv-simbolo-offwhite.png" style="right:96px;bottom:84px;width:90px">`],
+  // Fechamento C · azul sólido, centralizado
+  fim_C: [false, `${HDR('fim')}
+    <div class="abs" style="left:390px;top:190px;width:300px;height:300px;border-radius:50%;padding:8px;border:3px solid ${C.beige}"><div style="position:relative;width:280px;height:280px;border-radius:50%;overflow:hidden">${crop('close', 230, 420, 520, 280, 280)}</div></div>
+    <div class="abs t" style="left:90px;top:560px;width:900px;text-align:center;font-size:120px;line-height:1.1">Esses cinco pontos<br>dizem <em>muito</em></div>
+    <div class="abs lead" style="left:140px;top:850px;width:800px;text-align:center;font-size:29px">sobre quanto o seu Instagram tá ajudando a vender. Se quiser que a gente olhe o seu com esse cuidado, me conta o que você precisa e eu te mando um orçamento.</div>
+    <div class="abs" style="left:0;right:0;top:1060px;text-align:center">${DM_BTN(C.beige, C.navy)}</div>
+    <img class="abs" src="assets/logo/nuv-simbolo-offwhite.png" style="left:495px;bottom:70px;width:90px">`],
+};
+Object.entries(OPTIONS).forEach(([id, [light, html]]) => {
+  const d = document.createElement('div');
+  d.className = 'slide opt' + (light ? ' light' : ''); d.id = id;
+  d.innerHTML = html;
+  document.body.appendChild(d);
+});
 </script>
 </body>
 </html>
