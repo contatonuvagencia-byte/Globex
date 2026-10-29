@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <title>NUV carrossel</title>
 <style>
-  /* Identidade NUV — título: Perandory (coloque Perandory.otf/.ttf em assets/fonts e ela entra sozinha;
-     até lá, Instrument Serif, serifa fina e condensada da mesma família visual). Apoio: Comfortaa. */
-  @font-face { font-family: 'Display'; src: url(assets/fonts/Perandory.otf), url(assets/fonts/Perandory.ttf), url(assets/fonts/instrument-serif-latin-400-normal.woff2) format('woff2'); }
-  @font-face { font-family: 'Display'; font-style: italic; src: url(assets/fonts/Perandory-Italic.otf), url(assets/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
+  /* Identidade NUV — títulos em Perandory Condensed (caixa alta), palavras de destaque em serifa itálica
+     fina (Instrument Serif Italic), textos de apoio em Comfortaa. */
+  @font-face { font-family: 'Display'; src: url(assets/fonts/Perandory-Condensed.otf); }
+  @font-face { font-family: 'DisplaySemi'; src: url(assets/fonts/Perandory-SemiCondensed.otf); }
+  @font-face { font-family: 'Accent'; font-style: italic; src: url(assets/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
   @font-face { font-family: 'Script'; src: url(assets/fonts/allura-latin-400-normal.woff2) format('woff2'); }
   @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
   @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
@@ -29,8 +30,8 @@
   .light .frame { border-color: rgba(10,37,64,.35); }
   .tag { position: absolute; display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 14px; letter-spacing: .38em; line-height: 1.5; text-transform: uppercase; }
   .tag img { height: 34px; }
-  .h { font-family: 'Display', serif; font-weight: 400; line-height: .9; letter-spacing: -.012em; }
-  .h i { font-style: italic; letter-spacing: -.02em; }
+  .h { font-family: 'Display', serif; font-weight: 400; line-height: .92; letter-spacing: .005em; }
+  .h i { font-family: 'Accent', serif; font-style: italic; font-size: 1.12em; letter-spacing: -.02em; line-height: .8; }
   .slide:not(.light) .h { text-shadow: 0 4px 30px rgba(10,37,64,.35); }
   .script { font-family: 'Script', cursive; line-height: .85; transform: rotate(-7deg); color: var(--beige); }
   .light .script { color: var(--indigo); }
@@ -41,7 +42,7 @@
   .box { display: inline; background: var(--beige); color: var(--navy); padding: 6px 14px; box-decoration-break: clone; -webkit-box-decoration-break: clone; font-weight: 700; line-height: 1.7; text-shadow: none; }
   .light .box { background: var(--navy); color: var(--off); }
   .abs { position: absolute; }
-  .num { font-family: 'Display', serif; font-style: italic; font-size: 46px; display: flex; align-items: center; }
+  .num { font-family: 'Accent', serif; font-style: italic; font-size: 46px; display: flex; align-items: center; }
   .rule { display: inline-block; width: 70px; height: 1.6px; background: currentColor; margin-left: 14px; opacity: .7; }
 </style>
 </head>
@@ -59,11 +60,15 @@ const AMB = {
   6: { base: `linear-gradient(170deg,#d8cdbd,#b3a491 60%,#8a7b69)`, dots: [[220, 180, 300, '#fff6ea', .6], [700, 150, 260, C.indigo, .3], [500, 260, 200, '#efe2cf', .5]] },
   7: { base: `linear-gradient(160deg,#233a5c,${C.navy} 50%,#141b2c)`, dots: [[160, 200, 260, '#f6d7a0', .45], [900, 160, 220, '#f9e6c4', .4], [760, 1040, 520, C.indigo, .7], [300, 900, 380, '#3e4e7a', .5]] },
 };
-// dots já estão em coordenadas da área onde a foto entra
-const ambient = n => {
+// foto real (src + enquadramento) ou ambiente desfocado nas cores da NUV
+const ambient = (n, ph) => {
+  if (ph) return `<div class="photo" style="background-image:url(${ph.src});background-size:${ph.size || 'cover'};background-position:${ph.pos || 'center'};${ph.filter ? 'filter:' + ph.filter : ''}"></div>${SV_GRAIN}`;
   const a = AMB[n];
-  return `<div class="photo" style="background:${a.base}"><div class="amb">${a.dots.map(([x, y, s, c, o]) => `<i style="left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;background:${c};opacity:${o}"></i>`).join('')}</div></div>
-    <div class="photo real" data-n="${n}"></div>${SV_GRAIN}`;
+  return `<div class="photo" style="background:${a.base}"><div class="amb">${a.dots.map(([x, y, s, c, o]) => `<i style="left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;background:${c};opacity:${o}"></i>`).join('')}</div></div>${SV_GRAIN}`;
+};
+const F = {
+  cafe: 'fotos-originais/cafe-mesa.webp', close: 'fotos-originais/close-celular.webp',
+  livro: 'fotos-originais/livro-xicara.jpg', bolsa: 'fotos-originais/bolsa-notebook.jpg',
 };
 const TAG = (x, y, light = false) => `<div class="tag" style="left:${x}px;top:${y}px"><img src="assets/logo/nuv-simbolo-${light ? 'navy' : 'offwhite'}.png"><span>nuv<br>agência</span></div>`;
 const TAG_BOT = (x, y) => `<div class="tag" style="left:${x}px;top:${y}px;text-align:right;font-size:13px">social<br>media</div>`;
@@ -71,86 +76,81 @@ const NUM = (n, x, y) => `<div class="abs num" style="right:${x}px;top:${y}px">$
 const HEART = c => `<svg width="30" height="27" viewBox="0 0 24 21" style="display:inline-block;vertical-align:-4px;margin-left:8px"><path d="M12 20s-7.6-4.6-9.6-9.4C.9 7 3.3 3.4 7 3.4c2.1 0 3.6 1.1 5 3 1.4-1.9 2.9-3 5-3 3.7 0 6.1 3.6 4.6 7.2C19.6 15.4 12 20 12 20z" fill="${c}"/></svg>`;
 const NAVY_SHADE = (a, b, c) => `<div class="shade" style="background:linear-gradient(180deg,rgba(10,37,64,${a}),rgba(10,37,64,${b}) 45%,rgba(10,37,64,${c}))"></div>`;
 
+const SHADE = g => `<div class="shade" style="background:linear-gradient(180deg,${g})"></div>`;
 const SLIDES = [
-  // 1 · capa (foto cheia)
-  { html: `${ambient(1)}${NAVY_SHADE(.45, .1, .6)}
+  // 1 · capa (foto: café, texto em cima e embaixo, rosto livre no meio)
+  { html: `${ambient(1, { src: F.cafe, size: '1080px auto', pos: '0 0' })}
+   ${SHADE('rgba(10,37,64,.82) 0%,rgba(10,37,64,.55) 30%,rgba(10,37,64,0) 46%,rgba(10,37,64,0) 66%,rgba(10,37,64,.78) 86%,rgba(10,37,64,.9) 100%')}
    <div class="frame"></div>
    ${TAG(118, 116)}
-   <div class="abs h" style="left:110px;top:300px;font-size:184px;width:880px">O que eu olho <i>primeiro</i></div>
-   <div class="abs h" style="left:116px;top:666px;font-size:72px;line-height:1.02;width:820px">quando um cliente novo me passa o Instagram dele</div>
-   <div class="abs script" style="left:500px;top:900px;font-size:84px;width:500px">e você pode fazer esse teste</div>
-   <div class="abs u" style="left:118px;top:1100px;width:560px">no seu agora mesmo.</div>
-   <div class="abs" style="right:118px;top:1160px;font-weight:700;font-size:20px;letter-spacing:.24em;text-transform:uppercase">arrasta <span style="font-size:28px">→</span></div>` },
-  // 2 · bio (claro, foto em moldura)
+   <div class="abs h" style="left:112px;top:190px;font-size:150px;width:880px">O que eu olho <i>primeiro</i></div>
+   <div class="abs lead" style="left:118px;top:540px;width:560px;font-weight:700;font-size:30px">quando um cliente novo me passa o Instagram dele</div>
+   <div class="abs script" style="left:500px;top:990px;font-size:78px;width:470px">e você pode fazer esse teste</div>
+   <div class="abs u" style="left:118px;top:1170px;width:560px">no seu agora mesmo.</div>
+   <div class="abs" style="right:118px;top:1176px;font-weight:700;font-size:20px;letter-spacing:.24em;text-transform:uppercase">arrasta <span style="font-size:28px">→</span></div>` },
+  // 2 · bio (claro, foto: mãos no celular)
   { light: true, html: `<div class="frame"></div>
    ${TAG(118, 116, true)}${NUM('01', 118, 112)}
-   <div class="abs h" style="left:104px;top:220px;font-size:290px">A <i>bio</i></div>
-   <div class="abs script" style="left:560px;top:420px;font-size:80px">três perguntas</div>
+   <div class="abs h" style="left:110px;top:230px;font-size:250px">A <i>bio</i></div>
+   <div class="abs script" style="left:540px;top:440px;font-size:80px">três perguntas</div>
    <div class="abs lead" style="left:118px;top:610px;width:470px"><span class="box">Eu leio e tento responder três perguntas:</span></div>
    <div class="abs u" style="left:118px;top:760px;width:470px;font-size:27px;line-height:1.6">o que a empresa faz,<br>pra quem faz<br>e como eu chamo.</div>
    <div class="abs lead" style="left:118px;top:960px;width:470px;font-size:26px">Se eu precisei pensar pra descobrir, o cliente dele também vai precisar, <b>e quase ninguém tem essa paciência.</b></div>
-   <div class="pic" style="left:630px;top:600px;width:332px;height:560px">${ambient(2)}</div>
+   <div class="pic" style="left:630px;top:600px;width:332px;height:560px">${ambient(2, { src: F.close, size: '820px auto', pos: '-470px -770px' })}</div>
    ${TAG_BOT(860, 1200)}` },
-  // 3 · 9 primeiros posts (foto cheia)
+  // 3 · 9 primeiros posts (fundo desfocado)
   { html: `${ambient(3)}${NAVY_SHADE(.5, .15, .6)}
    <div class="frame" style="inset:150px 66px 74px 66px"></div>
    <div class="abs num" style="left:118px;top:96px">02<span class="rule"></span></div>
-   <div class="abs h" style="left:100px;top:200px;font-size:176px;text-transform:uppercase;letter-spacing:-.01em;line-height:.86">Os 9<br>primeiros<br>posts</div>
-   <div class="abs script" style="left:640px;top:610px;font-size:86px">a vitrine</div>
-   <div class="abs u" style="left:118px;top:800px;width:520px">eles são a vitrine do perfil.</div>
-   <div class="abs lead" style="right:118px;top:930px;width:660px;text-align:right">Olhando só pra eles, eu já percebo se a marca tem <b>uma cara definida</b> ou se cada post parece ter sido feito por uma pessoa diferente.</div>
+   <div class="abs h" style="left:104px;top:220px;font-size:200px;line-height:.86">Os 9<br>primeiros<br>posts</div>
+   <div class="abs script" style="left:620px;top:640px;font-size:86px">a vitrine</div>
+   <div class="abs u" style="left:118px;top:820px;width:520px">eles são a vitrine do perfil.</div>
+   <div class="abs lead" style="right:118px;top:940px;width:660px;text-align:right">Olhando só pra eles, eu já percebo se a marca tem <b>uma cara definida</b> ou se cada post parece ter sido feito por uma pessoa diferente.</div>
    ${TAG(118, 1176)}` },
-  // 4 · destaques (claro, foto à esquerda)
+  // 4 · destaques (claro, foto: bolsa e notebook)
   { light: true, html: `<div class="frame"></div>
    ${TAG(118, 116, true)}${NUM('03', 118, 112)}
-   <div class="abs h" style="left:104px;top:220px;font-size:196px;line-height:.88">Os <i>destaques</i></div>
-   <div class="abs script" style="left:560px;top:430px;font-size:72px">venda silenciosa</div>
-   <div class="pic" style="left:118px;top:600px;width:380px;height:560px">${ambient(4)}</div>
+   <div class="abs h" style="left:110px;top:230px;font-size:190px;line-height:.9">Os <i>destaques</i></div>
+   <div class="abs script" style="left:560px;top:450px;font-size:72px">venda silenciosa</div>
+   <div class="pic" style="left:118px;top:600px;width:380px;height:560px">${ambient(4, { src: F.bolsa, size: '522px auto', pos: '-142px -300px' })}</div>
    <div class="abs u" style="left:550px;top:620px;width:412px">é onde muita venda acontece em silêncio.</div>
    <div class="abs lead" style="left:550px;top:790px;width:412px;font-size:26px">Quando tem depoimento, bastidor e “como funciona”, a pessoa tira as dúvidas sozinha</div>
    <div class="abs lead" style="left:550px;top:1020px;width:412px"><span class="box">e já chega no direct pronta pra fechar.</span></div>
    ${TAG_BOT(860, 1200)}` },
-  // 5 · comentários (foto cheia)
-  { html: `${ambient(5)}${NAVY_SHADE(.4, .15, .7)}
+  // 5 · comentários (foto: livro e xícara)
+  { html: `${ambient(5, { src: F.livro, size: 'cover', pos: '50% 50%' })}
+   ${SHADE('rgba(10,37,64,.78) 0%,rgba(10,37,64,.35) 40%,rgba(10,37,64,.45) 60%,rgba(10,37,64,.88) 100%')}
    <div class="frame" style="inset:74px 66px 150px 66px"></div>
    ${TAG(118, 116)}${NUM('04', 118, 112)}
-   <div class="abs h" style="left:104px;top:250px;font-size:200px;line-height:.86">Os<br><i>comentários</i></div>
+   <div class="abs h" style="left:110px;top:240px;font-size:170px;line-height:.86">Os<br><i>comentários</i></div>
    <div class="abs script" style="left:540px;top:620px;font-size:70px;width:460px">o atendimento começa aqui</div>
-   <div class="abs lead" style="left:118px;top:800px;width:760px">Eu vejo <b>se o dono responde, como responde e quanto tempo demora.</b></div>
-   <div class="abs u" style="right:118px;top:990px;width:640px;text-align:right">pra quem tá chegando, isso mostra como vai ser o atendimento depois da compra.</div>` },
-  // 6 · último post (claro, faixa de foto)
+   <div class="abs lead" style="left:118px;top:820px;width:760px">Eu vejo <b>se o dono responde, como responde e quanto tempo demora.</b></div>
+   <div class="abs u" style="right:118px;top:1000px;width:640px;text-align:right">pra quem tá chegando, isso mostra como vai ser o atendimento depois da compra.</div>` },
+  // 6 · último post (claro, faixa: mesa do café)
   { light: true, html: `<div class="frame"></div>
    ${TAG(118, 116, true)}${NUM('05', 118, 112)}
-   <div class="abs h" style="left:104px;top:220px;font-size:156px;line-height:.9;width:880px">A data do<br><i>último post</i></div>
-   <div class="pic" style="left:118px;top:540px;width:844px;height:300px">${ambient(6)}</div>
-   <div class="abs script" style="left:118px;top:880px;font-size:76px;color:#0A2540">parece bobo, mas…</div>
-   <div class="abs lead" style="left:118px;top:990px;width:760px"><span class="box">perfil parado há meses passa a impressão de empresa parada,</span></div>
+   <div class="abs h" style="left:110px;top:230px;font-size:150px;line-height:.92;width:880px">A data do<br><i>último post</i></div>
+   <div class="pic" style="left:118px;top:560px;width:844px;height:300px">${ambient(6, { src: F.cafe, size: '1391px auto', pos: '-547px -1280px' })}</div>
+   <div class="abs script" style="left:118px;top:890px;font-size:76px;color:#0A2540">parece bobo, mas…</div>
+   <div class="abs lead" style="left:118px;top:995px;width:760px"><span class="box">perfil parado há meses passa a impressão de empresa parada,</span></div>
    <div class="abs u" style="right:118px;top:1140px;width:600px;text-align:right">mesmo quando a agenda tá lotada.</div>` },
-  // 7 · fechamento (foto cheia)
-  { html: `${ambient(7)}${NAVY_SHADE(.45, .2, .75)}
+  // 7 · fechamento (foto: close sorrindo com o celular)
+  { html: `${ambient(7, { src: F.close, size: '1080px auto', pos: '0 0' })}
+   ${SHADE('rgba(10,37,64,.85) 0%,rgba(10,37,64,.6) 26%,rgba(10,37,64,0) 40%,rgba(10,37,64,0) 58%,rgba(10,37,64,.8) 74%,rgba(10,37,64,.92) 100%')}
    <div class="frame"></div>
    ${TAG(118, 116)}
-   <div class="abs h" style="left:104px;top:230px;font-size:150px;line-height:.9;width:880px">Esses cinco pontos dizem <i>muito</i></div>
-   <div class="abs lead" style="left:118px;top:690px;width:640px;font-size:32px">sobre quanto o seu Instagram tá ajudando a vender.</div>
-   <div class="abs script" style="left:620px;top:810px;font-size:84px">com cuidado</div>
-   <div class="abs lead" style="left:118px;top:930px;width:820px">Se quiser que a gente olhe o seu com esse cuidado,</div>
-   <div class="abs lead" style="left:118px;top:1010px;width:760px;font-size:28px"><span class="box">me chama no direct, me conta o que você precisa e eu te mando um orçamento ${HEART(C.navy)}</span></div>
-   <img class="abs" src="assets/logo/nuv-agencia-offwhite.png" style="right:110px;bottom:104px;width:150px;opacity:.95">` },
+   <div class="abs h" style="left:112px;top:200px;font-size:118px;line-height:.95;width:880px">Esses cinco pontos dizem <i>muito</i></div>
+   <div class="abs lead" style="left:118px;top:470px;width:600px;font-weight:700;font-size:28px">sobre quanto o seu Instagram tá ajudando a vender.</div>
+   <div class="abs script" style="left:640px;top:968px;font-size:72px">com cuidado</div>
+   <div class="abs lead" style="left:118px;top:1040px;width:820px;font-size:27px">Se quiser que a gente olhe o seu com esse cuidado,</div>
+   <div class="abs lead" style="left:118px;top:1096px;width:680px;font-size:26px"><span class="box">me chama no direct, me conta o que você precisa e eu te mando um orçamento ${HEART(C.navy)}</span></div>
+   <img class="abs" src="assets/logo/nuv-agencia-offwhite.png" style="right:104px;bottom:100px;width:140px;opacity:.95">` },
 ];
 SLIDES.forEach((s, i) => {
   const d = document.createElement('div');
   d.className = 'slide' + (s.light ? ' light' : ''); d.id = 's' + (i + 1);
   d.innerHTML = s.html;
   document.body.appendChild(d);
-});
-// usa fotos/slideN.jpg (ou .png/.webp) quando existir
-document.querySelectorAll('.photo.real').forEach(el => {
-  const n = el.dataset.n;
-  for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
-    const img = new Image();
-    img.onload = () => { el.style.backgroundImage = `url(${img.src})`; };
-    img.src = `fotos/slide${n}.${ext}`;
-  }
 });
 </script>
 </body>
