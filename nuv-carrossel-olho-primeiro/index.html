@@ -4,152 +4,130 @@
 <meta charset="utf-8">
 <title>NUV carrossel</title>
 <style>
-  /* Identidade NUV — títulos em Perandory Condensed (caixa alta), palavras de destaque em serifa itálica
-     fina (Instrument Serif Italic), textos de apoio em Comfortaa. */
+  /* Identidade NUV: títulos em Perandory Condensed (caixa alta), apoio em Comfortaa.
+     Regra principal: texto sempre sobre área sólida (azul ou off-white), nunca sobre detalhe de foto. */
   @font-face { font-family: 'Display'; src: url(assets/fonts/Perandory-Condensed.otf); }
-  @font-face { font-family: 'DisplaySemi'; src: url(assets/fonts/Perandory-SemiCondensed.otf); }
-  @font-face { font-family: 'Accent'; font-style: italic; src: url(assets/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
-  @font-face { font-family: 'Script'; src: url(assets/fonts/allura-latin-400-normal.woff2) format('woff2'); }
   @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
   @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
 
-  :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; }
+  :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; --M: 96px; }
   * { box-sizing: border-box; }
   body { margin: 0; background: #222; display: flex; flex-direction: column; gap: 40px; padding: 40px; }
-  .slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--off); font-family: 'Comfortaa', sans-serif; flex: none; }
+  .slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'Comfortaa', sans-serif; flex: none; background: var(--navy); color: var(--off); }
   .slide.light { background: var(--off); color: var(--navy); }
-
-  .photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
-  .amb { position: absolute; inset: -60px; filter: blur(46px); }
-  .amb i { position: absolute; border-radius: 50%; display: block; }
-  .grain { position: absolute; inset: 0; opacity: .2; mix-blend-mode: overlay; pointer-events: none; }
-  .shade { position: absolute; inset: 0; pointer-events: none; }
-  .pic { position: absolute; overflow: hidden; border-radius: 30px; box-shadow: 0 30px 60px rgba(10,37,64,.22); }
-
-  .frame { position: absolute; inset: 74px 66px; border: 1.6px solid rgba(239,234,228,.75); border-radius: 30px; pointer-events: none; }
-  .light .frame { border-color: rgba(10,37,64,.35); }
-  .tag { position: absolute; display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 14px; letter-spacing: .38em; line-height: 1.5; text-transform: uppercase; }
-  .tag img { height: 34px; }
-  .h { font-family: 'Display', serif; font-weight: 400; line-height: .92; letter-spacing: .005em; }
-  .h i { font-family: 'Accent', serif; font-style: italic; font-size: 1.12em; letter-spacing: -.02em; line-height: .8; }
-  .slide:not(.light) .h { text-shadow: 0 4px 30px rgba(10,37,64,.35); }
-  .script { font-family: 'Script', cursive; line-height: .85; transform: rotate(-7deg); color: var(--beige); }
-  .light .script { color: var(--indigo); }
-  .lead { font-weight: 400; font-size: 29px; line-height: 1.38; }
-  .lead b { font-weight: 700; }
-  .slide:not(.light) .lead, .slide:not(.light) .u { text-shadow: 0 2px 18px rgba(10,37,64,.45); }
-  .u { font-weight: 700; font-size: 25px; line-height: 1.45; text-transform: uppercase; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 7px; letter-spacing: .02em; }
-  .box { display: inline; background: var(--beige); color: var(--navy); padding: 6px 14px; box-decoration-break: clone; -webkit-box-decoration-break: clone; font-weight: 700; line-height: 1.7; text-shadow: none; }
-  .light .box { background: var(--navy); color: var(--off); }
   .abs { position: absolute; }
-  .num { font-family: 'Accent', serif; font-style: italic; font-size: 46px; display: flex; align-items: center; }
-  .rule { display: inline-block; width: 70px; height: 1.6px; background: currentColor; margin-left: 14px; opacity: .7; }
+
+  .ph { position: absolute; background-repeat: no-repeat; }
+  .fade { position: absolute; left: 0; right: 0; pointer-events: none; }
+
+  /* cabeçalho */
+  .hdr { position: absolute; left: var(--M); right: var(--M); top: 76px; display: flex; align-items: center; gap: 16px; font-weight: 700; font-size: 15px; letter-spacing: .34em; text-transform: uppercase; z-index: 5; }
+  .hdr img { height: 30px; }
+  .hdr .line { flex: 1; height: 1.5px; background: currentColor; opacity: .35; }
+  .hdr .pg { letter-spacing: .18em; }
+
+  .t { font-family: 'Display', serif; font-weight: 400; line-height: 1.02; letter-spacing: .01em; text-transform: uppercase; }
+  .t em { font-style: normal; color: var(--beige); }
+  .light .t em { color: var(--indigo); }
+  .lead { font-size: 30px; line-height: 1.42; }
+  .lead b { font-weight: 700; }
+  .u { font-weight: 700; font-size: 24px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 7px; }
+  .box { display: inline; background: var(--beige); color: var(--navy); padding: 6px 14px; box-decoration-break: clone; -webkit-box-decoration-break: clone; font-weight: 700; line-height: 1.75; }
+  .light .box { background: var(--navy); color: var(--off); }
+  .kicker { font-weight: 700; font-size: 20px; letter-spacing: .3em; text-transform: uppercase; }
+  .pic { position: absolute; overflow: hidden; border-radius: 28px; }
+  .bar { width: 64px; height: 4px; background: var(--beige); border-radius: 2px; }
+  .light .bar { background: var(--indigo); }
 </style>
 </head>
 <body>
 <script>
 const C = { off: '#EFEAE4', beige: '#CBC5B9', navy: '#0A2540', indigo: '#313D65' };
-const SV_GRAIN = `<svg class="grain" width="100%" height="100%"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>`;
-// ambientes provisórios nas cores da NUV (luz quente desfocada sobre azul) até as fotos chegarem
-const AMB = {
-  1: { base: `linear-gradient(160deg,#1c3352,${C.navy} 55%,#1a1f33)`, dots: [[160, 170, 260, '#f3d6a4', .45], [560, 90, 180, '#f7e6c8', .35], [920, 240, 300, '#d9b98a', .35], [300, 860, 440, C.indigo, .7], [820, 1060, 520, '#4a5a86', .55], [640, 600, 260, C.beige, .22]] },
-  2: { base: `linear-gradient(160deg,#c9bfb1,#a89a88 55%,#6f6455)`, dots: [[300, 200, 320, '#f7efe4', .7], [120, 520, 260, C.indigo, .35], [380, 640, 300, '#e9dccb', .5]] },
-  3: { base: `linear-gradient(165deg,#2a3858,${C.indigo} 45%,${C.navy})`, dots: [[820, 200, 380, '#efe0c4', .45], [200, 700, 420, '#8d98bf', .4], [700, 1120, 460, '#0d1d33', .6], [300, 260, 200, '#f4d7a6', .35]] },
-  4: { base: `linear-gradient(160deg,#3b4a70,${C.navy} 60%)`, dots: [[120, 160, 260, '#f3d6a4', .5], [340, 420, 300, C.beige, .35], [80, 560, 220, '#6c7bab', .5]] },
-  5: { base: `linear-gradient(160deg,#a99b89,#6a5d50 45%,${C.navy})`, dots: [[780, 260, 420, '#f0e4d2', .5], [180, 980, 380, C.indigo, .55], [600, 640, 240, '#fff4e0', .22]] },
-  6: { base: `linear-gradient(170deg,#d8cdbd,#b3a491 60%,#8a7b69)`, dots: [[220, 180, 300, '#fff6ea', .6], [700, 150, 260, C.indigo, .3], [500, 260, 200, '#efe2cf', .5]] },
-  7: { base: `linear-gradient(160deg,#233a5c,${C.navy} 50%,#141b2c)`, dots: [[160, 200, 260, '#f6d7a0', .45], [900, 160, 220, '#f9e6c4', .4], [760, 1040, 520, C.indigo, .7], [300, 900, 380, '#3e4e7a', .5]] },
+// fotos e tamanhos originais
+const IMG = {
+  cafe: ['fotos-originais/cafe-mesa.webp', 941, 1672], close: ['fotos-originais/close-celular.webp', 941, 1672],
+  livro: ['fotos-originais/livro-xicara.jpg', 736, 981], bolsa: ['fotos-originais/bolsa-notebook.jpg', 736, 1308],
 };
-// foto real (src + enquadramento) ou ambiente desfocado nas cores da NUV
-const ambient = (n, ph) => {
-  if (ph) return `<div class="photo" style="background-image:url(${ph.src});background-size:${ph.size || 'cover'};background-position:${ph.pos || 'center'};${ph.filter ? 'filter:' + ph.filter : ''}"></div>${SV_GRAIN}`;
-  const a = AMB[n];
-  return `<div class="photo" style="background:${a.base}"><div class="amb">${a.dots.map(([x, y, s, c, o]) => `<i style="left:${x - s / 2}px;top:${y - s / 2}px;width:${s}px;height:${s}px;background:${c};opacity:${o}"></i>`).join('')}</div></div>${SV_GRAIN}`;
+// recorte: mostra a região que começa em (sx,sy) com largura sw da foto, dentro de uma caixa w x h
+const crop = (key, sx, sy, sw, w, h, extra = '') => {
+  const [src, iw] = IMG[key], k = w / sw;
+  return `<div class="ph" style="left:0;top:0;width:${w}px;height:${h}px;background-image:url(${src});background-size:${iw * k}px auto;background-position:${-sx * k}px ${-sy * k}px;${extra}"></div>`;
 };
-const F = {
-  cafe: 'fotos-originais/cafe-mesa.webp', close: 'fotos-originais/close-celular.webp',
-  livro: 'fotos-originais/livro-xicara.jpg', bolsa: 'fotos-originais/bolsa-notebook.jpg',
-};
-const TAG = (x, y, light = false) => `<div class="tag" style="left:${x}px;top:${y}px"><img src="assets/logo/nuv-simbolo-${light ? 'navy' : 'offwhite'}.png"><span>nuv<br>agência</span></div>`;
-const TAG_BOT = (x, y) => `<div class="tag" style="left:${x}px;top:${y}px;text-align:right;font-size:13px">social<br>media</div>`;
-const NUM = (n, x, y) => `<div class="abs num" style="right:${x}px;top:${y}px">${n}<span class="rule"></span></div>`;
-const HEART = c => `<svg width="30" height="27" viewBox="0 0 24 21" style="display:inline-block;vertical-align:-4px;margin-left:8px"><path d="M12 20s-7.6-4.6-9.6-9.4C.9 7 3.3 3.4 7 3.4c2.1 0 3.6 1.1 5 3 1.4-1.9 2.9-3 5-3 3.7 0 6.1 3.6 4.6 7.2C19.6 15.4 12 20 12 20z" fill="${c}"/></svg>`;
-const NAVY_SHADE = (a, b, c) => `<div class="shade" style="background:linear-gradient(180deg,rgba(10,37,64,${a}),rgba(10,37,64,${b}) 45%,rgba(10,37,64,${c}))"></div>`;
+const HDR = (pg, light) => `<div class="hdr"><img src="assets/logo/nuv-simbolo-${light ? 'navy' : 'offwhite'}.png"><span>nuv agência</span><span class="line"></span><span class="pg">${pg}</span></div>`;
+const HEART = c => `<svg width="28" height="25" viewBox="0 0 24 21" style="display:inline-block;vertical-align:-3px;margin-left:8px"><path d="M12 20s-7.6-4.6-9.6-9.4C.9 7 3.3 3.4 7 3.4c2.1 0 3.6 1.1 5 3 1.4-1.9 2.9-3 5-3 3.7 0 6.1 3.6 4.6 7.2C19.6 15.4 12 20 12 20z" fill="${c}"/></svg>`;
+// foto no topo que se funde no azul sólido onde fica o texto
+const topPhoto = (key, sx, sy, sw, h, solidFrom) => `<div class="abs" style="left:0;top:0;width:1080px;height:${h}px">${crop(key, sx, sy, sw, 1080, h)}</div>
+  <div class="fade" style="top:0;height:260px;background:linear-gradient(180deg,rgba(10,37,64,.75),rgba(10,37,64,0))"></div>
+  <div class="fade" style="top:${solidFrom - 260}px;height:262px;background:linear-gradient(180deg,rgba(10,37,64,0),rgba(10,37,64,.85) 70%,#0A2540)"></div>
+  <div class="fade" style="top:${solidFrom}px;bottom:0;background:#0A2540"></div>`;
 
-const SHADE = g => `<div class="shade" style="background:linear-gradient(180deg,${g})"></div>`;
 const SLIDES = [
-  // 1 · capa (foto: café, texto em cima e embaixo, rosto livre no meio)
-  { html: `${ambient(1, { src: F.cafe, size: '1080px auto', pos: '0 0' })}
-   ${SHADE('rgba(10,37,64,.82) 0%,rgba(10,37,64,.55) 30%,rgba(10,37,64,0) 46%,rgba(10,37,64,0) 66%,rgba(10,37,64,.78) 86%,rgba(10,37,64,.9) 100%')}
-   <div class="frame"></div>
-   ${TAG(118, 116)}
-   <div class="abs h" style="left:112px;top:190px;font-size:150px;width:880px">O que eu olho <i>primeiro</i></div>
-   <div class="abs lead" style="left:118px;top:540px;width:560px;font-weight:700;font-size:30px">quando um cliente novo me passa o Instagram dele</div>
-   <div class="abs script" style="left:500px;top:990px;font-size:78px;width:470px">e você pode fazer esse teste</div>
-   <div class="abs u" style="left:118px;top:1170px;width:560px">no seu agora mesmo.</div>
-   <div class="abs" style="right:118px;top:1176px;font-weight:700;font-size:20px;letter-spacing:.24em;text-transform:uppercase">arrasta <span style="font-size:28px">→</span></div>` },
-  // 2 · bio (claro, foto: mãos no celular)
-  { light: true, html: `<div class="frame"></div>
-   ${TAG(118, 116, true)}${NUM('01', 118, 112)}
-   <div class="abs h" style="left:110px;top:230px;font-size:250px">A <i>bio</i></div>
-   <div class="abs script" style="left:540px;top:440px;font-size:80px">três perguntas</div>
-   <div class="abs lead" style="left:118px;top:610px;width:470px"><span class="box">Eu leio e tento responder três perguntas:</span></div>
-   <div class="abs u" style="left:118px;top:760px;width:470px;font-size:27px;line-height:1.6">o que a empresa faz,<br>pra quem faz<br>e como eu chamo.</div>
-   <div class="abs lead" style="left:118px;top:960px;width:470px;font-size:26px">Se eu precisei pensar pra descobrir, o cliente dele também vai precisar, <b>e quase ninguém tem essa paciência.</b></div>
-   <div class="pic" style="left:630px;top:600px;width:332px;height:560px">${ambient(2, { src: F.close, size: '820px auto', pos: '-470px -770px' })}</div>
-   ${TAG_BOT(860, 1200)}` },
-  // 3 · 9 primeiros posts (fundo desfocado)
-  { html: `${ambient(3)}${NAVY_SHADE(.5, .15, .6)}
-   <div class="frame" style="inset:150px 66px 74px 66px"></div>
-   <div class="abs num" style="left:118px;top:96px">02<span class="rule"></span></div>
-   <div class="abs h" style="left:104px;top:220px;font-size:200px;line-height:.86">Os 9<br>primeiros<br>posts</div>
-   <div class="abs script" style="left:620px;top:640px;font-size:86px">a vitrine</div>
-   <div class="abs u" style="left:118px;top:820px;width:520px">eles são a vitrine do perfil.</div>
-   <div class="abs lead" style="right:118px;top:940px;width:660px;text-align:right">Olhando só pra eles, eu já percebo se a marca tem <b>uma cara definida</b> ou se cada post parece ter sido feito por uma pessoa diferente.</div>
-   ${TAG(118, 1176)}` },
-  // 4 · destaques (claro, foto: bolsa e notebook)
-  { light: true, html: `<div class="frame"></div>
-   ${TAG(118, 116, true)}${NUM('03', 118, 112)}
-   <div class="abs h" style="left:110px;top:230px;font-size:190px;line-height:.9">Os <i>destaques</i></div>
-   <div class="abs script" style="left:560px;top:450px;font-size:72px">venda silenciosa</div>
-   <div class="pic" style="left:118px;top:600px;width:380px;height:560px">${ambient(4, { src: F.bolsa, size: '522px auto', pos: '-142px -300px' })}</div>
-   <div class="abs u" style="left:550px;top:620px;width:412px">é onde muita venda acontece em silêncio.</div>
-   <div class="abs lead" style="left:550px;top:790px;width:412px;font-size:26px">Quando tem depoimento, bastidor e “como funciona”, a pessoa tira as dúvidas sozinha</div>
-   <div class="abs lead" style="left:550px;top:1020px;width:412px"><span class="box">e já chega no direct pronta pra fechar.</span></div>
-   ${TAG_BOT(860, 1200)}` },
-  // 5 · comentários (foto: livro e xícara)
-  { html: `${ambient(5, { src: F.livro, size: 'cover', pos: '50% 50%' })}
-   ${SHADE('rgba(10,37,64,.78) 0%,rgba(10,37,64,.35) 40%,rgba(10,37,64,.45) 60%,rgba(10,37,64,.88) 100%')}
-   <div class="frame" style="inset:74px 66px 150px 66px"></div>
-   ${TAG(118, 116)}${NUM('04', 118, 112)}
-   <div class="abs h" style="left:110px;top:240px;font-size:170px;line-height:.86">Os<br><i>comentários</i></div>
-   <div class="abs script" style="left:540px;top:620px;font-size:70px;width:460px">o atendimento começa aqui</div>
-   <div class="abs lead" style="left:118px;top:820px;width:760px">Eu vejo <b>se o dono responde, como responde e quanto tempo demora.</b></div>
-   <div class="abs u" style="right:118px;top:1000px;width:640px;text-align:right">pra quem tá chegando, isso mostra como vai ser o atendimento depois da compra.</div>` },
-  // 6 · último post (claro, faixa: mesa do café)
-  { light: true, html: `<div class="frame"></div>
-   ${TAG(118, 116, true)}${NUM('05', 118, 112)}
-   <div class="abs h" style="left:110px;top:230px;font-size:150px;line-height:.92;width:880px">A data do<br><i>último post</i></div>
-   <div class="pic" style="left:118px;top:560px;width:844px;height:300px">${ambient(6, { src: F.cafe, size: '1391px auto', pos: '-547px -1280px' })}</div>
-   <div class="abs script" style="left:118px;top:890px;font-size:76px;color:#0A2540">parece bobo, mas…</div>
-   <div class="abs lead" style="left:118px;top:995px;width:760px"><span class="box">perfil parado há meses passa a impressão de empresa parada,</span></div>
-   <div class="abs u" style="right:118px;top:1140px;width:600px;text-align:right">mesmo quando a agenda tá lotada.</div>` },
-  // 7 · fechamento (foto: close sorrindo com o celular)
-  { html: `${ambient(7, { src: F.close, size: '1080px auto', pos: '0 0' })}
-   ${SHADE('rgba(10,37,64,.85) 0%,rgba(10,37,64,.6) 26%,rgba(10,37,64,0) 40%,rgba(10,37,64,0) 58%,rgba(10,37,64,.8) 74%,rgba(10,37,64,.92) 100%')}
-   <div class="frame"></div>
-   ${TAG(118, 116)}
-   <div class="abs h" style="left:112px;top:200px;font-size:118px;line-height:.95;width:880px">Esses cinco pontos dizem <i>muito</i></div>
-   <div class="abs lead" style="left:118px;top:470px;width:600px;font-weight:700;font-size:28px">sobre quanto o seu Instagram tá ajudando a vender.</div>
-   <div class="abs script" style="left:640px;top:968px;font-size:72px">com cuidado</div>
-   <div class="abs lead" style="left:118px;top:1040px;width:820px;font-size:27px">Se quiser que a gente olhe o seu com esse cuidado,</div>
-   <div class="abs lead" style="left:118px;top:1096px;width:680px;font-size:26px"><span class="box">me chama no direct, me conta o que você precisa e eu te mando um orçamento ${HEART(C.navy)}</span></div>
-   <img class="abs" src="assets/logo/nuv-agencia-offwhite.png" style="right:104px;bottom:100px;width:140px;opacity:.95">` },
+  // 1 · capa
+  `${topPhoto('cafe', 0, 110, 941, 1350, 820)}
+   ${HDR('arrasta →')}
+   <div class="abs t" style="left:96px;top:730px;font-size:150px;width:900px;line-height:1.24">O que eu olho<br><em>primeiro</em></div>
+   <div class="abs lead" style="left:96px;top:1118px;width:820px">quando um cliente novo me passa o Instagram dele</div>
+   <div class="abs u" style="left:96px;top:1210px;color:${C.beige}">e você pode fazer esse teste no seu agora mesmo</div>`,
+
+  // 2 · a bio
+  `${HDR('01 / 05', true)}
+   <div class="abs t" style="left:96px;top:190px;font-size:250px">A <em>bio</em></div>
+   <div class="abs bar" style="left:96px;top:450px"></div>
+   <div class="abs lead" style="left:96px;top:490px;width:470px"><span class="box">Eu leio e tento responder três perguntas:</span></div>
+   <div class="abs" style="left:96px;top:650px;width:470px;display:flex;flex-direction:column;gap:22px">
+     ${['o que a empresa faz', 'pra quem faz', 'e como eu chamo'].map((q, i) => `<div style="display:flex;align-items:center;gap:20px"><span class="t" style="font-size:64px;color:${C.indigo};width:44px">${i + 1}</span><span style="font-weight:700;font-size:30px">${q}</span></div>`).join('')}</div>
+   <div class="abs lead" style="left:96px;top:960px;width:470px;font-size:27px">Se eu precisei pensar pra descobrir, o cliente dele também vai precisar, <b>e quase ninguém tem essa paciência.</b></div>
+   <div class="pic" style="left:614px;top:490px;width:370px;height:740px">${crop('close', 520, 700, 421, 370, 740)}</div>`,
+
+  // 3 · os 9 primeiros posts (grade com recortes das fotos)
+  `${HDR('02 / 05')}
+   <div class="abs t" style="left:96px;top:190px;font-size:150px;width:880px">Os <em>9 primeiros</em> posts</div>
+   <div class="abs u" style="left:96px;top:520px;color:${C.beige}">eles são a vitrine do perfil.</div>
+   <div class="abs" style="left:96px;top:610px;display:grid;grid-template-columns:repeat(3,150px);gap:8px;padding:14px;background:${C.off};border-radius:22px">
+     ${[['cafe', 380, 900, 420], ['close', 300, 380, 500], ['livro', 300, 300, 420], ['bolsa', 200, 400, 520], ['cafe', 60, 120, 600], ['close', 560, 1100, 380], ['livro', 80, 420, 520], ['cafe', 560, 300, 380], ['bolsa', 380, 640, 300]]
+       .map(([k, x, y, w]) => `<div style="position:relative;width:150px;height:150px;overflow:hidden;border-radius:6px">${crop(k, x, y, w, 150, 150)}</div>`).join('')}</div>
+   <div class="abs lead" style="left:640px;top:640px;width:344px;font-size:28px">Olhando só pra eles, eu já percebo se a marca tem <b>uma cara definida</b> ou se cada post parece ter sido feito por uma pessoa diferente.</div>`,
+
+  // 4 · os destaques
+  `${HDR('03 / 05', true)}
+   <div class="abs t" style="left:96px;top:190px;font-size:170px">Os <em>destaques</em></div>
+   <div class="abs u" style="left:96px;top:420px">é onde muita venda acontece em silêncio.</div>
+   <div class="abs" style="left:96px;top:530px;width:888px;display:flex;justify-content:space-between">
+     ${[['Depoimentos', 'close', 330, 520, 300], ['Bastidores', 'cafe', 560, 300, 300], ['Como funciona', 'bolsa', 360, 600, 300]].map(([l, k, x, y, w]) =>
+       `<div style="text-align:center;width:260px"><div style="width:220px;height:220px;margin:0 auto;border-radius:50%;padding:7px;border:3px solid ${C.indigo}"><div style="position:relative;width:200px;height:200px;border-radius:50%;overflow:hidden">${crop(k, x, y, w, 200, 200)}</div></div>
+        <div style="font-weight:700;font-size:26px;margin-top:18px">${l}</div></div>`).join('')}</div>
+   <div class="abs lead" style="left:96px;top:900px;width:888px">Quando tem depoimento, bastidor e “como funciona”, a pessoa tira as dúvidas sozinha</div>
+   <div class="abs lead" style="left:96px;top:1030px;width:888px"><span class="box">e já chega no direct pronta pra fechar.</span></div>`,
+
+  // 5 · os comentários
+  `${topPhoto('livro', 0, 200, 736, 760, 700)}
+   ${HDR('04 / 05')}
+   <div class="abs t" style="left:96px;top:700px;font-size:150px">Os <em>comentários</em></div>
+   <div class="abs lead" style="left:96px;top:870px;width:888px">Eu vejo <b>se o dono responde, como responde e quanto tempo demora.</b></div>
+   <div class="abs bar" style="left:96px;top:1060px"></div>
+   <div class="abs u" style="left:96px;top:1100px;width:888px;color:${C.beige}">pra quem tá chegando, isso mostra como vai ser o atendimento depois da compra.</div>`,
+
+  // 6 · a data do último post
+  `${HDR('05 / 05', true)}
+   <div class="abs t" style="left:96px;top:190px;font-size:150px;width:900px">A data do<br><em>último post</em></div>
+   <div class="pic" style="left:96px;top:540px;width:888px;height:330px">${crop('cafe', 380, 880, 561, 888, 330)}
+     <div class="abs kicker" style="left:28px;bottom:26px;background:${C.off};color:${C.navy};padding:12px 20px;border-radius:999px;font-size:17px">último post · há 5 meses</div></div>
+   <div class="abs lead" style="left:96px;top:930px;width:888px">Parece bobo, mas <span class="box">perfil parado há meses passa a impressão de empresa parada,</span></div>
+   <div class="abs u" style="left:96px;top:1080px">mesmo quando a agenda tá lotada.</div>`,
+
+  // 7 · fechamento
+  `${topPhoto('close', 60, 190, 880, 900, 770)}
+   ${HDR('fim')}
+   <div class="abs t" style="left:96px;top:750px;font-size:110px;width:900px">Esses cinco pontos dizem <em>muito</em></div>
+   <div class="abs lead" style="left:96px;top:1000px;width:860px;font-size:28px">sobre quanto o seu Instagram tá ajudando a vender. Se quiser que a gente olhe o seu com esse cuidado,</div>
+   <div class="abs lead" style="left:96px;top:1120px;width:700px;font-size:26px"><span class="box">me chama no direct, me conta o que você precisa e eu te mando um orçamento${HEART(C.navy)}</span></div>
+   <img class="abs" src="assets/logo/nuv-agencia-offwhite.png" style="right:90px;bottom:84px;width:132px">`,
 ];
-SLIDES.forEach((s, i) => {
+const LIGHT = [false, true, false, true, false, true, false];
+SLIDES.forEach((html, i) => {
   const d = document.createElement('div');
-  d.className = 'slide' + (s.light ? ' light' : ''); d.id = 's' + (i + 1);
-  d.innerHTML = s.html;
+  d.className = 'slide' + (LIGHT[i] ? ' light' : ''); d.id = 's' + (i + 1);
+  d.innerHTML = html;
   document.body.appendChild(d);
 });
 </script>
