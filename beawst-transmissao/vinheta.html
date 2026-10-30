@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Vinheta Global Connect</title>
+<!--
+  Vinheta da Beawst Global Connect 2026 (1920x1080, 30fps, ~7s).
+  Abrir no navegador para ver ao vivo. Gerar o MP4: node vinheta.mjs
+-->
+<script>
+const VINHETA = {
+  DURATION: 7, FPS: 30,
+  tagline: 'Conexões que abrem o mundo!',
+  info: '07/11 · FEIRA DE INTERCÂMBIO ONLINE E GRATUITA',
+};
+</script>
+<style>
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:var(--escuro)}
+.glow{position:absolute;border-radius:50%;filter:blur(170px)}
+.grid{position:absolute;inset:-100px;opacity:.07;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:96px 96px}
+.band{position:absolute;left:-30%;width:160%;height:260px;transform-origin:center}
+.ring{position:absolute;left:50%;top:50%;border-radius:50%;border:4px solid}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+#logo{position:absolute;left:0;right:0;top:300px;display:flex;justify-content:center;align-items:center;gap:36px}
+#tag{position:absolute;left:0;right:0;top:690px;text-align:center;font-weight:900;font-size:76px;letter-spacing:-.01em}
+#tag span{display:inline-block;white-space:pre}
+#info{position:absolute;left:0;right:0;top:810px;text-align:center;font-weight:800;font-size:28px;letter-spacing:.22em;color:rgba(255,255,255,.82)}
+#fade{position:absolute;inset:0;background:#000;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="glow" id="g1" style="width:1100px;height:1100px;background:var(--roxo);opacity:.75"></div>
+  <div class="glow" id="g2" style="width:900px;height:900px;background:var(--magenta);opacity:.5"></div>
+  <div class="glow" id="g3" style="width:1000px;height:1000px;background:var(--vermelho);opacity:.35"></div>
+  <div class="grid" id="grid"></div>
+  <div class="ring" id="r1" style="border-color:#B98CFF"></div>
+  <div class="ring" id="r2" style="border-color:#FF6BB5"></div>
+  <div class="ring" id="r3" style="border-color:#FF6B6B"></div>
+  <div id="logo">
+    <svg id="icone" width="190" height="300" viewBox="0 0 395 624"><image href="assets/logo-feira-branco.svg" width="2040" height="624"/></svg>
+    <div id="marcaBox" style="overflow:hidden"><svg id="marca" width="769" height="300" viewBox="440 0 1600 624" style="display:block"><image href="assets/logo-feira-branco.svg" width="2040" height="624"/></svg></div>
+  </div>
+  <div id="tag"></div>
+  <div id="info"></div>
+  <div class="band" id="b1" style="background:var(--roxo)"></div>
+  <div class="band" id="b2" style="background:var(--magenta)"></div>
+  <div class="band" id="b3" style="background:var(--vermelho)"></div>
+  <div id="fade"></div>
+</div>
+<script>
+const V = VINHETA;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, d) => clamp((t - a) / d);
+const eOut = x => 1 - Math.pow(1 - x, 3);
+const eOut4 = x => 1 - Math.pow(1 - x, 4);
+const eIn = x => x * x * x;
+const eInOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eBack = x => { const c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const $ = id => document.getElementById(id);
+const css = (el, o) => Object.assign(el.style, o);
+
+$('tag').innerHTML = V.tagline.split(' ').map((w, i) => `<span class="${i >= 2 ? 'gradL' : ''}">${w} </span>`).join('');
+$('info').textContent = V.info;
+
+function render(t) {
+  // fundo vivo
+  css($('g1'), { transform: `translate(${-300 + Math.sin(t * .6) * 160}px,${-400 + Math.cos(t * .5) * 120}px)` });
+  css($('g2'), { transform: `translate(${900 + Math.cos(t * .55) * 160}px,${-250 + Math.sin(t * .6) * 120}px)` });
+  css($('g3'), { transform: `translate(${1150 + Math.sin(t * .5) * 160}px,${550 + Math.cos(t * .45) * 120}px)` });
+  $('grid').style.transform = `translateY(${-t * 14}px)`;
+  const zoom = 1 + 0.04 * seg(t, 0.9, 5.5);
+
+  // faixas: entram (0–0,9s) e voltam no final (5,5–6,4s)
+  [['b1', 0], ['b2', 0.08], ['b3', 0.16]].forEach(([id, d], i) => {
+    const pin = eInOut(seg(t, d, 0.75));                 // atravessa da esquerda para a direita
+    const pout = eInOut(seg(t, 5.5 + d, 0.75));          // volta da direita para a esquerda
+    let x;
+    if (t < 3) x = -110 + pin * 220;                      // -110% → +110%
+    else x = 110 - pout * 220;
+    css($(id), { top: 160 + i * 270 + 'px', transform: `translateX(${x}%) rotate(-12deg)` });
+  });
+
+  // anéis com o impacto
+  [['r1', 0.85], ['r2', 0.98], ['r3', 1.11]].forEach(([id, a]) => {
+    const x = seg(t, a, 1.6), d = 120 + eOut(x) * 2200;
+    css($(id), { width: d + 'px', height: d + 'px', marginLeft: -d / 2 + 'px', marginTop: -d / 2 - 0 + 'px', opacity: x > 0 && x < 1 ? (1 - x) * .8 : 0, borderWidth: 2 + (1 - x) * 14 + 'px' });
+  });
+
+  // logo: coruja (pop) e nome (revelado da esquerda pra direita)
+  const ic = seg(t, 0.9, 0.55);
+  css($('icone'), { opacity: clamp(ic * 3), transform: `scale(${ic ? .4 + .6 * eBack(ic) : .4}) rotate(${(1 - eOut(ic)) * -10}deg)` });
+  const mk = eOut4(seg(t, 1.35, 0.8));
+  css($('marcaBox'), { width: 769 * mk + 'px' });
+  css($('marca'), { transform: `translateX(${(1 - mk) * -60}px)` });
+  css($('logo'), { transform: `scale(${zoom})` });
+
+  // tagline palavra por palavra + info
+  $('tag').querySelectorAll('span').forEach((s, i) => {
+    const p = eOut4(seg(t, 2.5 + i * 0.12, 0.5));
+    css(s, { opacity: p, transform: `translateY(${(1 - p) * 50}px)` });
+  });
+  const inf = eOut(seg(t, 3.3, 0.6));
+  css($('info'), { opacity: inf, letterSpacing: `${0.22 + (1 - inf) * 0.2}em` });
+
+  // saída: conteúdo some atrás das faixas e escurece
+  const sai = seg(t, 5.75, 0.4);
+  ['logo', 'tag', 'info'].forEach(id => $(id).style.filter = sai ? `blur(${sai * 12}px)` : 'none');
+  $('fade').style.opacity = Math.max(1 - seg(t, 0, 0.25), eIn(seg(t, 6.35, 0.6)));
+}
+window.render = render;
+window.VINHETA = VINHETA;
+window.ready = Promise.all([700, 800, 900].map(w => document.fonts.load(`${w} 50px M`, 'ÇÃÕ'))).then(() => render(0));
+if (!location.search.includes('render')) window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % V.DURATION); requestAnimationFrame(loop); })(); });
+</script>
+</body>
+</html>
