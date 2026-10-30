@@ -13,6 +13,7 @@ Seguem o "Manual de Especificações de Arte e Vídeo — Eventos Remotos": 1920
 | 07_MASCARA_4_CAMERAS.png | 4 participantes | 4 recortes 736×414 |
 | 08_MASCARA_PPT_E_CAMERA.png | slides + câmera | PPT 1344×756 + câmera 400×400 |
 | 09_VINHETA.mp4 | vinheta de abertura/virada de bloco (7s) | MP4 H.264 · 30fps · Rec.709 · 12 Mbps · AAC 48 kHz estéreo |
+| 09_VINHETA_B.mp4 | vinheta opção B "Conexões", fundo claro (6s) | mesmo padrão da 09_VINHETA |
 | 10_FUNDO_VIRTUAL_PALESTRANTE.png | fundo virtual da webcam (Zoom/Meet/Teams) | 100% fechada |
 | 11_A_SEGUIR_<NOME>.png | anúncio da próxima palestra | 100% fechada |
 | 12_MASCARA_PPT_E_CAMERA_<NOME>.png | slides + câmera com nome e tema | PPT 1344×756 + câmera 400×400 |
@@ -21,4 +22,4 @@ Seguem o "Manual de Especificações de Arte e Vídeo — Eventos Remotos": 1920
 Fotos das palestrantes: `assets/palestrantes/leia.jpg` e `assets/palestrantes/alessandra.jpg` (sem a foto aparece a inicial).
 Palestrantes e textos: objeto `PALESTRANTES` em `telas.html` (e a lista em `render.mjs`). Gerar de novo: `node render.mjs`.
 
-Vinheta: `vinheta.html` (animação) + `vinheta_audio.py` (áudio sintetizado, pico -6 dBFS). Gerar: `node vinheta.mjs`.
+Vinheta: `vinheta.html` (animação) + `vinheta_audio.py` (áudio sintetizado, pico -6 dBFS). Gerar: `node vinheta.mjs` (opção A) ou `node vinheta.mjs b` (opção B, `vinheta-b.html`).

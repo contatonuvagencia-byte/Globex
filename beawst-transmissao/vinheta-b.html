@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Vinheta B Conexões</title>
+<!--
+  Vinheta B "Conexões" da Beawst Global Connect 2026 (1920x1080, 30fps, ~6s), fundo claro.
+  Abrir no navegador para ver ao vivo. Gerar o MP4: node vinheta.mjs b
+-->
+<script>
+const VINHETA = {
+  DURATION: 6, FPS: 30,
+  tagline: 'Conexões que abrem o mundo!',
+  info: '07/11 · FEIRA DE INTERCÂMBIO ONLINE E GRATUITA',
+  // pontos (x, y, rótulo). O primeiro é a origem (Brasil).
+  pontos: [[430, 790, 'BRASIL'], [1010, 380, 'IRLANDA'], [1200, 540, 'MALTA'], [1530, 330, ''], [1640, 690, ''], [760, 330, ''], [1330, 860, '']],
+};
+</script>
+<style>
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--tinta:#0B0B0F;
+  --grad:linear-gradient(90deg,#5B00D6 0%,#A3127F 50%,#F0102A 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:M,sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:#FBFAFD}
+.glow{position:absolute;border-radius:50%;filter:blur(160px)}
+.dots{position:absolute;inset:0;opacity:.5;background-image:radial-gradient(#D9D3E4 2px,transparent 2.5px);background-size:40px 40px}
+#map{position:absolute;inset:0}
+.lbl{font-family:M;font-weight:800;font-size:22px;letter-spacing:.2em;fill:#5B00D6}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+#logo{position:absolute;left:0;right:0;top:330px;display:flex;justify-content:center}
+#tag{position:absolute;left:0;right:0;top:690px;text-align:center;font-weight:900;font-size:76px;color:var(--tinta);letter-spacing:-.01em}
+#tag span{display:inline-block;white-space:pre}
+#info{position:absolute;left:0;right:0;top:810px;text-align:center;font-weight:800;font-size:28px;letter-spacing:.22em;color:#5A5466}
+#wipe{position:absolute;left:50%;top:50%;border-radius:50%;background:radial-gradient(circle,#A3127F 0%,#5B00D6 60%)}
+#fade{position:absolute;inset:0;background:#000}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="glow" style="width:900px;height:900px;background:#5B00D6;opacity:.10;left:-250px;top:-300px"></div>
+  <div class="glow" style="width:900px;height:900px;background:#F0102A;opacity:.08;left:1200px;top:500px"></div>
+  <div class="dots" id="dots"></div>
+  <svg id="map" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <defs>
+      <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#5B00D6"/><stop offset=".5" stop-color="#A3127F"/><stop offset="1" stop-color="#F0102A"/></linearGradient>
+      <radialGradient id="flash"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".4" stop-color="#FF6BB5" stop-opacity=".55"/><stop offset="1" stop-color="#5B00D6" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g id="arcs"></g><g id="pins"></g>
+    <circle id="flashC" cx="960" cy="470" r="10" fill="url(#flash)" opacity="0"/>
+  </svg>
+  <div id="logo"><img id="logoImg" src="assets/logo-feira-cor.svg" style="width:880px;display:block"></div>
+  <div id="tag"></div>
+  <div id="info"></div>
+  <div id="wipe"></div>
+  <div id="fade"></div>
+</div>
+<script>
+const V = VINHETA, NS = 'http://www.w3.org/2000/svg';
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, d) => clamp((t - a) / d);
+const eOut = x => 1 - Math.pow(1 - x, 3), eOut4 = x => 1 - Math.pow(1 - x, 4), eIn = x => x * x * x;
+const eInOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const eBack = x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const $ = id => document.getElementById(id);
+const css = (el, o) => Object.assign(el.style, o);
+const mk = (tag, at, parent) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); parent.appendChild(e); return e; };
+
+$('tag').innerHTML = V.tagline.split(' ').map((w, i) => `<span class="${i >= 2 ? 'grad' : ''}">${w} </span>`).join('');
+$('info').textContent = V.info;
+
+// rotas: da origem para cada destino (curvas para cima)
+const [ox, oy] = V.pontos[0];
+const arcs = V.pontos.slice(1).map(([x, y], i) => {
+  const mx = (ox + x) / 2, my = Math.max(140, Math.min(oy, y) - 170 - i * 18);
+  const p = mk('path', { d: `M${ox} ${oy} Q ${mx} ${my} ${x} ${y}`, fill: 'none', stroke: 'url(#g)', 'stroke-width': 5, 'stroke-linecap': 'round' }, $('arcs'));
+  const len = p.getTotalLength();
+  p.style.strokeDasharray = len;
+  const dot = mk('circle', { r: 10, fill: '#5B00D6' }, $('pins'));
+  return { p, len, dot, a: 0.25 + i * 0.16 };
+});
+const pins = V.pontos.map(([x, y, l], i) => {
+  const g = mk('g', {}, $('pins'));
+  mk('circle', { cx: x, cy: y, r: 26, fill: i ? '#F0102A' : '#5B00D6', opacity: .15 }, g);
+  mk('circle', { cx: x, cy: y, r: 11, fill: i ? '#F0102A' : '#5B00D6' }, g);
+  if (l) { const t = mk('text', { x: x + 24, y: y - 22, class: 'lbl' }, g); t.textContent = l; }
+  return { g, x, y, a: i ? 0.25 + (i - 1) * 0.16 + 0.55 : 0.1 };
+});
+
+function render(t) {
+  $('dots').style.transform = `translate(${-t * 8}px,${-t * 4}px)`;
+  // fase 1: rotas desenhando e avião-ponto viajando
+  const conv = eInOut(seg(t, 2.05, 0.45));               // fase 2: tudo converge pro centro
+  arcs.forEach(r => {
+    const d = eOut(seg(t, r.a, 0.75));
+    r.p.style.strokeDashoffset = r.len * (1 - d);
+    r.p.style.opacity = 1 - conv;
+    const pt = r.p.getPointAtLength(r.len * d);
+    r.dot.setAttribute('cx', pt.x); r.dot.setAttribute('cy', pt.y);
+    r.dot.setAttribute('opacity', d > 0 && d < 1 ? 1 : 0);
+  });
+  pins.forEach(p => {
+    const s = eBack(seg(t, p.a, 0.35));
+    const cx = p.x + (960 - p.x) * conv, cy = p.y + (470 - p.y) * conv;
+    p.g.setAttribute('transform', `translate(${cx} ${cy}) scale(${(s || 0.001) * (1 - conv * .9)}) translate(${-p.x} ${-p.y})`);
+    p.g.setAttribute('opacity', s > 0 ? 1 - seg(t, 2.4, 0.15) : 0);
+  });
+  // brilho no centro e logo
+  const fl = seg(t, 2.35, 0.7);
+  $('flashC').setAttribute('r', 20 + eOut(fl) * 900);
+  $('flashC').setAttribute('opacity', fl > 0 ? (1 - fl) * .9 : 0);
+  const lg = seg(t, 2.45, 0.6);
+  css($('logoImg'), { opacity: clamp(lg * 2.5), transform: `scale(${lg ? .7 + .3 * eBack(lg) : .7})`, filter: `blur(${(1 - eOut(lg)) * 14}px)` });
+  $('tag').querySelectorAll('span').forEach((s, i) => {
+    const p = eOut4(seg(t, 3.05 + i * 0.1, 0.45)); css(s, { opacity: p, transform: `translateY(${(1 - p) * 46}px)` });
+  });
+  const inf = eOut(seg(t, 3.7, 0.5));
+  css($('info'), { opacity: inf, letterSpacing: `${0.22 + (1 - inf) * 0.2}em` });
+  css($('logo'), { transform: `scale(${1 + 0.03 * seg(t, 3, 2)})` });
+  // saída: círculo roxo cobre a tela e escurece
+  const w = eIn(seg(t, 4.85, 0.6)), D = w * 2400;
+  css($('wipe'), { width: D + 'px', height: D + 'px', marginLeft: -D / 2 + 'px', marginTop: -D / 2 + 'px' });
+  $('fade').style.opacity = Math.max(1 - seg(t, 0, 0.2), eIn(seg(t, 5.4, 0.55)));
+}
+window.render = render;
+window.VINHETA = VINHETA;
+window.ready = Promise.all([700, 800, 900].map(w => document.fonts.load(`${w} 50px M`, 'ÇÃÕ'))).then(() => $('logoImg').decode().catch(() => {})).then(() => render(0));
+if (!location.search.includes('render')) window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % V.DURATION); requestAnimationFrame(loop); })(); });
+</script>
+</body>
+</html>
