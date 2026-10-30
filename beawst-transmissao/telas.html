@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Telas da Transmissão</title>
+<!--
+  Artes da transmissão da Beawst Global Connect 2026, seguindo o
+  "Manual de Especificações de Arte e Vídeo — Eventos Remotos":
+  1920x1080, RGB, margem segura de 60px.
+  Abrir com ?t=01 ... ?t=08 ou ?t=10. Gerar os PNGs: node render.mjs
+  As áreas de câmera/PPT (HOLES) viram 100% transparentes no PNG final.
+-->
+<script>
+// recortes transparentes (x, y, largura, altura) — medidas do manual
+const HOLES = {
+  '04': [[192, 108, 1536, 864]],
+  '05': [[60, 292, 880, 495], [980, 292, 880, 495]],
+  '06': [[204, 111, 736, 414], [980, 111, 736, 414], [592, 555, 736, 414]],
+  '07': [[204, 111, 736, 414], [980, 111, 736, 414], [204, 555, 736, 414], [980, 555, 736, 414]],
+  '08': [[68, 162, 1344, 756], [1452, 162, 400, 400]],
+};
+window.HOLES = HOLES;
+// palestrantes: foto em assets/palestrantes/ (se faltar, aparece a inicial)
+const PALESTRANTES = {
+  leia: { nome: 'Consultora Léia', tema: 'Viver em Malta', bandeira: 'malta', foto: 'assets/palestrantes/leia.jpg',
+    desc: 'Conheça a realidade e as oportunidades da ilha com quem mora lá há mais de 15 anos.' },
+  alessandra: { nome: 'Consultora Alessandra', tema: 'Trabalho e estudo na Irlanda', bandeira: 'irlanda', foto: 'assets/palestrantes/alessandra.jpg',
+    desc: 'Conheça os processos de estudo e trabalho no destino mais procurado da Europa.' },
+};
+window.PALESTRANTES = PALESTRANTES;
+HOLES.pm = HOLES['08'];   // máscara PPT + câmera personalizada usa os mesmos recortes
+</script>
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;
+  --grad:linear-gradient(90deg,#5B00D6 0%,#A3127F 50%,#F0102A 100%);
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--escuro)}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased;position:relative}
+.abs{position:absolute}
+.bg{position:absolute;inset:0;overflow:hidden;background:var(--escuro)}
+.glow{position:absolute;border-radius:50%;filter:blur(160px)}
+.grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:96px 96px}
+.bar{position:absolute;left:0;right:0;top:0;height:8px;background:var(--grad)}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{display:inline-block;font-weight:800;font-size:30px;letter-spacing:.16em;text-transform:uppercase;background:var(--roxo);padding:16px 30px;border-radius:999px}
+.center{left:60px;right:60px;text-align:center}
+.huge{font-weight:900;line-height:1;letter-spacing:-.025em}
+.frame{position:absolute;border:6px solid transparent;border-radius:6px;
+  background:linear-gradient(var(--escuro),var(--escuro)) padding-box,var(--grad) border-box;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.vert{position:absolute;writing-mode:vertical-rl;transform:rotate(180deg);font-weight:800;font-size:22px;letter-spacing:.24em;color:rgba(255,255,255,.75);text-align:center}
+.tela{display:none}
+.foto{position:relative;border-radius:50%;overflow:hidden;background:var(--grad);display:grid;place-items:center;font-weight:900;color:#fff;box-shadow:0 0 0 10px rgba(255,255,255,.95),0 0 0 22px rgba(185,140,255,.35)}
+.foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.flag{display:inline-block;border-radius:10px;overflow:hidden;box-shadow:0 0 0 4px #fff;vertical-align:middle}
+.flag svg{display:block;width:100%;height:100%}
+body.transp, body.transp html{background:transparent}
+body.transp .bg{display:none}
+.gc{position:absolute;left:60px;bottom:60px;display:flex;align-items:center;gap:26px;background:#fff;color:#0B0B0F;border-radius:22px;padding:22px 34px 22px 22px;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.gc .acc{position:absolute;left:0;top:0;bottom:0;width:12px;border-radius:22px 0 0 22px;background:var(--grad)}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="glow" style="width:1100px;height:1100px;background:var(--roxo);opacity:.7;left:-350px;top:-450px"></div>
+  <div class="glow" style="width:900px;height:900px;background:var(--magenta);opacity:.45;left:900px;top:-300px"></div>
+  <div class="glow" style="width:1000px;height:1000px;background:var(--vermelho);opacity:.32;left:1200px;top:600px"></div>
+  <div class="grid"></div>
+  <div class="bar"></div>
+</div>
+<div id="frames"></div>
+
+<!-- 01 | Tela de espera -->
+<div class="tela" id="t01">
+  <div class="abs center" style="top:190px"><img src="assets/logo-feira-branco.svg" style="width:560px;display:inline-block"></div
+  ><div class="abs center" style="top:420px"><span class="pill">bem-vindos à feira</span></div>
+  <div class="abs center huge" style="top:510px;font-size:150px">Iniciaremos <span class="gradL">em breve!</span></div>
+  <div class="abs center" style="top:720px;font-weight:700;font-size:40px;color:rgba(255,255,255,.88)">Feira de intercâmbio online e gratuita · 07/11/2026</div>
+  <div class="abs center" style="top:820px">
+    <svg width="150" height="30" viewBox="0 0 150 30"><circle cx="15" cy="15" r="12" fill="#B98CFF"/><circle cx="75" cy="15" r="12" fill="#FF6BB5"/><circle cx="135" cy="15" r="12" fill="#FF6B6B"/></svg>
+  </div>
+</div>
+
+<!-- 02 | Tela de intervalo -->
+<div class="tela" id="t02">
+  <div class="abs center" style="top:170px"><img src="assets/logo-feira-branco.svg" style="width:480px;display:inline-block"></div>
+  <div class="abs center" style="top:380px"><span class="pill" style="background:var(--grad)">pausa na programação</span></div>
+  <div class="abs center huge" style="top:470px;font-size:190px">Intervalo!</div>
+  <div class="abs center huge gradL" style="top:675px;font-size:120px">Voltamos já!</div>
+  <div class="abs center" style="top:850px;font-weight:700;font-size:38px;color:rgba(255,255,255,.88)">Não sai daí: daqui a pouco tem mais.</div>
+</div>
+
+<!-- 03 | Tela final -->
+<div class="tela" id="t03">
+  <div class="abs center" style="top:170px"><span class="pill">transmissão encerrada</span></div>
+  <div class="abs center huge" style="top:280px;font-size:140px">Agradecemos por<br><span class="gradL">estar conosco.</span></div>
+  <div class="abs center" style="top:600px;font-weight:800;font-size:46px">Conexões que abrem o mundo!</div>
+  <div class="abs center" style="top:760px"><img src="assets/logo-feira-branco.svg" style="width:480px;display:inline-block"></div>
+</div>
+
+<!-- 04 | Máscara 1 câmera -->
+<div class="tela" id="t04">
+  <img class="abs" src="assets/logo-feira-branco.svg" style="left:60px;top:60px;height:40px">
+  <div class="vert" style="left:1748px;top:108px;height:864px;width:90px;line-height:90px">BEAWST GLOBAL CONNECT 2026 · 07/11</div>
+  <div class="vert" style="left:72px;top:150px;height:822px;width:90px;line-height:90px">CONEXÕES QUE ABREM O MUNDO</div>
+</div>
+
+<!-- 05 | Máscara 2 câmeras -->
+<div class="tela" id="t05">
+  <div class="abs center" style="top:110px"><img src="assets/logo-feira-branco.svg" style="height:96px;display:inline-block"></div>
+  <div class="abs center" style="top:226px;font-weight:700;font-size:26px;letter-spacing:.12em;color:rgba(255,255,255,.8)">FEIRA DE INTERCÂMBIO ONLINE E GRATUITA</div>
+  <div class="abs center huge gradL" style="top:850px;font-size:52px">Conexões que abrem o mundo!</div>
+  <div class="abs center" style="top:930px;font-weight:700;font-size:26px;letter-spacing:.1em;color:rgba(255,255,255,.75)">07/11 · BEAWST GLOBAL CONNECT 2026</div>
+</div>
+
+<!-- 06 | Máscara 3 câmeras -->
+<div class="tela" id="t06">
+  <div class="abs" style="left:80px;top:640px;width:480px">
+    <img src="assets/logo-feira-branco.svg" style="width:440px;display:block">
+    <div style="font-weight:700;font-size:24px;letter-spacing:.1em;color:rgba(255,255,255,.75);margin-top:26px">FEIRA DE INTERCÂMBIO<br>ONLINE E GRATUITA</div>
+  </div>
+  <div class="abs" style="left:1360px;width:480px;top:700px;text-align:right">
+    <div class="huge gradL" style="font-size:46px;line-height:1.1">Conexões que<br>abrem o mundo!</div>
+    <div style="font-weight:700;font-size:26px;letter-spacing:.1em;color:rgba(255,255,255,.75);margin-top:22px">07/11 · AO VIVO</div>
+  </div>
+</div>
+
+<!-- 07 | Máscara 4 câmeras -->
+<div class="tela" id="t07">
+  <img class="abs" src="assets/logo-feira-branco.svg" style="left:60px;top:60px;height:40px">
+  <div class="vert" style="left:1740px;top:111px;height:858px;width:110px;line-height:110px">BEAWST GLOBAL CONNECT 2026 · 07/11</div>
+  <div class="vert" style="left:80px;top:150px;height:819px;width:110px;line-height:110px">CONEXÕES QUE ABREM O MUNDO</div>
+  <div class="abs center" style="top:985px;font-weight:700;font-size:22px;letter-spacing:.18em;color:rgba(255,255,255,.7)">FEIRA DE INTERCÂMBIO ONLINE E GRATUITA</div>
+</div>
+
+<!-- 08 | Máscara PPT + câmera -->
+<div class="tela" id="t08">
+  <div class="abs" style="left:68px;top:84px;display:flex;align-items:center;gap:16px;font-weight:800;font-size:24px;letter-spacing:.16em">
+    <span style="width:18px;height:18px;border-radius:50%;background:var(--vermelho);box-shadow:0 0 0 6px rgba(240,16,42,.25)"></span>AO VIVO
+  </div>
+  <img class="abs" src="assets/logo-feira-branco.svg" style="right:68px;top:76px;height:52px">
+  <div class="abs" style="left:1452px;top:640px;width:400px;text-align:center">
+    <img src="assets/logo-feira-branco.svg" style="width:360px;display:inline-block">
+    <div class="huge gradL" style="font-size:36px;line-height:1.12;margin-top:30px">Conexões que<br>abrem o mundo!</div>
+    <div style="font-weight:700;font-size:22px;letter-spacing:.12em;color:rgba(255,255,255,.75);margin-top:18px">07/11 · ONLINE E GRATUITA</div>
+  </div>
+</div>
+
+<!-- 10 | Fundo virtual para a webcam do palestrante -->
+<div class="tela" id="t10">
+  <img class="abs" src="assets/logo-feira-branco.svg" style="right:90px;top:80px;width:400px">
+  <div class="abs" style="right:90px;top:220px;font-weight:700;font-size:24px;letter-spacing:.14em;color:rgba(255,255,255,.75);text-align:right">FEIRA DE INTERCÂMBIO · 07/11</div>
+</div>
+
+<!-- ps | A seguir (tela cheia) -->
+<div class="tela" id="tps">
+  <div class="abs" style="left:150px;top:250px"><div class="foto" id="psFoto" style="width:560px;height:560px;font-size:240px"></div></div>
+  <div class="abs" style="left:820px;right:120px;top:250px">
+    <span class="pill" style="background:var(--grad)">a seguir</span>
+    <div class="huge" id="psTema" style="font-size:96px;margin-top:34px;line-height:1.02"></div>
+    <div style="display:flex;align-items:center;gap:22px;margin-top:34px"><span class="flag" id="psFlag" style="width:84px;height:56px"></span>
+      <span id="psNome" style="font-weight:800;font-size:46px"></span></div>
+    <div id="psDesc" style="font-weight:600;font-size:36px;line-height:1.35;color:rgba(255,255,255,.88);margin-top:30px"></div>
+  </div>
+  <img class="abs" src="assets/logo-feira-branco.svg" style="right:120px;bottom:80px;height:70px">
+</div>
+
+<!-- pm | Máscara PPT + câmera com a palestrante -->
+<div class="tela" id="tpm">
+  <div class="abs" style="left:68px;top:84px;display:flex;align-items:center;gap:16px;font-weight:800;font-size:24px;letter-spacing:.16em">
+    <span style="width:18px;height:18px;border-radius:50%;background:var(--vermelho);box-shadow:0 0 0 6px rgba(240,16,42,.25)"></span>AO VIVO</div>
+  <img class="abs" src="assets/logo-feira-branco.svg" style="right:68px;top:76px;height:52px">
+  <div class="abs" style="left:1452px;top:600px;width:400px">
+    <span class="flag" id="pmFlag" style="width:66px;height:44px"></span>
+    <div id="pmNome" style="font-weight:900;font-size:36px;line-height:1.1;margin-top:22px"></div>
+    <div class="gradL" id="pmTema" style="font-weight:900;font-size:34px;line-height:1.12;margin-top:12px"></div>
+    <div id="pmDesc" style="font-weight:600;font-size:21px;line-height:1.35;color:rgba(255,255,255,.82);margin-top:14px"></div>
+  </div>
+</div>
+
+<!-- gc | Tarja de nome (fundo transparente) -->
+<div class="tela" id="tgc">
+  <div class="gc"><div class="acc"></div>
+    <div class="foto" id="gcFoto" style="width:110px;height:110px;font-size:52px;margin-left:12px;box-shadow:none"></div>
+    <div><div id="gcNome" style="font-weight:900;font-size:40px;line-height:1.05"></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:8px"><span class="flag" id="gcFlag" style="width:42px;height:28px;box-shadow:0 0 0 2px #ddd"></span>
+      <span id="gcTema" style="font-weight:700;font-size:28px;color:#5B00D6"></span></div></div>
+  </div>
+</div>
+
+<script>
+const BANDEIRAS = {
+  irlanda: '<svg viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#FFFFFF"/><rect x="2" width="1" height="2" fill="#FF883E"/></svg>',
+  malta: '<svg viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="15" height="20" fill="#FFFFFF"/><rect x="15" width="15" height="20" fill="#CF142B"/><g transform="translate(2.2 2.2)"><path d="M2 0h2v2h2v2H4v2H2V4H0V2h2z" fill="#B0B0B0" stroke="#CF142B" stroke-width=".35"/></g></svg>',
+};
+const t = new URLSearchParams(location.search).get('t') || '01';
+document.getElementById('t' + t).style.display = 'block';
+const P = PALESTRANTES[new URLSearchParams(location.search).get('s')];
+if (P) {
+  const ini = P.nome.replace('Consultora ', '')[0];
+  const foto = el => { el.textContent = ini; const i = new Image(); i.onload = () => { el.textContent = ''; el.appendChild(i); }; i.src = P.foto; };
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  ['ps', 'pm', 'gc'].forEach(k => { set(k + 'Nome', P.nome); set(k + 'Tema', P.tema); set(k + 'Desc', P.desc);
+    const f = document.getElementById(k + 'Flag'); if (f) f.innerHTML = BANDEIRAS[P.bandeira];
+    const ft = document.getElementById(k + 'Foto'); if (ft) foto(ft); });
+}
+if (t === 'gc') { document.body.classList.add('transp'); document.documentElement.style.background = 'transparent'; document.body.style.background = 'transparent'; }
+// moldura em gradiente por fora de cada recorte (o recorte em si fica transparente no PNG)
+for (const [x, y, w, h] of (HOLES[t] || [])) {
+  const f = document.createElement('div');
+  f.className = 'frame';
+  Object.assign(f.style, { left: x - 6 + 'px', top: y - 6 + 'px', width: w + 12 + 'px', height: h + 12 + 'px' });
+  document.getElementById('frames').appendChild(f);
+}
+if (t === '10') {   // fundo virtual: centro mais limpo e escuro, onde fica a pessoa
+  document.querySelector('.grid').style.opacity = '.04';
+}
+</script>
+</body>
+</html>
