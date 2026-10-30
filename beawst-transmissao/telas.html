@@ -22,9 +22,9 @@ const HOLES = {
 window.HOLES = HOLES;
 // palestrantes: foto em assets/palestrantes/ (se faltar, aparece a inicial)
 const PALESTRANTES = {
-  leia: { nome: 'Consultora Léia', tema: 'Viver em Malta', bandeira: 'malta', foto: 'assets/palestrantes/leia.jpg',
+  leia: { nome: 'Consultora Léia', tema: 'Viver em Malta', bandeira: 'malta', foto: 'assets/palestrantes/leia.jpg', fotoPos: '50% 42%', fotoZoom: 1.7, fotoOrigem: '50% 46%',
     desc: 'Conheça a realidade e as oportunidades da ilha com quem mora lá há mais de 15 anos.' },
-  alessandra: { nome: 'Consultora Alessandra', tema: 'Trabalho e estudo na Irlanda', bandeira: 'irlanda', foto: 'assets/palestrantes/alessandra.jpg',
+  alessandra: { nome: 'Consultora Alessandra', tema: 'Trabalho e estudo na Irlanda', bandeira: 'irlanda', foto: 'assets/palestrantes/alessandra.jpg', fotoPos: '100% 38%', fotoZoom: 1.12, fotoOrigem: '100% 45%',
     desc: 'Conheça os processos de estudo e trabalho no destino mais procurado da Europa.' },
 };
 window.PALESTRANTES = PALESTRANTES;
@@ -202,7 +202,7 @@ document.getElementById('t' + t).style.display = 'block';
 const P = PALESTRANTES[new URLSearchParams(location.search).get('s')];
 if (P) {
   const ini = P.nome.replace('Consultora ', '')[0];
-  const foto = el => { el.textContent = ini; const i = new Image(); i.onload = () => { el.textContent = ''; el.appendChild(i); }; i.src = P.foto; };
+  const foto = el => { el.textContent = ini; const i = new Image(); i.style.objectPosition = P.fotoPos || '50% 50%'; i.style.transform = `scale(${P.fotoZoom || 1})`; i.style.transformOrigin = P.fotoOrigem || '50% 50%'; i.onload = () => { el.textContent = ''; el.appendChild(i); }; i.src = P.foto; };
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   ['ps', 'pm', 'gc'].forEach(k => { set(k + 'Nome', P.nome); set(k + 'Tema', P.tema); set(k + 'Desc', P.desc);
     const f = document.getElementById(k + 'Flag'); if (f) f.innerHTML = BANDEIRAS[P.bandeira];
