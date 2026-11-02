@@ -2,165 +2,248 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap">
 <style>
-/* SINAIT DS/MG · calendário de novembro 2026.
-   Direção de arte do calendário com as cores do manual: preto #200100, laranja #cc4e00, creme #F6F4F2; Montserrat.
-   Capa e post único: foto com overlay escuro (ou versão tipográfica), título laranja em caixa alta,
-   texto à esquerda no terço inferior, logo no canto superior direito. Internos: fundo escuro, título laranja, corpo creme. */
+/* SINAIT DS/MG · calendário de novembro 2026, no padrão do carrossel "Voto livre".
+   Paleta: preto #200100, laranja #cc4e00, creme #F6F4F2, branco #f5f5f5 nas capas claras; Anton + Montserrat.
+   Layout: 1080x1350, texto centralizado, logo no topo, faixas laranja inclinadas nos destaques. */
 :root {
   --preto: #200100;
   --laranja: #cc4e00;
-  --laranja-claro: #f37c28;
+  --laranja-logo: #f37c28;
   --creme: #F6F4F2;
-  --creme-70: rgba(246, 244, 242, .72);
-  --linha: rgba(246, 244, 242, .16);
-  --f: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --branco: #f5f5f5;
+  --creme-70: rgba(246, 244, 242, .74);
+  --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --f-body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
   color-scheme: dark;
 }
-body { background: #0e0000; color: var(--creme); font-family: var(--f); padding-block: 24px;
+body { background: #0e0000; color: var(--creme); font-family: var(--f-body); padding-block: 24px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .post { margin: 0 auto 56px; max-width: 1400px; }
 .post h3 { font-size: 18px; font-weight: 700; margin: 0 0 14px; }
 .post h3 span { color: var(--creme-70); font-weight: 500; }
 .row { display: flex; flex-wrap: wrap; gap: 16px; }
 .wrap { width: min(100%, 300px); aspect-ratio: 1080 / 1350; position: relative; overflow: hidden; }
-.slide { position: absolute; left: 0; top: 0; width: 1080px; height: 1350px; transform-origin: 0 0; overflow: hidden; background: var(--preto); color: var(--creme); }
-body.export { padding: 0; }
+.slide { position: absolute; left: 0; top: 0; width: 1080px; height: 1350px; transform-origin: 0 0; overflow: hidden;
+  background: var(--preto); color: var(--creme); box-sizing: border-box; padding: 0 96px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+body.export { padding: 0; background: var(--preto); }
 body.export .post h3 { display: none; }
 body.export .wrap { width: 1080px; height: 1350px; aspect-ratio: auto; }
 
-/* camadas de fundo */
-.bg { position: absolute; inset: 0; }
-.glow { background: radial-gradient(70% 45% at 90% 105%, rgba(204,78,0,.5) 0%, rgba(204,78,0,.12) 50%, transparent 78%), radial-gradient(45% 30% at 0% 0%, rgba(204,78,0,.14) 0%, transparent 70%); }
-.foto { width: 100%; height: 100%; object-fit: cover; }
-.overlay { background: linear-gradient(180deg, rgba(32,1,0,.35) 0%, rgba(32,1,0,.55) 40%, rgba(32,1,0,.94) 72%, var(--preto) 100%); }
-.ghost { position: absolute; left: 60px; top: 150px; font-weight: 900; font-size: 380px; line-height: .85; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 3px rgba(246,244,242,.08); white-space: nowrap; text-transform: uppercase; }
-.ghost.cheio { color: var(--laranja); -webkit-text-stroke: 0; opacity: .95; font-size: 560px; top: 120px; }
+/* fundos */
+.slide::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.s-escuro::before { background:
+  radial-gradient(70% 45% at 85% 105%, rgba(204,78,0,.6) 0%, rgba(204,78,0,.16) 50%, transparent 78%),
+  radial-gradient(45% 30% at 0% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-alt::before { background:
+  radial-gradient(70% 45% at 10% 105%, rgba(204,78,0,.55) 0%, rgba(204,78,0,.14) 50%, transparent 78%),
+  radial-gradient(45% 30% at 100% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-creme { background: var(--creme); color: var(--preto); }
+.s-branco { background: var(--branco); color: var(--preto); }
+.s-branco::before { background: radial-gradient(60% 35% at 100% 100%, rgba(204,78,0,.10) 0%, transparent 70%); }
+.s-laranja { background: var(--laranja); }
+.s-laranja::before { background: radial-gradient(70% 50% at 100% 0%, rgba(243,124,40,.65) 0%, transparent 70%), radial-gradient(60% 40% at 0% 100%, rgba(32,1,0,.35) 0%, transparent 70%); }
+.slide > * { position: relative; }
 
-.logo { position: absolute; top: 64px; right: 72px; width: 150px; }
-.interno .logo { width: 116px; top: 60px; right: 64px; }
+.logo { width: 170px; margin-top: 70px; flex: none; }
+.body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 44px; width: 100%; padding-bottom: 40px; }
+.foot { flex: none; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding-bottom: 56px; font-size: 22px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.foot .src { letter-spacing: .02em; text-transform: none; font-weight: 500; font-size: 20px; text-align: left; max-width: 780px; }
 
-/* conteúdo */
-.content { position: absolute; left: 88px; right: 88px; display: flex; flex-direction: column; gap: 30px; }
-.capa .content { bottom: 190px; }
-.interno .content { top: 0; bottom: 0; justify-content: center; }
-.pill { align-self: flex-start; background: var(--laranja); color: var(--creme); font-weight: 800; font-size: 26px; letter-spacing: .14em; text-transform: uppercase; padding: 12px 24px; border-radius: 999px; }
-.eyebrow { font-weight: 700; font-size: 30px; letter-spacing: .24em; text-transform: uppercase; color: var(--laranja-claro); }
-.titulo { margin: 0; font-weight: 800; color: var(--laranja-claro); line-height: 1.04; letter-spacing: -.01em; text-wrap: balance; }
-.capa .titulo { font-size: 92px; text-transform: uppercase; }
-.interno .titulo { font-size: 88px; }
-.titulo.stat { font-size: 300px; font-weight: 900; line-height: .95; letter-spacing: -.03em; }
-.texto { margin: 0; font-weight: 500; font-size: 46px; line-height: 1.38; max-width: 880px; text-wrap: pretty; }
-.capa .texto { font-size: 38px; }
-.texto b { font-weight: 800; }
-.rule { width: 96px; height: 8px; background: var(--laranja); border-radius: 4px; }
+.eyebrow { font-size: 26px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--laranja-logo); }
+.s-creme .eyebrow, .s-branco .eyebrow { color: var(--laranja); }
+.s-laranja .eyebrow { color: var(--preto); }
+h1, h2 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 { font-size: 150px; }
+h2 { font-size: 104px; }
+.faixa { display: inline-block; background: var(--laranja); color: var(--creme); padding: .02em .16em .06em; transform: rotate(-3deg); margin-block: .1em .2em; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.faixa.preta { background: var(--preto); }
+.lar { color: var(--laranja-logo); }
+.s-creme .lar, .s-branco .lar { color: var(--laranja); }
+p { margin: 0; }
+.lead { font-size: 44px; line-height: 1.32; font-weight: 600; max-width: 860px; text-wrap: balance; }
+.txt { font-size: 38px; line-height: 1.4; font-weight: 500; max-width: 860px; text-wrap: balance; }
+.txt b, .lead b { font-weight: 800; }
+.alerta { font-style: italic; font-weight: 600; font-size: 38px; line-height: 1.38; max-width: 860px; border-top: 4px solid var(--laranja); padding-top: 34px; text-wrap: balance; }
+.stat { font-family: var(--f-display); font-size: 330px; line-height: .95; color: var(--laranja); letter-spacing: -.01em; }
+.s-escuro .stat, .s-alt .stat { color: var(--laranja-logo); }
+.s-laranja .stat { color: var(--creme); }
 
-.rodape { position: absolute; left: 88px; right: 88px; bottom: 56px; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; font-size: 21px; line-height: 1.4; color: var(--creme-70); }
-.rodape .num { font-weight: 700; letter-spacing: .12em; flex: none; }
-.rodape .arraste { font-weight: 700; letter-spacing: .2em; text-transform: uppercase; flex: none; }
+.ghost { position: absolute !important; left: -40px; right: -40px; bottom: 120px; font-family: var(--f-display); font-size: 300px; line-height: .9; text-transform: uppercase; color: transparent; -webkit-text-stroke: 2px rgba(246,244,242,.07); white-space: nowrap; text-align: center; }
+.s-branco .ghost { -webkit-text-stroke: 2px rgba(32,1,0,.06); }
 
-/* CTA final */
-.cta { background: var(--laranja); }
-.cta .bg.glow { background: radial-gradient(70% 50% at 100% 0%, rgba(243,124,40,.65) 0%, transparent 70%), radial-gradient(60% 40% at 0% 100%, rgba(32,1,0,.35) 0%, transparent 70%); }
-.cta .titulo { color: var(--creme); }
-.cta .eyebrow { color: var(--preto); }
-.cta .rodape { color: rgba(246,244,242,.85); }
-.cta .acao { align-self: flex-start; background: var(--preto); color: var(--creme); font-weight: 800; font-size: 34px; padding: 18px 34px; border-radius: 999px; }
+.lista { list-style: none; margin: 0; padding: 0; width: 100%; text-align: left; }
+.lista li { display: grid; grid-template-columns: 70px 1fr; align-items: center; gap: 20px; padding-block: 28px; border-top: 3px solid rgba(246,244,242,.16); font-family: var(--f-display); font-size: 76px; text-transform: uppercase; line-height: 1.05; }
+.lista li:last-child { border-bottom: 3px solid rgba(246,244,242,.16); }
+.lista .seta { color: var(--laranja-logo); font-size: 64px; line-height: 1; }
 
-/* barras do 17/11 */
+.share { display: flex; align-items: center; gap: 18px; font-style: italic; font-weight: 600; font-size: 31px; white-space: nowrap; color: var(--creme-70); }
+.share svg { flex: none; }
+.s-laranja .share { color: rgba(246,244,242,.88); }
+
 .barras { display: flex; flex-direction: column; gap: 22px; width: 100%; }
-.barra { display: grid; grid-template-columns: 170px 1fr 150px; align-items: center; gap: 20px; font-weight: 700; font-size: 30px; }
-.barra .trilho { height: 44px; background: rgba(246,244,242,.08); border-radius: 4px; overflow: hidden; }
-.barra .valor { height: 100%; background: var(--creme); border-radius: 4px; }
+.barra { display: grid; grid-template-columns: 170px 1fr 160px; align-items: center; gap: 22px; text-align: left; font-weight: 700; font-size: 30px; letter-spacing: .08em; text-transform: uppercase; }
+.barra .trilho { height: 56px; background: rgba(246,244,242,.08); border-radius: 4px; overflow: hidden; }
+.barra .valor { display: block; height: 100%; background: var(--creme); border-radius: 4px; }
 .barra.destaque .valor { background: var(--laranja); }
-.barra .pct { font-weight: 800; font-size: 38px; text-align: right; font-variant-numeric: tabular-nums; }
-.barra.destaque .pct { color: var(--laranja-claro); }
+.barra .pct { font-family: var(--f-display); font-size: 56px; letter-spacing: 0; text-align: right; }
+.barra.destaque .pct { color: var(--laranja-logo); }
 </style>
 
 <div id="posts"></div>
 
 <script>
-// Conteúdo do calendário (textos do PDF da cliente). Sem travessão nos textos.
-// foto: arquivo em fotos/ (ex.: fotos/04-11.jpg). Se não existir, entra a versão tipográfica.
-const F_GUIA = 'MTE, Guia de Informações sobre os Fatores de Riscos Psicossociais Relacionados ao Trabalho (2025).';
+// Textos do calendário de novembro (PDF da cliente), sem travessão.
+const GUIA = '*Fonte: MTE, Guia de Informações sobre os Fatores de Riscos Psicossociais Relacionados ao Trabalho (2025).';
+const share = (t) => `<p class="share"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>${t}</p>`;
+const lista = (itens) => `<ul class="lista">${itens.map(i => `<li><span class="seta">→</span><span>${i}</span></li>`).join('')}</ul>`;
+
 const POSTS = [
-  { id: '04-11-discriminacao-no-trabalho', data: '04/11', nome: 'Carrossel · Discriminação no trabalho: o que a lei proíbe', foto: '04-11', fotoStyle: 'transform:translateY(-21%)', ghost: 'Igualdade', slides: [
-    { tipo: 'capa', titulo: 'Discriminação no trabalho', texto: 'Novembro: mês de falar de igualdade de oportunidades.' },
-    { eyebrow: 'Está na Constituição', titulo: 'É proibido diferenciar', texto: 'salário, função ou critério de admissão por sexo, idade, cor ou estado civil.*', fonte: '*CF/88, art. 7º, XXX.' },
-    { eyebrow: 'E tem lei específica', titulo: 'Lei 9.029/1995', texto: 'Proíbe qualquer prática discriminatória para entrar ou continuar no emprego, por sexo, origem, raça, cor, estado civil, situação familiar, deficiência, idade, entre outros motivos.**', fonte: '**Lei nº 9.029/1995, art. 1º.' },
-    { eyebrow: 'Vale para tudo', titulo: 'Contratação, salário, promoção e demissão.' },
-    { eyebrow: 'Quem recebe denúncia', titulo: 'O MTE, pelo Sistema Ipê, e o Ministério Público do Trabalho.' },
-    { tipo: 'cta', titulo: 'Viu ou viveu discriminação no trabalho?', texto: 'Denuncie e compartilhe com quem precisa saber.', acao: 'Denuncie · Sistema Ipê (MTE)' },
+  { id: '04-11-discriminacao-no-trabalho', data: '04/11', nome: 'Carrossel · Discriminação no trabalho: o que a lei proíbe', slides: [
+    { bg: 'branco', ghost: 'Igualdade', foot: ['Educação trabalhista', 'Arraste →'], html: `
+      <h1>Discriminação<br><span class="faixa">no trabalho</span></h1>
+      <p class="lead">Novembro: mês de falar de <span class="lar">igualdade de oportunidades.</span></p>` },
+    { bg: 'escuro', foot: ['<span class="src">*CF/88, art. 7º, XXX.</span>', '2/6'], html: `
+      <span class="eyebrow">Está na Constituição</span>
+      <h2>É proibido<br><span class="faixa">diferenciar</span></h2>
+      <p class="lead">Salário, função ou critério de admissão por <span class="lar">sexo, idade, cor ou estado civil.*</span></p>` },
+    { bg: 'creme', foot: ['<span class="src">**Lei nº 9.029/1995, art. 1º.</span>', '3/6'], html: `
+      <span class="eyebrow">E tem lei específica</span>
+      <h2>Lei <span class="faixa">9.029/1995</span></h2>
+      <p class="txt" style="font-weight:600">Proíbe qualquer prática discriminatória para entrar ou continuar no emprego, por sexo, origem, raça, cor, estado civil, situação familiar, deficiência, idade, entre outros motivos.**</p>` },
+    { bg: 'escuro alt', foot: ['4/6', 'Arraste →'], html: `
+      <h2>Vale<br><span class="faixa">para tudo</span></h2>
+      ${lista(['Contratação', 'Salário', 'Promoção', 'Demissão'])}` },
+    { bg: 'laranja', foot: ['5/6', 'Arraste →'], html: `
+      <span class="eyebrow">Quem recebe denúncia</span>
+      <h2>Denuncie ao<br><span class="faixa preta">MTE e ao MPT</span></h2>
+      <p class="txt">O <b>MTE</b>, pelo <b>Sistema Ipê</b>, e o <b>Ministério Público do Trabalho</b>.</p>` },
+    { bg: 'escuro', foot: ['', '6/6'], html: `
+      <h2>Viu ou viveu discriminação <span class="faixa">no trabalho?</span></h2>
+      ${share('Denuncie e compartilhe com quem precisa saber.')}` },
   ]},
-  { id: '06-11-nr1-saude-mental', data: '06/11', nome: 'Post único · NR-1: saúde mental também é risco do trabalho', foto: '06-11', fotoStyle: 'transform:translateY(-17%)', ghost: 'NR-1', slides: [
-    { tipo: 'capa', titulo: 'Saúde mental também é risco do trabalho', texto: 'Desde 26/05/2026, a NR-1 exige que as empresas gerenciem fatores como sobrecarga e assédio.', fonte: 'Fonte: MTE, NR-1, Portarias nº 1.419/2024 e nº 765/2025.' },
+
+  { id: '06-11-nr1-saude-mental', data: '06/11', nome: 'Post único · NR-1: saúde mental também é risco do trabalho', slides: [
+    { bg: 'escuro', ghost: 'NR-1', foot: ['<span class="src">Fonte: MTE, NR-1, Portarias nº 1.419/2024 e nº 765/2025.</span>', ''], html: `
+      <span class="eyebrow">NR-1</span>
+      <h1 style="font-size:132px">Saúde mental<br><span class="faixa">também é risco</span><br>do trabalho</h1>
+      <p class="lead">Desde 26/05/2026, a NR-1 exige que as empresas gerenciem fatores como <span class="lar">sobrecarga e assédio.</span></p>` },
   ]},
-  { id: '10-11-riscos-psicossociais', data: '10/11', nome: 'Carrossel · Riscos psicossociais: o que são e como aparecem', foto: '10-11', ghost: 'Risco', slides: [
-    { tipo: 'capa', titulo: 'Risco psicossocial', texto: 'O que é e como aparece no trabalho.' },
-    { eyebrow: 'O que é', titulo: 'Riscos que vêm da forma como o trabalho é organizado e gerido.', texto: 'E não de quem trabalha.*', fonte: '*' + F_GUIA },
-    { eyebrow: 'Exemplo 1', titulo: 'Excesso de demandas', texto: 'E prazos que não cabem no dia.*', fonte: '*' + F_GUIA },
-    { eyebrow: 'Exemplo 2', titulo: 'Assédio de qualquer natureza', texto: 'Como humilhação, isolamento e cobrança vexatória.*', fonte: '*' + F_GUIA },
-    { eyebrow: 'Exemplo 3', titulo: 'Pouca autonomia', texto: 'Funções pouco claras e falta de apoio das chefias.*', fonte: '*' + F_GUIA },
-    { tipo: 'cta', titulo: 'Reconheceu?', texto: 'Fale com a CIPA ou com o sindicato, ou denuncie no Sistema Ipê (MTE).', acao: 'Denuncie · Sistema Ipê (MTE)' },
+
+  { id: '10-11-riscos-psicossociais', data: '10/11', nome: 'Carrossel · Riscos psicossociais: o que são e como aparecem', slides: [
+    { bg: 'branco', ghost: 'Risco', foot: ['Educação trabalhista', 'Arraste →'], html: `
+      <h1>Risco<br><span class="faixa">psicossocial</span></h1>
+      <p class="lead">O que é e como aparece <span class="lar">no trabalho.</span></p>` },
+    { bg: 'escuro', foot: [`<span class="src">${GUIA}</span>`, '2/6'], html: `
+      <span class="eyebrow">O que é</span>
+      <h2>Vem do<br><span class="faixa">trabalho</span></h2>
+      <p class="lead">Riscos que vêm da forma como o trabalho é organizado e gerido, <span class="lar">e não de quem trabalha.*</span></p>` },
+    { bg: 'creme', foot: [`<span class="src">${GUIA}</span>`, '3/6'], html: `
+      <span class="eyebrow">Exemplo 1</span>
+      <h2>Excesso de<br><span class="faixa">demandas</span></h2>
+      <p class="lead">E prazos que não cabem no dia.*</p>` },
+    { bg: 'escuro alt', foot: [`<span class="src">${GUIA}</span>`, '4/6'], html: `
+      <span class="eyebrow">Exemplo 2</span>
+      <h2>Assédio de<br><span class="faixa">qualquer natureza</span></h2>
+      <p class="lead">Como humilhação, isolamento e <span class="lar">cobrança vexatória.*</span></p>` },
+    { bg: 'escuro', foot: [`<span class="src">${GUIA}</span>`, '5/6'], html: `
+      <span class="eyebrow">Exemplo 3</span>
+      <h2>Pouca<br><span class="faixa">autonomia</span></h2>
+      <p class="lead">Funções pouco claras e <span class="lar">falta de apoio das chefias.*</span></p>` },
+    { bg: 'laranja', foot: ['', '6/6'], html: `
+      <h2><span class="faixa preta">Reconheceu?</span></h2>
+      <p class="lead">Fale com a <b>CIPA</b> ou com o <b>sindicato</b>, ou denuncie no <b>Sistema Ipê (MTE)</b>.</p>` },
   ]},
-  { id: '12-11-atestado-de-gravidez', data: '12/11', nome: 'Post único · Atestado de gravidez para contratar? É crime', foto: '12-11', ghost: 'Crime', slides: [
-    { tipo: 'capa', titulo: 'Atestado de gravidez para contratar? É crime', texto: 'Lei 9.029/1995: exigir teste ou atestado de gravidez ou esterilização na admissão ou na permanência no emprego é crime.', fonte: 'Fonte: Lei nº 9.029/1995, arts. 1º e 2º.' },
+
+  { id: '12-11-atestado-de-gravidez', data: '12/11', nome: 'Post único · Atestado de gravidez para contratar? É crime', slides: [
+    { bg: 'branco', ghost: 'Crime', foot: ['<span class="src">Fonte: Lei nº 9.029/1995, arts. 1º e 2º.</span>', ''], html: `
+      <h1 style="font-size:126px">Atestado de gravidez<br>para contratar?<br><span class="faixa">É crime.</span></h1>
+      <p class="lead"><span class="lar">Lei 9.029/1995:</span> exigir teste ou atestado de gravidez ou esterilização na admissão ou na permanência no emprego é crime.</p>` },
   ]},
-  { id: '17-11-informalidade-tem-cor', data: '17/11', nome: 'Post único · Informalidade tem cor', foto: '17-11', ghost: '', barras: true, slides: [
-    { tipo: 'capa', titulo: 'Informalidade tem cor', texto: 'No fim de 2024: 32,6% dos trabalhadores brancos, 41,9% dos pretos e 43,5% dos pardos estavam na informalidade.', fonte: 'Fonte: IBGE, PNAD Contínua, 4º trimestre de 2024.' },
+
+  { id: '17-11-informalidade-tem-cor', data: '17/11', nome: 'Post único · Informalidade tem cor', slides: [
+    { bg: 'escuro', foot: ['<span class="src">Fonte: IBGE, PNAD Contínua, 4º trimestre de 2024.</span>', ''], html: `
+      <h1>Informalidade<br><span class="faixa">tem cor</span></h1>
+      <p class="lead">No fim de 2024, estavam na informalidade:</p>
+      <div class="barras">
+        ${[['Brancos', 32.6], ['Pretos', 41.9], ['Pardos', 43.5]].map(([k, v], j) => `<div class="barra${j ? ' destaque' : ''}"><span>${k}</span><span class="trilho"><span class="valor" style="width:${v / 50 * 100}%"></span></span><span class="pct">${String(v).replace('.', ',')}%</span></div>`).join('')}
+      </div>` },
   ]},
-  { id: '20-11-consciencia-negra', data: '20/11', nome: 'Carrossel · Dia da Consciência Negra e discriminação racial no emprego', foto: null, ghost: '20/11', slides: [
-    { tipo: 'capa', pill: '20 de novembro', titulo: 'Dia Nacional de Zumbi e da Consciência Negra' },
-    { eyebrow: 'A data', titulo: 'Zumbi dos Palmares morreu em 20/11/1695.', texto: 'Desde 2011 é o Dia Nacional de Zumbi e da Consciência Negra, e desde 2024, feriado nacional.*', fonte: '*Lei nº 12.519/2011; Lei nº 14.759/2023.' },
-    { eyebrow: 'No trabalho', titulo: '65,9%', stat: true, texto: 'era a diferença de rendimento por cor ou raça em 2024. Em 2012, era de 75,2%.**', fonte: '**IBGE, PNAD Contínua 2024.' },
-    { eyebrow: 'A lei', titulo: 'Racismo é crime.', texto: 'Injúria racial é crime de racismo desde a Lei 14.532/2023. E a Lei 9.029/1995 proíbe discriminação por raça ou cor para entrar ou permanecer no emprego.***', fonte: '***Lei nº 7.716/1989; Lei nº 14.532/2023; Lei nº 9.029/1995.' },
-    { eyebrow: 'Em Minas', titulo: '58,6%', stat: true, texto: 'da população é preta ou parda. Igualdade de oportunidades é pauta de todo o estado.****', fonte: '****IBGE, Censo 2022.' },
-    { tipo: 'cta', titulo: 'Viu ou sofreu racismo no trabalho?', texto: 'Denuncie ao MTE (Sistema Ipê), ao MPT ou numa delegacia.', acao: 'Racismo é crime. Denuncie.' },
+
+  { id: '20-11-consciencia-negra', data: '20/11', nome: 'Carrossel · Dia da Consciência Negra e discriminação racial no emprego', slides: [
+    { bg: 'escuro', ghost: 'Consciência', foot: ['Mobilização social', 'Arraste →'], html: `
+      <h1>20 de<br><span class="faixa">novembro</span></h1>
+      <p class="lead">Dia Nacional de Zumbi e da <span class="lar">Consciência Negra.</span></p>` },
+    { bg: 'escuro alt', foot: ['<span class="src">*Lei nº 12.519/2011; Lei nº 14.759/2023.</span>', '2/6'], html: `
+      <span class="eyebrow">A data</span>
+      <h2>Zumbi dos Palmares<br>morreu em<br><span class="faixa">20/11/1695</span></h2>
+      <p class="txt">Desde 2011 é o Dia Nacional de Zumbi e da Consciência Negra, e desde 2024, <b class="lar">feriado nacional.*</b></p>` },
+    { bg: 'creme', foot: ['<span class="src">**IBGE, PNAD Contínua 2024.</span>', '3/6'], html: `
+      <span class="eyebrow">No trabalho</span>
+      <div class="stat">65,9%</div>
+      <p class="lead">era a diferença de rendimento por cor ou raça em 2024. Em 2012, era de 75,2%.**</p>` },
+    { bg: 'escuro', foot: ['<span class="src">***Lei nº 7.716/1989; Lei nº 14.532/2023; Lei nº 9.029/1995.</span>', '4/6'], html: `
+      <span class="eyebrow">A lei</span>
+      <h2>Racismo<br><span class="faixa">é crime.</span></h2>
+      <p class="txt">Injúria racial é crime de racismo desde a Lei 14.532/2023. E a Lei 9.029/1995 proíbe discriminação por raça ou cor para <b class="lar">entrar ou permanecer no emprego.***</b></p>` },
+    { bg: 'laranja', foot: ['<span class="src">****IBGE, Censo 2022.</span>', '5/6'], html: `
+      <span class="eyebrow">Em Minas</span>
+      <div class="stat">58,6%</div>
+      <p class="lead">da população é preta ou parda. Igualdade de oportunidades é pauta de todo o estado.****</p>` },
+    { bg: 'escuro alt', foot: ['', '6/6'], html: `
+      <h2>Viu ou sofreu racismo <span class="faixa">no trabalho?</span></h2>
+      <p class="txt">Denuncie ao <b>MTE (Sistema Ipê)</b>, ao <b>MPT</b> ou numa <b>delegacia</b>.</p>` },
   ]},
-  { id: '25-11-cipa-assedio', data: '25/11', nome: 'Post único · A CIPA também cuida do assédio (extra sugerido)', foto: '25-11', ghost: 'CIPA', slides: [
-    { tipo: 'capa', titulo: 'A CIPA também cuida do assédio', texto: 'Desde a Lei 14.457/2022, a CIPA inclui a prevenção e o combate ao assédio sexual e a outras formas de violência no trabalho.', fonte: 'Fonte: Lei nº 14.457/2022, art. 23.' },
+
+  { id: '25-11-cipa-assedio', data: '25/11', nome: 'Post único · A CIPA também cuida do assédio (extra sugerido)', slides: [
+    { bg: 'branco', ghost: 'CIPA', foot: ['<span class="src">Fonte: Lei nº 14.457/2022, art. 23.</span>', ''], html: `
+      <h1 style="font-size:136px">A CIPA também<br><span class="faixa">cuida do assédio</span></h1>
+      <p class="lead">Desde a Lei 14.457/2022, a CIPA inclui a prevenção e o combate ao <span class="lar">assédio sexual e a outras formas de violência</span> no trabalho.</p>` },
   ]},
-  { id: '26-11-96-anos-ministerio-do-trabalho', data: '26/11', nome: 'Post único · 96 anos do Ministério do Trabalho', foto: '26-11', fotoStyle: 'transform:translateY(-22%)', ghost: '96', ghostCheio: true, slides: [
-    { tipo: 'capa', titulo: '96 anos do Ministério do Trabalho', texto: 'Só em 2025: <b>2.772</b> resgatados da escravidão e <b>4.318</b> crianças e adolescentes afastados do trabalho infantil.', fonte: 'Fontes: MTE/SIT, balanço 2025; MTE, Inspeção do Trabalho: ações fiscais e afastamentos 2025.' },
+
+  { id: '26-11-96-anos-ministerio-do-trabalho', data: '26/11', nome: 'Post único · 96 anos do Ministério do Trabalho', slides: [
+    { bg: 'escuro', foot: ['<span class="src">Fontes: MTE/SIT, balanço 2025; MTE, Inspeção do Trabalho: ações fiscais e afastamentos 2025.</span>', ''], html: `
+      <div class="stat" style="font-size:400px;line-height:.85">96</div>
+      <h2 style="font-size:92px">anos do<br><span class="faixa">Ministério do Trabalho</span></h2>
+      <p class="lead">Só em 2025: <span class="lar">2.772</span> resgatados da escravidão e <span class="lar">4.318</span> crianças e adolescentes afastados do trabalho infantil.</p>` },
   ]},
-  { id: '30-11-novembro-em-acao', data: '30/11', nome: 'Carrossel · Novembro em ação (recap)', foto: '30-11', ghost: 'Nov', slides: [
-    { tipo: 'capa', titulo: 'Novembro em ação', texto: 'SINAIT DS-MG' },
-    { eyebrow: '04/11 e 12/11', titulo: 'Discriminação e igualdade de oportunidades', texto: 'O que a lei proíbe e como denunciar.' },
-    { eyebrow: '06/11 e 10/11', titulo: 'Riscos psicossociais', texto: 'A NR-1 em vigor desde 26/05/2026.' },
-    { eyebrow: '17/11 e 20/11', titulo: 'Dia da Consciência Negra', texto: 'E a desigualdade no trabalho.' },
-    { eyebrow: '24/11 e 26/11', titulo: 'Protocolo de fiscalização', texto: 'Com foco em racismo estrutural, e os 96 anos do Ministério do Trabalho.' },
-    { tipo: 'cta', titulo: 'Dezembro vem aí.', texto: 'Continue com a gente.', acao: '@sinaitmg' },
+
+  { id: '30-11-novembro-em-acao', data: '30/11', nome: 'Carrossel · Novembro em ação (recap)', slides: [
+    { bg: 'branco', ghost: 'Novembro', foot: ['SINAIT DS-MG', 'Arraste →'], html: `
+      <h1>Novembro<br><span class="faixa">em ação</span></h1>
+      <p class="lead">O que a gente falou <span class="lar">neste mês.</span></p>` },
+    { bg: 'escuro', foot: ['', '2/6'], html: `
+      <span class="eyebrow">04/11 e 12/11</span>
+      <h2>Discriminação e<br><span class="faixa">igualdade</span><br>de oportunidades</h2>
+      <p class="lead">O que a lei proíbe e como denunciar.</p>` },
+    { bg: 'creme', foot: ['', '3/6'], html: `
+      <span class="eyebrow">06/11 e 10/11</span>
+      <h2>Riscos<br><span class="faixa">psicossociais</span></h2>
+      <p class="lead">A NR-1 em vigor desde 26/05/2026.</p>` },
+    { bg: 'escuro alt', foot: ['', '4/6'], html: `
+      <span class="eyebrow">17/11 e 20/11</span>
+      <h2>Dia da<br><span class="faixa">Consciência Negra</span></h2>
+      <p class="lead">E a desigualdade no trabalho.</p>` },
+    { bg: 'laranja', foot: ['', '5/6'], html: `
+      <span class="eyebrow">24/11 e 26/11</span>
+      <h2>Protocolo de<br><span class="faixa preta">fiscalização</span></h2>
+      <p class="lead">Com foco em racismo estrutural, e os 96 anos do Ministério do Trabalho.</p>` },
+    { bg: 'escuro', foot: ['', '6/6'], html: `
+      <h2>Dezembro<br><span class="faixa">vem aí.</span></h2>
+      <p class="lead">Continue com a gente.</p>` },
   ]},
 ];
 
-const esc = (s) => s; // textos vêm deste arquivo
 function slideHTML(post, s, i, n) {
-  const tipo = s.tipo || 'interno';
-  const num = n > 1 ? `${i + 1}/${n}` : '';
-  const capa = tipo === 'capa';
-  const cls = capa ? 'capa' : tipo === 'cta' ? 'interno cta' : 'interno';
-  let bg = '<div class="bg glow"></div>';
-  if (capa) {
-    const ghost = post.ghost ? `<div class="ghost${post.ghostCheio ? ' cheio' : ''}">${post.ghost}</div>` : '';
-    const foto = post.foto ? `<img class="bg foto" src="fotos/${post.foto}.jpg" alt="" style="${post.fotoStyle || ''}" onerror="this.remove()"><div class="bg overlay"></div>` : '';
-    bg = `<div class="bg glow"></div>${ghost}${foto}`;
-  }
-  const barras = capa && post.barras ? `<div class="barras">
-      ${[['Brancos', 32.6], ['Pretos', 41.9], ['Pardos', 43.5]].map(([k, v], j) => `<div class="barra${j ? ' destaque' : ''}"><span>${k}</span><span class="trilho"><span class="valor" style="display:block;width:${v / 50 * 100}%"></span></span><span class="pct">${String(v).replace('.', ',')}%</span></div>`).join('')}
-    </div>` : '';
-  const pill = s.pill ? `<span class="pill">${s.pill}</span>` : '';
-  const eyebrow = s.eyebrow ? `<span class="eyebrow">${s.eyebrow}</span>` : '';
-  const texto = s.texto ? `<p class="texto">${s.texto}</p>` : '';
-  const acao = s.acao ? `<span class="acao">${s.acao}</span>` : '';
-  const arraste = capa && n > 1 ? '<span class="arraste">Arraste →</span>' : '';
-  const rodape = `<div class="rodape"><span>${s.fonte || ''}</span>${arraste || (num ? `<span class="num">${num}</span>` : '')}</div>`;
+  const claro = /branco|creme/.test(s.bg);
+  const cls = s.bg.split(' ').map(b => 's-' + b).join(' ');
   const out = n > 1 ? `${post.id}/slide-${i + 1}.png` : `${post.id}.png`;
   return `<div class="wrap"><section class="slide ${cls}" data-out="${out}">
-    ${bg}
-    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
-    <div class="content">${pill}${eyebrow}${capa ? '<span class="rule"></span>' : ''}<h2 class="titulo${s.stat ? ' stat' : ''}">${s.titulo}</h2>${texto}${barras}${acao}</div>
-    ${rodape}
+    ${s.ghost ? `<div class="ghost">${s.ghost}</div>` : ''}
+    <img class="logo" src="${claro ? 'logo-sinait-dsmg-escuro.png' : 'logo-sinait-dsmg.png'}" alt="SINAIT DS/MG">
+    <div class="body">${s.html}</div>
+    <div class="foot"><span>${s.foot[0]}</span><span>${s.foot[1]}</span></div>
   </section></div>`;
 }
 document.getElementById('posts').innerHTML = POSTS.map(p => `<section class="post"><h3>${p.data} <span>${p.nome}</span></h3><div class="row">${p.slides.map((s, i) => slideHTML(p, s, i, p.slides.length)).join('')}</div></section>`).join('');
