@@ -45,6 +45,15 @@ body.export .wrap { width: 1080px; height: 1350px; aspect-ratio: auto; }
 .s-laranja { background: var(--laranja); }
 .s-laranja::before { background: radial-gradient(70% 50% at 100% 0%, rgba(243,124,40,.65) 0%, transparent 70%), radial-gradient(60% 40% at 0% 100%, rgba(32,1,0,.35) 0%, transparent 70%); }
 .slide > * { position: relative; }
+/* capa com foto: foto no alto, escurecendo para baixo; texto na parte escura */
+.s-foto { background: var(--preto); }
+.s-foto > .foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s-foto::before { z-index: 1; background: linear-gradient(180deg, rgba(32,1,0,.92) 0%, rgba(32,1,0,.45) 14%, rgba(32,1,0,.15) 24%, rgba(32,1,0,.35) 38%, rgba(32,1,0,.9) 58%, var(--preto) 78%); }
+.s-foto > :not(.foto) { z-index: 2; }
+.s-foto .body { justify-content: flex-end; gap: 36px; padding-bottom: 20px; }
+.s-foto .lead { font-size: 40px; }
+.s-foto h1 { font-size: 124px !important; }
+.s-foto .logo { position: absolute; top: 60px; right: 72px; margin: 0; width: 150px; filter: drop-shadow(0 4px 18px rgba(0,0,0,.6)); }
 
 .logo { width: 170px; margin-top: 70px; flex: none; }
 .body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 44px; width: 100%; padding-bottom: 40px; }
@@ -101,7 +110,7 @@ const lista = (itens) => `<ul class="lista">${itens.map(i => `<li><span class="s
 
 const POSTS = [
   { id: '04-11-discriminacao-no-trabalho', data: '04/11', nome: 'Carrossel · Discriminação no trabalho: o que a lei proíbe', slides: [
-    { bg: 'branco', ghost: 'Igualdade', foot: ['Educação trabalhista', 'Arraste →'], html: `
+    { bg: 'foto', foto: '04-11', fotoStyle: 'transform:translateY(-25%)', foot: ['Educação trabalhista', 'Arraste →'], html: `
       <h1>Discriminação<br><span class="faixa">no trabalho</span></h1>
       <p class="lead">Novembro: mês de falar de <span class="lar">igualdade de oportunidades.</span></p>` },
     { bg: 'escuro', foot: ['<span class="src">*CF/88, art. 7º, XXX.</span>', '2/6'], html: `
@@ -125,14 +134,14 @@ const POSTS = [
   ]},
 
   { id: '06-11-nr1-saude-mental', data: '06/11', nome: 'Post único · NR-1: saúde mental também é risco do trabalho', slides: [
-    { bg: 'escuro', ghost: 'NR-1', foot: ['<span class="src">Fonte: MTE, NR-1, Portarias nº 1.419/2024 e nº 765/2025.</span>', ''], html: `
+    { bg: 'foto', foto: '06-11', fotoStyle: 'transform:translateY(-22%)', foot: ['<span class="src">Fonte: MTE, NR-1, Portarias nº 1.419/2024 e nº 765/2025.</span>', ''], html: `
       <span class="eyebrow">NR-1</span>
       <h1 style="font-size:132px">Saúde mental<br><span class="faixa">também é risco</span><br>do trabalho</h1>
       <p class="lead">Desde 26/05/2026, a NR-1 exige que as empresas gerenciem fatores como <span class="lar">sobrecarga e assédio.</span></p>` },
   ]},
 
   { id: '10-11-riscos-psicossociais', data: '10/11', nome: 'Carrossel · Riscos psicossociais: o que são e como aparecem', slides: [
-    { bg: 'branco', ghost: 'Risco', foot: ['Educação trabalhista', 'Arraste →'], html: `
+    { bg: 'foto', foto: '10-11', fotoStyle: 'transform:translateY(-12%)', foot: ['Educação trabalhista', 'Arraste →'], html: `
       <h1>Risco<br><span class="faixa">psicossocial</span></h1>
       <p class="lead">O que é e como aparece <span class="lar">no trabalho.</span></p>` },
     { bg: 'escuro', foot: [`<span class="src">${GUIA}</span>`, '2/6'], html: `
@@ -197,15 +206,15 @@ const POSTS = [
   ]},
 
   { id: '25-11-cipa-assedio', data: '25/11', nome: 'Post único · A CIPA também cuida do assédio (extra sugerido)', slides: [
-    { bg: 'branco', ghost: 'CIPA', foot: ['<span class="src">Fonte: Lei nº 14.457/2022, art. 23.</span>', ''], html: `
+    { bg: 'foto', foto: '25-11', fotoStyle: 'transform:translateY(-16%)', foot: ['<span class="src">Fonte: Lei nº 14.457/2022, art. 23.</span>', ''], html: `
       <h1 style="font-size:136px">A CIPA também<br><span class="faixa">cuida do assédio</span></h1>
       <p class="lead">Desde a Lei 14.457/2022, a CIPA inclui a prevenção e o combate ao <span class="lar">assédio sexual e a outras formas de violência</span> no trabalho.</p>` },
   ]},
 
   { id: '26-11-96-anos-ministerio-do-trabalho', data: '26/11', nome: 'Post único · 96 anos do Ministério do Trabalho', slides: [
-    { bg: 'escuro', foot: ['<span class="src">Fontes: MTE/SIT, balanço 2025; MTE, Inspeção do Trabalho: ações fiscais e afastamentos 2025.</span>', ''], html: `
-      <div class="stat" style="font-size:400px;line-height:.85">96</div>
-      <h2 style="font-size:92px">anos do<br><span class="faixa">Ministério do Trabalho</span></h2>
+    { bg: 'foto', foto: '26-11', fotoStyle: 'transform:translateY(-20%)', foot: ['<span class="src">Fontes: MTE/SIT, balanço 2025; MTE, Inspeção do Trabalho: ações fiscais e afastamentos 2025.</span>', ''], html: `
+      <h2 style="font-size:150px"><span class="lar">96 anos</span> do</h2>
+      <h2 style="font-size:92px;margin-top:-30px"><span class="faixa">Ministério do Trabalho</span></h2>
       <p class="lead">Só em 2025: <span class="lar">2.772</span> resgatados da escravidão e <span class="lar">4.318</span> crianças e adolescentes afastados do trabalho infantil.</p>` },
   ]},
 
@@ -240,7 +249,8 @@ function slideHTML(post, s, i, n) {
   const cls = s.bg.split(' ').map(b => 's-' + b).join(' ');
   const out = n > 1 ? `${post.id}/slide-${i + 1}.png` : `${post.id}.png`;
   return `<div class="wrap"><section class="slide ${cls}" data-out="${out}">
-    ${s.ghost ? `<div class="ghost">${s.ghost}</div>` : ''}
+    ${s.foto ? `<img class="foto" src="fotos/${s.foto}.jpg" alt="" style="${s.fotoStyle || ''}">` : ''}
+    ${s.ghost && !s.foto ? `<div class="ghost">${s.ghost}</div>` : ''}
     <img class="logo" src="${claro ? 'logo-sinait-dsmg-escuro.png' : 'logo-sinait-dsmg.png'}" alt="SINAIT DS/MG">
     <div class="body">${s.html}</div>
     <div class="foot"><span>${s.foot[0]}</span><span>${s.foot[1]}</span></div>
