@@ -1,0 +1,265 @@
+<title>Stories Novembro 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap">
+<style>
+/* SINAIT DS/MG · calendário de novembro 2026, no padrão do carrossel "Voto livre".
+   Paleta: preto #200100, laranja #cc4e00, creme #F6F4F2, branco #f5f5f5 nas capas claras; Anton + Montserrat.
+   Layout: stories 1080x1920 (área livre embaixo para stickers e barra de resposta), texto centralizado, logo no topo, faixas laranja inclinadas nos destaques. */
+:root {
+  --preto: #200100;
+  --laranja: #cc4e00;
+  --laranja-logo: #f37c28;
+  --creme: #F6F4F2;
+  --branco: #f5f5f5;
+  --creme-70: rgba(246, 244, 242, .74);
+  --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --f-body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+body { background: #0e0000; color: var(--creme); font-family: var(--f-body); padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.post { margin: 0 auto 56px; max-width: 1400px; }
+.post h3 { font-size: 18px; font-weight: 700; margin: 0 0 14px; }
+.post h3 span { color: var(--creme-70); font-weight: 500; }
+.row { display: flex; flex-wrap: wrap; gap: 16px; }
+.wrap { width: min(100%, 300px); aspect-ratio: 1080 / 1920; position: relative; overflow: hidden; }
+.slide { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; overflow: hidden;
+  background: var(--preto); color: var(--creme); box-sizing: border-box; padding: 0 96px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+body.export { padding: 0; background: var(--preto); }
+body.export .post h3 { display: none; }
+body.export .wrap { width: 1080px; height: 1920px; aspect-ratio: auto; }
+
+/* fundos */
+.slide::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.s-escuro::before { background:
+  radial-gradient(70% 45% at 85% 105%, rgba(204,78,0,.6) 0%, rgba(204,78,0,.16) 50%, transparent 78%),
+  radial-gradient(45% 30% at 0% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-alt::before { background:
+  radial-gradient(70% 45% at 10% 105%, rgba(204,78,0,.55) 0%, rgba(204,78,0,.14) 50%, transparent 78%),
+  radial-gradient(45% 30% at 100% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-creme { background: var(--creme); color: var(--preto); }
+.s-branco { background: var(--branco); color: var(--preto); }
+.s-branco::before { background: radial-gradient(60% 35% at 100% 100%, rgba(204,78,0,.10) 0%, transparent 70%); }
+.s-laranja { background: var(--laranja); }
+.s-laranja::before { background: radial-gradient(70% 50% at 100% 0%, rgba(243,124,40,.65) 0%, transparent 70%), radial-gradient(60% 40% at 0% 100%, rgba(32,1,0,.35) 0%, transparent 70%); }
+.slide > * { position: relative; }
+/* capa com foto: foto no alto, escurecendo para baixo; texto na parte escura */
+.s-foto { background: var(--preto); }
+.s-foto > .foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s-foto::before { z-index: 1; background: linear-gradient(180deg, rgba(32,1,0,.92) 0%, rgba(32,1,0,.45) 14%, rgba(32,1,0,.15) 24%, rgba(32,1,0,.35) 38%, rgba(32,1,0,.9) 58%, var(--preto) 78%); }
+.s-foto > :not(.foto) { z-index: 2; }
+.s-foto .body { justify-content: flex-end; gap: 36px; padding-bottom: 20px; }
+.s-foto .lead { font-size: 40px; }
+.s-foto h1 { font-size: 124px !important; }
+.s-foto .logo { position: absolute; top: 60px; right: 72px; margin: 0; width: 150px; filter: drop-shadow(0 4px 18px rgba(0,0,0,.6)); }
+
+.logo { width: 170px; margin-top: 70px; flex: none; }
+.body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 44px; width: 100%; padding-bottom: 40px; }
+.foot { flex: none; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding-bottom: 56px; font-size: 22px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.foot .src { letter-spacing: .02em; text-transform: none; font-weight: 500; font-size: 20px; text-align: left; max-width: 780px; }
+
+.eyebrow { font-size: 26px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--laranja-logo); }
+.s-creme .eyebrow, .s-branco .eyebrow { color: var(--laranja); }
+.s-laranja .eyebrow { color: var(--preto); }
+h1, h2 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 { font-size: 150px; }
+h2 { font-size: 104px; }
+.faixa { display: inline-block; background: var(--laranja); color: var(--creme); padding: .02em .16em .06em; transform: rotate(-3deg); margin-block: .1em .2em; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.faixa.preta { background: var(--preto); }
+.lar { color: var(--laranja-logo); }
+.s-creme .lar, .s-branco .lar { color: var(--laranja); }
+p { margin: 0; }
+.lead { font-size: 44px; line-height: 1.32; font-weight: 600; max-width: 860px; text-wrap: balance; }
+.txt { font-size: 38px; line-height: 1.4; font-weight: 500; max-width: 860px; text-wrap: balance; }
+.txt b, .lead b { font-weight: 800; }
+.alerta { font-style: italic; font-weight: 600; font-size: 38px; line-height: 1.38; max-width: 860px; border-top: 4px solid var(--laranja); padding-top: 34px; text-wrap: balance; }
+.stat { font-family: var(--f-display); font-size: 330px; line-height: .95; color: var(--laranja); letter-spacing: -.01em; }
+.s-escuro .stat, .s-alt .stat { color: var(--laranja-logo); }
+.s-laranja .stat { color: var(--creme); }
+
+.ghost { position: absolute !important; left: -40px; right: -40px; bottom: 120px; font-family: var(--f-display); font-size: 300px; line-height: .9; text-transform: uppercase; color: transparent; -webkit-text-stroke: 2px rgba(246,244,242,.07); white-space: nowrap; text-align: center; }
+.s-branco .ghost { -webkit-text-stroke: 2px rgba(32,1,0,.06); }
+
+.lista { list-style: none; margin: 0; padding: 0; width: 100%; text-align: left; }
+.lista li { display: grid; grid-template-columns: 70px 1fr; align-items: center; gap: 20px; padding-block: 28px; border-top: 3px solid rgba(246,244,242,.16); font-family: var(--f-display); font-size: 76px; text-transform: uppercase; line-height: 1.05; }
+.lista li:last-child { border-bottom: 3px solid rgba(246,244,242,.16); }
+.lista .seta { color: var(--laranja-logo); font-size: 64px; line-height: 1; }
+
+.share { display: flex; align-items: center; gap: 18px; font-style: italic; font-weight: 600; font-size: 31px; white-space: nowrap; color: var(--creme-70); }
+.share svg { flex: none; }
+.s-laranja .share { color: rgba(246,244,242,.88); }
+
+.barras { display: flex; flex-direction: column; gap: 22px; width: 100%; }
+.barra { display: grid; grid-template-columns: 170px 1fr 160px; align-items: center; gap: 22px; text-align: left; font-weight: 700; font-size: 30px; letter-spacing: .08em; text-transform: uppercase; }
+.barra .trilho { height: 56px; background: rgba(246,244,242,.08); border-radius: 4px; overflow: hidden; }
+.barra .valor { display: block; height: 100%; background: var(--creme); border-radius: 4px; }
+.barra.destaque .valor { background: var(--laranja); }
+.barra .pct { font-family: var(--f-display); font-size: 56px; letter-spacing: 0; text-align: right; }
+.barra.destaque .pct { color: var(--laranja-logo); }
+
+/* stories: margens seguras do Instagram (topo ~250px, base ~340px) */
+.slide .logo { margin-top: 250px; }
+.s-foto .logo { position: absolute; top: 250px; right: 72px; margin: 0; }
+.slide .body { padding-bottom: 0; }
+.slide .foot { padding-bottom: 360px; }
+.slide.sticker .body { flex: none; justify-content: flex-start; padding-top: 110px; }
+.slide.sticker .foot { margin-top: auto; }
+.s-foto .body { justify-content: flex-end; }
+.s-foto.sticker .body { flex: 1; justify-content: flex-end; padding-top: 0; }
+.s-foto.sticker .foot { margin-top: 0; }
+.pill-feed { display: inline-flex; align-items: center; gap: 14px; background: var(--laranja); color: var(--creme); font-weight: 800; font-size: 30px; letter-spacing: .16em; text-transform: uppercase; padding: 16px 32px; border-radius: 999px; }
+.s-laranja .pill-feed { background: var(--preto); }
+.dica { font-size: 30px; font-weight: 600; letter-spacing: .04em; opacity: .8; }
+.num-grande { font-family: var(--f-display); font-size: 210px; line-height: .95; color: var(--laranja-logo); }
+.s-creme .num-grande, .s-branco .num-grande { color: var(--laranja); }
+.par { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+</style>
+
+<div id="posts"></div>
+
+<script>
+// Stories que complementam os posts de novembro. Textos tirados dos posts e das legendas do calendário, sem travessão.
+// sticker: true deixa a parte de baixo livre para o sticker do Instagram (enquete, quiz, caixinha, post compartilhado).
+const feed = (t = 'Post novo no feed') => `<span class="pill-feed">${t} ↓</span>`;
+const STORIES = [
+  { id: '04-11', nome: 'Discriminação no trabalho: o que a lei proíbe', s: [
+    { bg: 'foto', foto: '04-11', fotoStyle: 'transform:translateY(-8%)', sticker: true, html: `
+      <span class="eyebrow">Enquete</span>
+      <h2>A empresa pode pagar<br>salário diferente<br><span class="faixa">por causa da idade?</span></h2>` },
+    { bg: 'escuro', foot: ['<span class="src">*CF/88, art. 7º, XXX.</span>', ''], html: `
+      <h1><span class="faixa">Não pode.</span></h1>
+      <p class="lead">A Constituição proíbe diferenciar salário, função ou critério de admissão por <span class="lar">sexo, idade, cor ou estado civil.*</span></p>
+      <p class="txt">E a Lei 9.029/1995 vale para a contratação, o salário, a promoção e a demissão.</p>` },
+    { bg: 'branco', sticker: true, html: `
+      ${feed()}
+      <h2>Igualdade de oportunidades<br><span class="faixa">não é favor. É lei.</span></h2>
+      <p class="lead">O que a lei proíbe e como denunciar, no post completo.</p>` },
+  ]},
+  { id: '06-11', nome: 'NR-1: saúde mental também é risco do trabalho', s: [
+    { bg: 'foto', foto: '06-11', fotoStyle: 'transform:translateY(-6%)', sticker: true, html: `
+      <span class="eyebrow">Enquete</span>
+      <h2>Você sabia que a NR-1<br>agora cobra<br><span class="faixa">saúde mental?</span></h2>` },
+    { bg: 'escuro alt', foot: ['<span class="src">MTE: NR-1, Portarias nº 1.419/2024 e nº 765/2025.</span>', ''], html: `
+      <span class="eyebrow">Desde 26 de maio de 2026</span>
+      <h2>Sobrecarga e assédio<br><span class="faixa">entram no PGR</span></h2>
+      <p class="lead">As empresas precisam <span class="lar">identificar, avaliar e controlar</span> os fatores de risco psicossociais no Programa de Gerenciamento de Riscos.</p>` },
+    { bg: 'laranja', sticker: true, html: `
+      ${feed()}
+      <h2>O foco é o trabalho,<br><span class="faixa preta">não quem trabalha</span></h2>
+      <p class="lead">E a Auditoria-Fiscal do Trabalho pode autuar quem não cumpre.</p>` },
+  ]},
+  { id: '10-11', nome: 'Riscos psicossociais: o que são e como aparecem', s: [
+    { bg: 'foto', foto: '10-11', fotoStyle: 'transform:translateY(-4%)', sticker: true, html: `
+      <span class="eyebrow">Quiz</span>
+      <h2>Qual destes é um<br><span class="faixa">risco psicossocial?</span></h2>
+      <p class="dica">Excesso de demandas · Assédio · Falta de apoio da chefia · Todos</p>` },
+    { bg: 'creme', foot: ['<span class="src">*MTE, Guia de Informações sobre os Fatores de Riscos Psicossociais Relacionados ao Trabalho (2025).</span>', ''], html: `
+      <h1><span class="faixa">Todos.</span></h1>
+      <p class="lead">O Guia do MTE lista <span class="lar">13 fatores</span> ligados à organização e à gestão do trabalho.*</p>
+      <p class="txt">Esgotamento não é falha pessoal. Muitas vezes vem do jeito como o trabalho é organizado.</p>` },
+    { bg: 'escuro', sticker: true, html: `
+      ${feed('Carrossel novo no feed')}
+      <h2>Reconheceu algum<br><span class="faixa">no seu dia a dia?</span></h2>
+      <p class="lead">Converse com a <b>CIPA</b> ou com o <b>sindicato</b>, ou denuncie no <b>Sistema Ipê (MTE)</b>.</p>` },
+  ]},
+  { id: '12-11', nome: 'Atestado de gravidez para contratar? É crime', s: [
+    { bg: 'branco', sticker: true, html: `
+      <span class="eyebrow">Enquete</span>
+      <h2>Na entrevista,<br>pediram teste<br><span class="faixa">de gravidez.</span></h2>
+      <p class="lead">Isso pode?</p>` },
+    { bg: 'escuro', foot: ['<span class="src">Lei nº 9.029/1995, arts. 1º e 2º.</span>', ''], html: `
+      <h1><span class="faixa">É crime.</span></h1>
+      <p class="lead">Pedir teste, exame ou atestado de gravidez ou de esterilização, <span class="lar">na hora de contratar ou durante o contrato</span>, é crime pela Lei 9.029/1995.</p>` },
+    { bg: 'laranja', sticker: true, html: `
+      ${feed()}
+      <h2>Aconteceu<br><span class="faixa preta">com você?</span></h2>
+      <p class="lead">Denuncie pelo <b>Sistema Ipê (MTE)</b> ou ao <b>Ministério Público do Trabalho</b>. E compartilhe: tem muita gente que ainda não sabe disso.</p>` },
+  ]},
+  { id: '17-11', nome: 'Informalidade tem cor', s: [
+    { bg: 'escuro', sticker: true, html: `
+      <span class="eyebrow">Quiz</span>
+      <h2>Em qual grupo<br>a informalidade<br><span class="faixa">é maior?</span></h2>
+      <p class="dica">Brancos · Pretos · Pardos</p>` },
+    { bg: 'creme', foot: ['<span class="src">IBGE, PNAD Contínua, 4º trimestre de 2024.</span>', ''], html: `
+      <span class="eyebrow">No fim de 2024</span>
+      <div class="par"><div class="num-grande">43,5%</div><p class="lead">dos trabalhadores pardos estavam na informalidade.</p></div>
+      <div class="par"><div class="num-grande" style="font-size:150px">41,9%</div><p class="txt" style="font-weight:600">dos pretos, contra 32,6% dos brancos.</p></div>` },
+    { bg: 'escuro alt', sticker: true, html: `
+      ${feed()}
+      <h2>Informal é quem fica<br><span class="faixa">sem direitos</span></h2>
+      <p class="lead">Como férias, 13º e contribuição para a Previdência. Na sexta é Dia da Consciência Negra, e a conversa continua por aqui.</p>` },
+  ]},
+  { id: '20-11', nome: 'Dia da Consciência Negra e discriminação racial no emprego', s: [
+    { bg: 'escuro', html: `
+      <span class="eyebrow">Hoje</span>
+      <h1>20 de<br><span class="faixa">novembro</span></h1>
+      <p class="lead">O Brasil para para lembrar de Zumbi dos Palmares e da <span class="lar">luta do povo negro.</span></p>` },
+    { bg: 'laranja', foot: ['<span class="src">Lei nº 7.716/1989; Lei nº 14.532/2023; Lei nº 9.029/1995.</span>', ''], html: `
+      <span class="eyebrow">A lei já diz o que não pode</span>
+      <h1><span class="faixa preta">Racismo é crime.</span></h1>
+      <p class="lead">Injúria racial é crime de racismo desde 2023. E ninguém pode ser barrado ou desligado de um emprego por raça ou cor.</p>` },
+    { bg: 'creme', sticker: true, html: `
+      ${feed('Carrossel novo no feed')}
+      <h2>Presenciou ou sofreu<br><span class="faixa">racismo no trabalho?</span></h2>
+      <p class="lead">Denuncie ao <b>MTE (Sistema Ipê)</b>, ao <b>MPT</b> ou numa <b>delegacia</b>.</p>` },
+  ]},
+  { id: '25-11', nome: 'A CIPA também cuida do assédio', s: [
+    { bg: 'escuro', html: `
+      <span class="eyebrow">25 de novembro</span>
+      <h2>Dia Internacional<br>pela Eliminação<br>da Violência<br><span class="faixa">contra a Mulher</span></h2>
+      <p class="lead">No trabalho também tem violência: <span class="lar">assédio, humilhação, importunação.</span></p>` },
+    { bg: 'foto', foto: '25-11', fotoStyle: 'transform:translateY(-4%)', sticker: true, html: `
+      <span class="eyebrow">Enquete</span>
+      <h2>A sua empresa tem regras<br>para receber denúncias<br><span class="faixa">de assédio?</span></h2>` },
+    { bg: 'branco', foot: ['<span class="src">Lei nº 14.457/2022, art. 23.</span>', ''], html: `
+      ${feed()}
+      <h2>Empresa com CIPA<br><span class="faixa">precisa ter</span></h2>
+      <p class="lead">Regras de conduta, regras para receber e apurar denúncias e <span class="lar">capacitação pelo menos uma vez a cada 12 meses.</span></p>` },
+  ]},
+  { id: '26-11', nome: '96 anos do Ministério do Trabalho', s: [
+    { bg: 'foto', foto: '26-11', fotoStyle: 'transform:translateY(-6%)', html: `
+      <span class="eyebrow">26 de novembro de 1930</span>
+      <h2>Nascia o<br><span class="faixa">Ministério do Trabalho</span></h2>
+      <p class="lead">Em 96 anos, muita coisa mudou, mas a missão segue de pé: <span class="lar">proteger quem trabalha.</span></p>` },
+    { bg: 'escuro', foot: ['<span class="src">MTE/SIT, balanço 2025; MTE, Inspeção do Trabalho: ações fiscais e afastamentos 2025.</span>', ''], html: `
+      <span class="eyebrow">Só em 2025</span>
+      <div class="par"><div class="num-grande">2.772</div><p class="lead">pessoas resgatadas de condições análogas à escravidão.</p></div>
+      <div class="par"><div class="num-grande">4.318</div><p class="lead">crianças e adolescentes afastados do trabalho infantil.</p></div>` },
+    { bg: 'laranja', sticker: true, html: `
+      ${feed()}
+      <h2>Fiscalização forte<br><span class="faixa preta">protege vidas</span></h2>
+      <p class="lead">Parabéns a quem constrói essa história todos os dias.</p>` },
+  ]},
+  { id: '30-11', nome: 'Novembro em ação (recap)', s: [
+    { bg: 'branco', html: `
+      <h1>Novembro<br><span class="faixa">em ação</span></h1>
+      <p class="lead">Discriminação, riscos psicossociais, Consciência Negra e os <span class="lar">96 anos do Ministério do Trabalho.</span></p>` },
+    { bg: 'escuro', sticker: true, html: `
+      <span class="eyebrow">Enquete</span>
+      <h2>Qual tema<br>mais te ajudou<br><span class="faixa">este mês?</span></h2>` },
+    { bg: 'laranja', sticker: true, html: `
+      <h2>Dezembro<br><span class="faixa preta">já vem.</span></h2>
+      <p class="lead">Tem alguma dúvida sobre os seus direitos no trabalho? Manda pra gente.</p>` },
+  ]},
+];
+
+function storyHTML(st, s, i) {
+  const claro = /branco|creme/.test(s.bg);
+  const cls = s.bg.split(' ').map(b => 's-' + b).join(' ') + (s.sticker ? ' sticker' : '');
+  const foot = s.foot || ['', ''];
+  return `<div class="wrap"><section class="slide ${cls}" data-out="${st.id}/story-${i + 1}.png">
+    ${s.foto ? `<img class="foto" src="fotos/${s.foto}.jpg" alt="" style="${s.fotoStyle || ''}">` : ''}
+    <img class="logo" src="${claro ? 'logo-sinait-dsmg-escuro.png' : 'logo-sinait-dsmg.png'}" alt="SINAIT DS/MG">
+    <div class="body">${s.html}</div>
+    <div class="foot"><span>${foot[0]}</span><span>${foot[1]}</span></div>
+  </section></div>`;
+}
+document.getElementById('posts').innerHTML = STORIES.map(st => `<section class="post"><h3>${st.id} <span>Stories · ${st.nome}</span></h3><div class="row">${st.s.map((s, i) => storyHTML(st, s, i)).join('')}</div></section>`).join('');
+
+const exp = new URLSearchParams(location.search).has('export');
+if (exp) document.body.classList.add('export');
+const fit = () => document.querySelectorAll('.wrap').forEach(w => { w.querySelector('.slide').style.transform = exp ? 'none' : `scale(${w.clientWidth / 1080})`; });
+addEventListener('resize', fit); fit();
+</script>
