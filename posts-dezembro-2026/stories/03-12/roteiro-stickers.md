@@ -1,4 +1,4 @@
-# Stories 02/12 · Trabalho de fim de ano
+# Stories 03/12 · Trabalho de fim de ano
 
 1. Quiz "Contrato temporário tem direito a férias?" → sticker de **quiz**: **Tem** (resposta certa) / Não tem. Postar de manhã.
 2. Resposta "Tem." Sem sticker. Postar algumas horas depois.
