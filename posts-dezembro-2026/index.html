@@ -1,0 +1,172 @@
+<title>Posts Dezembro 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap">
+<style>
+/* SINAIT DS/MG · posts de dezembro 2026, no padrão do carrossel "Voto livre".
+   Paleta: preto #200100, laranja #cc4e00, creme #F6F4F2, branco #f5f5f5 nas capas claras; Anton + Montserrat.
+   Layout: 1080x1350, texto centralizado, logo no topo, faixas laranja inclinadas nos destaques. */
+:root {
+  --preto: #200100;
+  --laranja: #cc4e00;
+  --laranja-logo: #f37c28;
+  --creme: #F6F4F2;
+  --branco: #f5f5f5;
+  --creme-70: rgba(246, 244, 242, .74);
+  --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --f-body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+body { background: #0e0000; color: var(--creme); font-family: var(--f-body); padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.post { margin: 0 auto 56px; max-width: 1400px; }
+.post h3 { font-size: 18px; font-weight: 700; margin: 0 0 14px; }
+.post h3 span { color: var(--creme-70); font-weight: 500; }
+.row { display: flex; flex-wrap: wrap; gap: 16px; }
+.wrap { width: min(100%, 300px); aspect-ratio: 1080 / 1350; position: relative; overflow: hidden; }
+.slide { position: absolute; left: 0; top: 0; width: 1080px; height: 1350px; transform-origin: 0 0; overflow: hidden;
+  background: var(--preto); color: var(--creme); box-sizing: border-box; padding: 0 96px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+body.export { padding: 0; background: var(--preto); }
+body.export .post h3 { display: none; }
+body.export .wrap { width: 1080px; height: 1350px; aspect-ratio: auto; }
+
+/* fundos */
+.slide::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.s-escuro::before { background:
+  radial-gradient(70% 45% at 85% 105%, rgba(204,78,0,.6) 0%, rgba(204,78,0,.16) 50%, transparent 78%),
+  radial-gradient(45% 30% at 0% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-alt::before { background:
+  radial-gradient(70% 45% at 10% 105%, rgba(204,78,0,.55) 0%, rgba(204,78,0,.14) 50%, transparent 78%),
+  radial-gradient(45% 30% at 100% 0%, rgba(204,78,0,.18) 0%, transparent 70%); }
+.s-creme { background: var(--creme); color: var(--preto); }
+.s-branco { background: var(--branco); color: var(--preto); }
+.s-branco::before { background: radial-gradient(60% 35% at 100% 100%, rgba(204,78,0,.10) 0%, transparent 70%); }
+.s-laranja { background: var(--laranja); }
+.s-laranja::before { background: radial-gradient(70% 50% at 100% 0%, rgba(243,124,40,.65) 0%, transparent 70%), radial-gradient(60% 40% at 0% 100%, rgba(32,1,0,.35) 0%, transparent 70%); }
+.slide > * { position: relative; }
+/* capa com foto: foto no alto, escurecendo para baixo; texto na parte escura */
+.s-foto { background: var(--preto); }
+.s-foto > .foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s-foto::before { z-index: 1; background: linear-gradient(180deg, rgba(32,1,0,.92) 0%, rgba(32,1,0,.45) 14%, rgba(32,1,0,.15) 24%, rgba(32,1,0,.35) 38%, rgba(32,1,0,.9) 58%, var(--preto) 78%); }
+.s-foto > :not(.foto) { z-index: 2; }
+.s-foto .body { justify-content: flex-end; gap: 36px; padding-bottom: 20px; }
+.s-foto .lead { font-size: 40px; }
+.s-foto h1 { font-size: 124px !important; }
+.s-foto .logo { position: absolute; top: 60px; right: 72px; margin: 0; width: 150px; filter: drop-shadow(0 4px 18px rgba(0,0,0,.6)); }
+
+.logo { width: 170px; margin-top: 70px; flex: none; }
+.body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 44px; width: 100%; padding-bottom: 40px; }
+.foot { flex: none; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding-bottom: 56px; font-size: 22px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.foot .src { letter-spacing: .02em; text-transform: none; font-weight: 500; font-size: 20px; text-align: left; max-width: 780px; }
+
+.eyebrow { font-size: 26px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--laranja-logo); }
+.s-creme .eyebrow, .s-branco .eyebrow { color: var(--laranja); }
+.s-laranja .eyebrow { color: var(--preto); }
+h1, h2 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 { font-size: 150px; }
+h2 { font-size: 104px; }
+.faixa { display: inline-block; background: var(--laranja); color: var(--creme); padding: .02em .16em .06em; transform: rotate(-3deg); margin-block: .1em .2em; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.faixa.preta { background: var(--preto); }
+.lar { color: var(--laranja-logo); }
+.s-creme .lar, .s-branco .lar { color: var(--laranja); }
+p { margin: 0; }
+.lead { font-size: 44px; line-height: 1.32; font-weight: 600; max-width: 860px; text-wrap: balance; }
+.txt { font-size: 38px; line-height: 1.4; font-weight: 500; max-width: 860px; text-wrap: balance; }
+.txt b, .lead b { font-weight: 800; }
+.alerta { font-style: italic; font-weight: 600; font-size: 38px; line-height: 1.38; max-width: 860px; border-top: 4px solid var(--laranja); padding-top: 34px; text-wrap: balance; }
+.stat { font-family: var(--f-display); font-size: 330px; line-height: .95; color: var(--laranja); letter-spacing: -.01em; }
+.s-escuro .stat, .s-alt .stat { color: var(--laranja-logo); }
+.s-laranja .stat { color: var(--creme); }
+
+.ghost { position: absolute !important; left: -40px; right: -40px; bottom: 120px; font-family: var(--f-display); font-size: 300px; line-height: .9; text-transform: uppercase; color: transparent; -webkit-text-stroke: 2px rgba(246,244,242,.07); white-space: nowrap; text-align: center; }
+.s-branco .ghost { -webkit-text-stroke: 2px rgba(32,1,0,.06); }
+
+.lista { list-style: none; margin: 0; padding: 0; width: 100%; text-align: left; }
+.lista li { display: grid; grid-template-columns: 70px 1fr; align-items: center; gap: 20px; padding-block: 28px; border-top: 3px solid rgba(246,244,242,.16); font-family: var(--f-display); font-size: 76px; text-transform: uppercase; line-height: 1.05; }
+.lista li:last-child { border-bottom: 3px solid rgba(246,244,242,.16); }
+.lista .seta { color: var(--laranja-logo); font-size: 64px; line-height: 1; }
+
+.share { display: flex; align-items: center; gap: 18px; font-style: italic; font-weight: 600; font-size: 31px; white-space: nowrap; color: var(--creme-70); }
+.share svg { flex: none; }
+.s-laranja .share { color: rgba(246,244,242,.88); }
+
+.barras { display: flex; flex-direction: column; gap: 22px; width: 100%; }
+.barra { display: grid; grid-template-columns: 170px 1fr 160px; align-items: center; gap: 22px; text-align: left; font-weight: 700; font-size: 30px; letter-spacing: .08em; text-transform: uppercase; }
+.barra .trilho { height: 56px; background: rgba(246,244,242,.08); border-radius: 4px; overflow: hidden; }
+.barra .valor { display: block; height: 100%; background: var(--creme); border-radius: 4px; }
+.barra.destaque .valor { background: var(--laranja); }
+.barra .pct { font-family: var(--f-display); font-size: 56px; letter-spacing: 0; text-align: right; }
+.barra.destaque .pct { color: var(--laranja-logo); }
+.txt-lista li { font-family: var(--f-body); font-size: 40px; font-weight: 600; text-transform: none; line-height: 1.3; }
+.txt-lista .seta { font-family: var(--f-display); font-size: 56px; }
+.s-creme .lista li, .s-branco .lista li { border-color: rgba(32,1,0,.14); }
+</style>
+
+<div id="posts"></div>
+
+<script>
+// Textos do calendário de novembro (PDF da cliente), sem travessão.
+const GUIA = '*Fonte: MTE, Guia de Informações sobre os Fatores de Riscos Psicossociais Relacionados ao Trabalho (2025).';
+const share = (t) => `<p class="share"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>${t}</p>`;
+const lista = (itens) => `<ul class="lista">${itens.map(i => `<li><span class="seta">→</span><span>${i}</span></li>`).join('')}</ul>`;
+
+const POSTS = [
+  { id: '02-12-trabalho-de-fim-de-ano', data: '02/12', nome: 'Carrossel · Trabalho de fim de ano: o que vale e o que você precisa exigir', slides: [
+    { bg: 'branco', ghost: 'Temporário', foot: ['Educação trabalhista', 'Arraste →'], html: `
+      <h1>Trabalho de<br><span class="faixa">fim de ano</span></h1>
+      <p class="lead">Contrato curto <span class="lar">também tem direito.</span></p>` },
+    { bg: 'escuro', foot: ['<span class="src">*Lei nº 6.019/1974, com as alterações das Leis nº 13.429/2017 e nº 13.467/2017.</span>', '2/7'], html: `
+      <span class="eyebrow">Quando pode</span>
+      <h2>Vaga temporária<br><span class="faixa">em dois casos</span></h2>
+      <ul class="lista txt-lista">
+        <li><span class="seta">1</span><span>Para substituir quem saiu por um tempo, como em férias ou licença.</span></li>
+        <li><span class="seta">2</span><span>Para dar conta de uma demanda extra, como as vendas de fim de ano.*</span></li>
+      </ul>` },
+    { bg: 'creme', foot: ['<span class="src">*Lei nº 6.019/1974, com as alterações das Leis nº 13.429/2017 e nº 13.467/2017.</span>', '3/7'], html: `
+      <span class="eyebrow">Como é o contrato</span>
+      <div class="stat" style="font-size:250px;text-transform:uppercase">180 dias</div>
+      <h2 style="font-size:84px;margin-top:-20px"><span class="faixa">+ 90 de prorrogação</span></h2>
+      <p class="txt" style="font-weight:600">Feito com uma empresa de trabalho temporário, por escrito e com prazo definido.*</p>` },
+    { bg: 'escuro alt', foot: ['<span class="src">**Lei nº 6.019/1974, art. 12.</span>', '4/7'], html: `
+      <h2>Direitos que<br><span class="faixa">não podem faltar</span></h2>
+      <ul class="lista txt-lista">
+        <li><span class="seta">→</span><span>Salário igual ao de quem faz a mesma função</span></li>
+        <li><span class="seta">→</span><span>Repouso semanal remunerado</span></li>
+        <li><span class="seta">→</span><span>Adicional noturno</span></li>
+        <li><span class="seta">→</span><span>Férias proporcionais</span></li>
+        <li><span class="seta">→</span><span>FGTS e proteção previdenciária**</span></li>
+      </ul>` },
+    { bg: 'laranja', foot: ['<span class="src">**Lei nº 6.019/1974, art. 12.</span>', '5/7'], html: `
+      <span class="eyebrow">No fim do contrato</span>
+      <h2>Indenização de<br><span class="faixa preta">1/12 do que recebeu</span></h2>
+      <p class="lead">E a CTPS precisa estar assinada, com a <b>condição de temporário anotada.**</b></p>` },
+    { bg: 'escuro', foot: ['6/7', 'Arraste →'], html: `
+      <h2>Sem carteira assinada,<br><span class="faixa">não é bico.</span></h2>
+      <p class="lead">É <span class="lar">irregularidade.</span></p>
+      <p class="txt">Trabalhou sem registro? Denuncie no <b>Sistema Ipê (MTE)</b> ou procure o <b>sindicato</b>.</p>` },
+    { bg: 'branco', foot: ['', '7/7'], html: `
+      <h2>Salva e manda<br>pra quem vai pegar<br><span class="faixa">vaga de fim de ano</span></h2>
+      <p class="share" style="color:rgba(32,1,0,.7)"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Contrato curto não é contrato sem direitos.</p>` },
+  ]},
+];
+
+function slideHTML(post, s, i, n) {
+  const claro = /branco|creme/.test(s.bg);
+  const cls = s.bg.split(' ').map(b => 's-' + b).join(' ');
+  const out = n > 1 ? `${post.id}/slide-${i + 1}.png` : `${post.id}.png`;
+  return `<div class="wrap"><section class="slide ${cls}" data-out="${out}">
+    ${s.foto ? `<img class="foto" src="fotos/${s.foto}.jpg" alt="" style="${s.fotoStyle || ''}">` : ''}
+    ${s.ghost && !s.foto ? `<div class="ghost">${s.ghost}</div>` : ''}
+    <img class="logo" src="${claro ? 'logo-sinait-dsmg-escuro.png' : 'logo-sinait-dsmg.png'}" alt="SINAIT DS/MG">
+    <div class="body">${s.html}</div>
+    <div class="foot"><span>${s.foot[0]}</span><span>${s.foot[1]}</span></div>
+  </section></div>`;
+}
+document.getElementById('posts').innerHTML = POSTS.map(p => `<section class="post"><h3>${p.data} <span>${p.nome}</span></h3><div class="row">${p.slides.map((s, i) => slideHTML(p, s, i, p.slides.length)).join('')}</div></section>`).join('');
+
+const exp = new URLSearchParams(location.search).has('export');
+if (exp) document.body.classList.add('export');
+const fit = () => document.querySelectorAll('.wrap').forEach(w => { w.querySelector('.slide').style.transform = exp ? 'none' : `scale(${w.clientWidth / 1080})`; });
+addEventListener('resize', fit); fit();
+</script>
