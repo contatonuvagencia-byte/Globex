@@ -85,7 +85,7 @@ body.export .wrap { width: 1080px; height: 1350px; aspect-ratio: auto; }
 // foto: arquivo em fotos/ (ex.: fotos/04-11.jpg). Se não existir, entra a versão tipográfica.
 const F_GUIA = 'MTE, Guia de Informações sobre os Fatores de Riscos Psicossociais Relacionados ao Trabalho (2025).';
 const POSTS = [
-  { id: '04-11-discriminacao-no-trabalho', data: '04/11', nome: 'Carrossel · Discriminação no trabalho: o que a lei proíbe', foto: '04-11', ghost: 'Igualdade', slides: [
+  { id: '04-11-discriminacao-no-trabalho', data: '04/11', nome: 'Carrossel · Discriminação no trabalho: o que a lei proíbe', foto: '04-11', fotoStyle: 'transform:translateY(-21%)', ghost: 'Igualdade', slides: [
     { tipo: 'capa', titulo: 'Discriminação no trabalho', texto: 'Novembro: mês de falar de igualdade de oportunidades.' },
     { eyebrow: 'Está na Constituição', titulo: 'É proibido diferenciar', texto: 'salário, função ou critério de admissão por sexo, idade, cor ou estado civil.*', fonte: '*CF/88, art. 7º, XXX.' },
     { eyebrow: 'E tem lei específica', titulo: 'Lei 9.029/1995', texto: 'Proíbe qualquer prática discriminatória para entrar ou continuar no emprego, por sexo, origem, raça, cor, estado civil, situação familiar, deficiência, idade, entre outros motivos.**', fonte: '**Lei nº 9.029/1995, art. 1º.' },
@@ -93,7 +93,7 @@ const POSTS = [
     { eyebrow: 'Quem recebe denúncia', titulo: 'O MTE, pelo Sistema Ipê, e o Ministério Público do Trabalho.' },
     { tipo: 'cta', titulo: 'Viu ou viveu discriminação no trabalho?', texto: 'Denuncie e compartilhe com quem precisa saber.', acao: 'Denuncie · Sistema Ipê (MTE)' },
   ]},
-  { id: '06-11-nr1-saude-mental', data: '06/11', nome: 'Post único · NR-1: saúde mental também é risco do trabalho', foto: '06-11', ghost: 'NR-1', slides: [
+  { id: '06-11-nr1-saude-mental', data: '06/11', nome: 'Post único · NR-1: saúde mental também é risco do trabalho', foto: '06-11', fotoStyle: 'transform:translateY(-17%)', ghost: 'NR-1', slides: [
     { tipo: 'capa', titulo: 'Saúde mental também é risco do trabalho', texto: 'Desde 26/05/2026, a NR-1 exige que as empresas gerenciem fatores como sobrecarga e assédio.', fonte: 'Fonte: MTE, NR-1, Portarias nº 1.419/2024 e nº 765/2025.' },
   ]},
   { id: '10-11-riscos-psicossociais', data: '10/11', nome: 'Carrossel · Riscos psicossociais: o que são e como aparecem', foto: '10-11', ghost: 'Risco', slides: [
@@ -121,7 +121,7 @@ const POSTS = [
   { id: '25-11-cipa-assedio', data: '25/11', nome: 'Post único · A CIPA também cuida do assédio (extra sugerido)', foto: '25-11', ghost: 'CIPA', slides: [
     { tipo: 'capa', titulo: 'A CIPA também cuida do assédio', texto: 'Desde a Lei 14.457/2022, a CIPA inclui a prevenção e o combate ao assédio sexual e a outras formas de violência no trabalho.', fonte: 'Fonte: Lei nº 14.457/2022, art. 23.' },
   ]},
-  { id: '26-11-96-anos-ministerio-do-trabalho', data: '26/11', nome: 'Post único · 96 anos do Ministério do Trabalho', foto: '26-11', ghost: '96', ghostCheio: true, slides: [
+  { id: '26-11-96-anos-ministerio-do-trabalho', data: '26/11', nome: 'Post único · 96 anos do Ministério do Trabalho', foto: '26-11', fotoStyle: 'transform:translateY(-22%)', ghost: '96', ghostCheio: true, slides: [
     { tipo: 'capa', titulo: '96 anos do Ministério do Trabalho', texto: 'Só em 2025: <b>2.772</b> resgatados da escravidão e <b>4.318</b> crianças e adolescentes afastados do trabalho infantil.', fonte: 'Fontes: MTE/SIT, balanço 2025; MTE, Inspeção do Trabalho: ações fiscais e afastamentos 2025.' },
   ]},
   { id: '30-11-novembro-em-acao', data: '30/11', nome: 'Carrossel · Novembro em ação (recap)', foto: '30-11', ghost: 'Nov', slides: [
@@ -143,7 +143,7 @@ function slideHTML(post, s, i, n) {
   let bg = '<div class="bg glow"></div>';
   if (capa) {
     const ghost = post.ghost ? `<div class="ghost${post.ghostCheio ? ' cheio' : ''}">${post.ghost}</div>` : '';
-    const foto = post.foto ? `<img class="bg foto" src="fotos/${post.foto}.jpg" alt="" onerror="this.remove()"><div class="bg overlay"></div>` : '';
+    const foto = post.foto ? `<img class="bg foto" src="fotos/${post.foto}.jpg" alt="" style="${post.fotoStyle || ''}" onerror="this.remove()"><div class="bg overlay"></div>` : '';
     bg = `<div class="bg glow"></div>${ghost}${foto}`;
   }
   const barras = capa && post.barras ? `<div class="barras">
