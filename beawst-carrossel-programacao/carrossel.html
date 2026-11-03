@@ -6,7 +6,7 @@
 <!-- Carrossel "Programação" (8 slides, 1080x1320). ?s=1 ... ?s=8. Gerar: node render.mjs -->
 <script>
 // ====== EDITE AQUI: horários e palestras ======
-// Horário vazio ('') aparece como "[HORÁRIO]" tracejado, pra lembrar que falta.
+// Horário vazio ('') não aparece no slide. Preencha (ex.: '8h30') quando tiver a grade.
 const PROGRAMA = [
   { hora: '', titulo: 'Abertura com Samanta Lopes', sub: 'apresentadora oficial', foto: 'assets/apresentadora.jpg', pos: '50% 22%', zoom: 1.45, origem: '50% 30%' },
   { hora: '', titulo: 'Viver em Malta', sub: 'com a Consultora Léia', bandeira: 'malta', foto: 'assets/leia.jpg', pos: '50% 42%', zoom: 1.7, origem: '50% 46%',
@@ -122,7 +122,7 @@ body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
 const BG = ['var(--escuro)', 'var(--roxo)', 'var(--escuro)', 'var(--roxo)'];
 document.getElementById('talks').innerHTML = PROGRAMA.map((p, i) => {
   const n = i + 2;
-  const hora = p.hora ? `<span class="hora gradL">${p.hora}</span>` : `<span class="hora falta">[HORÁRIO]</span>`;
+  const hora = p.hora ? `<span class="hora gradL">${p.hora}</span>` : '';   // sem horário: não mostra nada
   const media = p.foto
     ? `<div class="circ" style="width:420px;height:420px"><img src="${p.foto}" style="object-position:${p.pos};transform:scale(${p.zoom || 1});transform-origin:${p.origem || '50% 50%'}"></div>`
     : `<div style="width:620px;height:300px;border-radius:36px;background:${p.logoFundo};display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px #fff"><img src="${p.logo}" style="max-width:80%;max-height:80%"></div>`;
