@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carrossel Programação</title>
+<!-- Carrossel "Programação" (8 slides, 1080x1320). ?s=1 ... ?s=8. Gerar: node render.mjs -->
+<script>
+// ====== EDITE AQUI: horários e palestras ======
+// Horário vazio ('') aparece como "[HORÁRIO]" tracejado, pra lembrar que falta.
+const PROGRAMA = [
+  { hora: '', titulo: 'Abertura com Samanta Lopes', sub: 'apresentadora oficial', foto: 'assets/apresentadora.jpg', pos: '50% 22%', zoom: 1.45, origem: '50% 30%' },
+  { hora: '', titulo: 'Viver em Malta', sub: 'com a Consultora Léia', bandeira: 'malta', foto: 'assets/leia.jpg', pos: '50% 42%', zoom: 1.7, origem: '50% 46%',
+    desc: 'A realidade e as oportunidades da ilha com quem mora lá há 14 anos.' },
+  { hora: '', titulo: 'Trabalho e estudo na Irlanda', sub: 'com a Consultora Alessandra', bandeira: 'irlanda', foto: 'assets/alessandra.jpg', pos: '100% 38%', zoom: 1.12, origem: '100% 45%',
+    desc: 'Os processos de estudo e trabalho no destino mais procurado da Europa.' },
+  { hora: '', titulo: 'Visto e passaporte sem mistério', sub: 'com o Mundo dos Vistos', logo: 'assets/parceiros/02-mundo-dos-vistos.jpg', logoFundo: '#000',
+    desc: 'Tire suas dúvidas de documentação ao vivo.' },
+];
+const PARCEIROS = [
+  { src: 'assets/parceiros/01-gateway-school.jpg', fundo: '#fff' },
+  { src: 'assets/parceiros/02-mundo-dos-vistos.jpg', fundo: '#000' },
+  { src: 'assets/parceiros/03-empresa-junior-mackenzie.jpg', fundo: '#fff' },
+];
+</script>
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;--tinta:#0B0B0F;
+  --grad:linear-gradient(90deg,#5B00D6 0%,#A3127F 50%,#F0102A 100%);
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1320px;overflow:hidden;background:#000}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+.slide{position:absolute;inset:0;overflow:hidden;display:none}
+.abs{position:absolute}
+.pad{left:90px;right:90px}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.glow{position:absolute;border-radius:50%;filter:blur(130px)}
+.pill{display:inline-block;font-weight:800;font-size:28px;letter-spacing:.14em;text-transform:uppercase;background:var(--roxo);color:#fff;padding:15px 26px;border-radius:999px}
+.huge{font-weight:900;line-height:1.02;letter-spacing:-.025em}
+.foot{position:absolute;left:90px;right:90px;bottom:64px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:26px;letter-spacing:.1em}
+.foot img{height:54px;display:block}
+.hora{display:inline-block;font-weight:900;font-size:96px;letter-spacing:-.03em;line-height:1}
+.hora.falta{font-size:54px;letter-spacing:.06em;border:5px dashed currentColor;border-radius:20px;padding:14px 26px;opacity:.9}
+.circ{border-radius:50%;overflow:hidden;position:relative;box-shadow:0 0 0 10px #fff,0 0 0 24px rgba(185,140,255,.35)}
+.circ img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.flag{display:inline-block;border-radius:10px;overflow:hidden;box-shadow:0 0 0 4px #fff;vertical-align:middle}
+.flag svg{display:block;width:100%;height:100%}
+.tile{border-radius:30px;display:flex;align-items:center;justify-content:center;border:3px solid #ECE8F0;box-shadow:0 18px 40px rgba(14,7,22,.12)}
+.tile img{max-width:78%;max-height:72%;object-fit:contain}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="irlanda" viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#FFFFFF"/><rect x="2" width="1" height="2" fill="#FF883E"/></symbol>
+  <symbol id="malta" viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="15" height="20" fill="#FFFFFF"/><rect x="15" width="15" height="20" fill="#CF142B"/><g transform="translate(2.2 2.2)"><path d="M2 0h2v2h2v2H4v2H2V4H0V2h2z" fill="#B0B0B0" stroke="#CF142B" stroke-width=".35"/></g></symbol>
+</svg>
+
+<!-- 1 | Capa -->
+<div class="slide" id="s1" style="background:var(--escuro)">
+  <div class="glow" style="width:900px;height:900px;background:var(--roxo);opacity:.7;left:-300px;top:-250px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.4;left:520px;top:780px"></div>
+  <div class="abs" style="left:90px;top:90px"><img src="assets/logo-feira-branco.svg" style="width:360px;display:block"></div>
+  <div class="abs pad" style="top:300px">
+    <span class="pill" style="background:var(--grad)">programação</span>
+    <div class="huge" style="font-size:150px;margin-top:34px">Sábado</div>
+    <div class="huge gradL" style="font-size:150px">tem.</div>
+    <div style="font-weight:800;font-size:52px;line-height:1.2;margin-top:40px">Salva a programação da<br>Beawst Global Connect.</div>
+  </div>
+  <!-- ícone de salvar -->
+  <svg class="abs" style="right:100px;top:330px;transform:rotate(8deg)" width="150" height="190" viewBox="0 0 96 120"><path d="M10 10 h76 v100 l-38 -28 -38 28z" fill="#fff" stroke="#fff" stroke-width="8" stroke-linejoin="round"/><path d="M10 10 h76 v100 l-38 -28 -38 28z" fill="url(#gs)"/><defs><linearGradient id="gs" x1="0" x2="1"><stop offset="0" stop-color="#5B00D6"/><stop offset="1" stop-color="#F0102A"/></linearGradient></defs></svg>
+  <div class="abs" style="left:90px;bottom:70px;font-weight:800;font-size:36px">07/11 · online e gratuito</div>
+  <div class="abs" style="right:90px;bottom:72px;font-weight:800;font-size:30px;letter-spacing:.06em">arrasta →</div>
+</div>
+
+<!-- 2 a 5 | Palestras (montados pelo script a partir de PROGRAMA) -->
+<div id="talks"></div>
+
+<!-- 6 | Quem vai estar lá -->
+<div class="slide" id="s6" style="background:#FBFAFD;color:var(--tinta)">
+  <div class="glow" style="width:800px;height:800px;background:var(--roxo);opacity:.12;left:520px;top:-250px"></div>
+  <div class="abs" style="left:90px;top:110px"><span class="pill">quem vai estar lá</span></div>
+  <div class="abs pad huge" style="top:220px;font-size:96px">Escolas e parceiros <span class="grad">confirmados</span></div>
+  <div class="abs pad" id="logos" style="top:520px;display:flex;flex-direction:column;gap:26px"></div>
+  <div class="foot" style="color:var(--tinta)"><img src="assets/logo-feira-cor.svg"><span>6/8</span></div>
+</div>
+
+<!-- 7 | Prêmios -->
+<div class="slide" id="s7" style="background:var(--escuro)">
+  <div class="glow" style="width:900px;height:900px;background:var(--roxo);opacity:.65;left:-250px;top:-200px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.35;left:520px;top:800px"></div>
+  <div class="abs" style="left:90px;top:110px"><span class="pill" style="background:var(--grad)">prêmios</span></div>
+  <div class="abs pad huge" style="top:215px;font-size:72px">E tem presente pra quem estiver <span class="gradL">ao vivo</span></div>
+  <img class="abs" src="assets/kit.png" style="left:20px;top:420px;width:470px">
+  <div class="abs" style="left:520px;right:80px;top:530px">
+    <div class="huge" style="font-size:56px">Kit viagem</div>
+    <div style="font-weight:700;font-size:36px;line-height:1.28;margin-top:12px;color:rgba(255,255,255,.9)">sorteado <b style="color:#fff">de hora em hora</b></div>
+  </div>
+  <img class="abs" src="assets/mala.png" style="left:600px;top:760px;width:440px">
+  <div class="abs" style="left:90px;right:520px;top:860px">
+    <div class="huge gradL" style="font-size:56px">Mala de viagem</div>
+    <div style="font-weight:700;font-size:36px;line-height:1.28;margin-top:12px;color:rgba(255,255,255,.9)">pra quem ficar <b style="color:#fff">até o fim</b></div>
+  </div>
+  <div class="foot"><img src="assets/logo-feira-branco.svg"><span>7/8</span></div>
+</div>
+
+<!-- 8 | CTA -->
+<div class="slide" id="s8" style="background:var(--roxo)">
+  <div class="glow" style="width:900px;height:900px;background:var(--magenta);opacity:.6;left:-300px;top:-200px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.4;left:520px;top:800px"></div>
+  <div class="abs" style="left:0;right:0;top:150px;text-align:center"><img src="assets/logo-feira-branco.svg" style="width:520px;display:inline-block"></div>
+  <div class="abs pad huge" style="top:420px;font-size:116px;text-align:center">Online.<br>Gratuito.<br><span class="gradL">Sábado, 07/11.</span></div>
+  <div class="abs" style="left:0;right:0;top:880px;text-align:center"><span style="display:inline-block;background:#fff;color:var(--roxo);border-radius:999px;padding:26px 56px;font-weight:900;font-size:48px;box-shadow:0 20px 50px rgba(14,7,22,.35)">Link na bio ↗</span></div>
+  <div class="abs pad" style="top:1030px;text-align:center;font-weight:700;font-size:38px;color:rgba(255,255,255,.9)">pra garantir sua vaga</div>
+</div>
+
+<script>
+// slides 2–5: uma palestra por slide, alternando fundo escuro / roxo
+const BG = ['var(--escuro)', 'var(--roxo)', 'var(--escuro)', 'var(--roxo)'];
+document.getElementById('talks').innerHTML = PROGRAMA.map((p, i) => {
+  const n = i + 2;
+  const hora = p.hora ? `<span class="hora gradL">${p.hora}</span>` : `<span class="hora falta">[HORÁRIO]</span>`;
+  const media = p.foto
+    ? `<div class="circ" style="width:420px;height:420px"><img src="${p.foto}" style="object-position:${p.pos};transform:scale(${p.zoom || 1});transform-origin:${p.origem || '50% 50%'}"></div>`
+    : `<div style="width:620px;height:300px;border-radius:36px;background:${p.logoFundo};display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px #fff"><img src="${p.logo}" style="max-width:80%;max-height:80%"></div>`;
+  const flag = p.bandeira ? `<span class="flag" style="width:72px;height:48px;margin-right:18px;transform:translateY(-6px)"><svg><use href="#${p.bandeira}"/></svg></span>` : '';
+  return `<div class="slide" id="s${n}" style="background:${BG[i]}">
+    <div class="glow" style="width:900px;height:900px;background:${i % 2 ? 'var(--magenta)' : 'var(--roxo)'};opacity:.6;left:-300px;top:-250px"></div>
+    <div class="glow" style="width:800px;height:800px;background:var(--vermelho);opacity:.35;left:520px;top:820px"></div>
+    <div class="abs" style="left:90px;top:100px;display:flex;align-items:center;gap:28px">${hora}
+      <span class="pill" style="${i === 0 ? 'background:var(--grad)' : 'background:rgba(255,255,255,.16)'}">${i === 0 ? 'abertura' : 'palestra ' + i}</span></div>
+    <div class="abs" style="left:0;right:0;top:300px;display:flex;justify-content:center">${media}</div>
+    <div class="abs pad" style="top:${p.foto ? 800 : 700}px">
+      <div class="huge" style="font-size:${p.titulo.length > 22 ? 74 : 92}px">${flag}${p.titulo}</div>
+      <div style="font-weight:800;font-size:42px;margin-top:20px" class="gradL">${p.sub}</div>
+      ${p.desc ? `<div style="font-weight:600;font-size:36px;line-height:1.3;margin-top:18px;color:rgba(255,255,255,.88)">${p.desc}</div>` : ''}
+    </div>
+    <div class="foot"><img src="assets/logo-feira-branco.svg"><span>${n}/8</span></div>
+  </div>`;
+}).join('');
+document.getElementById('logos').innerHTML = PARCEIROS.map(p =>
+  `<div class="tile" style="height:190px;background:${p.fundo};border-color:${p.fundo === '#fff' ? '#ECE8F0' : p.fundo}"><img src="${p.src}" style="${p.fundo === '#fff' ? 'mix-blend-mode:multiply' : ''}"></div>`).join('');
+document.getElementById('s' + (new URLSearchParams(location.search).get('s') || '1')).style.display = 'block';
+</script>
+</body>
+</html>
