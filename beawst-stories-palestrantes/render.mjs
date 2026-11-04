@@ -8,7 +8,7 @@ import fs from 'node:fs';
 const dir = path.dirname(fileURLToPath(import.meta.url));
 const out = path.join(dir, 'out');
 fs.mkdirSync(out, { recursive: true });
-const STORIES = { 1: 'story-1-quem-vai-falar', 2: 'story-2-leia-malta', 3: 'story-3-alessandra-irlanda' };
+const STORIES = { 1: 'story-1-quem-vai-falar', 2: 'story-2-leia-malta', 3: 'story-3-alessandra-irlanda', 4: 'story-4-daniel-gateway' };
 const SAFE = { top: 250, bottom: 340 };
 
 const browser = await chromium.launch();

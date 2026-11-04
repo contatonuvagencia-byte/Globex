@@ -16,7 +16,7 @@ const FILES = {
   '07': '07_MASCARA_4_CAMERAS', '08': '08_MASCARA_PPT_E_CAMERA', '10': '10_FUNDO_VIRTUAL_PALESTRANTE',
 };
 // peças por palestrante: tela "A seguir", máscara PPT + câmera e tarja de nome (GC)
-const PALESTRANTES = ['leia', 'alessandra'];
+const PALESTRANTES = ['leia', 'alessandra', 'daniel'];
 for (const p of PALESTRANTES) {
   FILES[`ps&s=${p}`] = `11_A_SEGUIR_${p.toUpperCase()}`;
   FILES[`pm&s=${p}`] = `12_MASCARA_PPT_E_CAMERA_${p.toUpperCase()}`;

@@ -58,7 +58,7 @@ if (!process.argv.includes('--stills')) {
     filter = `[1:a]atrim=0:${C.DURATION},volume=0.22,afade=t=out:st=${C.DURATION - 2}:d=2[m];[m][2:a]amix=inputs=2:normalize=0,aresample=48000[a]`;
   }
   const final = path.join(out, '09_VIDEO_INSTITUCIONAL.mp4');
-  spawnSync('ffmpeg', [...args, '-filter_complex', filter + ';[a]alimiter=limit=0.5[al]', '-map', '0:v', '-map', '[al]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2',
+  spawnSync('ffmpeg', [...args, '-filter_complex', filter + ';[a]volume=-7dB[al]', '-map', '0:v', '-map', '[al]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2',
     '-t', String(C.DURATION), '-movflags', '+faststart', final], { stdio: 'inherit' });
   fs.rmSync(silent); fs.rmSync(path.join(out, '_trilha.wav'), { force: true });
   console.log('ok', final);
