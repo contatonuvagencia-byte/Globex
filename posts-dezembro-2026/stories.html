@@ -115,6 +115,13 @@ p { margin: 0; }
 .num-grande { font-family: var(--f-display); font-size: 210px; line-height: .95; color: var(--laranja-logo); }
 .s-creme .num-grande, .s-branco .num-grande { color: var(--laranja); }
 .par { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+/* dezembro: foto em faixa no topo (fotos pequenas), desfazendo na cor de fundo */
+.s-escuro { --bgc: 43,43,43; } .s-laranja { --bgc: 204,78,0; } .s-branco, .s-creme { --bgc: 245,245,245; } .s-preto { --bgc: 17,17,17; background: #111111; }
+.slide > .foto-topo { position: absolute; left: 0; top: 0; width: 100%; height: 1000px; object-fit: cover; }
+.slide > .fade-topo { position: absolute; left: 0; top: 0; width: 100%; height: 1001px; background: linear-gradient(180deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 26%, rgba(var(--bgc),0) 45%, rgba(var(--bgc),.85) 80%, rgb(var(--bgc)) 100%); }
+.com-topo .logo { filter: drop-shadow(0 4px 18px rgba(0,0,0,.6)); }
+.com-topo .body { flex: 1; justify-content: flex-end; padding-bottom: 40px; }
+.com-topo .foot { margin-top: 0; }
 </style>
 
 <div id="posts"></div>
@@ -124,6 +131,33 @@ p { margin: 0; }
 // sticker: true deixa a parte de baixo livre para o sticker do Instagram (enquete, quiz, caixinha, post compartilhado).
 const feed = (t = 'Post novo no feed') => `<span class="pill-feed">${t} ↓</span>`;
 const STORIES = [
+  { id: '2026-12-02_stories_minas', nome: '306 anos de Minas Gerais', s: [
+    { bg: 'laranja', topo: '02-12-ouro-preto', topoPos: '72% 50%', html: `
+      <span class="eyebrow" style="color:var(--creme)">2 de dezembro de 1720</span>
+      <h2>Nascia a<br><span class="faixa preta">Capitania de Minas</span></h2>
+      <p class="lead">306 anos de uma história escrita <b>por quem trabalha.</b></p>` },
+    { bg: 'escuro', foot: ['<span class="src">MTE/SIT, 2025.</span>', ''], html: `
+      <span class="eyebrow">Só em 2025, em Minas</span>
+      <div class="num-grande" style="font-size:300px">830</div>
+      <p class="lead">crianças e adolescentes afastados do trabalho infantil pela Auditoria-Fiscal do Trabalho.</p>` },
+    { bg: 'branco', sticker: true, html: `
+      ${feed()}
+      <h2>Parabéns,<br><span class="faixa">Minas.</span></h2>
+      <p class="lead">E que a gente siga cuidando de quem faz <span class="lar">essa terra andar.</span></p>` },
+  ]},
+  { id: '2026-12-03_stories_pcd', nome: 'Dia Internacional das Pessoas com Deficiência', s: [
+    { bg: 'escuro', sticker: true, html: `
+      <span class="eyebrow">Quiz</span>
+      <h2>A partir de quantos<br>empregados a empresa<br><span class="faixa">precisa cumprir cota?</span></h2>
+      <p class="dica">50 · 100 · 500</p>` },
+    { bg: 'laranja', foot: ['<span class="src">Lei nº 8.213/1991, art. 93.</span>', ''], html: `
+      <h1><span class="faixa preta">100 ou mais.</span></h1>
+      <p class="lead">De 2% a 5% das vagas são para pessoas com deficiência ou reabilitadas pelo INSS, conforme o tamanho da empresa.</p>` },
+    { bg: 'creme', sticker: true, html: `
+      ${feed('Carrossel novo no feed')}
+      <h2>A cota é ignorada<br><span class="faixa">na sua empresa?</span></h2>
+      <p class="lead">Denuncie pelo <b>Sistema Ipê (MTE)</b>.</p>` },
+  ]},
   { id: '2026-12-09_stories_fim-de-ano', nome: 'Trabalho de fim de ano', s: [
     { bg: 'escuro', sticker: true, html: `
       <span class="eyebrow">Quiz</span>
@@ -138,14 +172,51 @@ const STORIES = [
       <h2>Sem carteira assinada,<br><span class="faixa preta">não é bico.</span></h2>
       <p class="lead">Trabalhou sem registro? Denuncie no <b>Sistema Ipê (MTE)</b> ou procure o <b>sindicato</b>.</p>` },
   ]},
+  { id: '2026-12-10_stories_direitos-humanos', nome: 'Dia Internacional dos Direitos Humanos', s: [
+    { bg: 'branco', html: `
+      <span class="eyebrow">10 de dezembro de 1948</span>
+      <h2>A ONU proclamou a<br><span class="faixa">Declaração Universal</span><br>dos Direitos Humanos</h2>` },
+    { bg: 'escuro', sticker: true, html: `
+      <span class="eyebrow">Enquete</span>
+      <h2>Você sabia que ela<br>fala de<br><span class="faixa">férias remuneradas?</span></h2>` },
+    { bg: 'laranja', sticker: true, foot: ['<span class="src">ONU, Declaração Universal dos Direitos Humanos (1948), arts. 23 e 24.</span>', ''], html: `
+      ${feed('Carrossel novo no feed')}
+      <h2>Direito humano também é<br><span class="faixa preta">direito trabalhista</span></h2>
+      <p class="lead">Condições justas, igual remuneração por igual trabalho, repouso, limitação das horas e férias remuneradas.</p>` },
+  ]},
+  { id: '2026-12-25_stories_natal', nome: 'Natal', s: [
+    { bg: 'escuro', topo: '25-12-natal', topoPos: '78% 50%', html: `
+      <h1>Feliz<br><span class="faixa">Natal</span></h1>
+      <p class="lead">Que o dia seja de descanso para quem pode e de <span class="lar">reconhecimento para quem trabalha hoje.</span></p>` },
+    { bg: 'laranja', html: `
+      <h2>Natal é pausa<br>pra muita gente.</h2>
+      <p class="lead">E também é dia de trabalho pra quem <b>cuida, entrega, atende e socorre.</b></p>` },
+    { bg: 'escuro', sticker: true, html: `
+      <span class="eyebrow">Caixinha</span>
+      <h2>Manda um recado<br>pra quem está<br><span class="faixa">trabalhando hoje</span></h2>
+      <p class="lead">Boas festas de toda a equipe do SINAIT DS/MG.</p>` },
+  ]},
+  { id: '2026-12-31_stories_ano-novo', nome: 'Ano Novo', s: [
+    { bg: 'preto', topo: '31-12-ano-novo', topoPos: '50% 40%', html: `
+      <div class="num-grande" style="font-size:340px">2027</div>
+      <h2><span class="faixa">chegando</span></h2>` },
+    { bg: 'laranja', html: `
+      <h2>A missão<br><span class="faixa preta">continua a mesma</span></h2>
+      <p class="lead">Trabalho digno para quem trabalha. Mais direitos respeitados, mais empregos com carteira assinada.</p>` },
+    { bg: 'escuro', sticker: true, html: `
+      <span class="eyebrow">Caixinha</span>
+      <h2>O que você quer ver<br>aqui em<br><span class="faixa">2027?</span></h2>
+      <p class="lead">Obrigado por estar com a gente em 2026.</p>` },
+  ]},
 ];
 
 function storyHTML(st, s, i) {
-  const claro = /branco|creme/.test(s.bg);
-  const cls = s.bg.split(' ').map(b => 's-' + b).join(' ') + (s.sticker ? ' sticker' : '');
+  const claro = /branco|creme/.test(s.bg) && !s.topo;
+  const cls = s.bg.split(' ').map(b => 's-' + b).join(' ') + (s.sticker ? ' sticker' : '') + (s.topo ? ' com-topo' : '');
   const foot = s.foot || ['', ''];
   return `<div class="wrap"><section class="slide ${cls}" data-out="${st.id}/${st.id}_${String(i + 1).padStart(2, '0')}.png">
     ${s.foto ? `<img class="foto" src="fotos/${s.foto}.jpg" alt="" style="${s.fotoStyle || ''}">` : ''}
+    ${s.topo ? `<img class="foto-topo" src="fotos/${s.topo}.jpg" alt="" style="object-position:${s.topoPos || '50% 50%'}"><div class="fade-topo"></div>` : ''}
     <img class="logo" src="${claro ? 'logo-sinait-dsmg-escuro.png' : 'logo-sinait-dsmg.png'}" alt="SINAIT DS/MG">
     <div class="body">${s.html}</div>
     <div class="foot"><span>${foot[0]}</span><span>${foot[1]}</span></div>
