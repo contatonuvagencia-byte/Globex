@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Vídeo Institucional Beawst</title>
+<!--
+  Vídeo institucional BEAWST (~62s, 1920x1080, 30fps) para abertura da feira e volta do intervalo.
+  Sem locução gravada, a fala aparece como texto animado na tela. Gerar: node render.mjs
+-->
+<script>
+const CONFIG = {
+  DURATION: 62, FPS: 30,
+  FOTO_CAMILA: 'assets/camila.jpg',        // foto profissional da Camila (se faltar, aparece um aviso)
+  CENAS: { abertura: 0, proposito: 17, plataforma: 34, fechamento: 49 },
+  canais: ['beawst.com', '@beawst_intercambio', 'BEAWST Global Connect 2026'],
+};
+</script>
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;--tinta:#0B0B0F;
+  --grad:linear-gradient(90deg,#5B00D6 0%,#A3127F 50%,#F0102A 100%);
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#000}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:var(--escuro)}
+.glow{position:absolute;border-radius:50%;filter:blur(170px)}
+.grid{position:absolute;inset:-100px;opacity:.06;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:96px 96px}
+.scene{position:absolute;inset:0;display:none}
+.el{position:absolute}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.huge{font-weight:900;line-height:1.04;letter-spacing:-.02em}
+.say{font-weight:800;line-height:1.22}
+.pill{display:inline-block;font-weight:800;font-size:28px;letter-spacing:.16em;text-transform:uppercase;background:var(--roxo);padding:16px 30px;border-radius:999px}
+.foto{position:absolute;border-radius:36px;overflow:hidden;box-shadow:0 0 0 10px #fff,0 40px 90px rgba(0,0,0,.5)}
+.foto img{width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:repeating-linear-gradient(45deg,#2A1B44 0 22px,#231638 22px 44px);
+  color:#fff;font-weight:800;font-size:30px;letter-spacing:.06em;text-align:center}
+.ico{position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.07);border:3px solid rgba(255,255,255,.18);display:grid;place-items:center}
+.ico svg{width:130px;height:130px;fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.word{position:absolute;font-weight:900;font-size:40px;letter-spacing:.04em;padding:14px 28px;border-radius:999px;background:#fff;color:var(--tinta)}
+.browser{position:absolute;border-radius:28px;background:#fff;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.5);color:var(--tinta)}
+.bar{height:64px;background:#F1EEF6;display:flex;align-items:center;gap:12px;padding:0 24px}
+.bar i{width:16px;height:16px;border-radius:50%}
+.url{margin-left:20px;flex:1;height:38px;border-radius:19px;background:#fff;display:flex;align-items:center;padding:0 20px;font-weight:700;font-size:22px;color:#5A5466}
+.course{position:absolute;left:40px;right:40px;height:118px;border-radius:20px;border:3px solid #ECE8F0;display:flex;align-items:center;gap:24px;padding:0 24px;background:#fff}
+.course .fl{width:84px;height:56px;border-radius:8px;overflow:hidden;flex:none;box-shadow:0 0 0 2px #ddd}
+.course .fl svg{width:100%;height:100%;display:block}
+.course .t{font-weight:800;font-size:28px}
+.course .s{font-weight:600;font-size:20px;color:#6F6A78;margin-top:6px}
+.course .b{margin-left:auto;font-weight:800;font-size:22px;color:#fff;background:var(--grad);padding:12px 22px;border-radius:12px}
+.chan{display:inline-flex;align-items:center;gap:14px;font-weight:800;font-size:34px;padding:18px 32px;border-radius:999px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.24);margin:0 10px}
+#fade{position:absolute;inset:0;background:#000;pointer-events:none}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="malta" viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="15" height="20" fill="#fff"/><rect x="15" width="15" height="20" fill="#CF142B"/><g transform="translate(2.2 2.2)"><path d="M2 0h2v2h2v2H4v2H2V4H0V2h2z" fill="#B0B0B0" stroke="#CF142B" stroke-width=".35"/></g></symbol>
+  <symbol id="irlanda" viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#FF883E"/></symbol>
+  <symbol id="canada" viewBox="0 0 4 2" preserveAspectRatio="none"><rect width="4" height="2" fill="#fff"/><rect width="1" height="2" fill="#D52B1E"/><rect x="3" width="1" height="2" fill="#D52B1E"/><path d="M2 .45l.12.3.26-.06-.08.3.18.12-.3.08.04.3H2.08v.22h-.16V1.5H1.78l.04-.3-.3-.08.18-.12-.08-.3.26.06z" fill="#D52B1E"/></symbol>
+  <symbol id="uk" viewBox="0 0 60 30" preserveAspectRatio="none"><rect width="60" height="30" fill="#012169"/><path d="M0 0L60 30M60 0L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0L60 30M60 0L0 30" stroke="#C8102E" stroke-width="2.5"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></symbol>
+</svg>
+<div id="stage">
+  <div class="glow" id="g1" style="width:1200px;height:1200px;background:var(--roxo);opacity:.7"></div>
+  <div class="glow" id="g2" style="width:1000px;height:1000px;background:var(--vermelho);opacity:.33"></div>
+  <div class="glow" id="g3" style="width:900px;height:900px;background:var(--magenta);opacity:.4"></div>
+  <div class="grid" id="grid"></div>
+
+  <!-- CENA 1 | Abertura e fundadora -->
+  <div class="scene" id="s1">
+    <div class="el" id="a_logo" style="left:0;right:0;top:330px;text-align:center"><img src="assets/logo-feira-branco.svg" style="height:300px;display:inline-block"></div>
+    <div class="el huge" id="a_t1" style="left:160px;right:160px;top:350px;text-align:center;font-size:84px">O mundo é grande demais para caber apenas nos seus planos:</div>
+    <div class="el huge gradL" id="a_t2" style="left:160px;right:160px;top:560px;text-align:center;font-size:110px">ele foi feito para ser vivido.</div>
+    <div class="foto" id="a_foto" style="left:160px;top:170px;width:600px;height:740px"></div>
+    <div class="el" id="a_nome" style="left:860px;top:240px">
+      <span class="pill">fundadora da BEAWST</span>
+      <div class="huge" style="font-size:110px;margin-top:30px">Camila Fidélis</div>
+    </div>
+    <div class="el say" id="a_t3" style="left:860px;right:140px;top:530px;font-size:48px">A BEAWST nasceu da trajetória de Camila: executiva com <span class="gradL">mais de 20 anos</span> em Recursos Humanos em grandes multinacionais.</div>
+  </div>
+
+  <!-- CENA 2 | Desafio e propósito -->
+  <div class="scene" id="s2">
+    <div class="el" id="b_tag" style="left:0;right:0;top:110px;text-align:center"><span class="pill" style="background:var(--grad);font-size:34px">Carreira Global · Oportunidade Real</span></div>
+    <div class="el say" id="b_t1" style="left:200px;right:200px;top:230px;text-align:center;font-size:52px">Em duas décadas selecionando talentos, Camila viu que o intercâmbio não é só um passeio:</div>
+    <div class="ico" id="i1" style="left:330px;top:470px"><svg viewBox="0 0 64 64"><rect x="8" y="20" width="48" height="34" rx="5"/><path d="M24 20v-6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v6M8 34h48"/></svg></div>
+    <div class="ico" id="i2" style="left:835px;top:470px"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="24"/><ellipse cx="32" cy="32" rx="10" ry="24"/><path d="M8 32h48M12 20h40M12 44h40"/></svg></div>
+    <div class="ico" id="i3" style="left:1340px;top:470px"><svg viewBox="0 0 64 64"><path d="M4 24 32 12l28 12-28 12z"/><path d="M16 30v14c8 7 24 7 32 0V30"/></svg></div>
+    <div class="el huge" id="b_t2" style="left:160px;right:160px;top:780px;text-align:center;font-size:66px">é o maior <span class="gradL">acelerador de carreira.</span></div>
+    <div class="word" id="w1" style="left:330px;top:900px">maturidade</div>
+    <div class="word" id="w2" style="left:780px;top:900px">adaptabilidade</div>
+    <div class="word" id="w3" style="left:1300px;top:900px">destaque</div>
+    <div class="el" id="b_bw" style="left:0;right:0;top:270px;text-align:center">
+      <div class="huge" style="font-size:150px">Be a <span class="gradL">World</span> Student</div></div>
+    <div class="el say" id="b_t3" style="left:240px;right:240px;top:560px;text-align:center;font-size:54px">A missão da BEAWST é descomplicar a jornada internacional e torná-la <span class="gradL">estratégica para a sua vida.</span></div>
+  </div>
+
+  <!-- CENA 3 | A plataforma -->
+  <div class="scene" id="s3">
+    <div class="browser" id="c_br" style="left:130px;top:150px;width:900px;height:780px">
+      <div class="bar"><i style="background:#FF6B6B"></i><i style="background:#FFC36B"></i><i style="background:#6BD18B"></i><div class="url">🔒 beawst.com</div></div>
+      <div style="padding:34px 40px 0"><img src="assets/logo-feira-cor.svg" style="height:56px;display:block"></div>
+      <div style="margin:26px 40px 0;height:72px;border-radius:36px;border:3px solid #5B00D6;display:flex;align-items:center;padding:0 28px;gap:16px;font-weight:700;font-size:28px">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#5B00D6" stroke-width="3" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M15 15l6 6"/></svg><span id="c_q"></span><span id="c_cur" style="width:3px;height:34px;background:#5B00D6"></span></div>
+      <div class="course" id="k1" style="top:330px"><div class="fl"><svg><use href="#malta"/></svg></div><div><div class="t">Inglês em Malta</div><div class="s">24 semanas · estudo e trabalho</div></div><div class="b">Matricular</div></div>
+      <div class="course" id="k2" style="top:468px"><div class="fl"><svg><use href="#irlanda"/></svg></div><div><div class="t">Inglês na Irlanda</div><div class="s">25 semanas · estudo e trabalho</div></div><div class="b">Matricular</div></div>
+      <div class="course" id="k3" style="top:606px"><div class="fl"><svg><use href="#canada"/></svg></div><div><div class="t">Inglês no Canadá</div><div class="s">12 semanas · inglês geral</div></div><div class="b">Matricular</div></div>
+    </div>
+    <div class="el" id="c_tag" style="left:1110px;right:110px;top:180px"><span class="pill">a plataforma</span></div>
+    <div class="el huge" id="c_t1" style="left:1110px;right:100px;top:260px;font-size:60px">Compare, matricule-se e planeje <span class="gradL">em um só lugar.</span></div>
+    <div class="el say" id="c_t2" style="left:1110px;right:100px;top:530px;font-size:34px">Muito mais do que uma agência: uma plataforma inteligente que conecta você direto a escolas de alto nível pelo mundo.</div>
+    <div class="el" id="c_pts" style="left:1110px;right:100px;top:740px;display:flex;flex-direction:column;gap:16px;font-weight:800;font-size:34px">
+      <div id="pt1">✓ transparência total</div><div id="pt2">✓ suporte especializado</div><div id="pt3">✓ foco em quem você quer ser quando voltar</div></div>
+  </div>
+
+  <!-- CENA 4 | Fechamento na feira -->
+  <div class="scene" id="s4">
+    <div class="el say" id="d_t1" style="left:0;right:0;top:170px;text-align:center;font-size:54px">Seja bem-vindo à</div>
+    <div class="el" id="d_logo" style="left:0;right:0;top:260px;text-align:center"><img src="assets/logo-feira-branco.svg" style="height:280px;display:inline-block"></div>
+    <div class="el say" id="d_t2" style="left:220px;right:220px;top:600px;text-align:center;font-size:42px;color:rgba(255,255,255,.92)">Explore nossos espaços, converse com nossos parceiros e descubra o próximo passo da sua jornada global.</div>
+    <div class="el" id="d_ch" style="left:0;right:0;top:770px;text-align:center"></div>
+    <div class="el huge" id="d_t3" style="left:0;right:0;top:900px;text-align:center;font-size:58px">BEAWST: <span class="gradL">Be a World Student.</span></div>
+  </div>
+
+  <div id="fade"></div>
+</div>
+<script>
+const C = CONFIG, T = C.CENAS;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, d) => clamp((t - a) / d);
+const eOut = x => 1 - Math.pow(1 - x, 3), eOut4 = x => 1 - Math.pow(1 - x, 4);
+const eBack = x => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const $ = id => document.getElementById(id);
+const order = ['abertura', 'proposito', 'plataforma', 'fechamento'];
+const endOf = i => i < order.length - 1 ? T[order[i + 1]] : C.DURATION;
+
+// entra (sobe + fade) em a, sai em b
+function show(id, t, a, b, kind = 'rise') {
+  const el = $(id), p = (kind === 'pop' ? eBack : eOut4)(seg(t, a, kind === 'pop' ? .5 : .6));
+  const o = clamp(seg(t, a, .25)) * (b == null ? 1 : 1 - seg(t, b - .35, .35));
+  const tf = kind === 'pop' ? `scale(${t < a ? .6 : .6 + .4 * p})` : kind === 'left' ? `translateX(${(1 - p) * -120}px)` : kind === 'right' ? `translateX(${(1 - p) * 120}px)` : `translateY(${(1 - p) * 50}px)`;
+  el.style.opacity = o; el.style.transform = tf;
+}
+
+$('d_ch').innerHTML = C.canais.map(c => `<span class="chan">${c}</span>`).join('');
+const QUERY = 'inglês em Malta';
+let fotoOk = false;
+
+function render(t) {
+  const idx = order.reduce((k, n, i) => t >= T[n] ? i : k, 0);
+  order.forEach((n, i) => $('s' + (i + 1)).style.display = i === idx ? 'block' : 'none');
+  $('g1').style.transform = `translate(${-350 + Math.sin(t * .25) * 200}px,${-450 + Math.cos(t * .2) * 150}px)`;
+  $('g2').style.transform = `translate(${1250 + Math.cos(t * .22) * 200}px,${450 + Math.sin(t * .25) * 150}px)`;
+  $('g3').style.transform = `translate(${800 + Math.sin(t * .18) * 250}px,${-300 + Math.cos(t * .21) * 150}px)`;
+  $('grid').style.transform = `translateY(${-t * 10}px)`;
+  // transição suave entre cenas
+  const sc = $('s' + (idx + 1)), lt = t - T[order[idx]];
+  sc.style.opacity = clamp(seg(lt, 0, .5)) * (idx === order.length - 1 ? 1 : 1 - seg(t, endOf(idx) - .45, .45));
+  sc.style.transform = `scale(${1.03 - .03 * eOut(seg(lt, 0, 1))})`;
+
+  // 1
+  show('a_logo', t, .3, 3.4, 'pop');
+  show('a_t1', t, 3.6, 8.6); show('a_t2', t, 5.0, 8.6);
+  show('a_foto', t, 8.8, null, 'left');
+  $('a_foto').querySelector('img, .ph') && ($('a_foto').firstElementChild.style.transform = `scale(${1.08 - .06 * seg(t, 8.8, 8)})`);
+  show('a_nome', t, 9.3, null, 'right'); show('a_t3', t, 10.6, null, 'right');
+  // 2
+  show('b_tag', t, 17.3, 28.2, 'pop'); show('b_t1', t, 17.7, 28.2);
+  ['i1', 'i2', 'i3'].forEach((id, i) => show(id, t, 19.4 + i * .3, 28.2, 'pop'));
+  show('b_t2', t, 21.3, 28.2);
+  ['w1', 'w2', 'w3'].forEach((id, i) => show(id, t, 22.6 + i * .45, 28.2, 'pop'));
+  show('b_bw', t, 28.4, null, 'pop'); show('b_t3', t, 29.6, null);
+  // 3
+  show('c_br', t, 34.3, null, 'left');
+  const q = Math.floor(seg(t, 35.4, 1.6) * QUERY.length);
+  $('c_q').textContent = QUERY.slice(0, q);
+  $('c_cur').style.opacity = Math.floor(t * 2.5) % 2 ? 1 : 0;
+  ['k1', 'k2', 'k3'].forEach((id, i) => show(id, t, 37.3 + i * .35, null, 'rise'));
+  show('c_tag', t, 34.8, null, 'right'); show('c_t1', t, 35.1, null, 'right'); show('c_t2', t, 39.0, null);
+  ['pt1', 'pt2', 'pt3'].forEach((id, i) => show(id, t, 41.5 + i * .9, null, 'right'));
+  // 4 (segura parado no final)
+  show('d_t1', t, 49.3, null); show('d_logo', t, 49.7, null, 'pop'); show('d_t2', t, 51.5, null);
+  show('d_ch', t, 54.0, null); show('d_t3', t, 56.0, null, 'pop');
+  $('fade').style.opacity = Math.max(1 - seg(t, 0, .5), seg(t, C.DURATION - 1.2, 1.1));
+}
+
+window.CONFIG = CONFIG; window.render = render;
+window.ready = (async () => {
+  await Promise.all([500, 700, 800, 900].map(w => document.fonts.load(`${w} 50px M`, 'ÇÃÕÉ')));
+  fotoOk = await new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = C.FOTO_CAMILA; });
+  $('a_foto').innerHTML = fotoOk ? `<img src="${C.FOTO_CAMILA}">` : `<div class="ph"><div style="font-size:90px">📷</div>FALTA<br>assets/camila.jpg<br><span style="font-weight:600;font-size:22px;opacity:.8">foto profissional da Camila</span></div>`;
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  window.FOTO_OK = fotoOk;
+  render(0);
+})();
+if (!location.search.includes('render')) window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % C.DURATION); requestAnimationFrame(loop); })(); });
+</script>
+</body>
+</html>
