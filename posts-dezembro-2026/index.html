@@ -44,6 +44,14 @@ body.export .wrap { width: 1080px; height: 1350px; aspect-ratio: auto; }
 .s-preto { background: var(--preto); }
 .s-preto::before { background: radial-gradient(70% 45% at 10% 105%, rgba(204,78,0,.4) 0%, transparent 72%); }
 .slide > * { position: relative; }
+/* foto em faixa no topo (as fotos recebidas são pequenas; assim quase não ampliam) */
+.s-branco { --bgc: 245,245,245; } .s-laranja { --bgc: 204,78,0; } .s-chumbo { --bgc: 43,43,43; } .s-preto { --bgc: 17,17,17; }
+.slide > .foto { position: absolute; left: 0; top: 0; width: 100%; height: 800px; object-fit: cover; }
+.slide > .fade { position: absolute; left: 0; top: 0; width: 100%; height: 801px; background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 22%, rgba(var(--bgc),0) 42%, rgba(var(--bgc),.85) 78%, rgb(var(--bgc)) 100%); }
+.com-foto .body { justify-content: flex-end; gap: 34px; }
+.com-foto .body { padding-bottom: 36px; }
+.s-branco > .fade { background: linear-gradient(180deg, rgba(245,245,245,.75) 0%, rgba(245,245,245,0) 22%, rgba(245,245,245,0) 42%, rgba(245,245,245,.85) 78%, rgb(245,245,245) 100%); }
+.com-foto .lead { font-size: 40px; }
 
 .logo { position: absolute; top: 80px; right: 80px; width: 160px; }
 .body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 42px; width: 100%; padding-top: 110px; }
@@ -100,7 +108,19 @@ const arroba = '<span class="arroba">@sinaitmg</span>';
 const icone = '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
 
 const POSTS = [
-  { id: '2026-12-02_post_minas-306-anos', data: '02/12', nome: 'Post único · 306 anos de Minas Gerais', slides: [
+  { id: '2026-12-02_post_minas-306-anos', data: '02/12', nome: 'Post único · 306 anos de Minas Gerais (foto: Ouro Preto)', slides: [
+    { bg: 'laranja', foto: '02-12-ouro-preto', fotoPos: '72% 50%', foot: ['', ''], html: `
+      <div class="stat" style="font-size:300px;line-height:.85">306</div>
+      <h2 style="font-size:96px">anos de<br><span class="faixa">Minas Gerais</span></h2>
+      <p class="lead">Uma história feita por quem trabalha. <b>E por quem cuida para que o trabalho seja digno.</b></p>` },
+  ]},
+  { id: '2026-12-02_post_minas-306-anos_alt-belo-horizonte', pasta: '2026-12-02_post_minas-306-anos', data: '02/12', nome: 'Alternativa · foto de Belo Horizonte', slides: [
+    { bg: 'laranja', foto: '02-12-belo-horizonte', fotoPos: '55% 50%', foot: ['', ''], html: `
+      <div class="stat" style="font-size:300px;line-height:.85">306</div>
+      <h2 style="font-size:96px">anos de<br><span class="faixa">Minas Gerais</span></h2>
+      <p class="lead">Uma história feita por quem trabalha. <b>E por quem cuida para que o trabalho seja digno.</b></p>` },
+  ]},
+  { id: '2026-12-02_post_minas-306-anos_alt-sem-foto', pasta: '2026-12-02_post_minas-306-anos', data: '02/12', nome: 'Alternativa · sem foto', slides: [
     { bg: 'chumbo', foot: ['', ''], html: `
       <div class="stat" style="font-size:400px;line-height:.85">306</div>
       <h2 style="font-size:104px">anos de<br><span class="faixa">Minas Gerais</span></h2>
@@ -141,6 +161,11 @@ const POSTS = [
       ${arroba}` },
   ]},
 
+  { id: '2026-12-03_carrossel_pcd_01_alt-com-foto', pasta: '2026-12-03_carrossel_pcd', data: '03/12', nome: 'Alternativa da capa · com foto (ver aviso sobre IA)', slides: [
+    { bg: 'branco', foto: '03-12-pcd', fotoPos: '50% 30%', foot: ['Educação trabalhista', 'Arraste →'], html: `
+      <h1 style="font-size:130px">3 de <span class="chave">dezembro</span></h1>
+      <p class="lead">Dia Internacional das <span class="chave">Pessoas com Deficiência.</span></p>` },
+  ]},
   { id: '2026-12-09_carrossel_fim-de-ano', data: '09/12', nome: 'Carrossel · Trabalho de fim de ano: o que vale e o que exigir', slides: [
     { bg: 'branco', ghost: 'Temporário', foot: ['Educação trabalhista', 'Arraste →'], html: `
       <h1>Trabalho de<br><span class="chave">fim de ano</span></h1>
@@ -207,13 +232,24 @@ const POSTS = [
       ${arroba}` },
   ]},
 
-  { id: '2026-12-25_post_natal', data: '25/12', nome: 'Post único · Natal', slides: [
+  { id: '2026-12-25_post_natal', data: '25/12', nome: 'Post único · Natal (com foto)', slides: [
+    { bg: 'chumbo', foto: '25-12-natal', fotoPos: '78% 50%', foot: ['', ''], html: `
+      <h1 style="font-size:170px">Feliz<br><span class="faixa">Natal</span></h1>
+      <p class="lead">Que o dia seja de descanso para quem pode e de <span class="chave">reconhecimento para quem trabalha hoje.</span></p>` },
+  ]},
+  { id: '2026-12-25_post_natal_alt-sem-foto', pasta: '2026-12-25_post_natal', data: '25/12', nome: 'Alternativa · sem foto', slides: [
     { bg: 'chumbo', foot: ['', ''], html: `
       <h1 style="font-size:190px">Feliz<br><span class="faixa">Natal</span></h1>
       <p class="lead">Que o dia seja de descanso para quem pode e de <span class="chave">reconhecimento para quem trabalha hoje.</span></p>` },
   ]},
 
-  { id: '2026-12-31_post_ano-novo', data: '31/12', nome: 'Post único · Ano Novo', slides: [
+  { id: '2026-12-31_post_ano-novo', data: '31/12', nome: 'Post único · Ano Novo (com foto)', slides: [
+    { bg: 'preto', foto: '31-12-ano-novo', fotoPos: '50% 40%', foot: ['', ''], html: `
+      <div class="stat" style="font-size:330px;line-height:.9">2027</div>
+      <h2 style="margin-top:-10px"><span class="faixa">chegando</span></h2>
+      <p class="lead">Mais trabalho digno, mais direitos respeitados, <span class="chave">mais Minas.</span></p>` },
+  ]},
+  { id: '2026-12-31_post_ano-novo_alt-sem-foto', pasta: '2026-12-31_post_ano-novo', data: '31/12', nome: 'Alternativa · sem foto', slides: [
     { bg: 'laranja', foot: ['', ''], html: `
       <div class="stat" style="font-size:420px;line-height:.9">2027</div>
       <h2 style="margin-top:-20px"><span class="faixa">chegando</span></h2>
@@ -223,9 +259,11 @@ const POSTS = [
 
 function slideHTML(post, s, i, n) {
   const claro = s.bg === 'branco';
-  const out = n > 1 ? `${post.id}/${post.id}_${String(i + 1).padStart(2, '0')}.png` : `${post.id}/${post.id}.png`;
-  return `<div class="wrap"><section class="slide s-${s.bg}" data-out="${out}">
-    ${s.ghost ? `<div class="ghost">${s.ghost}</div>` : ''}
+  const pasta = post.pasta || post.id;
+  const out = n > 1 ? `${pasta}/${post.id}_${String(i + 1).padStart(2, '0')}.png` : `${pasta}/${post.id}.png`;
+  return `<div class="wrap"><section class="slide s-${s.bg}${s.foto ? ' com-foto' : ''}" data-out="${out}">
+    ${s.foto ? `<img class="foto" src="fotos/${s.foto}.jpg" alt="" style="object-position:${s.fotoPos || '50% 50%'}"><div class="fade"></div>` : ''}
+    ${s.ghost && !s.foto ? `<div class="ghost">${s.ghost}</div>` : ''}
     <img class="logo" src="${claro ? 'logo-sinait-dsmg-escuro.png' : 'logo-sinait-dsmg.png'}" alt="SINAIT DS/MG">
     <div class="body">${s.html}</div>
     <div class="foot"><span>${s.foot[0]}</span><span>${s.foot[1]}</span></div>
