@@ -8,10 +8,10 @@
    Paleta: preto #200100, laranja #cc4e00, creme #F6F4F2, branco #f5f5f5 nas capas claras; Anton + Montserrat.
    Layout: stories 1080x1920 (área livre embaixo para stickers e barra de resposta), texto centralizado, logo no topo, faixas laranja inclinadas nos destaques. */
 :root {
-  --preto: #200100;
+  --preto: #2B2B2B;
   --laranja: #cc4e00;
   --laranja-logo: #f37c28;
-  --creme: #F6F4F2;
+  --creme: #F5F5F5;
   --branco: #f5f5f5;
   --creme-70: rgba(246, 244, 242, .74);
   --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
@@ -124,7 +124,7 @@ p { margin: 0; }
 // sticker: true deixa a parte de baixo livre para o sticker do Instagram (enquete, quiz, caixinha, post compartilhado).
 const feed = (t = 'Post novo no feed') => `<span class="pill-feed">${t} ↓</span>`;
 const STORIES = [
-  { id: '03-12', nome: 'Trabalho de fim de ano', s: [
+  { id: '2026-12-09_stories_fim-de-ano', nome: 'Trabalho de fim de ano', s: [
     { bg: 'escuro', sticker: true, html: `
       <span class="eyebrow">Quiz</span>
       <h2>Contrato temporário<br>tem direito<br><span class="faixa">a férias?</span></h2>
@@ -144,7 +144,7 @@ function storyHTML(st, s, i) {
   const claro = /branco|creme/.test(s.bg);
   const cls = s.bg.split(' ').map(b => 's-' + b).join(' ') + (s.sticker ? ' sticker' : '');
   const foot = s.foot || ['', ''];
-  return `<div class="wrap"><section class="slide ${cls}" data-out="${st.id}/story-${i + 1}.png">
+  return `<div class="wrap"><section class="slide ${cls}" data-out="${st.id}/${st.id}_${String(i + 1).padStart(2, '0')}.png">
     ${s.foto ? `<img class="foto" src="fotos/${s.foto}.jpg" alt="" style="${s.fotoStyle || ''}">` : ''}
     <img class="logo" src="${claro ? 'logo-sinait-dsmg-escuro.png' : 'logo-sinait-dsmg.png'}" alt="SINAIT DS/MG">
     <div class="body">${s.html}</div>
