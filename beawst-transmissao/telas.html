@@ -28,6 +28,8 @@ const PALESTRANTES = {
     desc: 'Conheça os processos de estudo e trabalho no destino mais procurado da Europa.' },
   daniel: { nome: 'Daniel Döbereiner', tema: 'Gateway School of English', bandeira: 'malta', foto: 'assets/palestrantes/daniel.jpg', fotoPos: '50% 30%', fotoZoom: 1.1, fotoOrigem: '48% 35%',
     desc: 'Representante da Gateway School of English, escola de inglês em Malta.' },
+  rafael: { nome: 'Rafael Carvalho', tema: 'Visto e passaporte sem mistério', foto: 'assets/palestrantes/rafael.jpg', fotoPos: '50% 18%', fotoZoom: 1.25, fotoOrigem: '48% 22%',
+    desc: 'Do Mundo dos Vistos: tire suas dúvidas de documentação ao vivo.' },
 };
 window.PALESTRANTES = PALESTRANTES;
 HOLES.pm = HOLES['08'];   // máscara PPT + câmera personalizada usa os mesmos recortes
@@ -207,7 +209,7 @@ if (P) {
   const foto = el => { el.textContent = ini; const i = new Image(); i.style.objectPosition = P.fotoPos || '50% 50%'; i.style.transform = `scale(${P.fotoZoom || 1})`; i.style.transformOrigin = P.fotoOrigem || '50% 50%'; i.onload = () => { el.textContent = ''; el.appendChild(i); }; i.src = P.foto; };
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   ['ps', 'pm', 'gc'].forEach(k => { set(k + 'Nome', P.nome); set(k + 'Tema', P.tema); set(k + 'Desc', P.desc);
-    const f = document.getElementById(k + 'Flag'); if (f) f.innerHTML = BANDEIRAS[P.bandeira];
+    const f = document.getElementById(k + 'Flag'); if (f) { if (P.bandeira) f.innerHTML = BANDEIRAS[P.bandeira]; else f.style.display = 'none'; }
     const ft = document.getElementById(k + 'Foto'); if (ft) foto(ft); });
 }
 if (t === 'gc') { document.body.classList.add('transp'); document.documentElement.style.background = 'transparent'; document.body.style.background = 'transparent'; }
