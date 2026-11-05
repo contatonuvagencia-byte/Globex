@@ -1,0 +1,114 @@
+<title>Convite Confraternização AFTs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@500;600;700;800&display=swap">
+<style>
+/* Convite SINAIT DS/MG · confraternização dos AFTs, 03/12/2026.
+   Paleta de dezembro: chumbo #2B2B2B, preto #111111, laranja #cc4e00, branco gelo #F5F5F5; Anton + Montserrat.
+   Fundo: foto do restaurante bem desfocada (as fotos recebidas são miniaturas), com camada escura. */
+:root {
+  --gelo: #F5F5F5;
+  --gelo-70: rgba(245,245,245,.72);
+  --laranja: #cc4e00;
+  --laranja-claro: #f37c28;
+  --chumbo: #2B2B2B;
+  --preto: #111111;
+  --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --f-body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: dark;
+}
+body { background: #0b0b0b; color: var(--gelo); font-family: var(--f-body); padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.wrap { position: relative; overflow: hidden; }
+.wrap.feed { width: min(100%, 420px); aspect-ratio: 1080 / 1350; }
+.wrap.story { width: min(100%, 340px); aspect-ratio: 1080 / 1920; }
+.slide { position: absolute; left: 0; top: 0; width: 1080px; transform-origin: 0 0; overflow: hidden; background: var(--preto); color: var(--gelo);
+  box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.feed .slide { height: 1350px; padding: 80px; }
+.story .slide { height: 1920px; padding: 250px 80px 340px; }
+body.export { padding: 0; background: var(--preto); }
+body.export .row { display: block; }
+body.export .wrap.feed { width: 1080px; height: 1350px; aspect-ratio: auto; }
+body.export .wrap.story { width: 1080px; height: 1920px; aspect-ratio: auto; }
+
+.slide > .fundo { position: absolute; inset: -80px; width: calc(100% + 160px); height: calc(100% + 160px); object-fit: cover; filter: blur(26px) saturate(1.15) brightness(.9); }
+.slide > .veu { position: absolute; inset: 0; background:
+  linear-gradient(180deg, rgba(17,17,17,.55) 0%, rgba(17,17,17,.35) 30%, rgba(17,17,17,.82) 62%, rgba(17,17,17,.96) 100%),
+  radial-gradient(70% 40% at 50% 105%, rgba(204,78,0,.45) 0%, transparent 70%); }
+.slide > * { position: relative; }
+
+.logo { width: 170px; flex: none; margin-bottom: 20px; }
+.body { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+.eyebrow { font-weight: 700; font-size: 28px; letter-spacing: .4em; text-transform: uppercase; color: var(--laranja-claro); }
+h1 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: 1; margin: 0; font-size: 124px; letter-spacing: .005em; }
+.faixa { display: inline-block; background: var(--laranja); color: var(--gelo); padding: .02em .18em .06em; transform: rotate(-3deg); margin-top: .12em; white-space: nowrap; box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+
+.info { width: 100%; max-width: 860px; display: grid; grid-template-columns: 1fr 1fr; border-top: 3px solid rgba(245,245,245,.22); border-bottom: 3px solid rgba(245,245,245,.22); }
+.info > div { padding: 30px 10px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.info > div + div { border-left: 3px solid rgba(245,245,245,.22); }
+.info .local { grid-column: 1 / -1; border-left: 0 !important; border-top: 3px solid rgba(245,245,245,.22); }
+.rot { font-weight: 700; font-size: 22px; letter-spacing: .3em; text-transform: uppercase; color: var(--gelo-70); }
+.val { font-family: var(--f-display); font-size: 92px; line-height: 1; text-transform: uppercase; }
+.val small { font-family: var(--f-body); font-weight: 600; font-size: 30px; display: block; margin-top: 10px; text-transform: none; color: var(--gelo-70); }
+.local .val { font-size: 72px; color: var(--laranja-claro); }
+.end { font-size: 32px; font-weight: 600; line-height: 1.35; }
+
+.rsvp { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.rsvp p { margin: 0; font-size: 32px; font-weight: 600; line-height: 1.35; }
+.rsvp p b { color: var(--laranja-claro); font-weight: 800; }
+.zap { display: inline-flex; align-items: center; gap: 16px; background: var(--gelo); color: var(--chumbo); font-weight: 800; font-size: 44px; padding: 16px 40px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+.zap svg { flex: none; }
+
+/* story: mais respiro */
+.story .body { gap: 60px; }
+.story h1 { font-size: 128px; }
+</style>
+
+<div class="row">
+  <div class="wrap story"><section class="slide" data-out="convite-confraternizacao-aft-2026-12-03_story.png">
+    <img class="fundo" src="fotos/parrilla-1.jpg" alt="">
+    <div class="veu"></div>
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <div class="body">
+      <span class="eyebrow">Convite</span>
+      <h1>Confraternização<br><span class="faixa">AFT's</span></h1>
+      <div class="info">
+        <div><span class="rot">Data</span><span class="val">03/12<small>quinta-feira</small></span></div>
+        <div><span class="rot">Horário</span><span class="val" style="text-transform:none">18h<small>início</small></span></div>
+        <div class="local"><span class="rot">Local</span><span class="val">Parrilla Savassi158</span><span class="end">Rua Professor Moraes, 158, Funcionários, BH</span></div>
+      </div>
+      <div class="rsvp">
+        <p>Confirme sua presença <b>até 27/11</b> pelo WhatsApp da <span style="white-space:nowrap">DS-MG</span>, com Alzira:</p>
+        <span class="zap"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"/></svg>(31) 99339-0116</span>
+      </div>
+    </div>
+  </section></div>
+  <div class="wrap feed"><section class="slide" data-out="convite-confraternizacao-aft-2026-12-03_feed.png">
+    <img class="fundo" src="fotos/parrilla-1.jpg" alt="">
+    <div class="veu"></div>
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <div class="body">
+      <span class="eyebrow">Convite</span>
+      <h1>Confraternização<br><span class="faixa">AFT's</span></h1>
+      <div class="info">
+        <div><span class="rot">Data</span><span class="val">03/12<small>quinta-feira</small></span></div>
+        <div><span class="rot">Horário</span><span class="val" style="text-transform:none">18h<small>início</small></span></div>
+        <div class="local"><span class="rot">Local</span><span class="val">Parrilla Savassi158</span><span class="end">Rua Professor Moraes, 158, Funcionários, BH</span></div>
+      </div>
+      <div class="rsvp">
+        <p>Confirme sua presença <b>até 27/11</b> pelo WhatsApp da <span style="white-space:nowrap">DS-MG</span>, com Alzira:</p>
+        <span class="zap"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"/></svg>(31) 99339-0116</span>
+      </div>
+    </div>
+  </section></div>
+
+</div>
+
+<script>
+const exp = new URLSearchParams(location.search).has('export');
+if (exp) document.body.classList.add('export');
+const fit = () => document.querySelectorAll('.wrap').forEach(w => { w.querySelector('.slide').style.transform = exp ? 'none' : `scale(${w.clientWidth / 1080})`; });
+addEventListener('resize', fit); fit();
+</script>
