@@ -130,10 +130,9 @@ const POSTS = {
   ],
   // Card "Saiu do forno na NUV (portfólio de conteúdos, fixar)": grade com espaços pros conteúdos dos clientes
   saiu_do_forno: [
-    [false, `${box(0, 0, 1080, 1350, photo('listras', 1080, 1350, .5, .5))}
-      <div class="abs" style="left:46px;top:46px;padding:10px 18px;background:${C.off};font-weight:700;font-size:20px;letter-spacing:.06em;color:${C.navy}">NUV</div>
-      <div class="abs H" style="left:46px;top:300px;width:1000px;font-size:200px;line-height:1.12;color:${C.navy}"><span style="background:${C.off};padding:0 22px;box-decoration-break:clone;-webkit-box-decoration-break:clone">saiu do forno <em>na nuv.</em></span></div>
-      <div class="abs s" style="left:46px;bottom:56px;padding:12px 18px;background:${C.off};color:${C.navy}">o que foi pro ar nos perfis<br>dos nossos clientes esse mês</div>`],
+    [false, `${box(0, 0, 1080, 1350, photo('ripada', 1080, 1350, .5, .5))}${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+      <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.navy}">saiu do forno <em>na nuv.</em></div>
+      ${FOOT('o que foi pro ar nos perfis<br>dos nossos clientes esse mês', C.navy)}${ARROW(C.navy)}`],
     [false, `${box(0, 0, 1080, 1350, photo('listras', 1080, 1350, .5, .5))}<div class="abs" style="left:40px;top:40px;right:40px;bottom:40px;background:${C.off};border-radius:24px"></div>${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
       <div class="abs" style="left:66px;right:66px;top:250px;display:flex;gap:24px">
         ${['sindicato', 'despacho aduaneiro', 'planejamento financeiro'].map(n => `<div style="flex:1">
