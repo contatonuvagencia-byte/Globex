@@ -135,6 +135,44 @@ Object.entries(POSTS).forEach(([tema, slides]) => slides.forEach(([dark, html], 
   d.innerHTML = html;
   document.body.appendChild(d);
 }));
+
+// ---------- opções de miolo (index.html#opcoes) ----------
+const PILLS = (arr, fg, bg) => arr.map((t, i) => `<span style="display:inline-block;border-radius:999px;padding:14px 26px;margin:0 10px 12px 0;font-weight:700;font-size:22px;${i % 2 ? `border:2px solid ${fg};color:${fg}` : `background:${fg};color:${bg}`}">${t}</span>`).join('');
+const MIOLO = {
+  // A · foto cheia, título enorme direto na área lisa/escura da foto, texto curto
+  A_gestao: [true, `${box(0, 0, 1080, 1350, photo('escuro', 1080, 1350, .6, .5, 1, 'filter:brightness(.72) contrast(1.1)'))}
+    ${BRAND(C.off)}${LAB('serviço 01', C.off)}
+    <div class="abs H" style="left:58px;top:160px;width:700px;font-size:150px;color:${C.off}">gestão de redes <em>sociais</em></div>
+    <div class="abs lead" style="left:66px;top:1080px;width:600px;color:${C.off}">A gente planeja, cria e posta, <b>e você só aprova.</b></div>`],
+  A_plano: [false, `${box(0, 0, 1080, 1350, photo('mesa', 1080, 1350, .5, .45))}
+    ${BRAND(C.navy)}${LAB('etapa 02', C.navy)}
+    <div class="abs H" style="left:58px;top:170px;font-size:190px;color:${C.navy}">o <em>plano</em></div>
+    <div class="abs lead" style="left:66px;top:420px;width:560px">Estratégia e calendário do mês, pra você <b>saber tudo antes de sair.</b></div>`],
+  // B · número gigante + foto em moldura alta à direita (editorial)
+  B_gestao: [false, `${BRAND(C.navy)}${LAB('serviço', C.navy)}
+    <div class="abs H" style="left:44px;top:120px;font-size:420px;color:${C.beige};letter-spacing:-.08em">01</div>
+    <div class="abs H" style="left:58px;top:560px;width:520px;font-size:104px;color:${C.navy}">gestão de redes <em>sociais</em></div>
+    <div class="abs lead" style="left:66px;top:900px;width:480px;font-size:29px">A gente planeja, cria e posta, <b>e você só aprova.</b></div>
+    ${box(600, 170, 414, 1040, photo('escuro', 414, 1040, .6, .5), 207)}
+    ${ARROW(C.navy)}`],
+  B_plano: [true, `${BRAND(C.off)}${LAB('etapa', C.off)}
+    <div class="abs H" style="left:44px;top:120px;font-size:420px;color:${C.indigo};letter-spacing:-.08em">02</div>
+    <div class="abs H" style="left:58px;top:560px;width:520px;font-size:120px;color:${C.off}">o <em>plano</em></div>
+    <div class="abs lead" style="left:66px;top:740px;width:480px;font-size:29px">Estratégia e calendário do mês, pra você <b>saber tudo antes de sair.</b></div>
+    ${box(600, 170, 414, 1040, photo('mesa', 414, 1040, .55, .6), 207)}
+    ${ARROW(C.off)}`],
+  // C · foto grande em cartão + título embaixo + pílulas (estilo clean)
+  C_gestao: [false, `${BRAND(C.navy)}${LAB('serviço 01', C.navy)}
+    ${box(66, 140, 948, 640, photo('escuro', 948, 640, .55, .5), 26)}
+    <div class="abs H" style="left:58px;top:830px;width:960px;font-size:112px;color:${C.navy}">gestão de redes <em>sociais</em></div>
+    <div class="abs" style="left:66px;top:1080px;width:948px">${PILLS(['planejamento', 'criação', 'postagem', 'você só aprova'], C.navy, C.off)}</div>`],
+  C_plano: [true, `${BRAND(C.off)}${LAB('etapa 02', C.off)}
+    ${box(66, 140, 948, 640, photo('mesa', 948, 640, .55, .72), 26)}
+    <div class="abs H" style="left:58px;top:830px;font-size:140px;color:${C.off}">o <em>plano</em></div>
+    <div class="abs" style="left:66px;top:1030px;width:948px">${PILLS(['estratégia', 'calendário do mês', 'tudo aprovado antes'], C.beige, C.navy)}</div>`],
+};
+if (location.hash === '#opcoes') { document.querySelectorAll('.post').forEach(e => e.remove());
+  Object.entries(MIOLO).forEach(([id, [dark, html]]) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = 'opcao_' + id; d.innerHTML = html; document.body.appendChild(d); }); }
 </script>
 </body>
 </html>

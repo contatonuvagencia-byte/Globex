@@ -9,7 +9,7 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 mkdirSync(`${ROOT}/out/png`, { recursive: true });
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 1500 }, deviceScaleFactor: 2 });
-await page.goto('file://' + ROOT + '/index.html');
+await page.goto('file://' + ROOT + '/index.html' + (process.env.HASH || ''));
 await page.evaluate(async () => {
   await Promise.all(['900 40px Title', 'italic 300 40px TitleI', '400 40px Comfortaa', '700 40px Comfortaa'].map(f => document.fonts.load(f, 'Aá')));
   await document.fonts.ready;
