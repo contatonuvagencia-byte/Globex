@@ -1,0 +1,155 @@
+<title>Convite Confraternização AFTs</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap">
+<style>
+/* Convite SINAIT DS/MG · versão festiva e elegante. Fundo claro e quente, varal de luzes, confetes nas margens,
+   foto da fachada como polaroid e placa como selo. Laranja #cc4e00, chumbo #2B2B2B, gelo/creme. */
+:root {
+  --creme: #F7F2EA;
+  --gelo: #F5F5F5;
+  --laranja: #cc4e00;
+  --laranja-claro: #f37c28;
+  --ouro: #e9a23b;
+  --chumbo: #2B2B2B;
+  --chumbo-60: rgba(43,43,43,.62);
+  --linha: rgba(43,43,43,.16);
+  --f-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --f-body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --f-script: "Playfair Display", Georgia, "Times New Roman", serif;
+  color-scheme: light;
+}
+body { background: #e9e3d9; color: var(--chumbo); font-family: var(--f-body); padding-block: 24px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.row { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.wrap { position: relative; overflow: hidden; }
+.wrap.feed { width: min(100%, 420px); aspect-ratio: 1080 / 1350; }
+.wrap.story { width: min(100%, 340px); aspect-ratio: 1080 / 1920; }
+.slide { position: absolute; left: 0; top: 0; width: 1080px; transform-origin: 0 0; overflow: hidden; color: var(--chumbo); box-sizing: border-box;
+  background: radial-gradient(70% 45% at 50% 100%, rgba(243,124,40,.18) 0%, transparent 70%), radial-gradient(60% 35% at 50% 0%, #fffaf2 0%, transparent 70%), var(--creme);
+  display: flex; flex-direction: column; align-items: center; text-align: center; }
+.feed .slide { height: 1350px; padding: 150px 120px 70px; gap: 20px; }
+.story .slide { height: 1920px; padding: 380px 110px 340px; gap: 22px; }
+body.export { padding: 0; background: var(--creme); }
+body.export .row { display: block; }
+body.export .wrap.feed { width: 1080px; height: 1350px; aspect-ratio: auto; }
+body.export .wrap.story { width: 1080px; height: 1920px; aspect-ratio: auto; }
+
+.slide > svg.varal { position: absolute; left: 0; top: 0; width: 1080px; pointer-events: none; }
+.slide > svg.confete { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.slide > :not(svg) { position: relative; }
+
+.logo { width: 130px; flex: none; }
+.script { font-family: var(--f-script); font-style: italic; font-weight: 600; font-size: 58px; line-height: 1; color: var(--laranja); margin-top: 4px; }
+h1 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; margin: 0; font-size: 104px; line-height: 1; letter-spacing: .01em; color: var(--chumbo); }
+.faixa { display: inline-block; background: var(--laranja); color: var(--gelo); padding: .03em .22em .07em; transform: rotate(-3deg); margin-top: -6px; white-space: nowrap;
+  font-family: var(--f-display); font-size: 72px; line-height: 1.05; text-transform: uppercase; box-shadow: 0 12px 30px rgba(204,78,0,.25); }
+
+.polaroid { position: relative; flex: none; background: #fff; padding: 16px 16px 16px; transform: rotate(-2deg); box-shadow: 0 22px 50px rgba(43,43,43,.22), 0 2px 6px rgba(43,43,43,.12); margin-block: 10px; }
+.polaroid img.fachada { display: block; width: 600px; height: 300px; object-fit: cover; object-position: 30% 80%; }
+.polaroid .fita { position: absolute; top: -18px; left: 50%; width: 150px; height: 38px; margin-left: -75px; background: rgba(243,124,40,.55); transform: rotate(3deg); }
+.selo { position: absolute; right: -86px; bottom: -40px; width: 170px; height: 170px; border-radius: 50%; overflow: hidden; transform: rotate(8deg);
+  border: 7px solid #fff; box-shadow: 0 14px 30px rgba(43,43,43,.25); }
+.selo img { width: 100%; height: 100%; object-fit: cover; }
+.story .polaroid img.fachada { width: 660px; height: 340px; }
+.story .selo { width: 200px; height: 200px; }
+
+.detalhes { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1.7fr; border-top: 2px solid var(--linha); border-bottom: 2px solid var(--linha); }
+.detalhes > div { padding: 18px 8px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.detalhes > div + div { border-left: 2px solid var(--linha); }
+.rot { font-weight: 700; font-size: 17px; letter-spacing: .38em; text-transform: uppercase; color: var(--laranja); padding-left: .38em; }
+.val { font-family: var(--f-display); font-size: 58px; line-height: 1; }
+.val.local { font-size: 38px; text-transform: uppercase; }
+.det { font-size: 20px; font-weight: 500; color: var(--chumbo-60); line-height: 1.3; }
+
+.rsvp { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+.rsvp p { margin: 0; font-size: 25px; font-weight: 500; line-height: 1.4; color: var(--chumbo-60); }
+.rsvp p b { color: var(--chumbo); font-weight: 700; }
+.tel { display: inline-flex; align-items: center; gap: 14px; background: var(--laranja); color: var(--gelo); font-weight: 800; font-size: 36px; padding: 12px 34px; border-radius: 999px; font-variant-numeric: tabular-nums; box-shadow: 0 10px 24px rgba(204,78,0,.25); }
+
+.story .logo { width: 150px; }
+.story .script { font-size: 66px; }
+.story h1 { font-size: 112px; }
+.story .faixa { font-size: 80px; }
+</style>
+
+<div class="row" id="row"></div>
+
+<script>
+// gerador simples e fixo (mesmo resultado em toda exportação)
+function rnd(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+
+// varal de luzes: duas curvas com lâmpadas penduradas
+function varal(w, alturaCaida, seed) {
+  const r = rnd(seed);
+  const cores = ['#f37c28', '#e9a23b', '#fff4e0', '#cc4e00', '#ffd27a'];
+  const curva = (x0, y0, cx, cy, x1, y1, n, desloc) => {
+    let s = `<path d="M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}" fill="none" stroke="#2B2B2B" stroke-opacity=".55" stroke-width="2.5"/>`;
+    for (let i = 1; i < n; i++) {
+      const t = (i + desloc) / n, a = 1 - t;
+      const x = a * a * x0 + 2 * a * t * cx + t * t * x1, y = a * a * y0 + 2 * a * t * cy + t * t * y1;
+      const c = cores[Math.floor(r() * cores.length)], h = 16 + r() * 10;
+      s += `<line x1="${x}" y1="${y}" x2="${x}" y2="${y + h}" stroke="#2B2B2B" stroke-opacity=".5" stroke-width="2"/>
+        <circle cx="${x}" cy="${y + h + 13}" r="34" fill="url(#brilho)" opacity=".55"/>
+        <rect x="${x - 6}" y="${y + h - 2}" width="12" height="9" rx="2" fill="#2B2B2B" fill-opacity=".7"/>
+        <ellipse cx="${x}" cy="${y + h + 15}" rx="10" ry="13" fill="${c}"/>
+        <ellipse cx="${x - 3}" cy="${y + h + 10}" rx="3" ry="4.5" fill="#fff" fill-opacity=".7"/>`;
+    }
+    return s;
+  };
+  return `<svg class="varal" viewBox="0 0 ${w} ${alturaCaida + 120}" height="${alturaCaida + 120}" aria-hidden="true">
+    <defs><radialGradient id="brilho"><stop offset="0" stop-color="#ffd27a" stop-opacity=".9"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs>
+    ${curva(-30, 4, w * .25, alturaCaida * 1.6, w * .5, 4, 9, 0)}
+    ${curva(w * .5, 4, w * .75, alturaCaida * 1.6, w + 30, 4, 9, 0)}
+  </svg>`;
+}
+
+// confetes só nas margens laterais, longe do texto
+function confete(w, h, topoLivre, seed) {
+  const r = rnd(seed);
+  const cores = ['#cc4e00', '#f37c28', '#e9a23b', '#2B2B2B'];
+  let s = '';
+  for (let i = 0; i < 46; i++) {
+    const lado = i % 2 ? 1 : 0;
+    const x = lado ? w - 20 - r() * 95 : 20 + r() * 95;
+    const y = topoLivre + r() * (h - topoLivre - 60);
+    const c = cores[Math.floor(r() * cores.length)], rot = Math.floor(r() * 180), o = (.35 + r() * .5).toFixed(2);
+    const tipo = r();
+    s += tipo < .45 ? `<rect x="${x}" y="${y}" width="${8 + r() * 10}" height="${4 + r() * 4}" rx="1.5" fill="${c}" opacity="${o}" transform="rotate(${rot} ${x} ${y})"/>`
+       : tipo < .8 ? `<circle cx="${x}" cy="${y}" r="${3 + r() * 4}" fill="${c}" opacity="${o}"/>`
+       : `<path d="M${x} ${y} q 8 -10 16 0 t 16 0" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" opacity="${o}" transform="rotate(${rot} ${x} ${y})"/>`;
+  }
+  return `<svg class="confete" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">${s}</svg>`;
+}
+
+const miolo = `
+  <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
+  <span class="script">Vamos celebrar</span>
+  <h1>Confraternização</h1>
+  <span class="faixa">AFT's</span>
+  <div class="polaroid">
+    <span class="fita"></span>
+    <img class="fachada" src="fotos/fachada.jpg" alt="Fachada da Parrilla Savassi158 à noite">
+    <span class="selo"><img src="fotos/placa.jpg" alt="Placa da Parrilla Savassi158"></span>
+  </div>
+  <div class="detalhes">
+    <div><span class="rot">Data</span><span class="val">03.12</span><span class="det">quinta-feira</span></div>
+    <div><span class="rot">Horário</span><span class="val">18h</span><span class="det">início</span></div>
+    <div><span class="rot">Local</span><span class="val local">Parrilla Savassi158</span><span class="det">Rua Professor Moraes, 158<br>Funcionários, BH</span></div>
+  </div>
+  <div class="rsvp">
+    <p>Confirme sua presença <b>até 27/11</b><br>pelo WhatsApp da DS-MG, com Alzira</p>
+    <span class="tel">(31) 99339-0116</span>
+  </div>`;
+
+// story primeiro, para a exportação capturar a página inteira
+document.getElementById('row').innerHTML =
+  `<div class="wrap story"><section class="slide" data-out="convite-confraternizacao-aft-2026-12-03_story_v3.png">${confete(1080, 1920, 380, 7)}<div style="position:absolute;left:0;top:200px;width:1080px">${varal(1080, 150, 3)}</div>${miolo}</section></div>` +
+  `<div class="wrap feed"><section class="slide" data-out="convite-confraternizacao-aft-2026-12-03_feed_v3.png">${confete(1080, 1350, 170, 11)}${varal(1080, 110, 5)}${miolo}</section></div>`;
+
+const exp = new URLSearchParams(location.search).has('export');
+if (exp) document.body.classList.add('export');
+const fit = () => document.querySelectorAll('.wrap').forEach(w => { w.querySelector('.slide').style.transform = exp ? 'none' : `scale(${w.clientWidth / 1080})`; });
+addEventListener('resize', fit); fit();
+</script>
