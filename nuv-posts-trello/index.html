@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>NUV posts Trello</title>
+<style>
+  /* Posts do quadro "Posts - Nuv Isa" (lista COPIES), no padrão do kit de feed:
+     títulos em Inter Tight Black minúsculo (+ itálico fino de destaque), apoio em Comfortaa,
+     rótulos pequenos nos cantos, seta fina. Sem sombra/degradê sobre foto: texto sempre em área sólida.
+     Regras do card "Identidade visual NUV": muito respiro, um destaque por slide, sem emoji na arte. */
+  @font-face { font-family: 'Title'; font-weight: 900; src: url(assets/fonts/inter-tight-latin-900-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'TitleI'; font-style: italic; font-weight: 300; src: url(assets/fonts/inter-tight-latin-300-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
+
+  :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #222; display: flex; flex-direction: column; gap: 40px; padding: 40px; }
+  .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'Comfortaa', sans-serif; flex: none; background: var(--off); color: var(--navy); }
+  .post.dark { background: var(--navy); color: var(--off); }
+  .abs { position: absolute; }
+  .ph { position: absolute; left: 0; top: 0; background-repeat: no-repeat; }
+  .H { font-family: 'Title', sans-serif; font-weight: 900; text-transform: lowercase; letter-spacing: -.055em; word-spacing: .12em; line-height: .9; }
+  .H em { font-family: 'TitleI', sans-serif; font-style: italic; font-weight: 300; letter-spacing: -.04em; }
+  .s { font-weight: 400; font-size: 19px; letter-spacing: .03em; line-height: 1.28; text-transform: uppercase; }
+  .brand { position: absolute; left: 66px; top: 62px; font-weight: 700; font-size: 20px; letter-spacing: .06em; }
+  .lab { position: absolute; right: 66px; top: 62px; }
+  .foot { position: absolute; left: 66px; bottom: 70px; }
+  .arrow { position: absolute; right: 66px; bottom: 74px; }
+  .lead { font-size: 32px; line-height: 1.4; }
+  .lead b { font-weight: 700; }
+  .apoio { font-size: 25px; line-height: 1.45; }
+  .num { font-family: 'TitleI', sans-serif; font-style: italic; font-weight: 300; font-size: 44px; letter-spacing: -.02em; }
+  .btn { display: inline-flex; align-items: center; gap: 18px; border-radius: 999px; padding: 24px 40px; font-weight: 700; font-size: 28px; }
+</style>
+</head>
+<body>
+<script>
+const C = { off: '#EFEAE4', beige: '#CBC5B9', navy: '#0A2540', indigo: '#313D65' };
+const IMG = { // [arquivo, largura, altura] das fotos originais
+  setup: ['fotos-hd/setup-monitores.jpg', 1512, 2016], ceu: ['fotos-hd/ceu-nuvens.jpg', 1512, 2016],
+  cidade: ['fotos-hd/janela-cidade.jpg', 1512, 2016], balao: ['fotos-hd/notebook-balao.jpg', 1512, 2016],
+  selfie: ['fotos-hd/selfie-cafe.jpg', 1254, 1254], escada: ['fotos-hd/retrato-escada.jpg', 941, 1672],
+  escuro: ['fotos-hd/notebook-escuro.jpg', 736, 1104], mesa: ['fotos-hd/mesa-janela.jpg', 1200, 1616],
+  gelado: ['fotos-hd/cafe-gelado.jpg', 1200, 1500], sofa: ['fotos-hd/notebook-sofa.jpg', 1080, 1920],
+  tablet: ['fotos-hd/tablet-cafe.jpg', 1122, 1402], close: ['fotos-hd/close-celular.jpg', 941, 1672],
+};
+// foto preenchendo uma caixa w x h; fx/fy = ponto focal (0..1); zoom > 1 aproxima
+const photo = (key, w, h, fx = .5, fy = .5, zoom = 1, extra = '') => {
+  const [src, iw, ih] = IMG[key];
+  const sw = Math.min(iw, ih * w / h) / zoom, sh = sw * h / w, k = w / sw;
+  const sx = Math.max(0, Math.min(iw - sw, fx * iw - sw / 2)), sy = Math.max(0, Math.min(ih - sh, fy * ih - sh / 2));
+  return `<div class="ph" style="width:${w}px;height:${h}px;background-image:url(${src});background-size:${iw * k}px auto;background-position:${-sx * k}px ${-sy * k}px;${extra}"></div>`;
+};
+const box = (x, y, w, h, inner, radius = 0) => `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:hidden;border-radius:${radius}px">${inner}</div>`;
+const ARROW = c => `<svg class="arrow" width="72" height="30" viewBox="0 0 72 30"><path d="M2 15h66M54 2l14 13-14 13" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const PLANE = c => `<svg width="30" height="30" viewBox="0 0 24 24"><path d="M21.5 2.5 2.8 9.6l7.4 3.3 3.3 7.4z" fill="${c}"/></svg>`;
+const BRAND = c => `<div class="brand" style="color:${c}">NUV</div>`;
+const LAB = (t, c) => `<div class="lab s" style="color:${c}">${t}</div>`;
+const FOOT = (t, c) => `<div class="foot s" style="color:${c}">${t}</div>`;
+
+// ---------- layouts ----------
+// capa clara: título grande + foto em moldura arredondada
+const capa = ({ lab, title, size = 150, sub, ph, foot }) => `${BRAND(C.navy)}${LAB(lab, C.navy)}
+  <div class="abs H" style="left:58px;top:170px;width:960px;font-size:${size}px;color:${C.navy}">${title}</div>
+  <div class="abs lead" style="left:66px;top:${ph.top - 100}px;width:900px;font-size:30px">${sub}</div>
+  ${box(66, ph.top, 948, 1350 - ph.top - 150, photo(ph.key, 948, 1350 - ph.top - 150, ph.fx, ph.fy, ph.zoom || 1), 26)}
+  ${FOOT(foot, C.navy)}${ARROW(C.navy)}`;
+// slide interno: texto em área sólida em cima, foto embaixo com corte reto
+const etapa = ({ dark, num, title, lead, apoio, ph, cut = 790, lab, size = 118 }) => {
+  const fg = dark ? C.off : C.navy, ac = dark ? C.beige : C.indigo;
+  return `${BRAND(fg)}${LAB(lab, fg)}
+  <div class="abs num" style="left:66px;top:150px;color:${ac}">${num}</div>
+  <div class="abs H" style="left:58px;top:220px;width:960px;font-size:${size}px;color:${fg}">${title}</div>
+  <div class="abs lead" style="left:66px;top:${ph.leadTop || 470}px;width:900px">${lead}</div>
+  ${apoio ? `<div class="abs apoio" style="left:66px;top:${ph.apoioTop || 620}px;width:880px;color:${ac}">${apoio}</div>` : ''}
+  ${box(0, cut, 1080, 1350 - cut, photo(ph.key, 1080, 1350 - cut, ph.fx, ph.fy, ph.zoom || 1))}`;
+};
+// fechamento: azul sólido, convite e botão, foto embaixo
+const cta = ({ title, text, ph, cut = 860, btn = 'me chama no direct' }) => `${BRAND(C.off)}${LAB('vamos<br>conversar', C.off)}
+  <div class="abs H" style="left:58px;top:170px;width:960px;font-size:112px;color:${C.off}">${title}</div>
+  ${text ? `<div class="abs lead" style="left:66px;top:${text.top}px;width:900px">${text.t}</div>` : ''}
+  <div class="abs btn" style="left:66px;top:${cut - 150}px;background:${C.beige};color:${C.navy}">${PLANE(C.navy)}${btn}</div>
+  ${box(0, cut, 1080, 1350 - cut, photo(ph.key, 1080, 1350 - cut, ph.fx, ph.fy, ph.zoom || 1))}`;
+
+// ---------- posts do Trello ----------
+const POSTS = {
+  // Card "O que a NUV faz por você (serviços, fixar)"
+  servicos: [
+    [false, capa({ lab: 'nossos<br>serviços', title: 'o que a nuv faz <em>por você</em>', sub: 'Escolhe o que o seu negócio precisa agora.', ph: { key: 'escada', top: 640, fx: .5, fy: .52 }, foot: 'arrasta pro lado' })],
+    [true, etapa({ dark: true, num: '01', lab: 'serviço', title: 'gestão de redes sociais', lead: 'A gente planeja, cria e posta, <b>e você só aprova.</b>', apoio: 'Pra quem quer o Instagram da empresa ativo sem tirar tempo do próprio negócio.', ph: { key: 'escuro', fx: .55, fy: .5, leadTop: 510, apoioTop: 640 } })],
+    [false, etapa({ num: '02', lab: 'serviço', title: 'sites e <em>landing pages</em>', lead: 'Páginas pensadas pra apresentar o seu negócio e <b>transformar visita em contato.</b>', apoio: 'Pra quem quer passar mais credibilidade e ter um lugar pra mandar o cliente decidir.', ph: { key: 'mesa', fx: .55, fy: .78, leadTop: 510, apoioTop: 660 } })],
+    [true, etapa({ dark: true, num: '03', lab: 'serviço', title: 'estratégia digital', lead: 'A gente olha o seu negócio, define o caminho e <b>organiza o que precisa ser feito.</b>', apoio: 'Pra quem quer clareza antes de investir em conteúdo ou anúncio.', ph: { key: 'cidade', fx: .5, fy: .5, leadTop: 470, apoioTop: 630 } })],
+    [false, etapa({ num: '04', lab: 'serviço', title: 'identidade visual', lead: 'Cores, fontes e elementos que deixam a sua marca <b>reconhecível em qualquer lugar.</b>', apoio: 'Pra quem tá começando ou sente que a marca não combina mais com a empresa de hoje.', ph: { key: 'gelado', fx: .5, fy: .55, leadTop: 470, apoioTop: 630 } })],
+    [true, cta({ title: 'ficou na <em>dúvida?</em>', text: { top: 410, t: 'Me conta o momento do seu negócio no direct, que eu te indico <b>o melhor caminho</b> e mando o orçamento.' }, ph: { key: 'ceu', fx: .5, fy: .62 } })],
+  ],
+  // Card "Como é trabalhar com a NUV"
+  como_trabalhar: [
+    [false, capa({ lab: 'passo<br>a passo', title: 'como é trabalhar<br>com a <em>nuv?</em>', size: 128, sub: 'Do primeiro contato ao primeiro post.', ph: { key: 'selfie', top: 640, fx: .5, fy: .42 }, foot: 'arrasta pro lado' })],
+    [true, etapa({ dark: true, num: '01', lab: 'a conversa', title: 'a conversa', lead: 'A gente começa entendendo <b>o seu negócio, o seu cliente</b> e onde você quer chegar.', ph: { key: 'tablet', fx: .5, fy: .42, leadTop: 420 }, cut: 700 })],
+    [false, etapa({ num: '02', lab: 'o plano', title: 'o plano', lead: 'Montamos a estratégia e o calendário do mês, pra você <b>saber tudo o que vai sair antes de sair.</b>', ph: { key: 'mesa', fx: .55, fy: .78, leadTop: 420 }, cut: 700 })],
+    [true, etapa({ dark: true, num: '03', lab: 'a criação', title: 'a criação', lead: 'Roteiro, design, edição e legenda, <b>tudo com a cara da sua marca.</b>', ph: { key: 'escuro', fx: .55, fy: .5, leadTop: 420 }, cut: 700 })],
+    [false, etapa({ num: '04', lab: 'a aprovação', title: 'a aprovação', lead: 'Você recebe tudo pronto e aprova de um jeito simples, <b>por comentário ou até por áudio.</b>', ph: { key: 'balao', fx: .45, fy: .5, leadTop: 420 }, cut: 700 })],
+    [true, etapa({ dark: true, num: '05', lab: 'o acompanhamento', title: 'o acompanhamento', size: 98, lead: 'Depois que vai pro ar, a gente analisa os resultados pra deixar <b>o próximo mês ainda melhor.</b>', ph: { key: 'cidade', fx: .5, fy: .45, leadTop: 420 }, cut: 700 })],
+    [true, cta({ title: 'enquanto isso, você cuida do <em>seu negócio.</em>', text: { top: 540, t: 'O que só você sabe fazer. O resto, deixa com a gente.' }, ph: { key: 'sofa', fx: .5, fy: .52 }, cut: 900 })],
+  ],
+  // Card "Saiu do forno na NUV (portfólio de conteúdos, fixar)": grade com espaços pros conteúdos dos clientes
+  saiu_do_forno: [
+    [false, capa({ lab: 'portfólio<br>do mês', title: 'saiu do forno <em>na nuv</em>', sub: 'O que foi pro ar nos perfis dos nossos clientes esse mês.', ph: { key: 'setup', top: 640, fx: .5, fy: .62 }, foot: 'arrasta pro lado' })],
+    [false, `${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+      <div class="abs" style="left:66px;right:66px;top:250px;display:flex;gap:24px">
+        ${['sindicato', 'despacho aduaneiro', 'planejamento financeiro'].map(n => `<div style="flex:1">
+          <div style="height:560px;border-radius:18px;border:2.5px dashed ${C.indigo};display:flex;align-items:center;justify-content:center;text-align:center;color:${C.indigo};font-size:20px;letter-spacing:.06em;text-transform:uppercase;line-height:1.5;padding:20px">inserir<br>conteúdo<br>do cliente</div>
+          <div class="s" style="margin-top:22px">${n}</div></div>`).join('')}</div>
+      ${FOOT('modelo de grade: 3 conteúdos por slide', C.navy)}${ARROW(C.navy)}`],
+    [true, cta({ title: 'quer ver o seu perfil <em>aqui</em> no próximo mês?', ph: { key: 'gelado', fx: .5, fy: .5 }, cut: 860 })],
+  ],
+  // Card "Sites que saíram do forno (portfólio de sites)": um site por slide
+  sites: [
+    [false, capa({ lab: 'portfólio<br>de sites', title: 'sites que saíram do forno <em>por aqui</em>', size: 140, sub: 'Um lugar só do seu negócio na internet.', ph: { key: 'sofa', top: 740, fx: .5, fy: .55 }, foot: 'arrasta pro lado' })],
+    ...[['agência de viagens', 'Apresentar os roteiros e levar pro WhatsApp.'], ['professora universitária', 'Reunir pesquisas, aulas e contato num lugar só.']].map(([n, obj]) => [false, `${BRAND(C.navy)}${LAB('portfólio<br>de sites', C.navy)}
+      <div class="abs" style="left:110px;top:230px;width:860px">
+        <div style="background:#1b1d22;border-radius:26px 26px 6px 6px;padding:22px 22px 26px">
+          <div style="height:500px;border-radius:6px;background:${C.off};border:2.5px dashed ${C.indigo};display:flex;align-items:center;justify-content:center;color:${C.indigo};font-size:22px;letter-spacing:.06em;text-transform:uppercase;text-align:center;line-height:1.5">inserir<br>print do site</div></div>
+        <div style="height:26px;margin:0 -60px;background:linear-gradient(#c9ccd1,#9a9ea5);border-radius:0 0 30px 30px"></div></div>
+      <div class="abs H" style="left:58px;top:930px;font-size:84px;color:${C.navy}">${n}</div>
+      <div class="abs lead" style="left:66px;top:1030px;width:900px">${obj}</div>
+      ${ARROW(C.navy)}`]),
+    [true, cta({ title: 'o seu negócio também merece um lugar <em>só dele.</em>', text: { top: 540, t: 'Me chama no direct que eu te mando um orçamento.' }, ph: { key: 'cidade', fx: .5, fy: .5 }, cut: 900 })],
+  ],
+};
+Object.entries(POSTS).forEach(([tema, slides]) => slides.forEach(([dark, html], i) => {
+  const d = document.createElement('div');
+  d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_${tema}_${String(i + 1).padStart(2, '0')}`;
+  d.innerHTML = html;
+  document.body.appendChild(d);
+}));
+</script>
+</body>
+</html>
