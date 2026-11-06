@@ -58,7 +58,6 @@ const crop = (key, sx, sy, sw, w, h, extra = '') => {
   return `<div class="ph" style="left:0;top:0;width:${w}px;height:${h}px;background-image:url(${src});background-size:${iw * k}px auto;background-position:${-sx * k}px ${-sy * k}px;${extra}"></div>`;
 };
 const box = (x, y, w, h, inner, extra = '') => `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:hidden;${extra}">${inner}</div>`;
-const grad = g => `<div class="fade" style="top:0;bottom:0;background:linear-gradient(180deg,${g})"></div>`;
 const GRAIN = o => `<svg class="abs" style="left:0;top:0;opacity:${o};mix-blend-mode:overlay;pointer-events:none" width="1080" height="1350"><rect width="100%" height="100%" filter="url(#grain)"/></svg>`;
 const ARROW = c => `<svg class="arrow" width="76" height="34" viewBox="0 0 76 34"><path d="M2 17h70M56 3l16 14-16 14" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const BRAND = c => `<div class="brand" style="color:${c}">NUV</div>`;
@@ -73,17 +72,17 @@ const POSTS = {
     <div class="abs" style="left:70px;top:930px;width:560px;height:12px;background:${C.navy}"></div>
     ${FOOT('Estratégia.<br>Design.<br>Conteúdo.<br>Pro que vem depois.', C.navy, 'text-transform:none;letter-spacing:.02em;font-size:24px')}${ARROW(C.navy)}`,
 
-  // 2 · foto quente + frase grande em branco
-  '02_nao_e_sorte_e_processo': `${box(0, 0, 1080, 1350, crop('tablet', 0, 0, 1122, 1080, 1350))}
-    ${grad('rgba(10,37,64,.88) 0%,rgba(10,37,64,.7) 30%,rgba(10,37,64,.05) 52%,rgba(10,37,64,0) 70%,rgba(10,37,64,.55) 100%')}
-    ${GRAIN(.18)}${BRAND(C.off)}${LAB('estratégia<br>conteúdo<br>resultado', C.off)}
-    <div class="abs H" style="left:66px;top:180px;font-size:230px;color:${C.off}">Não é sorte.</div>
-    <div class="abs I" style="left:70px;top:390px;font-size:180px;color:${C.beige}">é processo.</div>
+  // 2 · retrato no estúdio: texto azul direto na parede lisa (sem sombra/degradê)
+  '02_nao_e_sorte_e_processo': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:#b1aaa1"></div>
+    ${box(0, 110, 1080, 1240, crop('retrato', 0, 0, 941, 1080, 1240))}
+    ${GRAIN(.12)}${BRAND(C.navy)}${LAB('estratégia<br>conteúdo<br>resultado', C.navy)}
+    <div class="abs H" style="left:66px;top:150px;font-size:180px;color:${C.navy}">Não é sorte.</div>
+    <div class="abs I" style="left:70px;top:312px;font-size:150px;color:${C.indigo}">é processo.</div>
     ${FOOT('Hold the vision.<br>Trust the process.', C.off)}`,
 
   // 3 · "Prazer, Isabela" (blocos de marca-texto + retrato)
   '03_prazer_isabela': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.off}"></div>
-    ${box(560, 260, 450, 1020, crop('retrato', 190, 330, 640, 450, 1020), 'border-radius:225px 225px 30px 30px')}
+    ${box(560, 260, 450, 1020, crop('tablet', 230, 200, 520, 450, 1020), 'border-radius:225px 225px 30px 30px')}
     ${BRAND(C.navy)}${LAB('fundadora<br>da nuv', C.navy)}
     <div class="abs H" style="left:70px;top:200px;font-size:150px;line-height:1.05"><span class="mk">Prazer,</span><br><span class="mk">Isabela</span></div>
     <div class="abs p" style="left:70px;top:560px;width:450px">Comecei como <b>estagiária</b> numa agência e fui crescendo até criar a NUV.</div>
@@ -92,21 +91,17 @@ const POSTS = {
 
   // 4 · azul sólido + foto entrando por baixo
   '04_do_scroll_a_venda': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.navy}"></div>
-    ${box(0, 700, 1080, 650, crop('cafe', 300, 880, 641, 1080, 650))}
-    <div class="fade" style="top:700px;height:300px;background:linear-gradient(180deg,#0A2540,rgba(10,37,64,0))"></div>
-    <div class="fade" style="top:1150px;bottom:0;background:linear-gradient(180deg,rgba(10,37,64,0),rgba(10,37,64,.8))"></div>
+    ${box(0, 780, 1080, 570, crop('cafe', 300, 900, 641, 1080, 570))}
     ${BRAND(C.off)}
     <div class="abs H" style="left:66px;top:180px;font-size:270px;color:${C.off}">Do scroll<br>à venda.</div>
-    <div class="abs" style="left:70px;top:690px;color:${C.beige};font-weight:700;font-size:24px;letter-spacing:.12em;line-height:1.5;text-transform:uppercase">social<br>media que<br>funciona.</div>
-    ${FOOT('ideias<br>sistemas<br>crescimento', C.off)}`,
+    ${LAB('social media<br>que funciona.', C.beige)}
+    <div class="abs" style="left:70px;top:690px;color:${C.off};font-weight:700;font-size:20px;letter-spacing:.06em;line-height:1.45;text-transform:uppercase">ideias · sistemas · crescimento</div>`,
 
-  // 5 · retrato/close + manchete com parênteses em itálico
-  '05_mesmo_instagram_resultado_diferente': `${box(0, 0, 1080, 1350, crop('close', 40, 300, 880, 1080, 1350))}
-    ${grad('rgba(10,37,64,.4) 0%,rgba(10,37,64,0) 22%,rgba(10,37,64,0) 40%,rgba(10,37,64,.75) 60%,rgba(10,37,64,.92) 100%')}
-    ${GRAIN(.15)}${BRAND(C.off)}
-    <div class="abs H" style="left:66px;top:780px;font-size:200px;color:${C.off}">Mesmo<br>Instagram</div>
-    <div class="abs I" style="left:68px;top:1110px;font-size:118px;color:${C.beige}">(resultado diferente)</div>
-    <div class="lab" style="color:${C.off};top:auto;bottom:250px;opacity:.9">estratégia<br>criação<br>execução<br>crescimento real</div>`,
+  // 5 · close: texto direto sobre o suéter escuro (sem sombra/degradê)
+  '05_mesmo_instagram_resultado_diferente': `${box(0, 0, 1080, 1350, crop('close', 60, 380, 760, 1080, 1350, 'filter:brightness(.94) contrast(1.04)'))}
+    ${GRAIN(.12)}${BRAND(C.off)}
+    <div class="abs H" style="left:66px;top:730px;font-size:150px;color:${C.off}">Mesmo Instagram</div>
+    <div class="abs I" style="left:70px;top:870px;font-size:112px;color:${C.beige}">(resultado diferente)</div>`,
 
   // 6 · pergunta grande com itálico no meio
   '06_precisa_mesmo_de_um_site': `${BRAND(C.navy)}${LAB('landing pages', C.navy)}
@@ -131,8 +126,8 @@ const POSTS = {
 
   // 9 · foto recortada em forma orgânica (nuvem)
   '09_estrategia_design_conteudo': `${BRAND(C.navy)}${LAB('vamos<br>conversar', C.navy)}
-    <div class="abs" style="left:90px;top:150px;width:900px;height:980px;clip-path:path('${BLOB}')">${crop('tablet', 60, 120, 1000, 900, 980)}
-      <div class="abs" style="inset:0;background:rgba(10,37,64,.42)"></div></div>
+    <div class="abs" style="left:90px;top:150px;width:900px;height:980px;clip-path:path('${BLOB}')">${crop('tablet', 60, 120, 1000, 900, 980, 'filter:brightness(.58) contrast(1.08)')}
+      </div>
     <div class="abs H" style="left:200px;top:390px;font-size:170px;color:${C.off}">Estratégia<br>Design<br>Conteúdo</div>
     <div class="abs I" style="left:206px;top:830px;font-size:150px;color:${C.off}">resultado.</div>
     ${FOOT('Hold the vision.<br>Trust the process.', C.navy)}${ARROW(C.navy)}`,
