@@ -4,7 +4,8 @@ import glob, os
 SRGB = ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes()
 fs = sorted(glob.glob('out/*.png'))
 os.makedirs('out/instagram', exist_ok=True)
-grid = Image.new('RGB', (3 * 360 + 2 * 8, 3 * 450 + 2 * 8), 'white')
+rows = (len(fs) + 2) // 3
+grid = Image.new('RGB', (3 * 360 + 2 * 8, rows * 450 + (rows - 1) * 8), 'white')
 for i, p in enumerate(fs):
     im = Image.open(p).convert('RGB').resize((1080, 1350), Image.LANCZOS)
     im.save('out/instagram/' + os.path.basename(p)[:-4] + '.jpg', 'JPEG', quality=93, subsampling='4:2:0', optimize=True, icc_profile=SRGB)

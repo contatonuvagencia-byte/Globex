@@ -4,14 +4,17 @@
 <meta charset="utf-8">
 <title>NUV kit de feed</title>
 <style>
-  /* Kit de posts NUV — referências traduzidas para a identidade da marca:
-     - Ref. 1 (tipografia gigante + foto quente): Perandory Condensed enorme, cantos com rótulos pequenos, seta
-     - Ref. 2 (clean + interface): pílulas, marca-texto em bloco, papel texturizado, serifa itálica de destaque
-     Paleta NUV: azul #0A2540, índigo #313D65, off-white #EFEAE4, bege #CBC5B9 (+ preto nas fotos). */
-  @font-face { font-family: 'Display'; src: url(assets/fonts/Perandory-Condensed.otf); }
-  @font-face { font-family: 'Accent'; font-style: italic; src: url(assets/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
+  /* Kit de feed NUV seguindo de perto a referência "creative studio":
+     - manchete pesadíssima, minúscula, letras e linhas coladas (Comfortaa 700 reforçada)
+     - destaque em itálico leve (serifa fina) no meio da manchete
+     - rótulos pequenos em caixa alta nos cantos, seta fina no rodapé
+     - fotos escuras e quentes em tela cheia: só tratamento na própria foto, nenhuma sombra/degradê por cima
+     - detalhes à mão: sublinhado grosso, elipse desenhada; frase da marca "estampada" em objeto
+     Paleta NUV: off-white #EFEAE4, azul #0A2540, índigo #313D65, bege #CBC5B9. */
   @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
   @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Accent'; font-style: italic; src: url(assets/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'Display'; src: url(assets/fonts/Perandory-Condensed.otf); }
 
   :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; }
   * { box-sizing: border-box; }
@@ -19,32 +22,21 @@
   .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'Comfortaa', sans-serif; flex: none; background: var(--off); color: var(--navy); }
   .abs { position: absolute; }
   .ph { position: absolute; background-repeat: no-repeat; }
-  .fade { position: absolute; left: 0; right: 0; pointer-events: none; }
 
-  .brand { position: absolute; left: 70px; top: 64px; font-weight: 700; font-size: 24px; letter-spacing: .32em; }
-  .lab { position: absolute; right: 70px; top: 66px; font-weight: 700; font-size: 16px; letter-spacing: .14em; line-height: 1.45; text-transform: uppercase; text-align: right; }
-  .foot { position: absolute; left: 70px; bottom: 70px; font-weight: 700; font-size: 20px; letter-spacing: .06em; line-height: 1.45; text-transform: uppercase; }
-  .arrow { position: absolute; right: 70px; bottom: 74px; }
-  .H { font-family: 'Display', serif; font-weight: 400; text-transform: uppercase; line-height: .84; letter-spacing: .005em; }
-  .I { font-family: 'Accent', serif; font-style: italic; font-weight: 400; line-height: .9; letter-spacing: -.01em; text-transform: none; }
-  .p { font-size: 30px; line-height: 1.42; }
-  .p b { font-weight: 700; }
-  .pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 18px 34px; font-weight: 700; font-size: 27px; white-space: nowrap; }
-  .pill.fill { background: var(--navy); color: var(--off); }
-  .pill.line { border: 2.5px solid var(--navy); color: var(--navy); background: rgba(239,234,228,.7); }
-  .mk { display: inline-block; background: var(--navy); color: var(--off); padding: 6px 22px 0; }
+  /* manchete pesada: peso 700 + contorno da mesma cor para chegar ao "black" da referência */
+  .H { font-weight: 700; text-transform: lowercase; letter-spacing: -.065em; line-height: .93; -webkit-text-stroke: .05em currentColor; paint-order: stroke fill; }
+  .H em { font-family: 'Accent', serif; font-style: italic; font-weight: 400; -webkit-text-stroke: 0; letter-spacing: -.02em; font-size: 1.12em; }
+  .s { font-weight: 400; font-size: 19px; letter-spacing: .03em; line-height: 1.28; text-transform: uppercase; }
+  .brand { position: absolute; left: 66px; top: 62px; font-weight: 700; font-size: 20px; letter-spacing: .06em; }
+  .lab { position: absolute; right: 66px; top: 62px; text-align: left; }
+  .foot { position: absolute; left: 66px; bottom: 70px; }
+  .arrow { position: absolute; right: 66px; bottom: 74px; }
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <filter id="paper" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="4" seed="7" result="n"/>
-      <feDiffuseLighting in="n" lighting-color="#fff" surfaceScale="2.2" result="l"><feDistantLight azimuth="45" elevation="58"/></feDiffuseLighting>
-    </filter>
-    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .9 0"/></filter>
-  </defs>
-</svg>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .9 0"/></filter>
+</defs></svg>
 <script>
 const C = { off: '#EFEAE4', beige: '#CBC5B9', navy: '#0A2540', indigo: '#313D65' };
 const IMG = {
@@ -52,89 +44,87 @@ const IMG = {
   tablet: ['fotos-hd/tablet-cafe.jpg', 1122], bolsa: ['fotos-hd/bolsa-notebook.jpg', 736], rua: ['fotos-hd/rua-bolsa-cafe.jpg', 736],
   maos: ['fotos-hd/maos-caderno.jpg', 736], pool: ['fotos-hd/piscina-xicaras.jpg', 736], livro: ['fotos-hd/livro-xicara.jpg', 736],
 };
-// mostra a região da foto que começa em (sx,sy) com largura sw (medidas da foto original), numa caixa w x h
+// tratamento "moody" aplicado na própria foto (nada por cima dela)
+const MOODY = 'filter:brightness(.62) contrast(1.18) saturate(.82) sepia(.12)';
 const crop = (key, sx, sy, sw, w, h, extra = '') => {
   const [src, iw] = IMG[key], k = w / sw;
   return `<div class="ph" style="left:0;top:0;width:${w}px;height:${h}px;background-image:url(${src});background-size:${iw * k}px auto;background-position:${-sx * k}px ${-sy * k}px;${extra}"></div>`;
 };
-const box = (x, y, w, h, inner, extra = '') => `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:hidden;${extra}">${inner}</div>`;
+const full = (key, sx, sy, sw, extra = MOODY) => `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;overflow:hidden">${crop(key, sx, sy, sw, 1080, 1350, extra)}</div>`;
 const GRAIN = o => `<svg class="abs" style="left:0;top:0;opacity:${o};mix-blend-mode:overlay;pointer-events:none" width="1080" height="1350"><rect width="100%" height="100%" filter="url(#grain)"/></svg>`;
-const ARROW = c => `<svg class="arrow" width="76" height="34" viewBox="0 0 76 34"><path d="M2 17h70M56 3l16 14-16 14" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ARROW = c => `<svg class="arrow" width="72" height="30" viewBox="0 0 72 30"><path d="M2 15h66M54 2l14 13-14 13" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const BRAND = c => `<div class="brand" style="color:${c}">NUV</div>`;
-const LAB = (t, c) => `<div class="lab" style="color:${c}">${t}</div>`;
-const FOOT = (t, c, extra = '') => `<div class="foot" style="color:${c};${extra}">${t}</div>`;
-const BLOB = 'M120 80C260-20 470 60 560 30C700-15 880 40 870 220C862 360 940 430 900 560C860 700 950 820 820 930C700 1030 520 940 400 960C260 985 90 1000 60 860C30 720 120 640 70 520C-10 340-20 180 120 80Z';
+const LAB = (t, c) => `<div class="lab s" style="color:${c}">${t}</div>`;
+const FOOT = (t, c) => `<div class="foot s" style="color:${c}">${t}</div>`;
+const BLOB = 'M150 70C300-10 470 70 590 40C740 0 900 70 880 240C866 370 950 450 905 590C860 730 960 850 820 950C690 1040 520 950 400 975C250 1005 80 1010 55 860C30 720 130 640 75 510C10 350 0 160 150 70Z';
+// elipse desenhada à mão
+const ELLIPSE = (w, h, c) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible"><path d="M${w * .18} ${h * .2}C${w * .55} ${-h * .08} ${w * 1.02} ${h * .12} ${w * .98} ${h * .5}C${w * .95} ${h * .92} ${w * .3} ${h * 1.04} ${w * .06} ${h * .72}C${-w * .08} ${h * .5} ${w * .12} ${h * .16} ${w * .5} ${h * .08}" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/></svg>`;
 
 const POSTS = {
-  // 1 · tipografia gigante sobre off-white
-  '01_ideias_constroem_marcas': `${BRAND(C.navy)}${LAB('agência de<br>social media', C.navy)}
-    <div class="abs H" style="left:64px;top:190px;font-size:288px;color:${C.navy}">Ideias que<br>constroem<br>marcas.</div>
-    <div class="abs" style="left:70px;top:930px;width:560px;height:12px;background:${C.navy}"></div>
-    ${FOOT('Estratégia.<br>Design.<br>Conteúdo.<br>Pro que vem depois.', C.navy, 'text-transform:none;letter-spacing:.02em;font-size:24px')}${ARROW(C.navy)}`,
+  '01_ideias_constroem_marcas': `${BRAND(C.navy)}${LAB('agência de social media', C.navy)}
+    <div class="abs H" style="left:56px;top:190px;font-size:200px;color:${C.navy}">ideias<br>constroem<br>marcas.</div>
+    <div class="abs" style="left:64px;top:560px;width:840px;height:14px;background:${C.navy};border-radius:7px"></div>
+    <div class="foot" style="color:${C.navy};font-size:22px;line-height:1.3">Estratégia.<br>Design.<br>Conteúdo.<br>Pro que vem depois.</div>${ARROW(C.navy)}`,
 
-  // 2 · retrato no estúdio: texto azul direto na parede lisa (sem sombra/degradê)
-  '02_nao_e_sorte_e_processo': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:#b1aaa1"></div>
-    ${box(0, 110, 1080, 1240, crop('retrato', 0, 0, 941, 1080, 1240))}
-    ${GRAIN(.12)}${BRAND(C.navy)}${LAB('estratégia<br>conteúdo<br>resultado', C.navy)}
-    <div class="abs H" style="left:66px;top:150px;font-size:180px;color:${C.navy}">Não é sorte.</div>
-    <div class="abs I" style="left:70px;top:312px;font-size:150px;color:${C.indigo}">é processo.</div>
-    ${FOOT('Hold the vision.<br>Trust the process.', C.off)}`,
+  '02_nao_e_sorte_e_processo': `${full('tablet', 0, 0, 1122)}${GRAIN(.14)}
+    ${BRAND(C.off)}${LAB('pessoas<br>ideias<br>resultados', C.off)}
+    <div class="abs H" style="left:56px;top:160px;font-size:132px;color:${C.off}">não é “sorte”.<br>é <em>processo.</em></div>
+    ${FOOT('uma agência pra marcas<br>que pensam longe.', C.off)}`,
 
-  // 3 · "Prazer, Isabela" (blocos de marca-texto + retrato)
-  '03_prazer_isabela': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.off}"></div>
-    ${box(560, 260, 450, 1020, crop('tablet', 230, 200, 520, 450, 1020), 'border-radius:225px 225px 30px 30px')}
-    ${BRAND(C.navy)}${LAB('fundadora<br>da nuv', C.navy)}
-    <div class="abs H" style="left:70px;top:200px;font-size:150px;line-height:1.05"><span class="mk">Prazer,</span><br><span class="mk">Isabela</span></div>
-    <div class="abs p" style="left:70px;top:560px;width:450px">Comecei como <b>estagiária</b> numa agência e fui crescendo até criar a NUV.</div>
-    <div class="abs p" style="left:70px;top:800px;width:450px">Hoje são <b>mais de 40 clientes</b> em 4 anos.</div>
-    <div class="abs pill line" style="left:70px;top:1150px;font-size:22px;padding:16px 28px">conheça a minha história →</div>`,
+  '03_marca_boa_e_lembrada': `${full('bolsa', 0, 60, 736, 'filter:brightness(1.02) contrast(1.06) saturate(.85)')}${GRAIN(.1)}
+    ${BRAND(C.navy)}
+    <div class="abs H" style="left:56px;top:170px;font-size:140px;color:${C.indigo}">marca<br>boa é<br>lembrada.</div>
+    <div class="abs s" style="left:66px;top:590px;color:${C.navy}">marca<br>estratégia<br>social media<br>landing pages</div>`,
 
-  // 4 · azul sólido + foto entrando por baixo
-  '04_do_scroll_a_venda': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.navy}"></div>
-    ${box(0, 780, 1080, 570, crop('cafe', 300, 900, 641, 1080, 570))}
+  '04_do_scroll_a_venda': `${full('cafe', 0, 0, 941)}${GRAIN(.14)}
+    ${BRAND(C.off)}${LAB('social<br>media<br>que<br>funciona.', C.off)}
+    <div class="abs H" style="left:56px;top:150px;font-size:170px;color:${C.off}">do scroll<br>à venda.</div>
+    ${FOOT('ideias<br>sistemas<br>crescimento', C.off)}`,
+
+  '05_mesmo_instagram_resultado_diferente': `${full('close', 60, 380, 760)}${GRAIN(.14)}
     ${BRAND(C.off)}
-    <div class="abs H" style="left:66px;top:180px;font-size:270px;color:${C.off}">Do scroll<br>à venda.</div>
-    ${LAB('social media<br>que funciona.', C.beige)}
-    <div class="abs" style="left:70px;top:690px;color:${C.off};font-weight:700;font-size:20px;letter-spacing:.06em;line-height:1.45;text-transform:uppercase">ideias · sistemas · crescimento</div>`,
+    <div class="abs H" style="left:56px;top:690px;font-size:150px;color:${C.off}">mesmo<br>instagram</div>
+    <div class="abs H" style="left:56px;top:950px;font-size:116px;color:${C.beige}"><em style="font-size:1em">(resultado diferente)</em></div>
+    <div class="abs s" style="right:66px;bottom:70px;color:${C.off}">estratégia<br>criação<br>execução<br>crescimento real</div>`,
 
-  // 5 · close: texto direto sobre o suéter escuro (sem sombra/degradê)
-  '05_mesmo_instagram_resultado_diferente': `${box(0, 0, 1080, 1350, crop('close', 60, 380, 760, 1080, 1350, 'filter:brightness(.94) contrast(1.04)'))}
-    ${GRAIN(.12)}${BRAND(C.off)}
-    <div class="abs H" style="left:66px;top:730px;font-size:150px;color:${C.off}">Mesmo Instagram</div>
-    <div class="abs I" style="left:70px;top:870px;font-size:112px;color:${C.beige}">(resultado diferente)</div>`,
-
-  // 6 · pergunta grande com itálico no meio
   '06_precisa_mesmo_de_um_site': `${BRAND(C.navy)}${LAB('landing pages', C.navy)}
-    <div class="abs H" style="left:66px;top:300px;font-size:200px;color:${C.navy};line-height:.9">Você<br>precisa <span class="I" style="font-size:210px;color:${C.indigo}">mesmo</span><br>de um site?</div>
-    ${FOOT('Sim. E a gente<br>te conta por quê.', C.navy)}${ARROW(C.navy)}`,
+    <div class="abs H" style="left:56px;top:330px;font-size:150px;color:${C.navy}">você precisa<br><em style="color:${C.indigo}">mesmo</em> de<br>um site?</div>
+    ${FOOT('sim. e a gente te conta<br>por que isso muda tudo.', C.navy)}${ARROW(C.navy)}`,
 
-  // 7 · bloco de cor (índigo) só com texto
-  '07_sua_visao_nosso_trabalho': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.indigo}"></div>${GRAIN(.12)}
+  '07_hold_the_vision_estampado': `${full('retrato', 0, 300, 941, 'filter:brightness(.8) contrast(1.12) saturate(.85) sepia(.1)')}${GRAIN(.14)}
+    ${BRAND(C.navy)}
+    <div class="abs" style="left:430px;top:1000px;transform:rotate(-4deg);font-family:'Display',serif;font-size:96px;line-height:.86;color:${C.beige};opacity:.82;mix-blend-mode:screen;filter:blur(.4px)">hold the<br>vision.<br>trust the<br>process.</div>
+    <div class="abs s" style="right:66px;bottom:70px;color:${C.off}">pessoas<br>projetos<br>propósito</div>`,
+
+  '08_sua_visao_nosso_trabalho': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.indigo}"></div>${GRAIN(.1)}
     ${BRAND(C.off)}${LAB('trabalhe<br>com a gente', C.off)}
-    <div class="abs H" style="left:66px;top:260px;font-size:250px;color:${C.off}">Sua visão.<br>Nosso<br>trabalho.</div>
-    ${FOOT('Vamos criar algo<br>que faça sentido<br>pra sua marca?', C.off)}${ARROW(C.off)}`,
+    <div class="abs H" style="left:56px;top:260px;font-size:200px;color:${C.off}">sua<br>visão,<br>nosso<br>trabalho.</div>
+    ${FOOT('vamos criar algo<br>que faça sentido<br>pra sua marca.', C.off)}${ARROW(C.off)}`,
 
-  // 8 · papel texturizado + pílulas (serviços reais)
-  '08_o_que_a_gente_faz': `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.beige}"></div>
-    <svg class="abs" style="left:0;top:0;mix-blend-mode:multiply;opacity:.55" width="1080" height="1350"><rect width="100%" height="100%" filter="url(#paper)"/></svg>
-    ${BRAND(C.navy)}${LAB('nossos<br>serviços', C.navy)}
-    <div class="abs" style="left:0;right:0;top:330px;text-align:center"><span class="I" style="font-size:150px;display:block">O que a gente</span><span class="H" style="font-size:190px;display:block;margin-top:34px">faz:</span></div>
-    <div class="abs" style="left:90px;right:90px;top:730px;display:flex;flex-wrap:wrap;gap:22px;justify-content:center">
-      <span class="pill fill">Gestão de redes sociais</span><span class="pill line">Landing pages</span>
-      <span class="pill line">Estratégia digital</span><span class="pill fill">Identidade visual</span></div>
-    <div class="abs p" style="left:0;right:0;top:1090px;text-align:center;font-size:27px">A gente te ajuda a escolher<br><b>o melhor caminho pra sua marca.</b></div>`,
+  '09_mais_que_conteudo': `${full('livro', 0, 0, 736)}${GRAIN(.14)}
+    ${BRAND(C.off)}
+    <div class="abs H" style="left:56px;top:170px;font-size:150px;color:${C.off}">mais que<br>conteúdo</div>
+    <div class="abs s" style="left:66px;top:470px;color:${C.off}">uma parceira<br>no seu crescimento.</div>
+    ${FOOT('marca<br>estratégia<br>social media<br>landing pages', C.off)}`,
 
-  // 9 · foto recortada em forma orgânica (nuvem)
-  '09_estrategia_design_conteudo': `${BRAND(C.navy)}${LAB('vamos<br>conversar', C.navy)}
-    <div class="abs" style="left:90px;top:150px;width:900px;height:980px;clip-path:path('${BLOB}')">${crop('tablet', 60, 120, 1000, 900, 980, 'filter:brightness(.58) contrast(1.08)')}
-      </div>
-    <div class="abs H" style="left:200px;top:390px;font-size:170px;color:${C.off}">Estratégia<br>Design<br>Conteúdo</div>
-    <div class="abs I" style="left:206px;top:830px;font-size:150px;color:${C.off}">resultado.</div>
-    ${FOOT('Hold the vision.<br>Trust the process.', C.navy)}${ARROW(C.navy)}`,
+  '10_marcas_crescem_aqui': `${BRAND(C.navy)}
+    <div class="abs H" style="left:56px;top:250px;font-size:220px;color:${C.navy}">marcas<br>crescem</div>
+    <div class="abs H" style="left:150px;top:640px;font-size:230px;color:${C.navy}">aqui.</div>
+    <div class="abs" style="left:80px;top:610px">${ELLIPSE(720, 300, C.navy)}</div>
+    ${FOOT('soluções criativas<br>pro seu próximo passo.', C.navy)}${ARROW(C.navy)}`,
+
+  '11_combustivel_pra_grandes_ideias': `${full('pool', 0, 0, 736, 'filter:brightness(.62) contrast(1.15) saturate(.4) sepia(.18)')}${GRAIN(.14)}
+    ${BRAND(C.off)}${LAB('boas<br>ideias<br>marcas<br>melhores', C.off)}
+    <div class="abs H" style="left:56px;top:170px;font-size:150px;color:${C.off}">combustível<br>pra grandes<br>ideias.</div>`,
+
+  '12_estrategia_design_conteudo': `${BRAND(C.navy)}${LAB('vamos<br>conversar', C.navy)}
+    <div class="abs" style="left:90px;top:150px;width:900px;height:980px;clip-path:path('${BLOB}')">${crop('cafe', 0, 150, 941, 900, 980, MOODY)}</div>
+    <div class="abs H" style="left:250px;top:420px;font-size:118px;color:${C.off}">estratégia<br>design<br>conteúdo<br><span style="color:${C.beige}">resultado.</span></div>
+    ${FOOT('uma agência pra marcas<br>que querem crescer.', C.navy)}${ARROW(C.navy)}`,
 };
 Object.entries(POSTS).forEach(([id, html]) => {
   const d = document.createElement('div');
-  d.className = 'post slide'; d.id = id;
+  d.className = 'post'; d.id = id;
   d.innerHTML = html;
   document.body.appendChild(d);
 });
