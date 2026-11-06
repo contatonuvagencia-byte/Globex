@@ -32,7 +32,7 @@ const PALESTRANTES = {
     desc: 'Do Mundo dos Vistos: tire suas dúvidas de documentação ao vivo.' },
   samanta: { nome: 'Samanta Lopes', tema: 'Apresentadora oficial', foto: 'assets/palestrantes/samanta.jpg', fotoPos: '50% 22%', fotoZoom: 1.45, fotoOrigem: '50% 30%',
     desc: 'Educadora e empreendedora, com mais de 25 anos de mercado.' },
-  camila: { nome: 'Camila Fidélis', tema: 'Como o intercâmbio acelera a sua carreira global', foto: 'assets/palestrantes/camila.jpg', fotoPos: '50% 22%', fotoZoom: 1.6, fotoOrigem: '42% 24%',
+  camila: { nome: 'Camila Fidélis', cargo: 'Fundadora BEAWST', tema: 'Como o intercâmbio acelera a sua carreira global', foto: 'assets/palestrantes/camila.jpg', fotoPos: '50% 22%', fotoZoom: 1.6, fotoOrigem: '42% 24%',
     desc: 'Fundadora da BEAWST e executiva de RH com mais de 20 anos em grandes multinacionais.' },
 };
 window.PALESTRANTES = PALESTRANTES;
@@ -247,7 +247,7 @@ if (P) {
   const ini = P.nome.replace('Consultora ', '')[0];
   const foto = el => { el.textContent = ini; const i = new Image(); i.style.objectPosition = P.fotoPos || '50% 50%'; i.style.transform = `scale(${P.fotoZoom || 1})`; i.style.transformOrigin = P.fotoOrigem || '50% 50%'; i.onload = () => { el.textContent = ''; el.appendChild(i); }; i.src = P.foto; };
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-  ['ps', 'pm', 'gc'].forEach(k => { set(k + 'Nome', P.nome); set(k + 'Tema', P.tema); set(k + 'Desc', P.desc);
+  ['ps', 'pm', 'gc'].forEach(k => { set(k + 'Nome', P.nome); set(k + 'Tema', k === 'gc' && P.cargo ? P.cargo : P.tema);   // na tarja, o cargo tem prioridade sobre o tema set(k + 'Desc', P.desc);
     const f = document.getElementById(k + 'Flag'); if (f) { if (P.bandeira) f.innerHTML = BANDEIRAS[P.bandeira]; else f.style.display = 'none'; }
     const ft = document.getElementById(k + 'Foto'); if (ft) foto(ft); });
 }
