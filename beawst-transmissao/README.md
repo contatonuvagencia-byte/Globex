@@ -18,6 +18,7 @@ Seguem o "Manual de Especificações de Arte e Vídeo — Eventos Remotos": 1920
 | 14_FUNDO_LIMPO_PALESTRANTES.png | fundo limpo atrás dos palestrantes (um só para todos) | 100% fechada |
 | 15_SORTEIO_KIT_VIAGEM_CADERNETA.png | sorteio de hora em hora | 100% fechada |
 | 16_SORTEIO_KIT_VIAGEM_MALA.png | grande sorteio do fim | 100% fechada |
+| 17_TELA_PROGRAMACAO.png | cronograma oficial (editar `PROGRAMACAO` em telas.html) | 100% fechada |
 | 11_A_SEGUIR_<NOME>.png | anúncio da próxima palestra | 100% fechada |
 | 12_MASCARA_PPT_E_CAMERA_<NOME>.png | slides + câmera com nome e tema | PPT 1344×756 + câmera 400×400 |
 | 13_TARJA_NOME_<NOME>.png | tarja de nome (GC) sobre a câmera | fundo transparente |

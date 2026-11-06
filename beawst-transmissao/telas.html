@@ -199,6 +199,18 @@ body.transp .bg{display:none}
   <img class="abs" src="assets/logo-feira-branco.svg" style="left:120px;bottom:70px;height:60px">
 </div>
 
+<!-- 17 | Programação (lista montada a partir de PROGRAMACAO) -->
+<div class="tela" id="t17">
+  <div class="abs" style="left:110px;top:120px;width:560px">
+    <img src="assets/logo-feira-branco.svg" style="width:420px;display:block">
+    <div style="margin-top:70px"><span class="pill" style="background:var(--grad)">cronograma oficial</span></div>
+    <div class="huge" style="font-size:112px;margin-top:30px;line-height:1">Progra&shy;mação</div>
+    <div style="font-weight:800;font-size:40px;margin-top:34px">Sábado, 07/11</div>
+    <div style="font-weight:700;font-size:30px;margin-top:14px;color:rgba(255,255,255,.75)">Horário de Brasília</div>
+  </div>
+  <div class="abs" id="progLista" style="left:720px;right:90px;top:84px;display:flex;flex-direction:column;gap:12px"></div>
+</div>
+
 <!-- ps | A seguir (tela cheia) -->
 <div class="tela" id="tps">
   <div class="abs" style="left:150px;top:250px"><div class="foto" id="psFoto" style="width:560px;height:560px;font-size:240px"></div></div>
@@ -236,6 +248,25 @@ body.transp .bg{display:none}
 </div>
 
 <script>
+// ====== Programação (tela 17) ======
+const PROGRAMACAO = [
+  ['08:10', '08:20', 'Samanta e Camila', 'Abertura Oficial'],
+  ['08:20', '08:50', 'Camila Fidélis', 'Keynote de Carreira'],
+  ['09:00', '09:35', 'Alessandra', 'Destino Irlanda'],
+  ['09:35', '10:10', 'Mundo dos Vistos', 'Panorama Geral de Vistos'],
+  ['10:20', '10:55', 'Gateway School of English', 'Escola Internacional'],
+  ['10:55', '11:30', 'Léia', 'Vida em Malta'],
+  ['11:55', '12:30', 'Camila Fidélis', 'A Revolução da BEAWST'],
+  ['12:30', '12:45', 'Samanta', 'Sorteio Final'],
+  ['12:55', '13:00', 'Camila', 'Encerramento Oficial'],
+];
+document.getElementById('progLista').innerHTML = PROGRAMACAO.map(([a, b, quem, tema], i) => `
+  <div style="display:flex;align-items:center;gap:30px;height:92px;padding:0 30px;border-radius:22px;
+    background:${i % 2 ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.11)'};border:2px solid rgba(255,255,255,.14)">
+    <div style="flex:none;width:250px;font-weight:900;font-size:36px;letter-spacing:-.01em" class="gradL">${a} – ${b}</div>
+    <div style="min-width:0"><div style="font-weight:900;font-size:34px;line-height:1.1">${tema}</div>
+      <div style="font-weight:700;font-size:24px;color:rgba(255,255,255,.75);margin-top:4px">${quem}</div></div>
+  </div>`).join('');
 const BANDEIRAS = {
   irlanda: '<svg viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#FFFFFF"/><rect x="2" width="1" height="2" fill="#FF883E"/></svg>',
   malta: '<svg viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="15" height="20" fill="#FFFFFF"/><rect x="15" width="15" height="20" fill="#CF142B"/><g transform="translate(2.2 2.2)"><path d="M2 0h2v2h2v2H4v2H2V4H0V2h2z" fill="#B0B0B0" stroke="#CF142B" stroke-width=".35"/></g></svg>',

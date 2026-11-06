@@ -24,6 +24,7 @@ for (const [p, tipos] of Object.entries(PALESTRANTES))
 FILES['14'] = '14_FUNDO_LIMPO_PALESTRANTES';
 FILES['15'] = '15_SORTEIO_KIT_VIAGEM_CADERNETA';
 FILES['16'] = '16_SORTEIO_KIT_VIAGEM_MALA';
+FILES['17'] = '17_TELA_PROGRAMACAO';
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
