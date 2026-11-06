@@ -202,6 +202,26 @@ const MIOLO = {
 };
 if (location.hash === '#opcoes') { document.querySelectorAll('.post').forEach(e => e.remove());
   Object.entries(MIOLO).forEach(([id, [dark, html]]) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = 'opcao_' + id; d.innerHTML = html; document.body.appendChild(d); }); }
+
+// ---------- opções de capa do "Saiu do forno" (index.html#capas) ----------
+const SF_T = 'saiu do forno <em>na nuv.</em>', SF_F = 'o que foi pro ar nos perfis<br>dos nossos clientes esse mês';
+const CAPA_SF = {
+  A_clara: [false, `${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+    <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.navy}">${SF_T}</div>
+    <div class="abs" style="left:64px;top:688px;width:700px;height:14px;background:${C.navy};border-radius:7px"></div>
+    ${FOOT(SF_F, C.navy)}${ARROW(C.navy)}`],
+  B_faixa: [false, `${box(760, 0, 320, 1350, photo('listras', 320, 1350, .5, .5))}${BRAND(C.navy)}
+    <div class="abs H" style="left:58px;top:260px;width:660px;font-size:190px;color:${C.navy}">${SF_T}</div>
+    ${FOOT(SF_F, C.navy)}`],
+  C_bloco: [true, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.indigo}"></div>${BRAND(C.off)}${LAB('portfólio<br>do mês', C.off)}
+    <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.off}">${SF_T}</div>
+    ${FOOT(SF_F, C.off)}${ARROW(C.off)}`],
+  D_ripada: [false, `${box(0, 0, 1080, 1350, photo('ripada', 1080, 1350, .5, .5))}${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+    <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.navy}">${SF_T}</div>
+    ${FOOT(SF_F, C.navy)}${ARROW(C.navy)}`],
+};
+if (location.hash === '#capas') { document.querySelectorAll('.post').forEach(e => { if (!/_(servicos|como_trabalhar)_01$/.test(e.id)) e.remove(); });
+  Object.entries(CAPA_SF).forEach(([id, [dark, html]]) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = 'capa_sf_' + id; d.innerHTML = html; document.body.appendChild(d); }); }
 </script>
 </body>
 </html>
