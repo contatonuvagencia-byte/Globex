@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face { font-family: 'UI'; font-weight: 400; src: url(../nuv-kit-feed/assets/fonts/inter-latin-400-normal.woff2); }
+@font-face { font-family: 'UI'; font-weight: 700; src: url(../nuv-kit-feed/assets/fonts/inter-latin-700-normal.woff2); }
+body { margin: 0; background: #fff; font-family: 'UI', sans-serif; color: #000; width: 1080px; }
+.top { display: flex; align-items: center; gap: 56px; padding: 48px 40px 20px; }
+.av { width: 170px; height: 170px; border-radius: 50%; background: #0A2540; display: flex; align-items: center; justify-content: center; flex: none; border: 4px solid #fff; box-shadow: 0 0 0 3px #dbdbdb; }
+.av img { width: 120px; }
+.st { display: flex; gap: 60px; text-align: center; font-size: 26px; } .st b { display: block; font-size: 32px; }
+.bio { padding: 0 40px 26px; font-size: 25px; line-height: 1.4; } .bio a { color: #00376B; font-weight: 700; }
+.tabs { border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; padding: 18px 0; font-size: 22px; font-weight: 700; letter-spacing: .1em; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.grid div { aspect-ratio: 3 / 4; background-size: cover; background-position: center; position: relative; }
+.grid div i { position: absolute; right: 12px; top: 12px; width: 30px; height: 30px; border: 4px solid #fff; border-radius: 6px; box-shadow: -7px 7px 0 -3px rgba(255,255,255,.9); }
+</style></head><body>
+<div class="top"><div class="av"><img src="../nuv-kit-feed/assets/logo/nuv-simbolo-offwhite.png"></div>
+<div><div style="font-size:34px;font-weight:700;margin-bottom:20px">nuv.social</div><div class="st"><div><b>92</b>posts</div><div><b>326</b>seguidores</div><div><b>210</b>seguindo</div></div></div></div>
+<div class="bio"><b>NUV · Agência</b><br>Gestão de redes, sites e identidade visual.<br>Hold the vision. Trust the process.<br><a>agencianuv.com.br</a></div>
+<div class="tabs"><span>▦ POSTS</span><span style="color:#8e8e8e">REELS</span><span style="color:#8e8e8e">MARCADOS</span></div>
+<div class="grid" id="g"></div>
+<script>
+const capas = ['servicos', 'como_trabalhar', 'saiu_do_forno', 'sites'].map(t => [`out/NUV_carrossel_${t}/NUV_carrossel_${t}_01.jpg`, true]);
+const kit = ['02_nao_e_sorte_e_processo', '06_precisa_mesmo_de_um_site', '05_mesmo_instagram_resultado_diferente', '08_sua_visao_nosso_trabalho', '03_marca_boa_e_lembrada', '10_marcas_crescem_aqui', '04_do_scroll_a_venda', '01_ideias_constroem_marcas'].map(n => [`../nuv-kit-feed/out/instagram-B_Inter_Tight/${n}.jpg`, false]);
+document.getElementById('g').innerHTML = [...capas, ...kit].map(([u, c]) => `<div style="background-image:url(${u})">${c ? '<i></i>' : ''}</div>`).join('');
+</script></body></html>
