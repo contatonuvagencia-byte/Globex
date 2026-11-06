@@ -31,9 +31,30 @@
   .lab { position: absolute; right: 66px; top: 62px; text-align: left; }
   .foot { position: absolute; left: 66px; bottom: 70px; }
   .arrow { position: absolute; right: 66px; bottom: 74px; }
+
+  /* ---- teste de fontes de título (index.html#perandory | #inter | #archivo | #bricolage) ---- */
+  @font-face { font-family: 'HInter'; font-weight: 900; src: url(assets/fonts/inter-tight-latin-900-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'HInterI'; font-style: italic; font-weight: 300; src: url(assets/fonts/inter-tight-latin-300-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'HArch'; font-weight: 900; src: url(assets/fonts/archivo-latin-900-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'HArchI'; font-style: italic; font-weight: 300; src: url(assets/fonts/archivo-latin-300-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'HBrico'; font-weight: 800; src: url(assets/fonts/bricolage-grotesque-latin-800-normal.woff2) format('woff2'); }
+  body.f-perandory .H { font-family: 'Display', serif; font-weight: 400; text-transform: uppercase; letter-spacing: .005em; -webkit-text-stroke: 0; line-height: .86; }
+  body.f-perandory .H { transform: scale(1.32); transform-origin: 0 0; }
+  body.f-perandory .ul { display: none; }
+  body.f-perandory [id="05_mesmo_instagram_resultado_diferente"] .H + .H { top: 1060px !important; transform: none; }
+  body.f-perandory [id="05_mesmo_instagram_resultado_diferente"] .H { top: 650px !important; }
+  body.f-perandory [id="10_marcas_crescem_aqui"] .H:nth-of-type(3) { top: 760px !important; left: 170px !important; }
+  body.f-perandory [id="10_marcas_crescem_aqui"] .abs:has(svg) { top: 770px !important; }
+  body.f-inter .H { font-family: 'HInter', sans-serif; font-weight: 900; letter-spacing: -.055em; -webkit-text-stroke: 0; line-height: .88; }
+  body.f-inter .H em { font-family: 'HInterI', sans-serif; font-weight: 300; letter-spacing: -.04em; font-size: 1em; }
+  body.f-archivo .H { font-family: 'HArch', sans-serif; font-weight: 900; letter-spacing: -.05em; -webkit-text-stroke: 0; line-height: .88; }
+  body.f-archivo .H em { font-family: 'HArchI', sans-serif; font-weight: 300; letter-spacing: -.035em; font-size: 1em; }
+  body.f-bricolage .H { font-family: 'HBrico', sans-serif; font-weight: 800; letter-spacing: -.05em; -webkit-text-stroke: 0; line-height: .88; }
+  body.f-bricolage .H em { font-family: 'HInterI', sans-serif; font-weight: 300; letter-spacing: -.04em; font-size: 1em; }
 </style>
 </head>
 <body>
+<script>if (location.hash) document.body.className = 'f-' + location.hash.slice(1);</script>
 <svg width="0" height="0" style="position:absolute"><defs>
   <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 .9 0"/></filter>
 </defs></svg>
@@ -63,7 +84,7 @@ const ELLIPSE = (w, h, c) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} 
 const POSTS = {
   '01_ideias_constroem_marcas': `${BRAND(C.navy)}${LAB('agência de social media', C.navy)}
     <div class="abs H" style="left:56px;top:190px;font-size:200px;color:${C.navy}">ideias<br>constroem<br>marcas.</div>
-    <div class="abs" style="left:64px;top:560px;width:840px;height:14px;background:${C.navy};border-radius:7px"></div>
+    <div class="abs ul" style="left:64px;top:560px;width:840px;height:14px;background:${C.navy};border-radius:7px"></div>
     <div class="foot" style="color:${C.navy};font-size:22px;line-height:1.3">Estratégia.<br>Design.<br>Conteúdo.<br>Pro que vem depois.</div>${ARROW(C.navy)}`,
 
   '02_nao_e_sorte_e_processo': `${full('tablet', 0, 0, 1122)}${GRAIN(.14)}
