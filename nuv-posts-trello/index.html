@@ -83,25 +83,35 @@ const cta = ({ title, text, ph, cut = 860, btn = 'me chama no direct' }) => `${B
   <div class="abs btn" style="left:66px;top:${cut - 150}px;background:${C.beige};color:${C.navy}">${PLANE(C.navy)}${btn}</div>
   ${box(0, cut, 1080, 1350 - cut, photo(ph.key, 1080, 1350 - cut, ph.fx, ph.fy, ph.zoom || 1))}`;
 
+// miolo estilo A: foto cheia, título enorme na área lisa/escura da própria foto, uma frase curta
+const fullA = ({ dark, lab, key, fx = .5, fy = .5, zoom = 1, filter = '', title, size = 150, tw = 900, lead, leadAt = 'below', leadTop, lw = 600, leadLeft = 66 }) => {
+  const fg = dark ? C.off : C.navy;
+  const leadY = leadAt === 'bottom' ? 'bottom:110px' : `top:${leadTop}px`;
+  return `${box(0, 0, 1080, 1350, photo(key, 1080, 1350, fx, fy, zoom, filter ? 'filter:' + filter : ''))}
+  ${BRAND(fg)}${LAB(lab, fg)}
+  <div class="abs H" style="left:58px;top:160px;width:${tw}px;font-size:${size}px;color:${fg}">${title}</div>
+  <div class="abs lead" style="left:${leadLeft}px;${leadY};width:${lw}px;color:${fg}">${lead}</div>`;
+};
+const DARKF = 'brightness(.66) contrast(1.12) saturate(.9)';
 // ---------- posts do Trello ----------
 const POSTS = {
   // Card "O que a NUV faz por você (serviços, fixar)"
   servicos: [
     [false, capa({ lab: 'nossos<br>serviços', title: 'o que a nuv faz <em>por você</em>', sub: 'Escolhe o que o seu negócio precisa agora.', ph: { key: 'escada', top: 640, fx: .5, fy: .52 }, foot: 'arrasta pro lado' })],
-    [true, etapa({ dark: true, num: '01', lab: 'serviço', title: 'gestão de redes sociais', lead: 'A gente planeja, cria e posta, <b>e você só aprova.</b>', apoio: 'Pra quem quer o Instagram da empresa ativo sem tirar tempo do próprio negócio.', ph: { key: 'escuro', fx: .55, fy: .5, leadTop: 510, apoioTop: 640 } })],
-    [false, etapa({ num: '02', lab: 'serviço', title: 'sites e <em>landing pages</em>', lead: 'Páginas pensadas pra apresentar o seu negócio e <b>transformar visita em contato.</b>', apoio: 'Pra quem quer passar mais credibilidade e ter um lugar pra mandar o cliente decidir.', ph: { key: 'mesa', fx: .55, fy: .78, leadTop: 510, apoioTop: 660 } })],
-    [true, etapa({ dark: true, num: '03', lab: 'serviço', title: 'estratégia digital', lead: 'A gente olha o seu negócio, define o caminho e <b>organiza o que precisa ser feito.</b>', apoio: 'Pra quem quer clareza antes de investir em conteúdo ou anúncio.', ph: { key: 'cidade', fx: .5, fy: .5, leadTop: 470, apoioTop: 630 } })],
-    [false, etapa({ num: '04', lab: 'serviço', title: 'identidade visual', lead: 'Cores, fontes e elementos que deixam a sua marca <b>reconhecível em qualquer lugar.</b>', apoio: 'Pra quem tá começando ou sente que a marca não combina mais com a empresa de hoje.', ph: { key: 'gelado', fx: .5, fy: .55, leadTop: 470, apoioTop: 630 } })],
-    [true, cta({ title: 'ficou na <em>dúvida?</em>', text: { top: 410, t: 'Me conta o momento do seu negócio no direct, que eu te indico <b>o melhor caminho</b> e mando o orçamento.' }, ph: { key: 'ceu', fx: .5, fy: .62 } })],
+    [true, fullA({ dark: true, lab: 'serviço 01', key: 'escuro', fx: .6, filter: 'brightness(.72) contrast(1.1)', title: 'gestão de redes <em>sociais</em>', tw: 700, lead: 'A gente planeja, cria e posta, <b>e você só aprova.</b>', leadAt: 'bottom' })],
+    [false, fullA({ lab: 'serviço 02', key: 'mesa', fy: .45, title: 'sites e <em>landing pages</em>', size: 128, tw: 960, lead: 'Páginas pensadas pra apresentar o seu negócio e <b>transformar visita em contato.</b>', leadTop: 460, lw: 560 })],
+    [true, fullA({ dark: true, lab: 'serviço 03', key: 'tablet', fx: .3, fy: .4, zoom: 1.22, filter: DARKF, title: 'estratégia <em>digital</em>', size: 140, tw: 800, lead: 'A gente olha o seu negócio, define o caminho e <b>organiza o que precisa ser feito.</b>', leadTop: 470, lw: 380 })],
+    [false, fullA({ lab: 'serviço 04', key: 'ceu', fy: .3, title: 'identidade <em>visual</em>', size: 140, lead: 'Cores, fontes e elementos que deixam a sua marca <b>reconhecível em qualquer lugar.</b>', leadTop: 470, lw: 640 })],
+    [true, cta({ title: 'ficou na <em>dúvida?</em>', text: { top: 410, t: 'Me conta o momento do seu negócio no direct, que eu te indico <b>o melhor caminho</b> e mando o orçamento.' }, ph: { key: 'gelado', fx: .5, fy: .5 } })],
   ],
   // Card "Como é trabalhar com a NUV"
   como_trabalhar: [
     [false, capa({ lab: 'passo<br>a passo', title: 'como é trabalhar<br>com a <em>nuv?</em>', size: 128, sub: 'Do primeiro contato ao primeiro post.', ph: { key: 'selfie', top: 640, fx: .5, fy: .42 }, foot: 'arrasta pro lado' })],
-    [true, etapa({ dark: true, num: '01', lab: 'a conversa', title: 'a conversa', lead: 'A gente começa entendendo <b>o seu negócio, o seu cliente</b> e onde você quer chegar.', ph: { key: 'tablet', fx: .5, fy: .42, leadTop: 420 }, cut: 700 })],
-    [false, etapa({ num: '02', lab: 'o plano', title: 'o plano', lead: 'Montamos a estratégia e o calendário do mês, pra você <b>saber tudo o que vai sair antes de sair.</b>', ph: { key: 'mesa', fx: .55, fy: .78, leadTop: 420 }, cut: 700 })],
-    [true, etapa({ dark: true, num: '03', lab: 'a criação', title: 'a criação', lead: 'Roteiro, design, edição e legenda, <b>tudo com a cara da sua marca.</b>', ph: { key: 'escuro', fx: .55, fy: .5, leadTop: 420 }, cut: 700 })],
-    [false, etapa({ num: '04', lab: 'a aprovação', title: 'a aprovação', lead: 'Você recebe tudo pronto e aprova de um jeito simples, <b>por comentário ou até por áudio.</b>', ph: { key: 'balao', fx: .45, fy: .5, leadTop: 420 }, cut: 700 })],
-    [true, etapa({ dark: true, num: '05', lab: 'o acompanhamento', title: 'o acompanhamento', size: 98, lead: 'Depois que vai pro ar, a gente analisa os resultados pra deixar <b>o próximo mês ainda melhor.</b>', ph: { key: 'cidade', fx: .5, fy: .45, leadTop: 420 }, cut: 700 })],
+    [true, fullA({ dark: true, lab: 'etapa 01', key: 'close', fx: .5, fy: .62, zoom: 1.15, filter: DARKF, title: 'a <em>conversa</em>', size: 170, lead: 'A gente começa entendendo <b>o seu negócio, o seu cliente</b> e onde você quer chegar.', leadAt: 'bottom', lw: 440 })],
+    [false, fullA({ lab: 'etapa 02', key: 'mesa', fy: .45, title: 'o <em>plano</em>', size: 190, lead: 'Estratégia e calendário do mês, pra você <b>saber tudo antes de sair.</b>', leadTop: 420, lw: 560 })],
+    [true, fullA({ dark: true, lab: 'etapa 03', key: 'escuro', fx: .6, filter: 'brightness(.72) contrast(1.1)', title: 'a <em>criação</em>', size: 170, lead: 'Roteiro, design, edição e legenda, <b>tudo com a cara da sua marca.</b>', leadAt: 'bottom' })],
+    [true, fullA({ dark: true, lab: 'etapa 04', key: 'tablet', fx: .3, fy: .4, zoom: 1.22, filter: DARKF, title: 'a <em>aprovação</em>', size: 160, lead: 'Você recebe tudo pronto e aprova de um jeito simples, <b>por comentário ou até por áudio.</b>', leadTop: 380, lw: 380 })],
+    [false, fullA({ lab: 'etapa 05', key: 'ceu', fy: .3, title: 'o <em>acompanhamento</em>', size: 104, lead: 'Depois que vai pro ar, a gente analisa os resultados pra deixar <b>o próximo mês ainda melhor.</b>', leadTop: 330, lw: 680 })],
     [true, cta({ title: 'enquanto isso, você cuida do <em>seu negócio.</em>', text: { top: 540, t: 'O que só você sabe fazer. O resto, deixa com a gente.' }, ph: { key: 'sofa', fx: .5, fy: .52 }, cut: 900 })],
   ],
   // Card "Saiu do forno na NUV (portfólio de conteúdos, fixar)": grade com espaços pros conteúdos dos clientes
