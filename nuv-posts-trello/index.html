@@ -130,7 +130,10 @@ const POSTS = {
   ],
   // Card "Saiu do forno na NUV (portfólio de conteúdos, fixar)": grade com espaços pros conteúdos dos clientes
   saiu_do_forno: [
-    [true, capaFull({ key: 'isaNoite', fx: .5, fy: .1, zoom: 1.3, lab: 'portfólio<br>do mês', title: 'saiu do forno <em>na nuv.</em>', size: 150, sub: 'o que foi pro ar nos perfis<br>dos nossos clientes esse mês' })],
+    [false, `${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+      <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.navy}">saiu do forno <em>na nuv.</em></div>
+      <div class="abs" style="left:64px;top:688px;width:700px;height:14px;background:${C.navy};border-radius:7px"></div>
+      ${FOOT('o que foi pro ar nos perfis<br>dos nossos clientes esse mês', C.navy)}${ARROW(C.navy)}`],
     [false, `${box(0, 0, 1080, 1350, photo('listras', 1080, 1350, .5, .5))}<div class="abs" style="left:40px;top:40px;right:40px;bottom:40px;background:${C.off};border-radius:24px"></div>${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
       <div class="abs" style="left:66px;right:66px;top:250px;display:flex;gap:24px">
         ${['sindicato', 'despacho aduaneiro', 'planejamento financeiro'].map(n => `<div style="flex:1">

@@ -18,7 +18,7 @@ body { margin: 0; background: #fff; font-family: 'UI', sans-serif; color: #000; 
 <div class="tabs"><span>▦ POSTS</span><span style="color:#8e8e8e">REELS</span><span style="color:#8e8e8e">MARCADOS</span></div>
 <div class="grid" id="g"></div>
 <script>
-const capas = ['servicos', 'como_trabalhar', 'saiu_do_forno', 'sites'].map(t => [`out/NUV_carrossel_${t}/NUV_carrossel_${t}_01.jpg`, true]);
+const capas = ['servicos', 'saiu_do_forno', 'como_trabalhar', 'sites'].map(t => [`out/NUV_carrossel_${t}/NUV_carrossel_${t}_01.jpg`, true]);
 const kit = ['02_nao_e_sorte_e_processo', '06_precisa_mesmo_de_um_site', '05_mesmo_instagram_resultado_diferente', '08_sua_visao_nosso_trabalho', '03_marca_boa_e_lembrada', '10_marcas_crescem_aqui', '04_do_scroll_a_venda', '01_ideias_constroem_marcas'].map(n => [`../nuv-kit-feed/out/instagram-B_Inter_Tight/${n}.jpg`, false]);
 document.getElementById('g').innerHTML = [...capas, ...kit].map(([u, c]) => `<div style="background-image:url(${u})">${c ? '<i></i>' : ''}</div>`).join('');
 </script></body></html>
