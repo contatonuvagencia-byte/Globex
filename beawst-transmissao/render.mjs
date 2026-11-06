@@ -16,12 +16,14 @@ const FILES = {
   '07': '07_MASCARA_4_CAMERAS', '08': '08_MASCARA_PPT_E_CAMERA', '10': '10_FUNDO_VIRTUAL_PALESTRANTE',
 };
 // peças por palestrante: tela "A seguir", máscara PPT + câmera e tarja de nome (GC)
-const PALESTRANTES = ['leia', 'alessandra', 'daniel', 'rafael'];
-for (const p of PALESTRANTES) {
-  FILES[`ps&s=${p}`] = `11_A_SEGUIR_${p.toUpperCase()}`;
-  FILES[`pm&s=${p}`] = `12_MASCARA_PPT_E_CAMERA_${p.toUpperCase()}`;
-  FILES[`gc&s=${p}`] = `13_TARJA_NOME_${p.toUpperCase()}`;
-}
+// peças por pessoa: ps = "A seguir", pm = máscara PPT + câmera, gc = tarja de nome
+const PALESTRANTES = { leia: 'ps pm gc', alessandra: 'ps pm gc', daniel: 'ps pm gc', rafael: 'ps pm gc', camila: 'ps pm gc', samanta: 'gc' };
+const PECA = { ps: '11_A_SEGUIR', pm: '12_MASCARA_PPT_E_CAMERA', gc: '13_TARJA_NOME' };
+for (const [p, tipos] of Object.entries(PALESTRANTES))
+  for (const k of tipos.split(' ')) FILES[`${k}&s=${p}`] = `${PECA[k]}_${p.toUpperCase()}`;
+FILES['14'] = '14_FUNDO_LIMPO_PALESTRANTES';
+FILES['15'] = '15_SORTEIO_KIT_VIAGEM_CADERNETA';
+FILES['16'] = '16_SORTEIO_KIT_VIAGEM_MALA';
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });

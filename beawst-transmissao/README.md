@@ -15,6 +15,9 @@ Seguem o "Manual de Especificações de Arte e Vídeo — Eventos Remotos": 1920
 | 09_VINHETA.mp4 | vinheta de abertura/virada de bloco (7s) | MP4 H.264 · 30fps · Rec.709 · 12 Mbps · AAC 48 kHz estéreo |
 | 09_VINHETA_B.mp4 | vinheta opção B "Conexões", fundo claro (6s) | mesmo padrão da 09_VINHETA |
 | 10_FUNDO_VIRTUAL_PALESTRANTE.png | fundo virtual da webcam (Zoom/Meet/Teams) | 100% fechada |
+| 14_FUNDO_LIMPO_PALESTRANTES.png | fundo limpo atrás dos palestrantes (um só para todos) | 100% fechada |
+| 15_SORTEIO_KIT_VIAGEM_CADERNETA.png | sorteio de hora em hora | 100% fechada |
+| 16_SORTEIO_KIT_VIAGEM_MALA.png | grande sorteio do fim | 100% fechada |
 | 11_A_SEGUIR_<NOME>.png | anúncio da próxima palestra | 100% fechada |
 | 12_MASCARA_PPT_E_CAMERA_<NOME>.png | slides + câmera com nome e tema | PPT 1344×756 + câmera 400×400 |
 | 13_TARJA_NOME_<NOME>.png | tarja de nome (GC) sobre a câmera | fundo transparente |

@@ -30,6 +30,10 @@ const PALESTRANTES = {
     desc: 'Representante da Gateway School of English, escola de inglês em Malta.' },
   rafael: { nome: 'Rafael Carvalho', tema: 'Visto e passaporte sem mistério', foto: 'assets/palestrantes/rafael.jpg', fotoPos: '50% 18%', fotoZoom: 1.25, fotoOrigem: '48% 22%',
     desc: 'Do Mundo dos Vistos: tire suas dúvidas de documentação ao vivo.' },
+  samanta: { nome: 'Samanta Lopes', tema: 'Apresentadora oficial', foto: 'assets/palestrantes/samanta.jpg', fotoPos: '50% 22%', fotoZoom: 1.45, fotoOrigem: '50% 30%',
+    desc: 'Educadora e empreendedora, com mais de 25 anos de mercado.' },
+  camila: { nome: 'Camila Fidélis', tema: 'Como o intercâmbio acelera a sua carreira global', foto: 'assets/palestrantes/camila.jpg', fotoPos: '50% 22%', fotoZoom: 1.6, fotoOrigem: '42% 24%',
+    desc: 'Fundadora da BEAWST e executiva de RH com mais de 20 anos em grandes multinacionais.' },
 };
 window.PALESTRANTES = PALESTRANTES;
 HOLES.pm = HOLES['08'];   // máscara PPT + câmera personalizada usa os mesmos recortes
@@ -58,6 +62,7 @@ body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased;posi
   background:linear-gradient(var(--escuro),var(--escuro)) padding-box,var(--grad) border-box;box-shadow:0 20px 60px rgba(0,0,0,.45)}
 .vert{position:absolute;writing-mode:vertical-rl;transform:rotate(180deg);font-weight:800;font-size:22px;letter-spacing:.24em;color:rgba(255,255,255,.75);text-align:center}
 .tela{display:none}
+.halo{border-radius:50%;background:radial-gradient(circle,rgba(255,107,181,.55) 0%,rgba(91,0,214,.35) 45%,transparent 70%);filter:blur(30px)}
 .foto{position:relative;border-radius:50%;overflow:hidden;background:var(--grad);display:grid;place-items:center;font-weight:900;color:#fff;box-shadow:0 0 0 10px rgba(255,255,255,.95),0 0 0 22px rgba(185,140,255,.35)}
 .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .flag{display:inline-block;border-radius:10px;overflow:hidden;box-shadow:0 0 0 4px #fff;vertical-align:middle}
@@ -160,6 +165,40 @@ body.transp .bg{display:none}
   <div class="abs" style="right:90px;top:220px;font-weight:700;font-size:24px;letter-spacing:.14em;color:rgba(255,255,255,.75);text-align:right">FEIRA DE INTERCÂMBIO · 07/11</div>
 </div>
 
+<!-- 14 | Fundo limpo atrás dos palestrantes (um só para todos) -->
+<div class="tela" id="t14">
+  <img class="abs" src="assets/logo-feira-branco.svg" style="left:60px;bottom:60px;height:56px;opacity:.85">
+</div>
+
+<!-- 15 / 16 | Sorteio -->
+<div class="tela" id="t15">
+  <div class="abs" style="left:120px;top:150px;width:780px">
+    <span class="pill" style="background:var(--grad)">sorteio ao vivo</span>
+    <div class="huge" style="font-size:118px;margin-top:34px">Kit viagem</div>
+    <div class="huge gradL" style="font-size:118px">+ caderneta</div>
+    <div style="font-weight:700;font-size:40px;line-height:1.3;margin-top:34px;color:rgba(255,255,255,.9)">Travesseiro de pescoço, máscara de dormir e caderneta BEAWST.</div>
+    <div style="margin-top:46px;display:inline-flex;align-items:center;gap:18px;background:#fff;color:#0B0B0F;border-radius:999px;padding:20px 36px;font-weight:900;font-size:38px">
+      <span style="width:20px;height:20px;border-radius:50%;background:var(--vermelho);box-shadow:0 0 0 7px rgba(240,16,42,.22)"></span>sorteado de hora em hora</div>
+  </div>
+  <div class="abs halo" style="left:930px;top:120px;width:900px;height:840px"></div>
+  <img class="abs" src="assets/sorteio/kit-viagem.png" style="left:920px;top:470px;width:700px;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))">
+  <img class="abs" src="assets/sorteio/caderneta.png" style="left:1360px;top:200px;width:430px;transform:rotate(8deg);filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))">
+  <img class="abs" src="assets/logo-feira-branco.svg" style="left:120px;bottom:70px;height:60px">
+</div>
+<div class="tela" id="t16">
+  <div class="abs" style="left:120px;top:150px;width:760px">
+    <span class="pill" style="background:var(--grad)">grande sorteio</span>
+    <div class="huge" style="font-size:118px;margin-top:34px">Kit viagem</div>
+    <div class="huge gradL" style="font-size:118px">+ mala</div>
+    <div style="font-weight:700;font-size:40px;line-height:1.3;margin-top:34px;color:rgba(255,255,255,.9)">Mala de rodinhas, travesseiro, máscara e caderneta BEAWST.</div>
+    <div style="margin-top:46px;display:inline-flex;align-items:center;gap:18px;background:#fff;color:#0B0B0F;border-radius:999px;padding:20px 36px;font-weight:900;font-size:38px">
+      <span style="width:20px;height:20px;border-radius:50%;background:var(--vermelho);box-shadow:0 0 0 7px rgba(240,16,42,.22)"></span>pra quem ficou até o fim</div>
+  </div>
+  <div class="abs halo" style="left:900px;top:90px;width:960px;height:900px"></div>
+  <img class="abs" src="assets/sorteio/kit-mala.png" style="left:900px;top:150px;width:940px;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))">
+  <img class="abs" src="assets/logo-feira-branco.svg" style="left:120px;bottom:70px;height:60px">
+</div>
+
 <!-- ps | A seguir (tela cheia) -->
 <div class="tela" id="tps">
   <div class="abs" style="left:150px;top:250px"><div class="foto" id="psFoto" style="width:560px;height:560px;font-size:240px"></div></div>
@@ -212,6 +251,7 @@ if (P) {
     const f = document.getElementById(k + 'Flag'); if (f) { if (P.bandeira) f.innerHTML = BANDEIRAS[P.bandeira]; else f.style.display = 'none'; }
     const ft = document.getElementById(k + 'Foto'); if (ft) foto(ft); });
 }
+if (P && P.tema.length > 30) { const e = document.getElementById('psTema'); if (e) e.style.fontSize = '70px'; }
 if (t === 'gc') { document.body.classList.add('transp'); document.documentElement.style.background = 'transparent'; document.body.style.background = 'transparent'; }
 // moldura em gradiente por fora de cada recorte (o recorte em si fica transparente no PNG)
 for (const [x, y, w, h] of (HOLES[t] || [])) {
@@ -219,6 +259,10 @@ for (const [x, y, w, h] of (HOLES[t] || [])) {
   f.className = 'frame';
   Object.assign(f.style, { left: x - 6 + 'px', top: y - 6 + 'px', width: w + 12 + 'px', height: h + 12 + 'px' });
   document.getElementById('frames').appendChild(f);
+}
+if (t === '14') {   // fundo limpo: sem grade nem barra, brilhos mais suaves
+  document.querySelector('.grid').style.display = 'none';
+  document.querySelectorAll('.glow').forEach(g => g.style.opacity = (parseFloat(getComputedStyle(g).opacity) * .6).toFixed(2));
 }
 if (t === '10') {   // fundo virtual: centro mais limpo e escuro, onde fica a pessoa
   document.querySelector('.grid').style.opacity = '.04';
