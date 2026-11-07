@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Estamos no ar</title>
+<!-- 07/11 "Estamos no ar": ?p=post (1080x1350) ou ?p=s1 (story 1080x1920, &guia=1 mostra onde colar o link). Gerar: node render.mjs -->
+<style>
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow:hidden;background:#000}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+.peca{position:absolute;left:0;top:0;overflow:hidden;display:none;background:var(--escuro)}
+.abs{position:absolute}
+.c{left:0;width:100%;text-align:center;padding:0 80px}
+.glow{position:absolute;border-radius:50%;filter:blur(140px)}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.huge{font-weight:900;line-height:.92;letter-spacing:-.04em}
+.onair{display:inline-flex;align-items:center;gap:22px;background:var(--vermelho);border-radius:999px;font-weight:900;letter-spacing:.14em;box-shadow:0 0 0 12px rgba(240,16,42,.22),0 0 80px rgba(240,16,42,.6)}
+.onair i{width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 0 0 8px rgba(255,255,255,.3)}
+.ring{position:absolute;border-radius:50%;border:3px solid rgba(255,255,255,.14)}
+.circ{border-radius:50%;overflow:hidden;box-shadow:0 0 0 7px #fff}
+.circ img{width:100%;height:100%;object-fit:cover}
+.guide{position:absolute;left:150px;right:150px;border:5px dashed #fff;border-radius:36px;display:none;align-items:center;justify-content:center;font-weight:800;font-size:32px;letter-spacing:.08em;background:rgba(255,255,255,.1)}
+body.guia .guide{display:flex}
+</style>
+</head>
+<body>
+
+<!-- POST -->
+<div class="peca" id="post" style="width:1080px;height:1350px">
+  <div class="glow" style="width:1000px;height:1000px;background:var(--roxo);opacity:.75;left:-300px;top:-250px"></div>
+  <div class="glow" style="width:900px;height:900px;background:var(--vermelho);opacity:.45;left:480px;top:700px"></div>
+  <div class="ring" style="left:-200px;top:180px;width:900px;height:900px"></div>
+  <div class="ring" style="left:-60px;top:320px;width:620px;height:620px;border-color:rgba(255,255,255,.2)"></div>
+  <div class="abs" style="left:90px;top:84px"><img src="assets/logo-feira-branco.svg" style="width:330px;display:block"></div>
+  <div class="abs" style="left:90px;top:290px"><span class="onair" style="font-size:40px;padding:24px 40px"><i></i>AO VIVO</span></div>
+  <div class="abs huge" style="left:84px;top:450px;font-size:170px">Estamos</div>
+  <div class="abs huge gradL" style="left:80px;top:620px;font-size:170px;white-space:nowrap">no ar!</div>
+  <div class="abs" style="left:90px;right:90px;top:840px;font-weight:700;font-size:40px;line-height:1.32;color:rgba(255,255,255,.92)">
+    A Beawst Global Connect começou. Escolas, especialistas e sorteios ao vivo até as 13h.</div>
+  <div class="abs" style="left:90px;top:1030px;display:flex;align-items:center;gap:20px">
+    <div class="circ" style="width:120px;height:120px"><img src="assets/apresentadora.jpg" style="object-position:50% 22%;transform:scale(1.45);transform-origin:50% 30%"></div>
+    <div class="circ" style="width:120px;height:120px;margin-left:-34px"><img src="assets/camila.jpg" style="object-position:50% 22%;transform:scale(1.6);transform-origin:42% 24%"></div>
+    <div style="font-weight:800;font-size:30px;line-height:1.25">com Samanta Lopes<br>e Camila Fidélis</div>
+  </div>
+  <div class="abs" style="left:90px;right:90px;top:1210px;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-weight:800;font-size:32px">Entra agora, é de graça</span>
+    <span style="background:#fff;color:var(--roxo);padding:18px 32px;border-radius:999px;font-weight:900;font-size:32px">Link na bio ↗</span>
+  </div>
+</div>
+
+<!-- STORY -->
+<div class="peca" id="s1" style="width:1080px;height:1920px">
+  <div class="glow" style="width:1000px;height:1000px;background:var(--roxo);opacity:.75;left:-300px;top:-100px"></div>
+  <div class="glow" style="width:900px;height:900px;background:var(--vermelho);opacity:.45;left:450px;top:1150px"></div>
+  <div class="ring" style="left:90px;top:420px;width:900px;height:900px"></div>
+  <div class="ring" style="left:230px;top:560px;width:620px;height:620px;border-color:rgba(255,255,255,.2)"></div>
+  <div class="abs c" style="top:280px"><img src="assets/logo-feira-branco.svg" style="width:360px;display:inline-block"></div>
+  <div class="abs c" style="top:470px"><span class="onair" style="font-size:44px;padding:26px 44px"><i></i>AO VIVO</span></div>
+  <div class="abs c huge" style="top:650px;font-size:190px">Estamos</div>
+  <div class="abs c huge gradL" style="top:840px;font-size:190px;white-space:nowrap">no ar!</div>
+  <div class="abs c" style="top:1070px;font-weight:800;font-size:46px;line-height:1.3">A feira começou.<br>Entra agora, é de graça.</div>
+  <div class="abs c" style="top:1240px;font-weight:700;font-size:34px;color:rgba(255,255,255,.88)">Sorteio de kit viagem de hora em hora</div>
+  <div class="abs c" style="top:1345px;font-weight:800;font-size:40px">Toca no link ↓</div>
+  <div class="guide" style="top:1440px;height:120px">LINK DA TRANSMISSÃO</div>
+</div>
+
+<script>
+const q = new URLSearchParams(location.search), p = q.get('p') || 'post';
+const el = document.getElementById(p); el.style.display = 'block';
+document.body.style.width = el.style.width; document.body.style.height = el.style.height;
+if (q.get('guia')) document.body.classList.add('guia');
+</script>
+</body>
+</html>
