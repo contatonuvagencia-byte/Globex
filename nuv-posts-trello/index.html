@@ -44,6 +44,7 @@ const IMG = { // [arquivo, largura, altura] das fotos originais
   escuro: ['fotos-hd/notebook-escuro.jpg', 736, 1104], mesa: ['fotos-hd/mesa-janela.jpg', 1200, 1616],
   gelado: ['fotos-hd/cafe-gelado.jpg', 1200, 1500], sofa: ['fotos-hd/notebook-sofa.jpg', 1080, 1920],
   tablet: ['fotos-hd/tablet-cafe.jpg', 1122, 1402],
+  veludo: ['fotos-hd/textura-veludo.jpg', 1200, 1600], cimento: ['fotos-hd/textura-cimento.jpg', 960, 1920],
   isaNoite: ['fotos-hd/isa-noite.jpg', 1086, 1448], isaNote: ['fotos-hd/isa-notebook.jpg', 1086, 1448], isaRua: ['fotos-hd/isa-rua.jpg', 1086, 1448],
   mesaAzul: ['fotos-hd/mesa-azul.jpg', 736, 1308], maoCel: ['fotos-hd/mao-celular.jpg', 1038, 1294], blazer: ['fotos-hd/cadeira-blazer.jpg', 922, 1382],
   ripada: ['fotos-hd/textura-ripada.jpg', 1080, 1846], listras: ['fotos-hd/textura-listras.jpg', 1200, 2133], lua: ['fotos-hd/cidade-lua.jpg', 1159, 2576], close: ['fotos-hd/close-celular.jpg', 941, 1672],
@@ -173,6 +174,25 @@ const POSTS = {
       <div class="abs lead" style="left:66px;top:1060px;width:800px;color:${C.beige}">de visualizações em um só post</div>
       ${FOOT('hold the vision.<br>trust the process.', C.off)}${ARROW(C.off)}`],
     [true, fim({ title: `a próxima marca pode ser <span style="position:relative;display:inline-block">a sua.<span style="position:absolute;left:-40px;top:-20px">${ELLIPSE(420, 210, C.beige)}</span></span>`, size: 160, foot: 'me chama no direct e me conta<br>o momento do seu negócio.' })],
+  ],
+  // Post novo: mitos e verdades do Instagram pra empresário
+  mitos: [
+    [false, `${box(0, 0, 1080, 1350, photo('veludo', 1080, 1350, .5, .5))}${BRAND(C.navy)}${LAB('mitos<br>e verdades', C.navy)}
+      <div class="abs H" style="left:58px;top:250px;width:960px;font-size:150px;color:${C.navy}">3 mitos que fazem o seu instagram <em>não vender.</em></div>
+      <div class="abs" style="left:66px;top:880px;transform:rotate(-4deg)"><span class="H" style="display:inline-block;font-size:72px;background:${C.navy};color:${C.off};padding:6px 26px 16px">qual você ainda segue?</span></div>
+      ${FOOT('pra empresário que quer<br>parar de postar no escuro', C.navy)}${ARROW(C.navy)}`],
+    ...[
+      ['01', 'preciso postar todo dia.', 'Constância vence quantidade. <b>Poucos posts bons por semana</b> fazem mais pela sua marca do que um por dia feito na pressa.'],
+      ['02', 'o que importa é ter muito seguidor.', 'Seguidor não paga conta. <b>Poucas pessoas certas</b> compram mais do que milhares que nunca vão virar cliente.'],
+      ['03', 'é só viralizar que vende.', 'O viral traz visita. <b>Quem vende é o perfil</b> que a pessoa encontra depois: bio clara, prova social e um caminho fácil até o direct.'],
+    ].map(([n, mito, verdade]) => [false, `${BRAND(C.navy)}${LAB('mito ' + n, C.navy)}
+      <div class="abs s" style="left:66px;top:190px;color:${C.indigo};font-weight:700">mito</div>
+      <div class="abs H" style="left:58px;top:240px;width:960px;font-size:118px;color:${C.navy};text-decoration:line-through;text-decoration-thickness:6px;text-decoration-color:${C.indigo}">“${mito}”</div>
+      ${box(0, 720, 1080, 630, photo('cimento', 1080, 630, .5, .5))}
+      <div class="abs s" style="left:66px;top:790px;color:${C.off};font-weight:700">verdade</div>
+      <div class="abs lead" style="left:66px;top:850px;width:880px;color:${C.off};font-size:48px;line-height:1.34">${verdade}</div>
+      <div class="abs s" style="right:66px;top:790px;color:${C.off}">${n} / 03</div>`]),
+    [true, fim({ bg: C.navy, title: 'chega de postar <em>no escuro.</em>', size: 180, foot: 'me chama no direct que eu te ajudo<br>a montar a estratégia do seu perfil.' })],
   ],
 };
 Object.entries(POSTS).forEach(([tema, slides]) => slides.forEach(([dark, html], i) => {
