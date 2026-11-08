@@ -27,7 +27,9 @@
 const C = { off: '#EFEAE4', beige: '#CBC5B9', navy: '#0A2540', indigo: '#313D65' };
 const IMG = {
   isaNoite: ['fotos-hd/isa-noite.jpg', 1086, 1448], selfie: ['fotos-hd/selfie-cafe.jpg', 1254, 1254],
-  cafe: ['fotos-hd/cafe-mesa.jpg', 941, 1672],
+  cafe: ['fotos-hd/cafe-mesa.jpg', 941, 1672], isaNote: ['fotos-hd/isa-notebook.jpg', 1086, 1448], isaRua: ['fotos-hd/isa-rua.jpg', 1086, 1448],
+  maoCel: ['fotos-hd/mao-celular.jpg', 1038, 1294], escuro: ['fotos-hd/notebook-escuro.jpg', 736, 1104],
+  risca: ['fotos-hd/textura-risca.jpg', 400, 800], veludo: ['fotos-hd/textura-veludo.jpg', 1200, 1600], cimento: ['fotos-hd/textura-cimento.jpg', 960, 1920],
 };
 const photo = (key, w, h, fx = .5, fy = .5, zoom = 1, extra = '') => {
   const [src, iw, ih] = IMG[key];
@@ -46,22 +48,41 @@ const corners = (c, lab, foot) => `<div class="abs" style="left:66px;top:320px;f
 const ELLIPSE = (w, h, c) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible"><path d="M${w * .18} ${h * .2}C${w * .55} ${-h * .08} ${w * 1.02} ${h * .12} ${w * .98} ${h * .5}C${w * .95} ${h * .92} ${w * .3} ${h * 1.04} ${w * .06} ${h * .72}C${-w * .08} ${h * .5} ${w * .12} ${h * .16} ${w * .5} ${h * .08}" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/></svg>`;
 const T = (top, size, color, html, w = 960) => `<div class="abs H" style="left:58px;top:${top}px;width:${w}px;font-size:${size}px;color:${color}">${html}</div>`;
 
+const tex = key => `<div class="abs" style="left:0;top:0;width:1080px;height:1920px;overflow:hidden">${photo(key, 1080, 1920, .5, .5)}</div>`;
+const pic = (x, y, w, h, key, fx, fy, zoom = 1, extra = '') => `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:hidden;box-shadow:0 0 0 14px ${C.off}${extra}">${photo(key, w, h, fx, fy, zoom)}</div>`;
+const tag = (x, y, txt, bg = C.off, fg = C.navy) => `<div class="abs s" style="left:${x}px;top:${y}px;background:${bg};color:${fg};padding:12px 18px;font-weight:700">${txt}</div>`;
 const CAPAS = {
-  // ordem pensada pra grade alternar foto / tipografia
-  '01_5_coisas_que_me_fariam_comprar': full('isaNoite', .5, .5) + corners(C.off, 'dicas', 'pra salvar e<br>aplicar no seu perfil') +
-    T(1150, 118, C.off, '5 coisas que me fariam <em>comprar de você</em>'),
-  '02_ja_te_julgaram_hoje': corners(C.navy, 'primeira<br>impressão', '(o último é o pior)') +
-    T(560, 150, C.navy, 'você sabia que já te <em>julgaram</em> hoje?') +
-    `<div class="abs" style="left:64px;top:1130px;width:640px;height:16px;background:${C.navy};border-radius:8px"></div>`,
-  '03_o_que_a_nuv_faz': full('selfie', .5, .5) + corners(C.off, 'nossos<br>serviços', 'estratégia, estética<br>e intenção') +
-    T(1235, 128, C.off, 'o que a <em>nuv</em> faz?'),
-  '04_landing_pages': solid(C.navy) + corners(C.off, 'sites', 'que transformam<br>visita em contato') +
-    T(600, 210, C.off, 'landing <em>pages</em>'),
-  '05_coisas_que_eu_acho_chique': full('cafe', .5, .32, 1.18) + corners(C.off, 'versão<br>empreendedora', 'salva pra se<br>inspirar depois') +
-    T(430, 124, C.off, 'coisas que eu acho <em>chique</em>'),
-  '06_nao_e_assim_que_a_gente_trabalha': solid(C.indigo) + corners(C.off, 'bastidores', 'e a gente te<br>conta por quê') +
-    T(560, 160, C.off, `<span style="position:relative;display:inline-block">não<span style="position:absolute;left:-42px;top:-24px">${ELLIPSE(340, 200, C.beige)}</span></span> é assim que a gente <em>trabalha</em>`),
+  // 1 · listra fina: título à esquerda, sua foto recortada à direita, "2x" circulado à mão
+  '01_compraria_de_voce_sem_pensar_2x': tex('risca') +
+    `<div class="abs" style="left:46px;top:320px;width:988px;height:700px;background:${C.off}"></div>` +
+    corners(C.navy, 'dicas', '').replace(/<div class="abs s" style="left:66px;top:1520px[^>]*>[^<]*<\/div>/, '') +
+    T(400, 104, C.navy, 'coisas que se você fizesse eu <em>compraria de você</em> sem pensar', 920) +
+    `<div class="abs H" style="left:640px;top:800px;font-size:150px;color:${C.navy}">2x</div><div class="abs" style="left:590px;top:770px">${ELLIPSE(300, 200, C.navy)}</div>` +
+    pic(110, 1110, 500, 490, 'isaNoite', .5, .36, 1.25) + tag(660, 1440, 'pra salvar e aplicar<br>no seu perfil'),
+
+  // 2 · cimento azul: faixa com os seus olhos no meio do título
+  '02_te_julgaram_hoje': tex('cimento') + corners(C.off, 'primeira<br>impressão', '') +
+    T(380, 150, C.off, 'te julgaram <em>hoje</em>') +
+    pic(0, 760, 1080, 330, 'selfie', .54, .39, 2.1, ';box-shadow:none') +
+    T(1150, 150, C.off, 'e você <em>não sabia.</em>') + tag(66, 1470, '(o último é o pior)', C.off, C.navy),
+
+  // 3 · veludo azul-claro: mão com o celular entrando pela direita, "ajuda" em pílula
+  '03_hora_de_ter_ajuda_com_o_insta': tex('veludo') + corners(C.navy, 'gestão de<br>redes sociais', '') +
+    T(400, 128, C.navy, 'tá na hora de ter', 960) +
+    `<div class="abs H" style="left:46px;top:560px;font-size:150px;color:${C.off};background:${C.navy};padding:0 26px 18px;border-radius:999px">ajuda</div>` +
+    T(740, 150, C.navy, 'com o <em>insta?</em>', 960) +
+    pic(520, 1120, 500, 480, 'maoCel', .58, .3, 1.3) + tag(66, 1470, 'a gente cuida pra você'),
+
+  // 4 · papel claro: as etapas antes do post, com "o post" no fim em destaque
+  '04_o_post_e_a_ultima_etapa': `<div class="abs" style="left:0;top:0;width:1080px;height:1920px;background:${C.off}"></div>` +
+    `<div class="abs" style="left:0;top:0;width:380px;height:1920px;overflow:hidden">${photo('cimento', 380, 1920, .5, .5)}</div>` +
+    corners(C.navy, 'bastidores', '').replace('color:#0A2540">NUV', 'color:#EFEAE4">NUV') +
+    `<div class="abs" style="left:66px;top:520px;display:flex;flex-direction:column;gap:30px">${['estratégia', 'calendário', 'roteiro', 'design', 'aprovação'].map((t, i) => `<div style="display:flex;gap:16px;align-items:baseline;color:${C.off}"><span class="s" style="font-weight:700">0${i + 1}</span><span style="font-family:'TitleI';font-style:italic;font-size:46px;text-decoration:line-through;text-decoration-thickness:2px">${t}</span></div>`).join('')}</div>` +
+    T(430, 150, C.navy, 'o post é a <em>última</em> etapa.', 620).replace('left:58px', 'left:430px') +
+    `<div class="abs" style="left:430px;top:1060px;display:flex;gap:16px;align-items:baseline"><span class="s" style="font-weight:700">06</span><span class="H" style="font-size:90px;background:${C.navy};color:${C.off};padding:4px 22px 14px">o post</span></div>` +
+    pic(430, 1260, 584, 340, 'escuro', .55, .5, 1.1),
 };
+
 Object.entries(CAPAS).forEach(([id, html]) => {
   const d = document.createElement('div'); d.className = 'post'; d.id = 'NUV_capa_reels_' + id; d.innerHTML = html; document.body.appendChild(d);
 });
