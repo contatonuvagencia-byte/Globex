@@ -44,7 +44,7 @@ const IMG = { // [arquivo, largura, altura] das fotos originais
   escuro: ['fotos-hd/notebook-escuro.jpg', 736, 1104], mesa: ['fotos-hd/mesa-janela.jpg', 1200, 1616],
   gelado: ['fotos-hd/cafe-gelado.jpg', 1200, 1500], sofa: ['fotos-hd/notebook-sofa.jpg', 1080, 1920],
   tablet: ['fotos-hd/tablet-cafe.jpg', 1122, 1402],
-  estudio: ['fotos-hd/retrato-estudio.jpg', 941, 1672],
+  estudio: ['fotos-hd/retrato-estudio.jpg', 941, 1672], poltrona: ['fotos-hd/isa-poltrona.jpg', 1086, 1448],
   veludo: ['fotos-hd/textura-veludo.jpg', 1200, 1600], cimento: ['fotos-hd/textura-cimento.jpg', 960, 1920],
   isaNoite: ['fotos-hd/isa-noite.jpg', 1086, 1448], isaNote: ['fotos-hd/isa-notebook.jpg', 1086, 1448], isaRua: ['fotos-hd/isa-rua.jpg', 1086, 1448],
   mesaAzul: ['fotos-hd/mesa-azul.jpg', 736, 1308], maoCel: ['fotos-hd/mao-celular.jpg', 1038, 1294], blazer: ['fotos-hd/cadeira-blazer.jpg', 922, 1382],
@@ -178,10 +178,9 @@ const POSTS = {
   ],
   // Post novo: mitos e verdades do Instagram pra empresário
   mitos: [
-    [false, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:#EFEAE4"></div>${box(0, 470, 1080, 880, photo('estudio', 1080, 880, .5, .43, 1, 'filter:contrast(1.04) saturate(.9)'))}${BRAND(C.navy)}${LAB('mitos<br>e verdades', C.navy)}
-      <div class="abs H" style="left:58px;top:150px;width:980px;font-size:100px;color:${C.navy}">3 mitos que fazem o seu instagram <em>não vender.</em></div>
-      <div class="abs" style="left:640px;top:1150px;transform:rotate(-4deg)"><span class="H" style="display:inline-block;font-size:52px;background:${C.navy};color:${C.off};padding:6px 22px 14px">qual você ainda segue?</span></div>
-      ${ARROW(C.off)}`],
+    [false, `${box(0, 0, 1080, 1350, photo('poltrona', 1080, 1350, .5, .4, 1, 'filter:contrast(1.04) saturate(.92)'))}${BRAND(C.off)}${LAB('mitos<br>e verdades', C.navy)}
+      <div class="abs H" style="left:716px;top:120px;width:360px;font-size:62px;white-space:nowrap;color:${C.navy}">3 mitos que<br>fazem o seu<br>instagram<br><em>não vender.</em></div>
+      <div class="abs" style="left:640px;top:1170px;transform:rotate(-4deg)"><span class="H" style="display:inline-block;font-size:50px;background:${C.navy};color:${C.off};padding:6px 22px 14px">qual você ainda segue?</span></div>`],
     ...[
       ['01', 'preciso postar todo dia.', 'Constância vence quantidade. <b>Poucos posts bons por semana</b> fazem mais pela sua marca do que um por dia feito na pressa.'],
       ['02', 'o que importa é ter muito seguidor.', 'Seguidor não paga conta. <b>Poucas pessoas certas</b> compram mais do que milhares que nunca vão virar cliente.'],
