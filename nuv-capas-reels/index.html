@@ -30,6 +30,7 @@ const IMG = {
   cafe: ['fotos-hd/cafe-mesa.jpg', 941, 1672], isaNote: ['fotos-hd/isa-notebook.jpg', 1086, 1448], isaRua: ['fotos-hd/isa-rua.jpg', 1086, 1448],
   maoCel: ['fotos-hd/mao-celular.jpg', 1038, 1294], escuro: ['fotos-hd/notebook-escuro.jpg', 736, 1104],
   risca: ['fotos-hd/textura-risca.jpg', 400, 800], veludo: ['fotos-hd/textura-veludo.jpg', 1200, 1600], cimento: ['fotos-hd/textura-cimento.jpg', 960, 1920],
+  estudio: ['fotos-hd/retrato-estudio.jpg', 941, 1672],
 };
 const photo = (key, w, h, fx = .5, fy = .5, zoom = 1, extra = '') => {
   const [src, iw, ih] = IMG[key];
@@ -81,6 +82,11 @@ const CAPAS = {
     T(430, 150, C.navy, 'o post é a <em>última</em> etapa.', 620).replace('left:58px', 'left:430px') +
     `<div class="abs" style="left:430px;top:1060px;display:flex;gap:16px;align-items:baseline"><span class="s" style="font-weight:700">06</span><span class="H" style="font-size:90px;background:${C.navy};color:${C.off};padding:4px 22px 14px">o post</span></div>` +
     pic(430, 1260, 584, 340, 'escuro', .55, .5, 1.1),
+  // 5 · conteúdo pra um ano na cabeça: retrato no estúdio, título branco sobre a blusa preta
+  '05_conteudo_pra_um_ano_na_cabeca': `<div class="abs" style="left:0;top:0;width:1080px;height:1920px;overflow:hidden">${photo('estudio', 1080, 1920, .5, .5, 1, 'filter:brightness(.9) contrast(1.08) saturate(.9)')}</div>` +
+    corners(C.navy, 'pra quem<br>empreende', '').replace(/<div class="abs s" style="left:66px;top:1520px[^>]*>[^<]*<\/div>/, '').replace(/<div class="abs s" style="right:66px;top:1520px[^>]*>[^<]*<\/div>/, '') +
+    T(1040, 108, C.off, `você tem conteúdo pra <span style="position:relative;display:inline-block">um ano<span style="position:absolute;left:-30px;top:-10px">${ELLIPSE(400, 130, C.beige)}</span></span><br><em>dentro da cabeça.</em>`) +
+    tag(66, 1470, 'e nem percebe'),
 };
 
 Object.entries(CAPAS).forEach(([id, html]) => {
