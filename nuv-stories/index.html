@@ -1,0 +1,32 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>NUV stories</title><style>
+@font-face { font-family: 'Title'; font-weight: 900; src: url(assets/fonts/inter-tight-latin-900-normal.woff2) format('woff2'); }
+@font-face { font-family: 'TitleI'; font-style: italic; font-weight: 300; src: url(assets/fonts/inter-tight-latin-300-italic.woff2) format('woff2'); }
+@font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
+* { box-sizing: border-box; } body { margin: 0; background: #222; padding: 40px; }
+.post { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Comfortaa', sans-serif; color: #EFEAE4; background: #0A2540; }
+.abs { position: absolute; } .ph { position: absolute; left: 0; top: 0; background-repeat: no-repeat; }
+.H { font-family: 'Title'; font-weight: 900; text-transform: lowercase; letter-spacing: -.06em; line-height: .86; }
+.H em { font-family: 'TitleI'; font-style: italic; font-weight: 300; letter-spacing: -.04em; }
+.lead { font-size: 40px; line-height: 1.32; } .lead b { font-weight: 700; }
+ul { margin: 0; padding: 0 0 0 34px; font-size: 40px; line-height: 1.3; } li { margin-bottom: 18px; }
+</style></head><body>
+<div class="post" id="NUV_story_black_november">
+  <div class="abs" style="left:0;top:0;width:1080px;height:1920px;overflow:hidden">
+    <div class="ph" id="ph"></div></div>
+  <div class="abs lead" style="left:90px;right:90px;top:250px;text-align:center">Condição especial pra marcas que querem <b style="text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:3px">começar 2027 com um Instagram que vende.</b></div>
+  <div class="abs H" style="left:50%;top:700px;transform:translateX(-50%);font-size:152px;white-space:nowrap">black <em>november</em></div>
+  <ul class="abs" style="left:66px;top:1270px;width:560px">
+    <li><b>Desconto na primeira mensalidade.</b></li>
+    <li>Início em novembro ou até fechar as vagas.</li>
+    <li>Vagas limitadas pela agenda.</li></ul>
+  <div class="abs" style="left:66px;top:1660px;border:2px dashed rgba(239,234,228,.7);border-radius:16px;padding:18px 28px;font-size:30px;opacity:.85">espaço pro figurinha de link</div>
+  <div class="abs" style="right:66px;top:1700px;font-weight:700;font-size:24px;letter-spacing:.06em">NUV</div>
+</div>
+<script>
+// foto: poltrona, escurecida na própria imagem (sem sombra por cima)
+const [src, iw, ih] = ['fotos-hd/isa-poltrona.jpg', 1086, 1448], W = 1080, H = 1920, fx = .55;
+const sw = ih * W / H, k = W / sw, sx = Math.max(0, Math.min(iw - sw, fx * iw - sw / 2));
+Object.assign(document.getElementById('ph').style, { width: W + 'px', height: H + 'px', backgroundImage: `url(${src})`,
+  backgroundSize: `${iw * k}px auto`, backgroundPosition: `${-sx * k}px 0px`, filter: 'brightness(.6) contrast(1.12) saturate(.85) sepia(.1)' });
+</script></body></html>
