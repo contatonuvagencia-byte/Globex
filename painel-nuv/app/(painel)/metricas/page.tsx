@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { exportarXlsx, RelatorioView, type DadosRelatorio } from "@/components/RelatorioView";
-import { CLIENTES } from "@/lib/clients";
 import { MESES, hojeISO } from "@/lib/format";
 
 type Resumo = { id: string; cliente: string; rede: string; periodo_atual: string; periodo_anterior: string | null; created_at: string };
-type Gravado = DadosRelatorio & { id: string };
+type Gravado = DadosRelatorio & { id: string; token_publico: string | null };
 
 const REDES = ["Instagram", "TikTok", "LinkedIn", "Facebook", "YouTube"];
 
@@ -78,7 +77,8 @@ export default function Metricas() {
   const [lista, setLista] = useState<Resumo[]>([]);
   const [filtro, setFiltro] = useState("");
   const [novo, setNovo] = useState(false);
-  const [cliente, setCliente] = useState(CLIENTES[0].nome);
+  const [clientes, setClientes] = useState<string[]>([]);
+  const [cliente, setCliente] = useState("");
   const [rede, setRede] = useState("Instagram");
   const [pAtual, setPAtual] = useState(padrao.atual);
   const [pAnterior, setPAnterior] = useState(padrao.anterior);
@@ -89,6 +89,40 @@ export default function Metricas() {
   const [rascunho, setRascunho] = useState<(DadosRelatorio & { arquivos: string[] }) | null>(null);
   const [aberto, setAberto] = useState<Gravado | null>(null);
   const [salvando, setSalvando] = useState(false);
+  const [editando, setEditando] = useState(false);
+  const [copiado, setCopiado] = useState(false);
+
+  async function acaoRelatorio(corpo: unknown) {
+    if (!aberto) return null;
+    const r = await fetch(`/api/metricas/${aberto.id}`, { method: "POST", body: JSON.stringify(corpo) });
+    const j = await r.json();
+    if (!r.ok) {
+      setErro(j.erro ?? "Erro");
+      return null;
+    }
+    return j;
+  }
+
+  async function publicar() {
+    const j = await acaoRelatorio({ acao: "publicar" });
+    if (j && aberto) setAberto({ ...aberto, token_publico: j.token });
+  }
+
+  async function despublicar() {
+    if (!confirm("Desativar o link? Quem tiver o endereço não vai mais conseguir abrir.")) return;
+    const j = await acaoRelatorio({ acao: "despublicar" });
+    if (j && aberto) setAberto({ ...aberto, token_publico: null });
+  }
+
+  async function salvarEdicao() {
+    if (!aberto) return;
+    setSalvando(true);
+    const j = await acaoRelatorio({ acao: "salvar", metricas: aberto.metricas, analise: { ...aberto.analise, perfil: aberto.perfil } });
+    setSalvando(false);
+    if (j) setEditando(false);
+  }
+
+  const linkPublico = aberto?.token_publico && typeof window !== "undefined" ? `${window.location.origin}/r/${aberto.token_publico}` : "";
 
   async function carregarLista() {
     const r = await fetch(`/api/metricas${filtro ? `?cliente=${encodeURIComponent(filtro)}` : ""}`);
@@ -96,6 +130,17 @@ export default function Metricas() {
     if (r.ok) setLista(j.relatorios ?? []);
     else setErro(j.erro);
   }
+  useEffect(() => {
+    fetch("/api/calendarios")
+      .then((r) => r.json())
+      .then((j) => {
+        const nomes = [...new Set<string>((j.calendarios ?? []).filter((c: { ativo: boolean }) => c.ativo).map((c: { nome: string }) => c.nome))];
+        setClientes(nomes);
+        setCliente((atual) => atual || nomes[0] || "");
+      })
+      .catch(() => {});
+  }, []);
+
   useEffect(() => {
     carregarLista();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,7 +203,8 @@ export default function Metricas() {
     const j = await r.json();
     if (!r.ok) return setErro(j.erro);
     const x = j.relatorio;
-    setAberto({ id: x.id, cliente: x.cliente, rede: x.rede, periodo_atual: x.periodo_atual, periodo_anterior: x.periodo_anterior, perfil: x.analise?.perfil ?? null, metricas: x.metricas, posts: x.posts, analise: x.analise });
+    setEditando(false);
+    setAberto({ id: x.id, token_publico: x.token_publico ?? null, cliente: x.cliente, rede: x.rede, periodo_atual: x.periodo_atual, periodo_anterior: x.periodo_anterior, perfil: x.analise?.perfil ?? null, metricas: x.metricas, posts: x.posts, analise: x.analise });
   }
 
   async function excluir(id: string) {
@@ -189,7 +235,9 @@ export default function Metricas() {
             <button className="btn-ghost" onClick={() => { setRascunho(null); setAberto(null); }}>← Voltar</button>
             <button className="btn-ghost" onClick={() => exportarXlsx(exibido)}>Baixar planilha (.xlsx)</button>
             {rascunho && <button className="btn-primary" onClick={salvar} disabled={salvando}>{salvando ? "Salvando..." : "Salvar relatório"}</button>}
-            {aberto && <button className="btn-ghost text-[#b42318]" onClick={() => excluir(aberto.id)}>Excluir</button>}
+            {aberto && !editando && <button className="btn-ghost" onClick={() => setEditando(true)}>Editar textos</button>}
+            {aberto && editando && <button className="btn-primary" onClick={salvarEdicao} disabled={salvando}>{salvando ? "Salvando..." : "Salvar alterações"}</button>}
+            {aberto && !editando && <button className="btn-ghost text-[#b42318]" onClick={() => excluir(aberto.id)}>Excluir</button>}
           </>
         ) : (
           <button className="btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Novo relatório"}</button>
@@ -199,7 +247,41 @@ export default function Metricas() {
       {erro && <p className="mb-4 rounded-xl bg-[#fdecea] p-3 text-sm text-[#a1261f]">{erro}</p>}
 
       {exibido ? (
-        <RelatorioView dados={exibido} editavel={Boolean(rascunho)} onChange={(d) => rascunho && setRascunho({ ...rascunho, ...d })} />
+        <>
+          {aberto && (
+            <section className="card mb-5 flex flex-wrap items-center gap-3 p-4">
+              <div className="mr-auto">
+                <h2 className="text-sm font-semibold">Versão para o cliente</h2>
+                <p className="text-xs text-ink-2">Página com a identidade da NUV: destaques, resumo, o que funcionou, pontos de atenção e próximos passos.</p>
+              </div>
+              {aberto.token_publico ? (
+                <>
+                  <input className="input w-full text-xs sm:w-80" readOnly value={linkPublico} onFocus={(e) => e.target.select()} aria-label="Link do relatório" />
+                  <button
+                    className="btn-primary"
+                    onClick={async () => {
+                      await navigator.clipboard.writeText(linkPublico);
+                      setCopiado(true);
+                      setTimeout(() => setCopiado(false), 1500);
+                    }}
+                  >
+                    {copiado ? "Copiado!" : "Copiar link"}
+                  </button>
+                  <a className="btn-ghost" href={linkPublico} target="_blank" rel="noreferrer">Abrir</a>
+                  <button className="text-xs text-ink-2 hover:text-[#b42318]" onClick={despublicar}>Desativar link</button>
+                </>
+              ) : (
+                <button className="btn-primary" onClick={publicar}>Gerar link para o cliente</button>
+              )}
+              <a className="btn-ghost" href={`/api/metricas/${aberto.id}?formato=html`}>Baixar HTML</a>
+            </section>
+          )}
+          <RelatorioView
+            dados={exibido}
+            editavel={Boolean(rascunho) || editando}
+            onChange={(d) => (rascunho ? setRascunho({ ...rascunho, ...d }) : aberto && setAberto({ ...aberto, ...d }))}
+          />
+        </>
       ) : (
         <>
           {novo && (
@@ -208,7 +290,7 @@ export default function Metricas() {
                 <div>
                   <label className="label" htmlFor="cli">Cliente</label>
                   <input id="cli" className="input" list="clientes" value={cliente} onChange={(e) => setCliente(e.target.value)} required />
-                  <datalist id="clientes">{CLIENTES.map((c) => <option key={c.slug} value={c.nome} />)}</datalist>
+                  <datalist id="clientes">{clientes.map((c) => <option key={c} value={c} />)}</datalist>
                 </div>
                 <div>
                   <label className="label" htmlFor="rede">Rede</label>
@@ -243,7 +325,7 @@ export default function Metricas() {
               <h2 className="mr-auto text-sm font-semibold">Relatórios salvos</h2>
               <select className="input w-auto py-1 text-xs" value={filtro} onChange={(e) => setFiltro(e.target.value)} aria-label="Filtrar por cliente">
                 <option value="">Todos os clientes</option>
-                {CLIENTES.map((c) => <option key={c.slug} value={c.nome}>{c.nome}</option>)}
+                {clientes.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             {lista.length === 0 ? (

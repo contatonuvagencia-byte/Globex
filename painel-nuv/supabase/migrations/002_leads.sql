@@ -124,3 +124,7 @@ create policy team_all_templates on public.templates for all to authenticated us
 do $$ begin
   alter publication supabase_realtime add table public.leads;
 exception when duplicate_object then null; end $$;
+
+-- is_team() só precisa ser chamada por usuários logados (as policies acima)
+revoke execute on function public.is_team() from public, anon;
+grant execute on function public.is_team() to authenticated;

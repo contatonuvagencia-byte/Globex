@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 const ITENS = [
   { href: "/", rotulo: "Calendário", icone: "▦" },
   { href: "/metricas", rotulo: "Métricas", icone: "↗" },
+  { href: "/leads", rotulo: "Leads", icone: "◎" },
   { href: "/financeiro", rotulo: "Financeiro", icone: "R$" },
 ];
 
@@ -23,7 +24,7 @@ export function Nav() {
       </div>
       <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-col md:px-3">
         {ITENS.map((i) => {
-          const ativo = i.href === "/" ? path === "/" : path.startsWith(i.href);
+          const ativo = i.href === "/" ? path === "/" || path.startsWith("/calendarios") : path.startsWith(i.href);
           return (
             <Link
               key={i.href}

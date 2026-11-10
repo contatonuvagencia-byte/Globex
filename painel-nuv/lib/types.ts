@@ -1,12 +1,13 @@
 export type Post = {
   id: string;
-  cliente: string; // slug
+  cliente: string; // id do calendário
   titulo: string;
   data: string; // YYYY-MM-DD
   hora: string | null; // HH:mm (horário de Brasília) quando o post tem horário
   formato: string | null;
   redes: string[];
   status: string;
+  postado: boolean;
   pilar: string | null;
   notionUrl: string;
   checks: { nome: string; feito: boolean }[] | null;

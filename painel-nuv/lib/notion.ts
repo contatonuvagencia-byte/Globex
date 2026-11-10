@@ -1,5 +1,6 @@
 import "server-only";
-import { CLIENTES, clientePorSlug, type ClientConfig } from "./clients";
+import { calendarioPorId, listarCalendarios } from "./calendarios";
+import type { Calendario } from "./clients";
 import type { Midia, Post, PostDetalhe, Secao } from "./types";
 
 const NOTION_API = "https://api.notion.com/v1";
@@ -10,7 +11,13 @@ const TZ = "America/Sao_Paulo";
 type NotionProp = any;
 type NotionBlock = any;
 
-async function notion(path: string, init?: { method?: string; body?: unknown }) {
+export class NotionErro extends Error {
+  constructor(public status: number, mensagem: string) {
+    super(mensagem);
+  }
+}
+
+export async function notion(path: string, init?: { method?: string; body?: unknown }) {
   const token = process.env.NOTION_TOKEN;
   if (!token) throw new Error("NOTION_TOKEN não configurado");
   const res = await fetch(`${NOTION_API}${path}`, {
@@ -25,14 +32,27 @@ async function notion(path: string, init?: { method?: string; body?: unknown }) 
   });
   if (!res.ok) {
     const txt = await res.text();
-    throw new Error(`Notion ${res.status} em ${path}: ${txt.slice(0, 300)}`);
+    let msg = txt.slice(0, 300);
+    try {
+      msg = JSON.parse(txt).message ?? msg;
+    } catch {}
+    if (res.status === 404) msg = "Banco não encontrado ou não conectado à integração do Notion (••• > Conexões).";
+    if (res.status === 403) msg = "A integração do Notion não tem permissão para isso. Ative “Atualizar conteúdo” nas capacidades da integração.";
+    throw new NotionErro(res.status, msg);
   }
   return res.json();
 }
 
+/** Aceita um link do Notion ou um ID e devolve o ID de 32 caracteres. */
+export function extrairId(texto: string): string | null {
+  const limpo = texto.split("?")[0].replace(/-/g, "");
+  const m = limpo.match(/[0-9a-f]{32}(?!.*[0-9a-f]{32})/i);
+  return m ? m[0].toLowerCase() : null;
+}
+
 /* ---------- Conversão de propriedades ---------- */
 
-function richText(arr: any[] | undefined): string {
+export function richText(arr: any[] | undefined): string {
   return (arr ?? []).map((t) => t.plain_text ?? "").join("");
 }
 
@@ -104,47 +124,52 @@ function tipoPorNome(nome: string): Midia["tipo"] {
 
 /* ---------- Status unificado ---------- */
 
-function derivarStatus(cfg: ClientConfig, props: Record<string, NotionProp>) {
-  const c = cfg.campos;
-  if (c.status) {
-    return { status: propTexto(props[c.status]) ?? "Sem status", checks: null };
-  }
-  if (c.checks) {
-    const lista = [
-      { chave: c.checks.conteudo, nome: "Legenda" },
-      { chave: c.checks.arte, nome: "Arte" },
-      { chave: c.checks.aprovacao, nome: "Aprovado" },
-      { chave: c.checks.postado, nome: "Postado" },
-    ]
-      .filter((x) => x.chave)
-      .map((x) => ({ nome: x.nome, feito: propCheckbox(props[x.chave!]) }));
+const RE_PUBLICADO = /publicad|postad/i;
+
+function derivarStatus(cal: Calendario, props: Record<string, NotionProp>) {
+  const c = cal.campos;
+  const lista = c.checks
+    ? [
+        { chave: c.checks.conteudo, nome: "Legenda" },
+        { chave: c.checks.arte, nome: "Arte" },
+        { chave: c.checks.aprovacao, nome: "Aprovado" },
+        { chave: c.checks.postado, nome: "Postado" },
+      ]
+        .filter((x) => x.chave)
+        .map((x) => ({ nome: x.nome, feito: propCheckbox(props[x.chave!]) }))
+    : null;
+
+  let status = c.status ? propTexto(props[c.status]) : null;
+  if (lista?.length) {
     const feito = (n: string) => lista.find((x) => x.nome === n)?.feito;
-    let status = "A fazer";
     if (feito("Postado")) status = "Publicado";
-    else if (feito("Aprovado")) status = "Aprovado";
-    else if (feito("Legenda") && feito("Arte")) status = "Aguardando aprovação";
-    else if (feito("Legenda") || feito("Arte")) status = "Em produção";
-    else if (c.etapa && propTexto(props[c.etapa])) status = propTexto(props[c.etapa])!;
-    return { status, checks: lista };
+    else if (!status || !c.status) {
+      if (feito("Aprovado")) status = "Aprovado";
+      else if (feito("Legenda") && feito("Arte")) status = "Aguardando aprovação";
+      else if (feito("Legenda") || feito("Arte")) status = "Em produção";
+      else status = (c.etapa && propTexto(props[c.etapa])) || "A fazer";
+    }
   }
-  return { status: "Sem status", checks: null };
+  const status2 = status ?? "Sem status";
+  return { status: status2, postado: RE_PUBLICADO.test(status2), checks: lista };
 }
 
-function paginaParaPost(cfg: ClientConfig, page: any): Post | null {
+function paginaParaPost(cal: Calendario, page: any): Post | null {
   const props = page.properties ?? {};
-  const quando = propData(props[cfg.campos.data]);
+  const quando = propData(props[cal.campos.data]);
   if (!quando) return null;
-  const { status, checks } = derivarStatus(cfg, props);
+  const { status, postado, checks } = derivarStatus(cal, props);
   return {
     id: page.id,
-    cliente: cfg.slug,
-    titulo: propTexto(props[cfg.campos.titulo]) ?? "(sem título)",
+    cliente: cal.id,
+    titulo: propTexto(props[cal.campos.titulo]) ?? "(sem título)",
     data: quando.data,
     hora: quando.hora,
-    formato: cfg.campos.formato ? propTexto(props[cfg.campos.formato]) : null,
-    redes: cfg.campos.rede ? propLista(props[cfg.campos.rede]) : [],
+    formato: cal.campos.formato ? propTexto(props[cal.campos.formato]) : null,
+    redes: cal.campos.rede ? propLista(props[cal.campos.rede]) : [],
     status,
-    pilar: cfg.campos.pilar ? propTexto(props[cfg.campos.pilar]) : null,
+    postado,
+    pilar: cal.campos.pilar ? propTexto(props[cal.campos.pilar]) : null,
     notionUrl: page.url,
     checks,
   };
@@ -158,11 +183,11 @@ function somaDias(iso: string, dias: number) {
   return d.toISOString().slice(0, 10);
 }
 
-async function postsDoCliente(cfg: ClientConfig, inicio: string, fim: string): Promise<Post[]> {
+async function postsDoCalendario(cal: Calendario, inicio: string, fim: string): Promise<Post[]> {
   const posts: Post[] = [];
   let cursor: string | undefined;
   do {
-    const res = await notion(`/databases/${cfg.databaseId}/query`, {
+    const res = await notion(`/databases/${cal.database_id}/query`, {
       method: "POST",
       body: {
         page_size: 100,
@@ -170,14 +195,14 @@ async function postsDoCliente(cfg: ClientConfig, inicio: string, fim: string): P
         // margem de 1 dia por causa de posts com horário (fuso UTC x Brasília)
         filter: {
           and: [
-            { property: cfg.campos.data, date: { on_or_after: somaDias(inicio, -1) } },
-            { property: cfg.campos.data, date: { on_or_before: somaDias(fim, 1) } },
+            { property: cal.campos.data, date: { on_or_after: somaDias(inicio, -1) } },
+            { property: cal.campos.data, date: { on_or_before: somaDias(fim, 1) } },
           ],
         },
       },
     });
     for (const page of res.results) {
-      const p = paginaParaPost(cfg, page);
+      const p = paginaParaPost(cal, page);
       if (p && p.data >= inicio && p.data <= fim) posts.push(p);
     }
     cursor = res.has_more ? res.next_cursor : undefined;
@@ -185,18 +210,23 @@ async function postsDoCliente(cfg: ClientConfig, inicio: string, fim: string): P
   return posts;
 }
 
-export type ResultadoCalendario = { posts: Post[]; erros: { cliente: string; mensagem: string }[] };
+export type ResultadoCalendario = {
+  posts: Post[];
+  erros: { cliente: string; mensagem: string }[];
+  calendarios: { id: string; nome: string; cor: string }[];
+};
 
 export async function listarPosts(inicio: string, fim: string): Promise<ResultadoCalendario> {
-  const resultados = await Promise.allSettled(CLIENTES.map((c) => postsDoCliente(c, inicio, fim)));
+  const cals = await listarCalendarios(true);
+  const resultados = await Promise.allSettled(cals.map((c) => postsDoCalendario(c, inicio, fim)));
   const posts: Post[] = [];
   const erros: ResultadoCalendario["erros"] = [];
   resultados.forEach((r, i) => {
     if (r.status === "fulfilled") posts.push(...r.value);
-    else erros.push({ cliente: CLIENTES[i].nome, mensagem: String(r.reason?.message ?? r.reason) });
+    else erros.push({ cliente: cals[i].nome, mensagem: String(r.reason?.message ?? r.reason) });
   });
   posts.sort((a, b) => (a.data + (a.hora ?? "")).localeCompare(b.data + (b.hora ?? "")));
-  return { posts, erros };
+  return { posts, erros, calendarios: cals.map(({ id, nome, cor }) => ({ id, nome, cor })) };
 }
 
 /* ---------- Detalhe do post (legenda, copy, arte) ---------- */
@@ -285,14 +315,19 @@ function percorrer(blocos: NotionBlock[], coleta: Coleta) {
 const RE_LEGENDA = /legenda|caption/i;
 const RE_COPY = /slide|copy|roteiro|texto da arte|telas|cenas/i;
 
-export async function detalharPost(clienteSlug: string, pageId: string): Promise<PostDetalhe> {
-  const cfg = clientePorSlug(clienteSlug);
-  if (!cfg) throw new Error("Cliente desconhecido");
+async function calendarioOuErro(calId: string) {
+  const cal = await calendarioPorId(calId);
+  if (!cal) throw new Error("Calendário não encontrado");
+  return cal;
+}
+
+export async function detalharPost(calId: string, pageId: string): Promise<PostDetalhe> {
+  const cal = await calendarioOuErro(calId);
   const [page, blocos] = await Promise.all([notion(`/pages/${pageId}`), filhos(pageId)]);
-  const post = paginaParaPost(cfg, page);
+  const post = paginaParaPost(cal, page);
   if (!post) throw new Error("Post sem data");
 
-  const coleta: Coleta = { secoes: [], midias: propArquivos(page.properties?.[cfg.campos.arquivos ?? ""]) };
+  const coleta: Coleta = { secoes: [], midias: propArquivos(page.properties?.[cal.campos.arquivos ?? ""]) };
   percorrer(blocos, coleta);
 
   const secoes = coleta.secoes
@@ -302,14 +337,44 @@ export async function detalharPost(clienteSlug: string, pageId: string): Promise
   const copySecs = secoes.filter((s) => s !== legendaSec && RE_COPY.test(s.titulo));
   const outras = secoes.filter((s) => s !== legendaSec && !copySecs.includes(s));
 
-  const legendaProp = cfg.campos.legenda ? propTexto(page.properties?.[cfg.campos.legenda]) : null;
+  const legendaProp = cal.campos.legenda ? propTexto(page.properties?.[cal.campos.legenda]) : null;
 
   return {
     ...post,
     legenda: legendaSec?.texto ?? legendaProp ?? null,
     copy: copySecs.length ? copySecs.map((s) => (copySecs.length > 1 ? `${s.titulo}\n${s.texto}` : s.texto)).join("\n\n") : null,
-    referencias: cfg.campos.referencias ? propTexto(page.properties?.[cfg.campos.referencias]) : null,
+    referencias: cal.campos.referencias ? propTexto(page.properties?.[cal.campos.referencias]) : null,
     outrasSecoes: outras,
     midias: coleta.midias,
   };
+}
+
+/* ---------- Marcar como postado ---------- */
+
+/**
+ * Grava no Notion. Se o banco tem o checkbox de postado, marca ele.
+ * Se tem um campo de status com uma opção "Publicado"/"Postado", troca para ela.
+ * Desmarcar volta o status para "Aprovado" (ou deixa o checkbox desmarcado).
+ */
+export async function marcarPostado(calId: string, pageId: string, postado: boolean): Promise<Post> {
+  const cal = await calendarioOuErro(calId);
+  const props: Record<string, unknown> = {};
+
+  if (cal.campos.checks?.postado) props[cal.campos.checks.postado] = { checkbox: postado };
+
+  if (cal.campos.status) {
+    const db = await notion(`/databases/${cal.database_id}`);
+    const def = db.properties?.[cal.campos.status];
+    const opcoes: string[] = (def?.[def?.type]?.options ?? []).map((o: any) => o.name);
+    const alvo = postado ? opcoes.find((o) => RE_PUBLICADO.test(o)) : opcoes.find((o) => /aprovad/i.test(o));
+    if (alvo && (def.type === "select" || def.type === "status")) props[cal.campos.status] = { [def.type]: { name: alvo } };
+  }
+
+  if (!Object.keys(props).length) {
+    throw new Error("Esse calendário não tem checkbox de postado nem status “Publicado” para marcar.");
+  }
+  const page = await notion(`/pages/${pageId}`, { method: "PATCH", body: { properties: props } });
+  const post = paginaParaPost(cal, page);
+  if (!post) throw new Error("Post sem data");
+  return post;
 }

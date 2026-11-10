@@ -156,21 +156,43 @@ export function RelatorioView({
     onChange?.({ ...dados, metricas });
   }
 
-  const listas: [string, string[], string][] = [
-    ["O que deu certo", dados.analise.deu_certo, "✓"],
-    ["O que deu errado", dados.analise.deu_errado, "✗"],
-    ["Recomendações", dados.analise.recomendacoes, "→"],
+  const listas: [string, string[], string, keyof Analise][] = [
+    ["O que deu certo", dados.analise.deu_certo, "✓", "deu_certo"],
+    ["O que deu errado", dados.analise.deu_errado, "✗", "deu_errado"],
+    ["Recomendações", dados.analise.recomendacoes, "→", "recomendacoes"],
   ];
+  const setAnalise = (campo: keyof Analise, valor: string | string[]) =>
+    onChange?.({ ...dados, analise: { ...dados.analise, [campo]: valor } });
 
   return (
     <div className="space-y-5">
       <section className="card p-5">
         <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-2">Resumo do período</h3>
-        <p className="mt-2 text-sm leading-relaxed">{dados.analise.resumo}</p>
+        {editavel ? (
+          <textarea
+            className="input mt-2 min-h-[90px] leading-relaxed"
+            defaultValue={dados.analise.resumo}
+            onBlur={(e) => setAnalise("resumo", e.target.value)}
+            aria-label="Resumo do período"
+          />
+        ) : (
+          <p className="mt-2 text-sm leading-relaxed">{dados.analise.resumo}</p>
+        )}
         <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {listas.map(([titulo, itens, icone]) => (
+          {listas.map(([titulo, itens, icone, campo]) => (
             <div key={titulo} className="rounded-xl bg-surface p-4">
-              <h4 className="text-sm font-semibold">{titulo}</h4>
+              <h4 className="text-sm font-semibold">{titulo}{campo === "deu_errado" ? <span className="font-normal text-ink-3"> · na versão do cliente: “Pontos de atenção”</span> : null}</h4>
+              {editavel ? (
+                <>
+                  <textarea
+                    className="input mt-2 min-h-[120px] text-sm"
+                    defaultValue={itens.join("\n")}
+                    onBlur={(e) => setAnalise(campo, e.target.value.split("\n").map((t) => t.trim()).filter(Boolean))}
+                    aria-label={titulo}
+                  />
+                  <p className="mt-1 text-[11px] text-ink-3">Um item por linha</p>
+                </>
+              ) : (
               <ul className="mt-2 space-y-2 text-sm">
                 {itens.length ? (
                   itens.map((t, i) => (
@@ -183,6 +205,7 @@ export function RelatorioView({
                   <li className="text-ink-3">–</li>
                 )}
               </ul>
+              )}
             </div>
           ))}
         </div>

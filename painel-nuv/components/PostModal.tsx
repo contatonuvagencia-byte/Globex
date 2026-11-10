@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { clientePorSlug } from "@/lib/clients";
 import { dataBR } from "@/lib/format";
 import type { Post, PostDetalhe } from "@/lib/types";
 import { StatusBadge } from "./StatusBadge";
@@ -27,10 +26,38 @@ function BlocoTexto({ titulo, texto }: { titulo: string; texto: string }) {
   );
 }
 
-export function PostModal({ post, onClose }: { post: Post; onClose: () => void }) {
+export function PostModal({
+  post,
+  cliente,
+  onClose,
+  onAtualizado,
+}: {
+  post: Post;
+  cliente?: { nome: string; cor: string };
+  onClose: () => void;
+  onAtualizado: (p: Post) => void;
+}) {
   const [detalhe, setDetalhe] = useState<PostDetalhe | null>(null);
   const [erro, setErro] = useState("");
-  const cliente = clientePorSlug(post.cliente);
+  const [salvando, setSalvando] = useState(false);
+
+  async function alternarPostado() {
+    setSalvando(true);
+    setErro("");
+    try {
+      const r = await fetch(`/api/posts/${post.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ cliente: post.cliente, postado: !post.postado }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erro ?? "Não consegui atualizar o Notion");
+      onAtualizado(j);
+    } catch (e) {
+      setErro((e as Error).message);
+    } finally {
+      setSalvando(false);
+    }
+  }
 
   useEffect(() => {
     let vivo = true;
@@ -81,15 +108,20 @@ export function PostModal({ post, onClose }: { post: Post; onClose: () => void }
               ×
             </button>
           </div>
-          {post.checks && (
-            <div className="mt-3 flex flex-wrap gap-3 text-xs">
-              {post.checks.map((c) => (
-                <span key={c.nome} className={c.feito ? "text-[#0f6b2f]" : "text-ink-3"}>
-                  {c.feito ? "☑" : "☐"} {c.nome}
-                </span>
-              ))}
-            </div>
-          )}
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+            {post.checks?.map((c) => (
+              <span key={c.nome} className={c.feito ? "text-[#0f6b2f]" : "text-ink-3"}>
+                {c.feito ? "☑" : "☐"} {c.nome}
+              </span>
+            ))}
+            <button
+              onClick={alternarPostado}
+              disabled={salvando}
+              className={`ml-auto ${post.postado ? "btn-ghost" : "btn-primary"} px-3 py-1.5 text-xs`}
+            >
+              {salvando ? "Salvando no Notion..." : post.postado ? "✓ Postado · desfazer" : "Marcar como postado"}
+            </button>
+          </div>
         </header>
 
         <div className="space-y-4 p-5">

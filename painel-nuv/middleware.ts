@@ -3,7 +3,8 @@ import { COOKIE, iguais, tokenEsperado } from "./lib/auth";
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  if (pathname.startsWith("/login") || pathname.startsWith("/api/login")) return NextResponse.next();
+  // /r/... é o link público do relatório para o cliente (protegido pelo token aleatório)
+  if (pathname.startsWith("/login") || pathname.startsWith("/api/login") || pathname.startsWith("/r/")) return NextResponse.next();
 
   if (!process.env.APP_PASSWORD || !process.env.AUTH_SECRET) {
     return new NextResponse("Configure APP_PASSWORD e AUTH_SECRET nas variáveis de ambiente.", { status: 500 });
