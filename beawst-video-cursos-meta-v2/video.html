@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Anúncio Carreira V2</title>
+<!--
+  Anúncio Meta V2 (vertical 1080x1920, 30fps, 21s): dor (inglês trava salário) → prova (Valor) → ROI → solução
+  → serviço de retorno (diferencial) → autoridade (Camila, 20+ anos de RH) → CTA teste grátis.
+  Identidade BEAWST do site: laranja #C24A0B / #F06B21, pêssego, Inter.
+  Zona segura Reels: texto entre 270px e 1250px. Gerar: node render.mjs
+-->
+<script>
+const CONFIG = {
+  DURATION: 21, FPS: 30, BPM: 124,
+  SAFE: { top: 270, bottom: 670 },
+  CENAS: { dor: 0, prova: 2.4, roi: 5, solucao: 8.6, volta: 11.6, autoridade: 15, cta: 18 },
+};
+</script>
+<style>
+@font-face{font-family:I;font-weight:600;src:url(assets/Inter-SemiBold.otf)}
+@font-face{font-family:I;font-weight:700;src:url(assets/Inter-Bold.otf)}
+@font-face{font-family:I;font-weight:800;src:url(assets/Inter-ExtraBold.otf)}
+@font-face{font-family:I;font-weight:900;src:url(assets/Inter-Black.otf)}
+:root{--laranja:#C24A0B;--laranja2:#F06B21;--pessego:#FFDBCB;--tinta:#18120F}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:I,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:var(--tinta)}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}
+.bg{position:absolute;inset:-60px;background-size:cover;background-position:center;filter:blur(28px) brightness(.45) saturate(1.2)}
+.tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,18,15,.35),rgba(194,74,11,.35) 60%,rgba(24,18,15,.85))}
+.el{position:absolute;left:80px;right:80px}
+.h{font-weight:900;letter-spacing:-.04em;line-height:.98}
+.mark{background:var(--laranja2);color:#fff;padding:0 .14em;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-radius:.08em}
+.markW{background:#fff;color:var(--laranja);padding:0 .14em;box-decoration-break:clone;-webkit-box-decoration-break:clone;border-radius:.08em}
+.pcard{position:absolute;overflow:hidden;border-radius:30px;border:10px solid #fff;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.pcard img{width:100%;height:100%;object-fit:cover}
+.sticker{position:absolute;display:inline-block;font-weight:900;font-size:40px;background:#FFE14D;color:var(--tinta);padding:14px 26px;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.barRow{margin-bottom:46px}
+.barLbl{font-weight:800;font-size:38px;margin-bottom:16px;display:flex;justify-content:space-between}
+.barBg{height:96px;border-radius:24px;background:rgba(255,255,255,.12);overflow:hidden}
+.barFill{height:100%;border-radius:24px}
+.flag{width:150px;height:100px;border-radius:14px;overflow:hidden;border:6px solid #fff;box-shadow:0 14px 30px rgba(0,0,0,.4)}
+.flag svg{width:100%;height:100%;display:block}
+.row{display:flex;align-items:center;gap:26px;font-weight:800;font-size:48px;background:#FFF1EA;border-left:12px solid var(--laranja2);border-radius:20px;padding:18px 30px}
+.row b{display:inline-flex;align-items:center;justify-content:center;width:62px;height:62px;border-radius:50%;background:var(--laranja2);color:#fff;font-size:38px}
+.btn{display:inline-flex;align-items:center;gap:16px;background:#fff;color:var(--laranja);font-weight:900;font-size:46px;padding:30px 50px;border-radius:999px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.full{position:absolute;inset:-40px;background-size:cover;background-position:center}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,18,15,.15) 25%,rgba(24,18,15,.92) 62%,rgba(24,18,15,.98))}
+.news{position:absolute;left:90px;right:90px;background:#fff;color:#111;border-radius:22px;padding:46px 50px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.news small{display:block;font-weight:800;font-size:30px;letter-spacing:.08em;color:#777;margin-bottom:22px}
+.news p{font-family:Georgia,'DejaVu Serif',serif;font-weight:700;font-size:70px;line-height:1.08;letter-spacing:-.01em}
+.news u{text-decoration:none;background:linear-gradient(transparent 62%,rgba(240,107,33,.55) 62%) no-repeat;background-size:var(--w,0%) 100%}
+.stat{position:absolute;width:440px;background:rgba(255,255,255,.08);border:3px solid rgba(255,255,255,.18);border-radius:28px;padding:34px 34px}
+.stat .n{font-weight:900;font-size:150px;letter-spacing:-.05em;line-height:1;color:var(--laranja2)}
+.stat .l{font-weight:800;font-size:38px;line-height:1.1;margin-top:12px}
+.row2{display:flex;align-items:center;gap:22px;font-weight:800;font-size:42px;background:rgba(255,255,255,.96);color:var(--tinta);border-left:12px solid var(--laranja2);border-radius:18px;padding:16px 26px;box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.row2 b{flex:none;display:inline-flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:50%;background:var(--laranja2);color:#fff;font-size:34px}
+.tag{display:inline-block;background:var(--laranja2);color:#fff;font-weight:800;font-size:32px;padding:10px 22px;border-radius:12px}
+#flash{position:absolute;inset:0;background:#fff;pointer-events:none;opacity:0}
+#bar{position:absolute;left:0;top:0;height:10px;background:var(--laranja2);z-index:5}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="ie" viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#FF883E"/></symbol>
+  <symbol id="mt" viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="15" height="20" fill="#fff"/><rect x="15" width="15" height="20" fill="#CF142B"/><g transform="translate(2.2 2.2)"><path d="M2 0h2v2h2v2H4v2H2V4H0V2h2z" fill="#B0B0B0" stroke="#CF142B" stroke-width=".35"/></g></symbol>
+  <symbol id="ca" viewBox="0 0 4 2" preserveAspectRatio="none"><rect width="4" height="2" fill="#fff"/><rect width="1" height="2" fill="#D52B1E"/><rect x="3" width="1" height="2" fill="#D52B1E"/><path d="M2 .45l.12.3.26-.06-.08.3.18.12-.3.08.04.3H2.08v.22h-.16V1.5H1.78l.04-.3-.3-.08.18-.12-.08-.3.26.06z" fill="#D52B1E"/></symbol>
+  <symbol id="us" viewBox="0 0 38 20" preserveAspectRatio="none"><rect width="38" height="20" fill="#B22234"/><g fill="#fff"><rect y="1.54" width="38" height="1.54"/><rect y="4.62" width="38" height="1.54"/><rect y="7.7" width="38" height="1.54"/><rect y="10.78" width="38" height="1.54"/><rect y="13.86" width="38" height="1.54"/><rect y="16.94" width="38" height="1.54"/></g><rect width="15.2" height="10.78" fill="#3C3B6E"/></symbol>
+  <symbol id="uk" viewBox="0 0 60 30" preserveAspectRatio="none"><rect width="60" height="30" fill="#012169"/><path d="M0 0L60 30M60 0L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0L60 30M60 0L0 30" stroke="#C8102E" stroke-width="2.5"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></symbol>
+</svg>
+<div id="stage">
+  <!-- 1 | Dor -->
+  <div class="scene" id="s1">
+    <div class="full" id="a0" style="background-image:url(assets/hook.jpg);background-position:50% 20%"></div><div class="shade"></div>
+    <div class="el h" id="a1" style="top:830px;font-size:104px">Seu inglês está</div>
+    <div class="el h" id="a2" style="top:945px;font-size:140px"><span class="mark">travando</span></div>
+    <div class="el h" id="a3" style="top:1095px;font-size:104px">seu salário?</div>
+  </div>
+
+  <!-- 2 | Prova (imprensa) -->
+  <div class="scene" id="s2">
+    <div class="bg" style="background-image:url(assets/predios.jpg);filter:blur(10px) brightness(.4)"></div>
+    <div class="el" id="b0" style="top:330px"><span class="tag">NA IMPRENSA</span></div>
+    <div class="news" id="b1" style="top:450px"><small>VALOR ECONÔMICO</small><p><u id="bu">Falta de inglês</u> trava sucessão de executivos</p></div>
+    <div class="el h" id="b2" style="top:960px;font-size:70px;line-height:1.06">O mercado <span class="mark">paga mais</span><br>por quem domina o idioma.</div>
+  </div>
+
+  <!-- 3 | ROI -->
+  <div class="scene" id="s3" style="background:var(--tinta)">
+    <div class="pcard" id="c0" style="left:90px;top:290px;width:900px;height:430px;transform:rotate(-2deg)"><img src="assets/sucesso.jpg" style="object-position:50% 30%"></div>
+    <div class="el h" id="c1" style="top:780px;font-size:56px">Inglês fluente + vivência no exterior:</div>
+    <div class="stat" id="c2" style="left:80px;top:910px"><div class="n" id="n1">+61%</div><div class="l">de salário*</div></div>
+    <div class="stat" id="c3" style="left:560px;top:910px"><div class="n" id="n2">8x</div><div class="l">mais convites de recrutadores</div></div>
+  </div>
+
+  <!-- 4 | Solução -->
+  <div class="scene" id="s4">
+    <div class="bg" style="background-image:url(assets/malta.jpg)"></div><div class="tint"></div>
+    <div class="pcard" id="d0" style="left:90px;top:300px;width:900px;height:470px;transform:rotate(2deg)"><img src="assets/malta.jpg"></div>
+    <div class="sticker" id="d1" style="left:620px;top:270px;transform:rotate(6deg)">18 escolas · 5 países</div>
+    <div class="el h" id="d2" style="top:830px;font-size:78px">Intercâmbio pensado pra sua <span class="mark">carreira</span></div>
+    <div class="el" id="d3" style="top:1010px;font-weight:700;font-size:40px;opacity:.92">não só um carimbo no passaporte.</div>
+    <div class="el" id="d4" style="top:1090px;display:flex;justify-content:space-between">
+      <div class="flag" id="f1"><svg><use href="#ie"/></svg></div><div class="flag" id="f2"><svg><use href="#mt"/></svg></div>
+      <div class="flag" id="f3"><svg><use href="#ca"/></svg></div><div class="flag" id="f4"><svg><use href="#us"/></svg></div><div class="flag" id="f5"><svg><use href="#uk"/></svg></div>
+    </div>
+  </div>
+
+  <!-- 5 | Serviço de retorno (diferencial) -->
+  <div class="scene" id="s5">
+    <div class="bg" style="background-image:url(assets/entrevista.jpg)"></div><div class="tint"></div>
+    <div class="pcard" id="e0" style="left:90px;top:300px;width:900px;height:430px;transform:rotate(-2deg)"><img src="assets/entrevista.jpg"></div>
+    <div class="sticker" id="e1" style="left:80px;top:690px;transform:rotate(-4deg)">E QUANDO VOCÊ VOLTA?</div>
+    <div class="el h" id="e2" style="top:800px;font-size:66px">A gente prepara sua <span class="mark">recolocação</span></div>
+    <div class="el row2" id="e3" style="top:960px"><b>✓</b>Simulação de entrevista em inglês</div>
+    <div class="el row2" id="e4" style="top:1055px"><b>✓</b>Currículo padrão internacional</div>
+    <div class="el row2" id="e5" style="top:1150px"><b>✓</b>LinkedIn pra recrutadores globais</div>
+  </div>
+
+  <!-- 6 | Autoridade -->
+  <div class="scene" id="s6" style="background:#fff;color:var(--tinta)">
+    <div class="pcard" id="g0" style="left:90px;top:290px;width:470px;height:640px;transform:rotate(-3deg);border-color:var(--pessego)"><img src="assets/camila.jpg" style="object-position:50% 25%"></div>
+    <div class="el" id="g1" style="left:600px;top:330px;right:70px">
+      <div style="font-weight:900;font-size:150px;letter-spacing:-.05em;line-height:.9;color:var(--laranja2)">20+</div>
+      <div style="font-weight:900;font-size:50px;line-height:1.02;letter-spacing:-.03em;margin-top:10px">anos no RH decidindo contratações</div>
+    </div>
+    <div class="el" id="g2" style="left:600px;top:760px;right:70px;font-weight:700;font-size:32px;line-height:1.2;opacity:.75">Camila · fundadora da BEAWST</div>
+    <div class="el h" id="g3" style="top:990px;font-size:64px">Da escola ao visto,<br><span class="mark">a gente cuida de tudo.</span></div>
+  </div>
+
+  <!-- 7 | CTA -->
+  <div class="scene" id="s7" style="background:linear-gradient(160deg,#F06B21,#C24A0B 55%,#8E3206)">
+    <div class="el" id="h1" style="top:290px;text-align:center"><img src="assets/logo-branco.png" style="height:260px;display:inline-block"></div>
+    <div class="el h" id="h2" style="top:600px;font-size:88px;text-align:center">Descubra quanto o<br>seu inglês <span class="markW">pode valer.</span></div>
+    <div class="el" id="h3" style="top:880px;text-align:center"><span class="btn">Teste de inglês grátis →</span></div>
+    <div class="el" id="h4" style="top:1060px;text-align:center;font-weight:700;font-size:34px">BEAWST · Be a world student</div>
+    <div class="el" id="h5" style="top:1150px;text-align:center;font-weight:600;font-size:22px;opacity:.75">*Profissionais com inglês fluente e vivência no exterior, em cargos corporativos e de liderança, em relação a quem tem inglês intermediário.</div>
+  </div>
+
+  <div id="flash"></div>
+  <div id="bar"></div>
+</div>
+<script>
+const C = CONFIG, T = C.CENAS;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, d) => clamp((t - a) / d);
+const eOut = x => 1 - Math.pow(1 - x, 3), eOut4 = x => 1 - Math.pow(1 - x, 4);
+const eBack = x => { const c = 1.8; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const $ = id => document.getElementById(id);
+const order = ['dor', 'prova', 'roi', 'solucao', 'volta', 'autoridade', 'cta'];
+
+function show(id, t, a, kind = 'rise') {
+  const el = $(id), d = kind === 'pop' || kind === 'slam' ? .4 : .45;
+  const p = (kind === 'pop' || kind === 'slam' ? eBack : eOut4)(seg(t, a, d));
+  const base = el.dataset.base ?? (el.dataset.base = el.style.transform || '');
+  el.style.opacity = clamp(seg(t, a, .12));
+  const tf = kind === 'pop' ? `scale(${t < a ? .6 : .6 + .4 * p})`
+    : kind === 'slam' ? `scale(${t < a ? 2.2 : 2.2 - 1.2 * p})`
+    : kind === 'left' ? `translateX(${(1 - p) * -200}px)` : kind === 'right' ? `translateX(${(1 - p) * 200}px)` : `translateY(${(1 - p) * 70}px)`;
+  el.style.transform = `${tf} ${base}`;
+}
+
+function render(t) {
+  const idx = order.reduce((k, n, i) => t >= T[n] ? i : k, 0);
+  order.forEach((n, i) => $('s' + (i + 1)).style.display = i === idx ? 'block' : 'none');
+  const lt = t - T[order[idx]];
+  $('s' + (idx + 1)).style.transform = `scale(${1.06 - .06 * eOut(seg(lt, 0, .5))})`;
+  $('flash').style.opacity = idx > 0 ? (1 - seg(lt, 0, .18)) * .5 : 0;   // flash curto em cada corte
+  $('bar').style.width = (t / C.DURATION * 100) + '%';
+  // zoom lento nas fotos
+  document.querySelectorAll('.pcard img').forEach(im => im.style.transform = `scale(${1.12 - .06 * eOut(seg(lt, 0, 3))})`);
+
+  // gancho: zoom no rosto + tremida na palavra "travando"
+  $('a0').style.transform = `scale(${1.18 - .1 * eOut(seg(t, 0, 2.4))})`;
+  show('a1', t, .05); show('a2', t, .45, 'slam'); show('a3', t, .9);
+  if (t > .85 && t < 1.25) $('a2').style.transform += ` translateX(${Math.sin(t * 90) * 10 * (1.25 - t) / .4}px)`;
+  show('b0', t, 2.5, 'pop'); show('b1', t, 2.6, 'pop'); show('b2', t, 3.7);
+  $('bu').style.setProperty('--w', 100 * eOut(seg(t, 3.0, .5)) + '%');
+  show('c0', t, 5.05, 'pop'); show('c1', t, 5.3); show('c2', t, 5.7, 'slam'); show('c3', t, 6.4, 'slam');
+  $('n1').textContent = '+' + Math.round(61 * eOut(seg(t, 5.7, 1.1))) + '%';
+  $('n2').textContent = Math.max(1, Math.round(8 * eOut(seg(t, 6.4, .9)))) + 'x';
+  show('d0', t, 8.65, 'pop'); show('d1', t, 9.0, 'pop'); show('d2', t, 9.2); show('d3', t, 9.7);
+  ['f1', 'f2', 'f3', 'f4', 'f5'].forEach((id, i) => show(id, t, 10.0 + i * .12, 'pop'));
+  show('e0', t, 11.65, 'pop'); show('e1', t, 11.95, 'slam'); show('e2', t, 12.3);
+  show('e3', t, 12.8, 'left'); show('e4', t, 13.15, 'left'); show('e5', t, 13.5, 'left');
+  show('g0', t, 15.05, 'pop'); show('g1', t, 15.35, 'right'); show('g2', t, 15.8); show('g3', t, 16.3, 'slam');
+  show('h1', t, 18.1, 'pop'); show('h2', t, 18.45); show('h3', t, 19.0, 'slam'); show('h4', t, 19.4); show('h5', t, 19.6);
+  if (t > 19.5) $('h3').firstElementChild.style.transform = `scale(${1 + .05 * Math.max(0, Math.sin((Math.min(t, 20.7) - 19.5) * Math.PI * 2))})`;
+}
+window.render = render; window.CONFIG = CONFIG;
+window.ready = Promise.all([600, 700, 800, 900].map(w => document.fonts.load(`${w} 40px I`, 'ÇÃÉ')))
+  .then(() => Promise.all([...document.images].map(i => i.decode().catch(() => {})))).then(() => render(0));
+if (!location.search.includes('render')) window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % C.DURATION); requestAnimationFrame(loop); })(); });
+</script>
+</body>
+</html>
