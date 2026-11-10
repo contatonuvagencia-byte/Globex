@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/components/Followups.tsx","./src/components/ImportView.tsx","./src/components/LeadDrawer.tsx","./src/components/Login.tsx","./src/components/Logo.tsx","./src/components/Pipeline.tsx","./src/components/TemplatesView.tsx","./src/lib/supabase.ts","./src/lib/types.ts","./src/lib/utils.ts"],"version":"5.9.3"}
