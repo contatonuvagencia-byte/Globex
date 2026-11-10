@@ -20,7 +20,7 @@ const FALA = [
   [6.4, 10, 'Estude inglês lá fora: Irlanda, Malta, Canadá, Estados Unidos e Reino Unido.'],
   [10, 13.4, 'Estude e trabalhe na Irlanda e em Malta pra custear a estadia.'],
   [13.4, 16.4, 'E volte pronto pra entrevista em inglês.'],
-  [16.4, 18.8, 'Kit de viagem incluso e até 18x no cartão.'],
+  [16.4, 18.8, 'O fim do teto salarial: vagas em multinacionais, cargos de liderança e negociação salarial em inglês.'],
   [18.8, 22, 'BEAWST. Faça o teste de inglês grátis.'],
 ];
 const ts = s => `00:00:${String(Math.floor(s)).padStart(2, '0')},${String(Math.round((s % 1) * 1000)).padStart(3, '0')}`;
