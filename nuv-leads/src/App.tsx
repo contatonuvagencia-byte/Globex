@@ -32,6 +32,7 @@ export default function App() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [view, setView] = useState<View>("pipeline");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [pwOpen, setPwOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState<{ msg: string; err?: boolean } | null>(null);
 
   useEffect(() => {
@@ -173,6 +174,7 @@ export default function App() {
             {n.badge ? <span className="pill">{n.badge}</span> : null}
           </button>
         ))}
+        <button className="nav-btn" onClick={() => setPwOpen(true)}>Definir senha</button>
         <button className="nav-btn mobile-only" onClick={() => supabase.auth.signOut()}>Sair</button>
         <div className="side-foot">
           <em>Hold the vision. Trust the process.</em>
@@ -190,7 +192,39 @@ export default function App() {
       </main>
 
       {openLead && <LeadDrawer ctx={ctx} lead={openLead} onClose={() => setOpenId(null)} />}
+      {pwOpen && <PasswordModal onClose={() => setPwOpen(false)} toast={toast} />}
       {toastMsg && <div className={`toast ${toastMsg.err ? "err" : ""}`}>{toastMsg.msg}</div>}
+    </div>
+  );
+}
+
+function PasswordModal({ onClose, toast }: { onClose: () => void; toast: (m: string, err?: boolean) => void }) {
+  const [pw, setPw] = useState("");
+  const [pw2, setPw2] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    if (pw.length < 8) return toast("A senha precisa de pelo menos 8 caracteres.", true);
+    if (pw !== pw2) return toast("As senhas não conferem.", true);
+    setBusy(true);
+    const { error } = await supabase.auth.updateUser({ password: pw });
+    setBusy(false);
+    if (error) return toast(error.message, true);
+    toast("Senha definida. Da próxima vez, entre com e-mail e senha.");
+    onClose();
+  }
+  return (
+    <div className="overlay center" onClick={onClose}>
+      <form className="panel modal" onClick={(e) => e.stopPropagation()} onSubmit={save}>
+        <h3>Definir senha</h3>
+        <p className="muted" style={{ marginTop: 0 }}>Com senha você entra sem depender do link por e-mail.</p>
+        <div className="field"><label>Nova senha</label><input className="input" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} autoFocus /></div>
+        <div className="field" style={{ marginTop: 10 }}><label>Repita a senha</label><input className="input" type="password" autoComplete="new-password" value={pw2} onChange={(e) => setPw2(e.target.value)} /></div>
+        <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+          <button className="btn primary" type="submit" disabled={busy}>{busy ? "Salvando…" : "Salvar senha"}</button>
+          <button className="btn" type="button" onClick={onClose}>Cancelar</button>
+        </div>
+      </form>
     </div>
   );
 }
