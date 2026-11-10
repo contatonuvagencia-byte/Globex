@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Anúncio ROI de Carreira</title>
+<!--
+  Anúncio para Meta (Reels/Stories/Feed vertical) no novo posicionamento BEAWST: ROI de carreira.
+  1080x1920, 30fps, 25s. Texto na tela funciona sem som (a maioria assiste mudo).
+  Identidade do site beawst-career: fundo claro, preto, laranja #C24A0B, pêssego #FFDBCB, fonte Inter.
+  Zona segura de anúncio Reels: texto entre 270px (topo) e 1250px (35% de baixo livre).
+  Abrir no navegador para ver ao vivo. Gerar: node render.mjs
+-->
+<script>
+const CONFIG = {
+  DURATION: 25, FPS: 30, BPM: 112,
+  SAFE: { top: 270, bottom: 670 },
+  CENAS: { gancho: 0, dados: 4.5, teto: 10, camila: 14.5, retorno: 18.5, cta: 21.5 },
+  numero: 61,
+};
+</script>
+<style>
+@font-face{font-family:I;font-weight:500;src:url(assets/Inter-Medium.otf)}
+@font-face{font-family:I;font-weight:600;src:url(assets/Inter-SemiBold.otf)}
+@font-face{font-family:I;font-weight:700;src:url(assets/Inter-Bold.otf)}
+@font-face{font-family:I;font-weight:800;src:url(assets/Inter-ExtraBold.otf)}
+@font-face{font-family:I;font-weight:900;src:url(assets/Inter-Black.otf)}
+:root{--laranja:#C24A0B;--laranja2:#F06B21;--pessego:#FFDBCB;--creme:#FFF6F1;--tinta:#18120F;--cinza:#5E5550}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#fff}
+body{font-family:I,sans-serif;color:var(--tinta);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:#fff}
+.scene{position:absolute;inset:0;display:none}
+.el{position:absolute;left:90px;right:90px}
+.h{font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.l{color:var(--laranja)}
+.tag{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:32px;color:var(--laranja);background:var(--pessego);padding:14px 26px;border-radius:999px}
+.tag i{width:14px;height:14px;border-radius:50%;background:var(--laranja)}
+.card{background:#fff;border:3px solid #EFE7E2;border-radius:36px;box-shadow:0 24px 60px rgba(24,18,15,.08)}
+.ico{width:84px;height:84px;border-radius:22px;background:var(--pessego);display:grid;place-items:center}
+.ico svg{width:46px;height:46px;fill:none;stroke:var(--laranja);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.btn{display:inline-flex;align-items:center;gap:16px;background:var(--laranja);color:#fff;font-weight:800;font-size:42px;padding:28px 44px;border-radius:999px;box-shadow:0 18px 40px rgba(194,74,11,.35)}
+.btn2{display:inline-flex;align-items:center;gap:14px;background:#fff;color:var(--tinta);border:3px solid var(--tinta);font-weight:700;font-size:36px;padding:22px 36px;border-radius:999px}
+.photo{position:absolute;overflow:hidden;border-radius:44px}
+.photo img{width:100%;height:100%;object-fit:cover}
+.check{display:flex;align-items:center;gap:22px;font-weight:700;font-size:40px;line-height:1.2}
+.check b{flex:none;width:58px;height:58px;border-radius:50%;background:var(--laranja);color:#fff;display:grid;place-items:center;font-size:32px}
+#bar{position:absolute;left:0;top:0;height:10px;background:var(--laranja);z-index:5}
+#globe{position:absolute;opacity:.16}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg id="globe" width="900" height="900" viewBox="0 0 200 200" fill="none" stroke="#C24A0B" stroke-width="1.2">
+    <circle cx="100" cy="100" r="96"/><ellipse id="gm1" cx="100" cy="100" rx="40" ry="96"/><ellipse id="gm2" cx="100" cy="100" rx="75" ry="96"/>
+    <path d="M4 100h192M14 55h172M14 145h172"/></svg>
+
+  <!-- 1 | Gancho: +61% -->
+  <div class="scene" id="s1">
+    <div class="el" id="a1" style="top:300px"><span class="tag"><i></i>ROI de carreira</span></div>
+    <div class="el h" id="a2" style="top:400px;font-size:76px">Inglês fluente pode valer</div>
+    <div class="el h l" id="a3" style="top:530px;font-size:300px;letter-spacing:-.06em;line-height:1">+0%</div>
+    <div class="el h" id="a4" style="top:860px;font-size:76px">no seu salário.</div>
+    <div class="el" id="a5" style="top:990px;font-weight:600;font-size:38px;line-height:1.3;color:var(--cinza)">Profissionais com inglês fluente e vivência no exterior ganham até 61% a mais em cargos corporativos e de liderança.</div>
+  </div>
+
+  <!-- 2 | Dados: 8x convites + processo seletivo -->
+  <div class="scene" id="s2">
+    <div class="el h" id="b1" style="top:300px;font-size:76px">Chega de fugir de <span class="l">entrevista em inglês.</span></div>
+    <div class="el card" id="b2" style="top:520px;padding:40px 44px;display:flex;align-items:center;gap:36px">
+      <div class="h l" style="font-size:160px;letter-spacing:-.06em">8x</div>
+      <div><div style="font-weight:800;font-size:44px;line-height:1.1">mais convites de recrutadores</div>
+        <div style="font-weight:600;font-size:30px;color:var(--cinza);margin-top:10px;line-height:1.3">Multinacionais descartam na primeira etapa quem não tem segurança no idioma.</div></div>
+    </div>
+    <div class="el card" id="b3" style="top:860px;padding:40px 44px;display:flex;align-items:center;gap:30px">
+      <div class="ico"><svg viewBox="0 0 64 64"><path d="M8 50 26 32l10 10 20-24"/><path d="M42 18h14v14"/></svg></div>
+      <div style="font-weight:800;font-size:44px;line-height:1.15">Destaque em vagas de <span class="l">gestão e C-Level</span></div>
+    </div>
+  </div>
+
+  <!-- 3 | Não é só intercâmbio -->
+  <div class="scene" id="s3">
+    <div class="photo" id="c1" style="left:90px;right:90px;top:290px;height:560px"><img src="assets/corporate-mobility.png" style="object-position:50% 40%"></div>
+    <div class="el h" id="c2" style="top:900px;font-size:68px">Não é apenas um intercâmbio.</div>
+    <div class="el h l" id="c3" style="top:1060px;font-size:68px">É o fim do teto salarial na sua carreira.</div>
+  </div>
+
+  <!-- 4 | Camila: autoridade -->
+  <div class="scene" id="s4">
+    <div class="photo" id="d1" style="left:90px;top:290px;width:470px;height:620px"><img src="assets/fundadora.jpg" style="object-position:50% 25%"></div>
+    <div class="el" id="d2" style="left:600px;top:330px"><span class="tag"><i></i>fundadora</span>
+      <div class="h" style="font-size:58px;margin-top:22px">Camila Fidelis</div>
+      <div style="font-weight:600;font-size:32px;color:var(--cinza);margin-top:14px;line-height:1.3">Executiva de RH com 20+ anos em grandes empresas</div></div>
+    <div class="el h" id="d3" style="top:960px;font-size:64px">Planejado por quem passou <span class="l">20 anos contratando</span> no RH corporativo.</div>
+  </div>
+
+  <!-- 5 | Suporte de retorno -->
+  <div class="scene" id="s5">
+    <div class="el" id="e1" style="top:300px"><span class="tag"><i></i>suporte de retorno profissional</span></div>
+    <div class="el h" id="e2" style="top:400px;font-size:76px">E quando você voltar, a gente <span class="l">te reposiciona.</span></div>
+    <div class="el" id="e3" style="top:700px;display:flex;flex-direction:column;gap:34px">
+      <div class="check" id="e31"><b>✓</b>Simulação de entrevistas em inglês</div>
+      <div class="check" id="e32"><b>✓</b>Currículo em padrão internacional</div>
+      <div class="check" id="e33"><b>✓</b>LinkedIn otimizado para recrutadores</div>
+    </div>
+  </div>
+
+  <!-- 6 | CTA -->
+  <div class="scene" id="s6" style="background:var(--creme)">
+    <div class="el" id="f1" style="top:290px;text-align:center"><img src="assets/logo-laranja.png" style="height:300px;display:inline-block"></div>
+    <div class="el h" id="f2" style="top:640px;font-size:76px;text-align:center">Transforme sua carreira com <span class="l">vivência internacional.</span></div>
+    <div class="el" id="f3" style="top:900px;text-align:center"><span class="btn">Faça o teste de inglês grátis →</span></div>
+    <div class="el" id="f4" style="top:1060px;text-align:center;font-weight:700;font-size:34px;color:var(--cinza)">Irlanda · Malta · Canadá · EUA · Reino Unido<br><span style="color:var(--tinta)">Até 18x no cartão</span></div>
+  </div>
+
+  <div id="bar"></div>
+</div>
+<script>
+const C = CONFIG, T = C.CENAS;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, d) => clamp((t - a) / d);
+const eOut = x => 1 - Math.pow(1 - x, 3), eOut4 = x => 1 - Math.pow(1 - x, 4);
+const eBack = x => { const c = 1.5; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const $ = id => document.getElementById(id);
+const order = ['gancho', 'dados', 'teto', 'camila', 'retorno', 'cta'];
+
+function show(id, t, a, kind = 'rise') {
+  const el = $(id), p = (kind === 'pop' ? eBack : eOut4)(seg(t, a, kind === 'pop' ? .45 : .5));
+  el.style.opacity = clamp(seg(t, a, .2));
+  el.style.transform = kind === 'pop' ? `scale(${t < a ? .7 : .7 + .3 * p})` : kind === 'left' ? `translateX(${(1 - p) * -140}px)` : `translateY(${(1 - p) * 50}px)`;
+}
+
+function render(t) {
+  const idx = order.reduce((k, n, i) => t >= T[n] ? i : k, 0);
+  order.forEach((n, i) => $('s' + (i + 1)).style.display = i === idx ? 'block' : 'none');
+  const lt = t - T[order[idx]], end = idx < order.length - 1 ? T[order[idx + 1]] : 1e9;
+  const sc = $('s' + (idx + 1));
+  sc.style.opacity = clamp(seg(lt, 0, .25)) * (1 - seg(t, end - .25, .25));
+  $('bar').style.width = (t / C.DURATION * 100) + '%';
+  // globo decorativo girando atrás do texto
+  const g = $('globe'); g.style.left = (idx % 2 ? -260 : 440) + 'px'; g.style.top = (idx % 2 ? 1000 : 900) + 'px';
+  $('gm1').setAttribute('rx', Math.abs(Math.cos(t * .6)) * 96); $('gm2').setAttribute('rx', Math.abs(Math.sin(t * .6)) * 96);
+
+  // 1 (texto já no quadro 0)
+  show('a1', t, -1); show('a2', t, -1);
+  show('a3', t, .2, 'pop'); $('a3').textContent = '+' + Math.round(eOut(seg(t, .2, 1.4)) * C.numero) + '%';
+  show('a4', t, 1.1); show('a5', t, 2.0);
+  // 2
+  show('b1', t, 4.6); show('b2', t, 5.4, 'left'); show('b3', t, 7.2, 'left');
+  // 3
+  show('c1', t, 10.05, 'pop'); $('c1').firstElementChild.style.transform = `scale(${1.12 - .08 * seg(t, 10, 4.5)})`;
+  show('c2', t, 10.6); show('c3', t, 11.8);
+  // 4
+  show('d1', t, 14.6, 'left'); $('d1').firstElementChild.style.transform = `scale(${1.1 - .07 * seg(t, 14.5, 4)})`;
+  show('d2', t, 15.0); show('d3', t, 16.2);
+  // 5
+  show('e1', t, 18.6); show('e2', t, 18.8); ['e31', 'e32', 'e33'].forEach((id, i) => show(id, t, 19.5 + i * .45, 'left'));
+  // 6 (segura parado no final)
+  show('f1', t, 21.6, 'pop'); show('f2', t, 22.0); show('f3', t, 22.6, 'pop'); show('f4', t, 23.0);
+  if (t > 23.2) $('f3').firstElementChild.style.transform = `scale(${1 + .04 * Math.max(0, Math.sin((Math.min(t, 24.6) - 23.2) * Math.PI * 1.6))})`;
+}
+window.render = render; window.CONFIG = CONFIG;
+window.ready = Promise.all([500, 600, 700, 800, 900].map(w => document.fonts.load(`${w} 40px I`, 'ÇÃÉ')))
+  .then(() => Promise.all([...document.images].map(i => i.decode().catch(() => {})))).then(() => render(0));
+if (!location.search.includes('render')) window.ready.then(() => { const t0 = performance.now(); (function loop() { render(((performance.now() - t0) / 1000) % C.DURATION); requestAnimationFrame(loop); })(); });
+</script>
+</body>
+</html>
