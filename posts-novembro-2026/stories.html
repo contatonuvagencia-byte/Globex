@@ -109,6 +109,10 @@ p { margin: 0; }
 .s-foto .body { justify-content: flex-end; }
 .s-foto.sticker .body { flex: 1; justify-content: flex-end; padding-top: 0; }
 .s-foto.sticker .foot { margin-top: 0; }
+/* alto: texto no meio, metade de baixo livre para um sticker grande (quiz de 4 opções) */
+.s-foto.alto::before { background: linear-gradient(180deg, rgba(32,1,0,.9) 0%, rgba(32,1,0,.3) 12%, rgba(32,1,0,.25) 24%, rgba(32,1,0,.92) 40%, var(--preto) 50%); }
+.s-foto.sticker.alto .body { flex: none; justify-content: flex-start; padding-top: 520px; }
+.s-foto.sticker.alto .foot { margin-top: auto; }
 .pill-feed { display: inline-flex; align-items: center; gap: 14px; background: var(--laranja); color: var(--creme); font-weight: 800; font-size: 30px; letter-spacing: .16em; text-transform: uppercase; padding: 16px 32px; border-radius: 999px; }
 .s-laranja .pill-feed { background: var(--preto); }
 .dica { font-size: 30px; font-weight: 600; letter-spacing: .04em; opacity: .8; }
@@ -151,10 +155,10 @@ const STORIES = [
       <p class="lead">E a Auditoria-Fiscal do Trabalho pode autuar quem não cumpre.</p>` },
   ]},
   { id: '10-11', nome: 'Riscos psicossociais: o que são e como aparecem', s: [
-    { bg: 'foto', foto: '10-11', fotoStyle: 'transform:translateY(-4%)', sticker: true, html: `
+    { bg: 'foto', foto: '10-11', fotoStyle: 'transform:translateY(-22%)', sticker: true, alto: true, html: `
       <span class="eyebrow">Quiz</span>
       <h2>Qual destes é um<br><span class="faixa">risco psicossocial?</span></h2>
-      <p class="dica">Excesso de demandas · Assédio · Falta de apoio da chefia · Todos</p>` },
+` },
     { bg: 'creme', foot: ['<span class="src">*MTE, Guia de Informações sobre os Fatores de Riscos Psicossociais Relacionados ao Trabalho (2025).</span>', ''], html: `
       <h1><span class="faixa">Todos.</span></h1>
       <p class="lead">O Guia do MTE lista <span class="lar">13 fatores</span> ligados à organização e à gestão do trabalho.*</p>
@@ -247,7 +251,7 @@ const STORIES = [
 
 function storyHTML(st, s, i) {
   const claro = /branco|creme/.test(s.bg);
-  const cls = s.bg.split(' ').map(b => 's-' + b).join(' ') + (s.sticker ? ' sticker' : '');
+  const cls = s.bg.split(' ').map(b => 's-' + b).join(' ') + (s.sticker ? ' sticker' : '') + (s.alto ? ' alto' : '');
   const foot = s.foot || ['', ''];
   return `<div class="wrap"><section class="slide ${cls}" data-out="${st.id}/story-${i + 1}.png">
     ${s.foto ? `<img class="foto" src="fotos/${s.foto}.jpg" alt="" style="${s.fotoStyle || ''}">` : ''}
