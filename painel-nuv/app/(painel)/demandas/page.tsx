@@ -1,4 +1,5 @@
 "use client";
+import { Pause, Pencil, Play, Repeat, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { tom } from "@/lib/cores";
 import { DIAS_SEMANA, dataBR } from "@/lib/format";
@@ -15,6 +16,7 @@ type Demanda = {
   status: string;
   concluida: boolean;
   url: string;
+  recorrente?: boolean;
 };
 type Dados = {
   demandas: Demanda[];
@@ -24,6 +26,27 @@ type Dados = {
   cores: Record<string, string>;
   hoje: string;
   notionUrl: string;
+  recorrentes: Regra[];
+};
+type Frequencia = "diaria" | "dias_uteis" | "semanal" | "quinzenal" | "mensal";
+type Regra = {
+  id: string;
+  titulo: string;
+  cliente: string | null;
+  prioridade: string | null;
+  duracao: string | null;
+  frequencia: Frequencia;
+  data_inicio: string;
+  ativo: boolean;
+  proxima: string | null;
+};
+
+const FREQ: Record<Frequencia, string> = {
+  diaria: "Todo dia",
+  dias_uteis: "Dias úteis (seg a sex)",
+  semanal: "Toda semana",
+  quinzenal: "A cada 15 dias",
+  mensal: "Todo mês",
 };
 
 const SEM_CLIENTE = "Sem cliente";
@@ -53,6 +76,9 @@ export default function Demandas() {
   const [novo, setNovo] = useState(false);
   const [semana, setSemana] = useState<string | null>(null);
   const [aberta, setAberta] = useState<string | null>(null);
+  const [verRegras, setVerRegras] = useState(false);
+  const [editandoRegra, setEditandoRegra] = useState<string | null>(null);
+  const [aviso, setAviso] = useState("");
 
   const carregar = useCallback(async () => {
     const r = await fetch("/api/demandas");
@@ -62,8 +88,25 @@ export default function Demandas() {
     setSemana((s) => s ?? segundaDa(j.hoje));
   }, []);
   useEffect(() => {
-    carregar();
+    // primeiro mostra o que já existe; em seguida cria as próximas repetições e recarrega se surgiu algo
+    carregar().then(async () => {
+      const r = await fetch("/api/demandas", { method: "POST", body: JSON.stringify({ acao: "gerar" }) }).catch(() => null);
+      const j = r && r.ok ? await r.json() : null;
+      if (j?.criadas) {
+        setAviso(`${j.criadas} demanda${j.criadas > 1 ? "s" : ""} que se repete${j.criadas > 1 ? "m" : ""} ${j.criadas > 1 ? "foram criadas" : "foi criada"} no Notion.`);
+        carregar();
+      }
+    });
   }, [carregar]);
+
+  async function acaoRegra(corpo: unknown, sucesso?: string) {
+    setErro("");
+    const r = await fetch("/api/demandas", { method: "POST", body: JSON.stringify(corpo) });
+    const j = await r.json();
+    if (!r.ok) return setErro(j.erro ?? "Erro ao salvar a repetição");
+    if (sucesso) setAviso(sucesso + (j.criadas ? ` ${j.criadas} card${j.criadas > 1 ? "s" : ""} já ${j.criadas > 1 ? "foram criados" : "foi criado"} no Notion.` : ""));
+    await carregar();
+  }
 
   async function enviar(corpo: unknown) {
     setErro("");
@@ -93,6 +136,20 @@ export default function Demandas() {
     ev.preventDefault();
     const f = new FormData(ev.currentTarget);
     const v = (k: string) => (String(f.get(k) ?? "").trim() || null);
+    const repete = v("repete") as Frequencia | null;
+    if (repete) {
+      const form = ev.currentTarget;
+      await acaoRegra(
+        {
+          acao: "criar_recorrente",
+          dados: { titulo: v("titulo"), cliente: v("cliente"), prioridade: v("prioridade"), duracao: v("duracao"), frequencia: repete, data_inicio: v("data") ?? hoje },
+        },
+        `Pronto: “${v("titulo")}” vai se repetir (${FREQ[repete].toLowerCase()}).`,
+      );
+      form?.reset();
+      setNovo(false);
+      return;
+    }
     try {
       const nova = await enviar({
         acao: "criar",
@@ -153,6 +210,12 @@ export default function Demandas() {
       </div>
 
       {erro && <p className="mb-4 rounded-xl bg-[#fdecea] p-3 text-sm text-[#a1261f]">{erro}</p>}
+      {aviso && (
+        <p className="mb-4 flex items-center gap-2 rounded-2xl bg-lima/60 px-4 py-3 text-sm font-medium">
+          {aviso}
+          <button className="ml-auto" onClick={() => setAviso("")} aria-label="Fechar aviso">×</button>
+        </p>
+      )}
 
       {novo && d && (
         <form onSubmit={criar} className="card mb-4 grid gap-3 p-4 sm:grid-cols-6">
@@ -170,7 +233,16 @@ export default function Demandas() {
             <option value="">Duração</option>
             {d.opcoes.duracoes.map((c) => <option key={c}>{c}</option>)}
           </select>
-          <p className="text-xs text-ink-3 sm:col-span-5">A demanda é criada direto no Notion, em Minha Semana Produtiva - NUV.</p>
+          <label className="flex items-center gap-2 text-sm font-semibold sm:col-span-2">
+            <Repeat size={15} />
+            <select name="repete" className="input" defaultValue="" aria-label="Repetir">
+              <option value="">Não repete</option>
+              {Object.entries(FREQ).map(([k, r]) => <option key={k} value={k}>{r}</option>)}
+            </select>
+          </label>
+          <p className="self-center text-xs text-ink-3 sm:col-span-3">
+            Criada direto no Notion. Se repetir, a data acima é a primeira vez; as próximas aparecem sozinhas e cada card pode ser editado à parte.
+          </p>
           <button className="btn-primary">Criar</button>
         </form>
       )}
@@ -192,6 +264,105 @@ export default function Demandas() {
           ))}
         </div>
       </div>
+
+      {d && (
+        <section className="mb-5 rounded-[26px] bg-white">
+          <button onClick={() => setVerRegras((v) => !v)} className="flex w-full items-center gap-2 px-5 py-4 text-left">
+            <span className="grid h-8 w-8 place-items-center rounded-xl bg-lilas"><Repeat size={15} /></span>
+            <span className="font-bold">Demandas que se repetem</span>
+            <span className="tabular rounded-full bg-surface-2 px-2 text-xs font-semibold">{d.recorrentes.length}</span>
+            <span className="ml-auto text-xs font-semibold text-ink-2">{verRegras ? "Fechar" : "Ver e editar"}</span>
+          </button>
+          {verRegras && (
+            <div className="border-t border-black/5 px-5 pb-5 pt-3">
+              {d.recorrentes.length === 0 && (
+                <p className="text-sm text-ink-2">Nenhuma ainda. Em “+ Nova demanda”, escolha uma opção em “Repetir”.</p>
+              )}
+              <ul className="space-y-2">
+                {d.recorrentes.map((r) =>
+                  editandoRegra === r.id ? (
+                    <li key={r.id}>
+                      <form
+                        className="grid gap-2 rounded-[18px] bg-surface p-3 sm:grid-cols-6"
+                        onSubmit={async (ev) => {
+                          ev.preventDefault();
+                          const f = new FormData(ev.currentTarget);
+                          const v = (k: string) => (String(f.get(k) ?? "").trim() || null);
+                          await acaoRegra(
+                            {
+                              acao: "atualizar_recorrente",
+                              id: r.id,
+                              dados: { titulo: v("titulo"), cliente: v("cliente"), prioridade: v("prioridade"), duracao: v("duracao"), frequencia: v("frequencia"), data_inicio: v("data_inicio") },
+                            },
+                            "Repetição atualizada. Vale para os próximos cards; os já criados continuam como estão.",
+                          );
+                          setEditandoRegra(null);
+                        }}
+                      >
+                        <input name="titulo" className="input sm:col-span-2" defaultValue={r.titulo} required aria-label="Título" />
+                        <select name="cliente" className="input" defaultValue={r.cliente ?? ""} aria-label="Cliente">
+                          <option value="">Cliente</option>
+                          {d.opcoes.clientes.map((c) => <option key={c}>{c}</option>)}
+                        </select>
+                        <select name="frequencia" className="input" defaultValue={r.frequencia} aria-label="Frequência">
+                          {Object.entries(FREQ).map(([k, t]) => <option key={k} value={k}>{t}</option>)}
+                        </select>
+                        <input name="data_inicio" type="date" className="input" defaultValue={r.data_inicio} aria-label="A partir de" title="A partir de" />
+                        <select name="prioridade" className="input" defaultValue={r.prioridade ?? ""} aria-label="Prioridade">
+                          <option value="">Prioridade</option>
+                          {d.opcoes.prioridades.map((c) => <option key={c}>{c}</option>)}
+                        </select>
+                        <select name="duracao" className="input sm:col-span-2" defaultValue={r.duracao ?? ""} aria-label="Duração">
+                          <option value="">Duração</option>
+                          {d.opcoes.duracoes.map((c) => <option key={c}>{c}</option>)}
+                        </select>
+                        <div className="flex gap-2 sm:col-span-4 sm:justify-end">
+                          <button type="button" className="btn-ghost" onClick={() => setEditandoRegra(null)}>Cancelar</button>
+                          <button className="btn-primary">Salvar</button>
+                        </div>
+                      </form>
+                    </li>
+                  ) : (
+                    <li key={r.id} className={`flex flex-wrap items-center gap-2 rounded-[18px] bg-surface px-3 py-2.5 ${r.ativo ? "" : "opacity-60"}`}>
+                      <Repeat size={14} className="text-ink-2" />
+                      <span className="font-semibold">{r.titulo}</span>
+                      {r.cliente && (
+                        <span className="chip" style={{ background: tom(cor(r.cliente)) }}>{r.cliente}</span>
+                      )}
+                      <span className="chip bg-white text-ink-2">{FREQ[r.frequencia]}</span>
+                      <span className="text-xs text-ink-2">
+                        {r.ativo ? (r.proxima ? `próxima: ${dataBR(r.proxima).slice(0, 5)}` : "") : "pausada"}
+                      </span>
+                      <span className="ml-auto flex gap-1">
+                        <button className="grid h-8 w-8 place-items-center rounded-full hover:bg-white" title="Editar" aria-label="Editar" onClick={() => setEditandoRegra(r.id)}><Pencil size={14} /></button>
+                        <button
+                          className="grid h-8 w-8 place-items-center rounded-full hover:bg-white"
+                          title={r.ativo ? "Pausar" : "Retomar"}
+                          aria-label={r.ativo ? "Pausar" : "Retomar"}
+                          onClick={() => acaoRegra({ acao: "atualizar_recorrente", id: r.id, dados: { ativo: !r.ativo } }, r.ativo ? "Repetição pausada." : "Repetição retomada.")}
+                        >
+                          {r.ativo ? <Pause size={14} /> : <Play size={14} />}
+                        </button>
+                        <button
+                          className="grid h-8 w-8 place-items-center rounded-full text-[#b42318] hover:bg-white"
+                          title="Excluir"
+                          aria-label="Excluir"
+                          onClick={() =>
+                            confirm(`Parar de repetir “${r.titulo}”? Os cards já criados no Notion continuam lá.`) &&
+                            acaoRegra({ acao: "excluir_recorrente", id: r.id }, "Repetição excluída. Os cards já criados continuam no Notion.")
+                          }
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </span>
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
 
       {!d && !erro && <p className="text-sm text-ink-2">Lendo as demandas do Notion...</p>}
 
@@ -291,7 +462,10 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
           aria-label={`Concluir ${x.titulo}`}
         />
         <button onClick={onAbrir} className="min-w-0 flex-1 text-left">
-          <p className={`text-sm leading-snug ${x.concluida ? "line-through" : "font-medium"} ${compacto ? "line-clamp-3" : ""}`}>{x.titulo}</p>
+          <p className={`text-sm leading-snug ${x.concluida ? "line-through" : "font-medium"} ${compacto ? "line-clamp-3" : ""}`}>
+            {x.recorrente && <Repeat size={12} className="mr-1 inline -translate-y-px text-ink-2" aria-label="Se repete" />}
+            {x.titulo}
+          </p>
           <div className="mt-1 flex flex-wrap items-center gap-1">
             {mostrarCliente && x.cliente && (
               <span className="chip bg-white text-ink-2"><span className="h-1.5 w-1.5 rounded-full" style={{ background: corCli }} />{x.cliente}</span>

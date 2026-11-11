@@ -1,6 +1,7 @@
 import "server-only";
 import { listarCalendarios } from "./calendarios";
 import { notion, richText } from "./notion";
+import { db } from "./supabase";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -20,6 +21,8 @@ export type Demanda = {
   status: string;
   concluida: boolean;
   url: string;
+  /** veio de uma demanda que se repete */
+  recorrente?: boolean;
 };
 
 type Esquema = {
@@ -123,6 +126,14 @@ export async function listarDemandas() {
     demandas.push(...res.results.map((pg: any) => paginaParaDemanda(e, pg)));
     cursor = res.has_more ? res.next_cursor : undefined;
   } while (cursor && demandas.length < 1000);
+
+  // marca as que foram criadas por uma regra de repetição
+  const geradas = await db()
+    .from("demandas_geradas")
+    .select("notion_page_id")
+    .not("notion_page_id", "is", null)
+    .then((r) => new Set((r.data ?? []).map((x) => String(x.notion_page_id).replace(/-/g, ""))), () => new Set<string>());
+  for (const d of demandas) d.recorrente = geradas.has(d.id.replace(/-/g, ""));
 
   // cores iguais às do calendário quando o cliente tem o mesmo nome
   const cals = await listarCalendarios().catch(() => []);
