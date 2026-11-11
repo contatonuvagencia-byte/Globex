@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { tom } from "@/lib/cores";
 import { DIAS_SEMANA, dataBR } from "@/lib/format";
 
 type Demanda = {
@@ -131,7 +132,7 @@ export default function Demandas() {
       <header className="mb-5 flex flex-wrap items-end gap-3">
         <div className="mr-auto">
           <p className="text-sm text-ink-2">Minha Semana Produtiva · NUV</p>
-          <h1 className="text-2xl font-semibold">Demandas</h1>
+          <h1 className="titulo-pagina">Demandas</h1>
         </div>
         {d && <a className="btn-ghost" href={d.notionUrl} target="_blank" rel="noreferrer">Abrir no Notion ↗</a>}
         <button className="btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Nova demanda"}</button>
@@ -144,9 +145,9 @@ export default function Demandas() {
           ["Para hoje", deHoje.length, ""],
           ["Prioridade alta", altas.length, ""],
         ] as const).map(([r, v, c]) => (
-          <div key={r} className="card p-4">
-            <p className="text-xs font-medium text-ink-2">{r}</p>
-            <p className={`tabular mt-1 text-2xl font-semibold ${c}`}>{d ? v : "–"}</p>
+          <div key={r} className={`rounded-[26px] p-5 ${r === "Atrasadas" && v ? "bg-rosa" : r === "Para hoje" ? "bg-lima" : r === "Prioridade alta" ? "bg-amarelo" : "bg-white"}`}>
+            <p className="text-xs font-semibold text-ink-2">{r}</p>
+            <p className={`tabular mt-1 text-3xl font-bold tracking-tight ${c}`}>{d ? v : "–"}</p>
           </div>
         ))}
       </div>
@@ -183,9 +184,9 @@ export default function Demandas() {
           <input type="checkbox" className="h-4 w-4 accent-[#6250d6]" checked={verConcluidas} onChange={(e) => setVerConcluidas(e.target.checked)} />
           Mostrar concluídas (últimos 14 dias)
         </label>
-        <div className="ml-auto flex rounded-xl border border-black/10 bg-white p-0.5 text-sm">
+        <div className="pill-tabs ml-auto">
           {(["clientes", "semana"] as const).map((v) => (
-            <button key={v} onClick={() => setVisao(v)} className={`rounded-lg px-3 py-1 font-medium ${visao === v ? "bg-ink text-white" : "text-ink-2"}`}>
+            <button key={v} onClick={() => setVisao(v)} className={`pill-tab ${visao === v ? "pill-tab-ativo" : ""}`}>
               {v === "clientes" ? "Por cliente" : "Semana"}
             </button>
           ))}
@@ -203,10 +204,10 @@ export default function Demandas() {
               const abertasCli = itens.filter((x) => !x.concluida);
               const atrasCli = abertasCli.filter((x) => x.data && x.data < hoje).length;
               return (
-                <section key={cliente} className="card flex flex-col p-4">
+                <section key={cliente} className="flex flex-col rounded-[26px] p-4" style={{ background: tom(cor(cliente === SEM_CLIENTE ? null : cliente), 0.78) }}>
                   <header className="mb-3 flex items-center gap-2">
                     <span className="h-3 w-3 rounded-full" style={{ background: cor(cliente === SEM_CLIENTE ? null : cliente) }} />
-                    <h2 className="font-semibold">{cliente}</h2>
+                    <h2 className="text-lg font-bold">{cliente}</h2>
                     <span className="tabular ml-auto text-xs text-ink-2">
                       {abertasCli.length} em aberto{atrasCli ? <b className="text-[#b42318]"> · {atrasCli} atrasada{atrasCli > 1 ? "s" : ""}</b> : null}
                     </span>
@@ -245,7 +246,7 @@ export default function Demandas() {
             {Array.from({ length: 7 }, (_, i) => somaDias(semana, i)).map((dia, i) => {
               const doDia = lista.filter((x) => x.data === dia);
               return (
-                <section key={dia} className={`card min-h-[160px] p-3 ${dia === hoje ? "ring-2 ring-nuv/40" : ""}`}>
+                <section key={dia} className={`min-h-[160px] rounded-[26px] p-3 ${dia === hoje ? "bg-white ring-2 ring-ink" : "bg-white/60"}`}>
                   <p className="text-xs font-medium uppercase tracking-wide text-ink-2">{DIAS_SEMANA[i]}</p>
                   <p className={`tabular text-sm font-semibold ${dia === hoje ? "text-nuv" : ""}`}>{dataBR(dia).slice(0, 5)}</p>
                   <ul className="mt-2 space-y-1.5">
@@ -280,7 +281,7 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
   const atrasada = !x.concluida && x.data && x.data < hoje;
   const corCli = (x.cliente && dados.cores[x.cliente.toLowerCase()]) || "#8a8984";
   return (
-    <li className={`rounded-xl border border-black/5 bg-surface ${x.concluida ? "opacity-60" : ""}`}>
+    <li className={`rounded-[18px] bg-white/80 ${x.concluida ? "opacity-60" : ""}`}>
       <div className="flex items-start gap-2 p-2">
         <input
           type="checkbox"

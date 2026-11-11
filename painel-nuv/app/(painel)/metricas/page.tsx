@@ -271,7 +271,7 @@ export default function Metricas() {
       <header className="mb-5 flex flex-wrap items-end gap-3">
         <div className="mr-auto">
           <p className="text-sm text-ink-2">Relatórios de métricas</p>
-          <h1 className="text-2xl font-semibold">{exibido ? `${exibido.cliente} · ${exibido.periodo_atual}` : "Métricas"}</h1>
+          <h1 className="titulo-pagina">{exibido ? `${exibido.cliente} · ${exibido.periodo_atual}` : "Métricas"}</h1>
           {exibido && (
             <p className="text-sm text-ink-2">
               {exibido.rede}

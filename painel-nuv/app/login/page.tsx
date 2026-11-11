@@ -20,13 +20,11 @@ export default function Login() {
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4">
-      <form onSubmit={entrar} className="card w-full max-w-sm p-8">
-        <div className="mb-6 flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-nuv text-sm font-bold text-white">N</span>
-          <div>
-            <h1 className="text-lg font-semibold">Painel NUV</h1>
-            <p className="text-xs text-ink-2">Conteúdo, métricas e financeiro</p>
-          </div>
+      <form onSubmit={entrar} className="card w-full max-w-sm p-8 md:p-10">
+        <div className="mb-8">
+          <p className="text-4xl font-extrabold tracking-tight">nuv<span className="text-nuv">.</span></p>
+          <h1 className="mt-4 text-2xl font-bold">Bem-vinda de volta</h1>
+          <p className="text-sm text-ink-2">Conteúdo, demandas, métricas e financeiro num lugar só.</p>
         </div>
         <label className="label" htmlFor="senha">Senha</label>
         <input id="senha" type="password" className="input" value={senha} onChange={(e) => setSenha(e.target.value)} autoFocus />

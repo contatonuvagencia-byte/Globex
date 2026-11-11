@@ -91,7 +91,7 @@ export default function Calendarios() {
     <div className="mx-auto max-w-4xl">
       <header className="mb-5">
         <Link href="/" className="text-sm text-ink-2 hover:text-nuv">← Calendário</Link>
-        <h1 className="text-2xl font-semibold">Calendários dos clientes</h1>
+        <h1 className="titulo-pagina">Calendários dos clientes</h1>
         <p className="mt-1 text-sm text-ink-2">
           Todo cliente marcado como <b>Ativo</b> em CLIENTES no Notion que tiver um banco “Gestão de Mídias”, “Calendário” ou
           “Editorial” na página dele entra aqui sozinho. O painel confere isso a cada 6 horas.

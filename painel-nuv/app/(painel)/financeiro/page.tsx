@@ -26,11 +26,11 @@ async function acao(corpo: unknown) {
   if (!r.ok) throw new Error(j.erro ?? "Erro");
 }
 
-function Tile({ rotulo, valor, detalhe, destaque }: { rotulo: string; valor: string; detalhe?: string; destaque?: boolean }) {
+function Tile({ rotulo, valor, detalhe, destaque, fundo }: { rotulo: string; valor: string; detalhe?: string; destaque?: boolean; fundo?: string }) {
   return (
-    <div className={`card p-4 ${destaque ? "ring-1 ring-nuv/30" : ""}`}>
-      <p className="text-xs font-medium text-ink-2">{rotulo}</p>
-      <p className="tabular mt-1 text-xl font-semibold">{valor}</p>
+    <div className={`rounded-[26px] p-5 ${fundo ?? (destaque ? "bg-lima" : "bg-white")}`}>
+      <p className="text-xs font-semibold text-ink-2">{rotulo}</p>
+      <p className="tabular mt-1 text-2xl font-bold tracking-tight">{valor}</p>
       {detalhe && <p className="mt-0.5 text-xs text-ink-2">{detalhe}</p>}
     </div>
   );
@@ -77,7 +77,7 @@ export default function Financeiro() {
       <header className="mb-5 flex flex-wrap items-end gap-3">
         <div className="mr-auto">
           <p className="text-sm text-ink-2">Financeiro da agência</p>
-          <h1 className="text-2xl font-semibold">{rotuloMes(mes)}</h1>
+          <h1 className="titulo-pagina">{rotuloMes(mes)}</h1>
         </div>
         <div className="flex items-center gap-1">
           <button className="btn-ghost px-3" onClick={() => setMes(somaMes(mes, -1))} aria-label="Mês anterior">‹</button>
@@ -92,8 +92,8 @@ export default function Financeiro() {
       {d && (
         <>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
-            <Tile rotulo="Entradas" valor={brl(d.resumo.entradas)} detalhe={`${brl(d.resumo.recebido)} recebido`} />
-            <Tile rotulo="Saídas" valor={brl(d.resumo.saidas)} detalhe={`${brl(d.resumo.pago)} pago`} />
+            <Tile fundo="bg-lilas" rotulo="Entradas" valor={brl(d.resumo.entradas)} detalhe={`${brl(d.resumo.recebido)} recebido`} />
+            <Tile fundo="bg-rosa" rotulo="Saídas" valor={brl(d.resumo.saidas)} detalhe={`${brl(d.resumo.pago)} pago`} />
             <Tile rotulo="Lucro do mês" valor={brl(d.resumo.lucro)} detalhe={d.resumo.margem === null ? "sem entradas" : `margem de ${(d.resumo.margem * 100).toFixed(0)}%`} destaque />
             <Tile rotulo="A receber" valor={brl(d.resumo.aReceber)} />
             <Tile rotulo="A pagar" valor={brl(d.resumo.aPagar)} />
@@ -163,9 +163,9 @@ export default function Financeiro() {
             </section>
           </div>
 
-          <div className="mt-6 flex gap-1 border-b border-black/10">
+          <div className="pill-tabs mt-6">
             {(["lancamentos", "config"] as const).map((a) => (
-              <button key={a} onClick={() => setAba(a)} className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium ${aba === a ? "border-nuv text-nuv" : "border-transparent text-ink-2 hover:text-ink"}`}>
+              <button key={a} onClick={() => setAba(a)} className={`pill-tab ${aba === a ? "pill-tab-ativo" : ""}`}>
                 {a === "lancamentos" ? "Lançamentos" : "Mensalidades e contas fixas"}
               </button>
             ))}

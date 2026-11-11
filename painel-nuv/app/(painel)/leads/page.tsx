@@ -5,6 +5,9 @@ import { hojeISO } from "@/lib/format";
 import { ORDEM_STATUS, ROT_IG, ROT_NICHO, ROT_SITE, ROT_STATUS, type LeadResumo } from "@/lib/leads-rotulos";
 
 const ABERTOS = ["novo", "contatado", "respondeu", "reuniao", "proposta"];
+const COR_COLUNA: Record<string, string> = {
+  novo: "#d9d1f7", contatado: "#f5dc5a", respondeu: "#f4cbe9", reuniao: "#d8f26a", proposta: "#bcd3f5", fechado: "#121212", perdido: "#e9e4d8",
+};
 
 export default function Leads() {
   const [leads, setLeads] = useState<LeadResumo[]>([]);
@@ -69,7 +72,7 @@ export default function Leads() {
       <header className="mb-5 flex flex-wrap items-end gap-3">
         <div className="mr-auto">
           <p className="text-sm text-ink-2">Prospecção</p>
-          <h1 className="text-2xl font-semibold">Leads</h1>
+          <h1 className="titulo-pagina">Leads</h1>
         </div>
         <button className="btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Novo lead"}</button>
       </header>
@@ -81,9 +84,9 @@ export default function Leads() {
           ["Fechados", fechados],
           ["Follow-up hoje", followups.length],
         ].map(([r, v]) => (
-          <div key={r} className="card p-4">
-            <p className="text-xs font-medium text-ink-2">{r}</p>
-            <p className="tabular mt-1 text-2xl font-semibold">{v}</p>
+          <div key={r} className={`rounded-[26px] p-5 ${r === "Follow-up hoje" && v ? "bg-lima" : r === "Fechados" ? "bg-lilas" : "bg-white"}`}>
+            <p className="text-xs font-semibold text-ink-2">{r}</p>
+            <p className="tabular mt-1 text-3xl font-bold tracking-tight">{v}</p>
           </div>
         ))}
       </div>
@@ -124,9 +127,9 @@ export default function Leads() {
           <option value="">Todos os nichos</option>
           {Object.entries(ROT_NICHO).map(([k, r]) => <option key={k} value={k}>{r}</option>)}
         </select>
-        <div className="ml-auto flex rounded-xl border border-black/10 bg-white p-0.5 text-sm">
+        <div className="pill-tabs ml-auto">
           {(["funil", "lista"] as const).map((v) => (
-            <button key={v} onClick={() => setVisao(v)} className={`rounded-lg px-3 py-1 font-medium ${visao === v ? "bg-ink text-white" : "text-ink-2"}`}>
+            <button key={v} onClick={() => setVisao(v)} className={`pill-tab ${visao === v ? "pill-tab-ativo" : ""}`}>
               {v === "funil" ? "Funil" : "Lista"}
             </button>
           ))}
@@ -139,8 +142,11 @@ export default function Leads() {
             const coluna = filtrados.filter((l) => l.status === s);
             return (
               <section key={s} className="w-64 shrink-0">
-                <h2 className="mb-2 flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-wide text-ink-2">
-                  {ROT_STATUS[s]} <span className="tabular rounded-full bg-white px-1.5 text-ink">{coluna.length}</span>
+                <h2
+                  className={`mb-2 flex items-center gap-2 rounded-full px-3.5 py-2 text-sm font-bold ${s === "fechado" ? "text-white" : "text-ink"}`}
+                  style={{ background: COR_COLUNA[s] }}
+                >
+                  {ROT_STATUS[s]} <span className="tabular ml-auto rounded-full bg-white/70 px-2 text-xs text-ink">{coluna.length}</span>
                 </h2>
                 <div className="space-y-2">
                   {coluna.map((l) => (

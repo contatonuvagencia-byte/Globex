@@ -1,13 +1,13 @@
 const ESTILOS: Record<string, { cls: string; icone: string }> = {
-  Publicado: { cls: "bg-[#e6f4ea] text-[#0f6b2f]", icone: "✓" },
-  Aprovado: { cls: "bg-[#e7f0fb] text-[#1d5fae]", icone: "●" },
-  "Aguardando aprovação": { cls: "bg-[#fdf3dc] text-[#8a5a00]", icone: "◐" },
-  "Em produção": { cls: "bg-[#fdf3dc] text-[#8a5a00]", icone: "◐" },
-  "Em Produção": { cls: "bg-[#fdf3dc] text-[#8a5a00]", icone: "◐" },
+  Publicado: { cls: "bg-ink text-white", icone: "✓" },
+  Aprovado: { cls: "bg-lima text-ink", icone: "●" },
+  "Aguardando aprovação": { cls: "bg-amarelo text-ink", icone: "◐" },
+  "Em produção": { cls: "bg-white/80 text-ink", icone: "◐" },
+  "Em Produção": { cls: "bg-white/80 text-ink", icone: "◐" },
 };
 
 export function StatusBadge({ status }: { status: string }) {
-  const e = ESTILOS[status] ?? { cls: "bg-surface-2 text-ink-2", icone: "○" };
+  const e = ESTILOS[status] ?? { cls: "bg-white/70 text-ink-2", icone: "○" };
   return (
     <span className={`chip ${e.cls}`}>
       <span aria-hidden>{e.icone}</span>
