@@ -22,6 +22,7 @@ export default function Calendarios() {
   const [link, setLink] = useState("");
   const [nome, setNome] = useState("");
   const [ocupado, setOcupado] = useState<"" | "adicionar" | "descobrir">("");
+  const [quadros, setQuadros] = useState<{ id: string; nome: string }[] | null>(null);
 
   async function carregar() {
     const r = await fetch("/api/calendarios");
@@ -31,6 +32,10 @@ export default function Calendarios() {
   }
   useEffect(() => {
     carregar();
+    fetch("/api/trello/quadros")
+      .then((r) => r.json())
+      .then((j) => setQuadros(j.configurado ? j.quadros : null))
+      .catch(() => {});
   }, []);
 
   async function enviar(corpo: unknown) {
@@ -156,6 +161,24 @@ export default function Calendarios() {
               </label>
             </div>
             <p className="mt-2 text-sm text-ink-2">{c.titulo_notion}</p>
+            {quadros && (
+              <label className="mt-2 flex flex-wrap items-center gap-2 text-xs font-semibold text-ink-2">
+                Artes do Trello:
+                <select
+                  className="input w-auto py-1 text-xs"
+                  value={c.trello_board ?? ""}
+                  onChange={(e) => atualizar(c.id, { trello_board: e.target.value || null })}
+                >
+                  <option value="">
+                    Achar pelo nome{(() => {
+                      const q = quadros.find((x) => x.nome.toLowerCase().includes(c.nome.toLowerCase()));
+                      return q ? ` (${q.nome})` : " (nenhum encontrado)";
+                    })()}
+                  </option>
+                  {quadros.map((q) => <option key={q.id} value={q.id}>{q.nome}</option>)}
+                </select>
+              </label>
+            )}
             <p className="mt-1 text-xs text-ink-3">
               {Object.entries(c.campos)
                 .filter(([k]) => ROTULOS[k])

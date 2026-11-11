@@ -25,6 +25,7 @@ const Acao = z.discriminatedUnion("acao", [
       nome: z.string().trim().min(1).max(80).optional(),
       cor: z.string().regex(/^#[0-9a-f]{6}$/i).optional(),
       ativo: z.boolean().optional(),
+      trello_board: z.string().regex(/^[0-9a-f]{24}$/).nullable().optional(),
     }),
   }),
 ]);

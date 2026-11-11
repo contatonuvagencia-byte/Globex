@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { dataBR } from "@/lib/format";
 import type { Post, PostDetalhe } from "@/lib/types";
+import { ArteTrello } from "./ArteTrello";
 import { StatusBadge } from "./StatusBadge";
 
 function BlocoTexto({ titulo, texto }: { titulo: string; texto: string }) {
@@ -86,6 +87,8 @@ export function PostModal({
   }, [post.id, post.cliente, onClose]);
 
   const d = detalhe;
+  const [artesTrello, setArtesTrello] = useState(0);
+  const contarTrello = useCallback((n: number) => setArtesTrello(n), []);
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center sm:p-6" onClick={onClose}>
       <div
@@ -152,7 +155,8 @@ export function PostModal({
             <>
               <section>
                 <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-2">Arte</h3>
-                {d.midias.length ? (
+                <div className="space-y-2">
+                {d.midias.length > 0 && (
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {d.midias.map((m, i) =>
                       m.tipo === "imagem" ? (
@@ -169,11 +173,14 @@ export function PostModal({
                       ),
                     )}
                   </div>
-                ) : (
+                )}
+                <ArteTrello post={post} onQuantidade={contarTrello} />
+                {!d.midias.length && !artesTrello && (
                   <p className="rounded-xl border border-dashed border-black/10 p-4 text-sm text-ink-2">
-                    Nenhuma arte anexada na página do Notion. Arraste a imagem para dentro da página do post (ou no campo de arquivos) para ela aparecer aqui.
+                    Nenhuma arte encontrada. Anexe as imagens na página do post no Notion ou no card do Trello do cliente.
                   </p>
                 )}
+                </div>
               </section>
               {d.copy && <BlocoTexto titulo="Copy da arte" texto={d.copy} />}
               {d.legenda && <BlocoTexto titulo="Legenda" texto={d.legenda} />}

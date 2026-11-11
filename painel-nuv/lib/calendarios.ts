@@ -217,7 +217,7 @@ export async function descobrir(): Promise<Descoberta> {
   return resultado;
 }
 
-export async function atualizarCalendario(id: string, dados: Partial<Pick<Calendario, "nome" | "cor" | "ativo">>) {
+export async function atualizarCalendario(id: string, dados: Partial<Pick<Calendario, "nome" | "cor" | "ativo" | "trello_board">>) {
   const { error } = await db().from("calendarios").update(dados).eq("id", id);
   limparCache();
   if (error) throw new Error(error.message);

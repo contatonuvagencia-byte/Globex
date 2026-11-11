@@ -63,6 +63,10 @@ npm install
 npm run dev                  # http://localhost:3000
 ```
 
+## Artes do Trello
+
+Com `TRELLO_KEY` e `TRELLO_TOKEN` (grátis, só leitura), cada post do calendário mostra as imagens anexadas ao card do Trello com o título mais parecido, no quadro do cliente (achado pelo nome, ex.: "Calendário de aprovação - GLOBEX", ou escolhido em *Calendários*). Se a busca não acertar, “trocar card” deixa escolher o card certo e o painel lembra.
+
 ## Equipe e perfis de acesso
 
 Na aba **Equipe** (só a administração vê) você cadastra cada pessoa com e-mail e senha e escolhe um perfil:

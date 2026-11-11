@@ -25,6 +25,8 @@ export type Calendario = {
   campos: Campos;
   ativo: boolean;
   origem: "auto" | "manual";
+  /** id do quadro do Trello; vazio = procura um quadro com o nome do cliente */
+  trello_board?: string | null;
 };
 
 /** O que o navegador precisa saber de cada calendário. */
