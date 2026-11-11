@@ -16,7 +16,7 @@ import type { Post } from "@/lib/types";
 type Resumo = {
   hoje: string;
   posts: { calendarios: { id: string; nome: string; cor: string }[]; hoje: Post[]; atrasados: Post[]; aguardando: Post[]; semana: number; erros: number } | null;
-  demandas: { lista: { id: string; titulo: string; cliente: string | null; data: string; responsavel: string | null; url: string; minha: boolean }[] } | null;
+  demandas: { lista: { id: string; titulo: string; cliente: string | null; data: string; dataFim: string | null; status: string; fazendo: boolean; responsavel: string | null; url: string; minha: boolean }[] } | null;
   leads: { followups: { id: string; name: string; status: string; next_followup_at: string; whatsapp: string | null; phone: string | null }[]; propostasVistas: { id: string; cliente: string; titulo: string; visto_em: string; visualizacoes: number }[] } | null;
   financeiro: { receber: any[]; totalReceber: number; atrasadoReceber: number; pagar: any[]; totalPagar: number } | null;
   servicos: { id: string; tipo: keyof typeof TIPOS; titulo: string | null; cliente: string; prazo: string }[] | null;
@@ -160,8 +160,11 @@ export default function Hoje() {
                   <ul className="space-y-1.5">
                     {r.demandas.lista.slice(0, 12).map((d) => (
                       <li key={d.id} className={`flex items-center gap-2 rounded-xl px-2 py-1.5 text-sm ${d.minha ? "bg-azul-claro" : ""}`}>
-                        <span className={`tabular w-11 shrink-0 text-[11px] font-semibold ${d.data < hoje ? "text-[#a1261f]" : "text-ink-2"}`}>{quando(d.data, hoje)}</span>
+                        <span className={`tabular w-14 shrink-0 text-[11px] font-semibold ${(d.dataFim ?? d.data) < hoje ? "text-[#a1261f]" : "text-ink-2"}`} title={d.dataFim ? `${dataBR(d.data)} a ${dataBR(d.dataFim)}` : undefined}>
+                          {d.dataFim && d.dataFim >= hoje ? `até ${quando(d.dataFim, hoje)}` : quando(d.dataFim ?? d.data, hoje)}
+                        </span>
                         <a href={d.url} target="_blank" rel="noreferrer" className="min-w-0 flex-1 truncate hover:underline">{d.titulo}</a>
+                        {d.fazendo && <span className="chip shrink-0 bg-azul text-white">{d.status}</span>}
                         <span className="shrink-0 text-[11px] text-ink-3">{d.minha ? "você" : d.responsavel?.split(" ")[0] ?? d.cliente ?? ""}</span>
                       </li>
                     ))}

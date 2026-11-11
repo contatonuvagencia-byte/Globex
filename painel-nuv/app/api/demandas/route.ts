@@ -34,6 +34,7 @@ const Dados = z.object({
   titulo: z.string().trim().min(1).max(300).optional(),
   cliente: opcional,
   data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+  dataFim: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
   prioridade: opcional,
   duracao: opcional,
   prazoReal: z.string().trim().max(500).nullable().optional(),

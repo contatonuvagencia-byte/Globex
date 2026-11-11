@@ -1,5 +1,5 @@
 "use client";
-import { Pause, Pencil, Play, Repeat, Trash2 } from "lucide-react";
+import { Hammer, Pause, Pencil, Play, Repeat, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { tom } from "@/lib/cores";
@@ -25,6 +25,7 @@ type Dados = {
   opcoes: { clientes: string[]; prioridades: string[]; duracoes: string[]; status: string[] };
   concluido: string;
   inicial: string;
+  andamento: string[];
   cores: Record<string, string>;
   hoje: string;
   notionUrl: string;
@@ -62,6 +63,16 @@ const CORES_PRIO: Record<string, string> = {
   media: "bg-[#fdf3dc] text-[#8a5a00]",
   baixa: "bg-surface-2 text-ink-2",
 };
+
+/** último dia da demanda (igual ao início quando é de um dia só) */
+const fimDe = (x: Pick<Demanda, "data" | "dataFim">) => x.dataFim ?? x.data;
+const curto = (iso: string) => dataBR(iso).slice(0, 5);
+/** "Hoje", "11/11" ou "11/11 → 12/11" */
+function rotuloData(x: Pick<Demanda, "data" | "dataFim">, hoje: string) {
+  if (!x.data) return "";
+  if (!x.dataFim || x.dataFim === x.data) return x.data === hoje ? "Hoje" : curto(x.data);
+  return `${curto(x.data)} → ${x.dataFim === hoje ? "hoje" : curto(x.dataFim)}`;
+}
 
 function somaDias(iso: string, n: number) {
   const d = new Date(`${iso}T12:00:00Z`);
@@ -128,7 +139,7 @@ export default function Demandas() {
     if (!d) return;
     const antes = d.demandas;
     const otimista = { ...dem, ...dados } as Demanda;
-    if (dados.concluida !== undefined) otimista.status = dados.concluida ? d.concluido : d.inicial;
+    if (dados.concluida !== undefined && dados.status === undefined) otimista.status = dados.concluida ? d.concluido : d.inicial;
     setD({ ...d, demandas: antes.map((x) => (x.id === dem.id ? otimista : x)) });
     try {
       const nova = await enviar({ acao: "atualizar", id: dem.id, dados });
@@ -160,7 +171,7 @@ export default function Demandas() {
     try {
       const nova = await enviar({
         acao: "criar",
-        dados: { titulo: v("titulo"), cliente: v("cliente"), data: v("data"), prioridade: v("prioridade"), duracao: v("duracao"), responsavel: v("responsavel") },
+        dados: { titulo: v("titulo"), cliente: v("cliente"), data: v("data"), dataFim: v("dataFim"), prioridade: v("prioridade"), duracao: v("duracao"), responsavel: v("responsavel"), status: v("status") ?? undefined },
       });
       setD((atual) => (atual ? { ...atual, demandas: [nova, ...atual.demandas] } : atual));
       ev.currentTarget?.reset();
@@ -182,15 +193,15 @@ export default function Demandas() {
     [d, verConcluidas, filtro, pessoa],
   );
   const abertas = (d?.demandas ?? []).filter((x) => !x.concluida);
-  const atrasadas = abertas.filter((x) => x.data && x.data < hoje);
-  const deHoje = abertas.filter((x) => x.data === hoje);
-  const altas = abertas.filter((x) => /alta/i.test(x.prioridade ?? ""));
+  const atrasadas = abertas.filter((x) => x.data && fimDe(x)! < hoje);
+  const deHoje = abertas.filter((x) => x.data && x.data <= hoje && fimDe(x)! >= hoje);
+  const fazendo = abertas.filter((x) => d?.andamento.includes(x.status));
 
   const porCliente = useMemo(() => {
     const m = new Map<string, Demanda[]>();
     for (const x of lista) m.set(x.cliente ?? SEM_CLIENTE, [...(m.get(x.cliente ?? SEM_CLIENTE) ?? []), x]);
     return [...m.entries()].sort((a, b) => {
-      const atr = (l: Demanda[]) => l.filter((x) => !x.concluida && x.data && x.data < hoje).length;
+      const atr = (l: Demanda[]) => l.filter((x) => !x.concluida && x.data && fimDe(x)! < hoje).length;
       return atr(b[1]) - atr(a[1]) || b[1].filter((x) => !x.concluida).length - a[1].filter((x) => !x.concluida).length;
     });
   }, [lista, hoje]);
@@ -213,9 +224,9 @@ export default function Demandas() {
           ["Em aberto", abertas.length, ""],
           ["Atrasadas", atrasadas.length, atrasadas.length ? "text-[#b42318]" : ""],
           ["Para hoje", deHoje.length, ""],
-          ["Prioridade alta", altas.length, ""],
+          ["Fazendo agora", fazendo.length, ""],
         ] as const).map(([r, v, c]) => (
-          <div key={r} className={`rounded-[26px] p-5 ${r === "Atrasadas" && v ? "bg-rosa" : r === "Para hoje" ? "bg-lima" : r === "Prioridade alta" ? "bg-amarelo" : "bg-white"}`}>
+          <div key={r} className={`rounded-[26px] p-5 ${r === "Atrasadas" && v ? "bg-rosa" : r === "Para hoje" ? "bg-lima" : r === "Fazendo agora" ? "bg-amarelo" : "bg-white"}`}>
             <p className="text-xs font-semibold text-ink-2">{r}</p>
             <p className={`tabular mt-1 text-3xl font-bold tracking-tight ${c}`}>{d ? v : "–"}</p>
           </div>
@@ -237,7 +248,15 @@ export default function Demandas() {
             <option value="">Cliente</option>
             {d.opcoes.clientes.map((c) => <option key={c}>{c}</option>)}
           </select>
-          <input name="data" type="date" className="input" defaultValue={hoje} aria-label="Data" />
+          <label className="text-xs font-semibold text-ink-2">Começa
+            <input name="data" type="date" className="input mt-0.5" defaultValue={hoje} aria-label="Data de início" />
+          </label>
+          <label className="text-xs font-semibold text-ink-2">Até (se levar mais de um dia)
+            <input name="dataFim" type="date" className="input mt-0.5" aria-label="Último dia" />
+          </label>
+          <select name="status" className="input self-end" defaultValue={d.inicial} aria-label="Status">
+            {d.opcoes.status.filter((c) => c !== d.concluido).map((c) => <option key={c}>{c}</option>)}
+          </select>
           <select name="prioridade" className="input" defaultValue="" aria-label="Prioridade">
             <option value="">Prioridade</option>
             {d.opcoes.prioridades.map((c) => <option key={c}>{c}</option>)}
@@ -260,7 +279,7 @@ export default function Demandas() {
             </select>
           </label>
           <p className="self-center text-xs text-ink-3 sm:col-span-3">
-            Criada direto no Notion. Se repetir, a data acima é a primeira vez; as próximas aparecem sozinhas e cada card pode ser editado à parte.
+            Criada direto no Notion. Com “Até”, a demanda aparece em todos os dias do período. Se repetir, a data de início é a primeira vez; as próximas aparecem sozinhas e cada card pode ser editado à parte.
           </p>
           <button className="btn-primary">Criar</button>
         </form>
@@ -404,7 +423,7 @@ export default function Demandas() {
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {porCliente.map(([cliente, itens]) => {
               const abertasCli = itens.filter((x) => !x.concluida);
-              const atrasCli = abertasCli.filter((x) => x.data && x.data < hoje).length;
+              const atrasCli = abertasCli.filter((x) => x.data && fimDe(x)! < hoje).length;
               return (
                 <section key={cliente} className="flex flex-col rounded-[26px] p-4" style={{ background: tom(cor(cliente === SEM_CLIENTE ? null : cliente), 0.78) }}>
                   <header className="mb-3 flex items-center gap-2">
@@ -446,7 +465,8 @@ export default function Demandas() {
           )}
           <div className="grid gap-3 md:grid-cols-7">
             {Array.from({ length: 7 }, (_, i) => somaDias(semana, i)).map((dia, i) => {
-              const doDia = lista.filter((x) => x.data === dia);
+              // demanda de vários dias aparece em cada dia do período
+              const doDia = lista.filter((x) => x.data && x.data <= dia && fimDe(x)! >= dia);
               return (
                 <section key={dia} className={`min-h-[160px] rounded-[26px] p-3 ${dia === hoje ? "bg-white ring-2 ring-ink" : "bg-white/60"}`}>
                   <p className="text-xs font-medium uppercase tracking-wide text-ink-2">{DIAS_SEMANA[i]}</p>
@@ -480,11 +500,13 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
   x: Demanda; hoje: string; dados: Dados; aberta: boolean; onAbrir: () => void;
   onAtualizar: (x: Demanda, d: Partial<Demanda>) => void; compacto?: boolean; mostrarCliente?: boolean;
 }) {
-  const atrasada = !x.concluida && x.data && x.data < hoje;
+  const atrasada = !x.concluida && x.data && fimDe(x)! < hoje;
+  const fazendo = !x.concluida && dados.andamento.includes(x.status);
+  const varios = Boolean(x.data && x.dataFim && x.dataFim > x.data);
   const corCli = (x.cliente && dados.cores[x.cliente.toLowerCase()]) || "#8a8984";
   const resp = x.responsavel ? dados.pessoas.find((p) => p.nome === x.responsavel) : null;
   return (
-    <li className={`rounded-[18px] bg-white/80 ${x.concluida ? "opacity-60" : ""}`}>
+    <li className={`rounded-[18px] bg-white/80 ${x.concluida ? "opacity-60" : ""} ${fazendo ? "ring-2 ring-azul" : ""}`}>
       <div className="flex items-start gap-2 p-2">
         <input
           type="checkbox"
@@ -508,21 +530,54 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
             {mostrarCliente && x.cliente && (
               <span className="chip bg-white text-ink-2"><span className="h-1.5 w-1.5 rounded-full" style={{ background: corCli }} />{x.cliente}</span>
             )}
-            {x.data && !compacto && (
-              <span className={`chip ${atrasada ? "bg-[#fdecea] text-[#a1261f]" : x.data === hoje ? "bg-nuv-soft text-nuv" : "bg-white text-ink-2"}`}>
-                {atrasada ? "⚠ " : ""}{x.data === hoje ? "Hoje" : dataBR(x.data).slice(0, 5)}
+            {x.data && (!compacto || varios) && (
+              <span className={`chip ${atrasada ? "bg-[#fdecea] text-[#a1261f]" : x.data <= hoje && fimDe(x)! >= hoje ? "bg-nuv-soft text-nuv" : "bg-white text-ink-2"}`}>
+                {atrasada ? "⚠ " : ""}{compacto ? `até ${curto(fimDe(x)!)}` : rotuloData(x, hoje)}
               </span>
             )}
             {x.prioridade && <span className={`chip ${CORES_PRIO[x.prioridade.toLowerCase()] ?? "bg-white text-ink-2"}`}>{x.prioridade}</span>}
             {x.duracao && !compacto && <span className="chip bg-white text-ink-3">{x.duracao}</span>}
-            {x.status !== dados.inicial && !x.concluida && <span className="chip bg-white text-ink-2">{x.status}</span>}
+            {x.status !== dados.inicial && !x.concluida && (
+              <span className={`chip ${fazendo ? "bg-azul text-white" : "bg-white text-ink-2"}`} title={x.status}>{fazendo && <Hammer size={10} />}{compacto && fazendo ? "fazendo" : x.status}</span>
+            )}
           </div>
         </button>
+        {!compacto && !x.concluida && x.status === dados.inicial && dados.andamento[0] && (
+          <button
+            className="so-editor grid h-7 w-7 shrink-0 place-items-center rounded-full bg-azul-claro text-azul hover:bg-azul hover:text-white"
+            title={`Marcar como “${dados.andamento[0]}”`}
+            aria-label={`Começar ${x.titulo}`}
+            onClick={() => onAtualizar(x, { status: dados.andamento[0], concluida: false })}
+          >
+            <Play size={12} />
+          </button>
+        )}
       </div>
       {aberta && (
         <div className="grid gap-2 border-t border-black/5 p-2 sm:grid-cols-2 [.somente-leitura_&>label]:hidden">
-          <label className="text-xs text-ink-2">Data
-            <input type="date" className="input mt-0.5 py-1 text-xs" defaultValue={x.data ?? ""} onChange={(e) => onAtualizar(x, { data: e.target.value || null })} />
+          <label className="text-xs text-ink-2">Começa
+            <input
+              type="date"
+              className="input mt-0.5 py-1 text-xs"
+              defaultValue={x.data ?? ""}
+              key={`i${x.data}`}
+              onChange={(e) => {
+                const ini = e.target.value || null;
+                // se o novo início passar do fim, vira demanda de um dia só
+                onAtualizar(x, { data: ini, dataFim: ini && x.dataFim && x.dataFim > ini ? x.dataFim : null });
+              }}
+            />
+          </label>
+          <label className="text-xs text-ink-2">Até
+            <input
+              type="date"
+              className="input mt-0.5 py-1 text-xs"
+              min={x.data ?? undefined}
+              disabled={!x.data}
+              defaultValue={x.dataFim ?? ""}
+              key={`f${x.dataFim}`}
+              onChange={(e) => onAtualizar(x, { data: x.data, dataFim: e.target.value && x.data && e.target.value > x.data ? e.target.value : null })}
+            />
           </label>
           <label className="text-xs text-ink-2">Cliente
             <select className="input mt-0.5 py-1 text-xs" value={x.cliente ?? ""} onChange={(e) => onAtualizar(x, { cliente: e.target.value || null })}>

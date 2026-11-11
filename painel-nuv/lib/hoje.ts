@@ -43,8 +43,11 @@ export async function resumoHoje(eu: UsuarioPublico) {
       const minha = (d: { responsavel: string | null }) => (d.responsavel ?? "").toLowerCase() === eu.nome.toLowerCase();
       return {
         lista: abertas
-          .map((d) => ({ id: d.id, titulo: d.titulo, cliente: d.cliente, data: d.data, responsavel: d.responsavel, url: d.url, prioridade: d.prioridade, minha: minha(d) }))
-          .sort((a, b) => Number(b.minha) - Number(a.minha) || (a.data ?? "").localeCompare(b.data ?? "")),
+          .map((d) => ({
+            id: d.id, titulo: d.titulo, cliente: d.cliente, data: d.data, dataFim: d.dataFim, responsavel: d.responsavel, url: d.url, prioridade: d.prioridade,
+            status: d.status, fazendo: r.andamento.includes(d.status), minha: minha(d),
+          }))
+          .sort((a, b) => Number(b.minha) - Number(a.minha) || Number(b.fazendo) - Number(a.fazendo) || (a.data ?? "").localeCompare(b.data ?? "")),
       };
     }),
     se(pode(eu, "leads", "ver"), async () => {

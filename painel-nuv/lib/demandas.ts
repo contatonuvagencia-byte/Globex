@@ -39,6 +39,8 @@ type Esquema = {
   opcoes: { clientes: string[]; prioridades: string[]; duracoes: string[]; status: string[] };
   concluido: string;
   inicial: string;
+  /** status do grupo "Em andamento" do Notion (ex.: Em andamento, Em revisão, Aguardando cliente) */
+  andamento: string[];
 };
 
 let cacheEsquema: { em: number; e: Esquema } | null = null;
@@ -72,9 +74,21 @@ async function esquema(): Promise<Esquema> {
     },
     concluido: statusOpcoes.find((o: string) => /conclu|feito|done|finaliz/i.test(o)) ?? "Concluído",
     inicial: statusOpcoes.find((o: string) => /não inici|a fazer|to do|pendente/i.test(o)) ?? statusOpcoes[0] ?? "Não iniciada",
+    andamento: grupoEmAndamento(status ? props[status] : null, statusOpcoes),
   };
   cacheEsquema = { em: Date.now(), e };
   return e;
+}
+
+/** Opções do grupo "In progress" de uma propriedade Status (ou, num select, as que parecem "fazendo"). */
+function grupoEmAndamento(prop: any, opcoes: string[]): string[] {
+  const grupos = prop?.type === "status" ? (prop.status?.groups ?? []) : [];
+  const g = grupos.find((x: any) => /progress|andamento/i.test(x.name ?? ""));
+  if (g) {
+    const porId = new Map((prop.status.options ?? []).map((o: any) => [o.id, o.name]));
+    return (g.option_ids ?? []).map((id: string) => porId.get(id)).filter(Boolean) as string[];
+  }
+  return opcoes.filter((o) => /andamento|fazendo|progresso|revis|aguardando/i.test(o));
 }
 
 function diaBrasil(iso: string | null | undefined): string | null {
@@ -152,13 +166,15 @@ export async function listarDemandas() {
       (prio[(a.prioridade ?? "").toLowerCase()] ?? 3) - (prio[(b.prioridade ?? "").toLowerCase()] ?? 3),
   );
 
-  return { demandas, temResponsavel: Boolean(e.responsavel), opcoes: e.opcoes, concluido: e.concluido, inicial: e.inicial, cores, hoje: hojeBrasil(), notionUrl: `https://www.notion.so/${DEMANDAS_DB}` };
+  return { demandas, temResponsavel: Boolean(e.responsavel), opcoes: e.opcoes, concluido: e.concluido, inicial: e.inicial, andamento: e.andamento, cores, hoje: hojeBrasil(), notionUrl: `https://www.notion.so/${DEMANDAS_DB}` };
 }
 
 export type DadosDemanda = Partial<{
   titulo: string;
   cliente: string | null;
   data: string | null;
+  /** último dia, para demandas de mais de um dia (ex.: 11 a 12) */
+  dataFim: string | null;
   prioridade: string | null;
   duracao: string | null;
   prazoReal: string | null;
@@ -172,13 +188,17 @@ function propriedades(e: Esquema, d: DadosDemanda) {
   const sel = (v: string | null) => (v ? { select: { name: v } } : { select: null });
   if (d.titulo !== undefined) props[e.titulo] = { title: [{ text: { content: d.titulo } }] };
   if (d.cliente !== undefined && e.cliente) props[e.cliente] = sel(d.cliente);
-  if (d.data !== undefined && e.data) props[e.data] = { date: d.data ? { start: d.data } : null };
+  if (d.data !== undefined && e.data) {
+    const fim = d.dataFim && d.data && d.dataFim > d.data ? d.dataFim : null;
+    props[e.data] = { date: d.data ? { start: d.data, end: fim } : null };
+  }
   if (d.prioridade !== undefined && e.prioridade) props[e.prioridade] = sel(d.prioridade);
   if (d.duracao !== undefined && e.duracao) props[e.duracao] = sel(d.duracao);
   // nome novo vira opção nova da seleção no Notion automaticamente
   if (d.responsavel !== undefined && e.responsavel) props[e.responsavel] = sel(d.responsavel);
   if (d.prazoReal !== undefined && e.prazo) props[e.prazo] = { rich_text: d.prazoReal ? [{ text: { content: d.prazoReal } }] : [] };
-  const status = d.concluida !== undefined ? (d.concluida ? e.concluido : e.inicial) : d.status;
+  // status escolhido vale mais que o checkbox (senão "Em andamento" voltava para "Não iniciada")
+  const status = d.status ?? (d.concluida !== undefined ? (d.concluida ? e.concluido : e.inicial) : undefined);
   if (status && e.status) props[e.status] = { [e.statusTipo!]: { name: status } };
   return props;
 }
