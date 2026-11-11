@@ -3,6 +3,7 @@ import { Briefcase, CalendarDays, CheckSquare, LineChart, LogOut, Settings2, Use
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Area } from "@/lib/permissoes";
+import { Avatar } from "./Avatar";
 import { useUsuario } from "./Usuario";
 
 const GRUPOS: { titulo: string; itens: { href: string; rotulo: string; Icone: typeof CalendarDays; area: Area }[] }[] = [
@@ -24,15 +25,6 @@ const GRUPOS: { titulo: string; itens: { href: string; rotulo: string; Icone: ty
   },
 ];
 
-function Avatar({ nome, claro }: { nome: string; claro?: boolean }) {
-  const iniciais = nome.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase()).join("");
-  return (
-    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold ${claro ? "bg-white text-ink" : "bg-azul text-white"}`}>
-      {iniciais || "?"}
-    </span>
-  );
-}
-
 export function Nav() {
   const path = usePathname();
   const { usuario, nivel } = useUsuario();
@@ -49,7 +41,7 @@ export function Nav() {
         <div className="flex items-center gap-2">
           <span className="text-lg font-extrabold tracking-tight">nuv<span className="text-azul-medio">.</span></span>
           <Link href="/perfil" className="ml-auto flex items-center gap-2 text-xs text-white/70">
-            {usuario?.nome.split(" ")[0]} {usuario && <Avatar nome={usuario.nome} />}
+            {usuario?.nome.split(" ")[0]} {usuario && <Avatar nome={usuario.nome} foto={usuario.foto} />}
           </Link>
         </div>
         <nav className="-mx-1 mt-3 flex gap-1 overflow-x-auto">
@@ -110,7 +102,7 @@ export function Nav() {
           )}
           {usuario && (
             <Link href="/perfil" className={`mt-2 flex items-center gap-3 rounded-2xl px-2 py-2 ${ativo("/perfil") ? "bg-white/10" : "hover:bg-white/5"}`}>
-              <Avatar nome={usuario.nome} />
+              <Avatar nome={usuario.nome} foto={usuario.foto} />
               <span className="min-w-0">
                 <span className="block truncate text-sm font-semibold">{usuario.nome}</span>
                 <span className="block truncate text-[11px] text-white/50">{usuario.admin ? "Administração" : "Meu perfil"}</span>

@@ -48,6 +48,7 @@ export type UsuarioPublico = {
   permissoes: Permissoes;
   clientes: string[];
   admin: boolean;
+  foto?: string | null;
 };
 
 const ORDEM: Record<Nivel, number> = { nenhum: 0, ver: 1, editar: 2 };

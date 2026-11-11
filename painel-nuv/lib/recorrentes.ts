@@ -11,6 +11,7 @@ export type Recorrente = {
   cliente: string | null;
   prioridade: string | null;
   duracao: string | null;
+  responsavel?: string | null;
   frequencia: Frequencia;
   data_inicio: string;
   ativo: boolean;
@@ -97,7 +98,7 @@ export async function gerarRecorrentes(limite = 15): Promise<{ criadas: number; 
       const reserva = await sb.from("demandas_geradas").insert({ recorrente_id: r.id, data });
       if (reserva.error) continue;
       try {
-        const nova = await criarDemanda({ titulo: r.titulo, cliente: r.cliente, data, prioridade: r.prioridade, duracao: r.duracao });
+        const nova = await criarDemanda({ titulo: r.titulo, cliente: r.cliente, data, prioridade: r.prioridade, duracao: r.duracao, responsavel: r.responsavel ?? null });
         await sb.from("demandas_geradas").update({ notion_page_id: nova.id }).eq("recorrente_id", r.id).eq("data", data);
         criadas++;
       } catch (e) {

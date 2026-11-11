@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { atualizarDemanda, criarDemanda, listarDemandas } from "@/lib/demandas";
+import { listarPessoas } from "@/lib/fotos";
 import { FREQUENCIAS, atualizarRecorrente, excluirRecorrente, gerarRecorrentes, listarRecorrentes, salvarRecorrente } from "@/lib/recorrentes";
 import { exigir, negado } from "@/lib/usuarios";
 import { pode, veCliente } from "@/lib/permissoes";
@@ -9,10 +10,16 @@ export async function GET() {
   const eu = await exigir("demandas", "ver");
   if (negado(eu)) return eu;
   try {
-    const [dados, recorrentes] = await Promise.all([listarDemandas(), listarRecorrentes().catch(() => [])]);
+    const [dados, recorrentes, pessoas] = await Promise.all([
+      listarDemandas(),
+      listarRecorrentes().catch(() => []),
+      listarPessoas(process.env.ADMIN_NOME || "Isabela").catch(() => []),
+    ]);
     const restrito = !eu.admin && eu.clientes.length > 0;
     return NextResponse.json({
       ...dados,
+      pessoas,
+      eu: eu.nome,
       demandas: restrito ? dados.demandas.filter((d) => veCliente(eu, d.cliente)) : dados.demandas,
       opcoes: restrito ? { ...dados.opcoes, clientes: dados.opcoes.clientes.filter((c) => veCliente(eu, c)) } : dados.opcoes,
       recorrentes: restrito ? recorrentes.filter((r) => veCliente(eu, r.cliente)) : recorrentes,
@@ -30,6 +37,7 @@ const Dados = z.object({
   prioridade: opcional,
   duracao: opcional,
   prazoReal: z.string().trim().max(500).nullable().optional(),
+  responsavel: opcional,
   status: z.string().trim().min(1).max(60).optional(),
   concluida: z.boolean().optional(),
 });
@@ -40,6 +48,7 @@ const Regra = z.object({
   cliente: opcional.transform((v) => v ?? null),
   prioridade: opcional.transform((v) => v ?? null),
   duracao: opcional.transform((v) => v ?? null),
+  responsavel: opcional.transform((v) => v ?? null),
   frequencia: z.enum(FREQUENCIAS),
   data_inicio: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });

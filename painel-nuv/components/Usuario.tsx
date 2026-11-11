@@ -4,19 +4,20 @@ import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 import { nivelDe, type Area, type Nivel, type UsuarioPublico } from "@/lib/permissoes";
 
-type Ctx = { usuario: UsuarioPublico | null; nivel: (a: Area) => Nivel; podeEditar: (a: Area) => boolean };
-const Contexto = createContext<Ctx>({ usuario: null, nivel: () => "nenhum", podeEditar: () => false });
+type Ctx = { usuario: UsuarioPublico | null; nivel: (a: Area) => Nivel; podeEditar: (a: Area) => boolean; recarregar: () => void };
+const Contexto = createContext<Ctx>({ usuario: null, nivel: () => "nenhum", podeEditar: () => false, recarregar: () => {} });
 
 export function ProvedorUsuario({ children }: { children: React.ReactNode }) {
   const [usuario, setUsuario] = useState<UsuarioPublico | null>(null);
+  const [versao, setVersao] = useState(0);
   useEffect(() => {
     fetch("/api/eu")
       .then((r) => (r.status === 401 ? (window.location.href = "/login", null) : r.json()))
       .then((j) => j?.usuario && setUsuario(j.usuario))
       .catch(() => {});
-  }, []);
+  }, [versao]);
   const nivel = (a: Area) => nivelDe(usuario, a);
-  return <Contexto.Provider value={{ usuario, nivel, podeEditar: (a) => nivel(a) === "editar" }}>{children}</Contexto.Provider>;
+  return <Contexto.Provider value={{ usuario, nivel, podeEditar: (a) => nivel(a) === "editar", recarregar: () => setVersao((v) => v + 1) }}>{children}</Contexto.Provider>;
 }
 
 export const useUsuario = () => useContext(Contexto);

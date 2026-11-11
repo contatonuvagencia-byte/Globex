@@ -1,6 +1,7 @@
 "use client";
 import { Pause, Pencil, Play, Repeat, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Avatar } from "@/components/Avatar";
 import { tom } from "@/lib/cores";
 import { DIAS_SEMANA, dataBR } from "@/lib/format";
 
@@ -13,6 +14,7 @@ type Demanda = {
   prioridade: string | null;
   duracao: string | null;
   prazoReal: string | null;
+  responsavel: string | null;
   status: string;
   concluida: boolean;
   url: string;
@@ -27,6 +29,9 @@ type Dados = {
   hoje: string;
   notionUrl: string;
   recorrentes: Regra[];
+  pessoas: { id: string; nome: string; foto: string | null }[];
+  eu: string;
+  temResponsavel: boolean;
 };
 type Frequencia = "diaria" | "dias_uteis" | "semanal" | "quinzenal" | "mensal";
 type Regra = {
@@ -39,6 +44,7 @@ type Regra = {
   data_inicio: string;
   ativo: boolean;
   proxima: string | null;
+  responsavel?: string | null;
 };
 
 const FREQ: Record<Frequencia, string> = {
@@ -72,6 +78,7 @@ export default function Demandas() {
   const [erro, setErro] = useState("");
   const [visao, setVisao] = useState<"clientes" | "semana">("clientes");
   const [filtro, setFiltro] = useState("");
+  const [pessoa, setPessoa] = useState(""); // "" = todos, "__minhas" = só as minhas, ou um nome
   const [verConcluidas, setVerConcluidas] = useState(false);
   const [novo, setNovo] = useState(false);
   const [semana, setSemana] = useState<string | null>(null);
@@ -142,7 +149,7 @@ export default function Demandas() {
       await acaoRegra(
         {
           acao: "criar_recorrente",
-          dados: { titulo: v("titulo"), cliente: v("cliente"), prioridade: v("prioridade"), duracao: v("duracao"), frequencia: repete, data_inicio: v("data") ?? hoje },
+          dados: { titulo: v("titulo"), cliente: v("cliente"), prioridade: v("prioridade"), duracao: v("duracao"), responsavel: v("responsavel"), frequencia: repete, data_inicio: v("data") ?? hoje },
         },
         `Pronto: “${v("titulo")}” vai se repetir (${FREQ[repete].toLowerCase()}).`,
       );
@@ -153,7 +160,7 @@ export default function Demandas() {
     try {
       const nova = await enviar({
         acao: "criar",
-        dados: { titulo: v("titulo"), cliente: v("cliente"), data: v("data"), prioridade: v("prioridade"), duracao: v("duracao") },
+        dados: { titulo: v("titulo"), cliente: v("cliente"), data: v("data"), prioridade: v("prioridade"), duracao: v("duracao"), responsavel: v("responsavel") },
       });
       setD((atual) => (atual ? { ...atual, demandas: [nova, ...atual.demandas] } : atual));
       ev.currentTarget?.reset();
@@ -165,8 +172,14 @@ export default function Demandas() {
 
   const hoje = d?.hoje ?? "";
   const lista = useMemo(
-    () => (d?.demandas ?? []).filter((x) => (verConcluidas || !x.concluida) && (!filtro || (x.cliente ?? SEM_CLIENTE) === filtro)),
-    [d, verConcluidas, filtro],
+    () =>
+      (d?.demandas ?? []).filter(
+        (x) =>
+          (verConcluidas || !x.concluida) &&
+          (!filtro || (x.cliente ?? SEM_CLIENTE) === filtro) &&
+          (!pessoa || (pessoa === "__minhas" ? x.responsavel?.toLowerCase() === d?.eu.toLowerCase() : pessoa === "__ninguem" ? !x.responsavel : x.responsavel === pessoa)),
+      ),
+    [d, verConcluidas, filtro, pessoa],
   );
   const abertas = (d?.demandas ?? []).filter((x) => !x.concluida);
   const atrasadas = abertas.filter((x) => x.data && x.data < hoje);
@@ -229,6 +242,12 @@ export default function Demandas() {
             <option value="">Prioridade</option>
             {d.opcoes.prioridades.map((c) => <option key={c}>{c}</option>)}
           </select>
+          {d.temResponsavel && (
+            <select name="responsavel" className="input" defaultValue={d.eu} aria-label="Responsável">
+              <option value="">Sem responsável</option>
+              {d.pessoas.map((p) => <option key={p.id} value={p.nome}>{p.nome}</option>)}
+            </select>
+          )}
           <select name="duracao" className="input" defaultValue="" aria-label="Duração">
             <option value="">Duração</option>
             {d.opcoes.duracoes.map((c) => <option key={c}>{c}</option>)}
@@ -252,6 +271,14 @@ export default function Demandas() {
           <option value="">Todos os clientes</option>
           {[...(d?.opcoes.clientes ?? []), SEM_CLIENTE].map((c) => <option key={c}>{c}</option>)}
         </select>
+        {d?.temResponsavel && (
+          <select className="input w-auto" value={pessoa} onChange={(e) => setPessoa(e.target.value)} aria-label="Filtrar responsável">
+            <option value="">Todas as pessoas</option>
+            <option value="__minhas">Minhas demandas</option>
+            <option value="__ninguem">Sem responsável</option>
+            {d.pessoas.map((p) => <option key={p.id} value={p.nome}>{p.nome}</option>)}
+          </select>
+        )}
         <label className="flex items-center gap-2 text-sm text-ink-2">
           <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={verConcluidas} onChange={(e) => setVerConcluidas(e.target.checked)} />
           Mostrar concluídas (últimos 14 dias)
@@ -292,7 +319,7 @@ export default function Demandas() {
                             {
                               acao: "atualizar_recorrente",
                               id: r.id,
-                              dados: { titulo: v("titulo"), cliente: v("cliente"), prioridade: v("prioridade"), duracao: v("duracao"), frequencia: v("frequencia"), data_inicio: v("data_inicio") },
+                              dados: { titulo: v("titulo"), cliente: v("cliente"), prioridade: v("prioridade"), duracao: v("duracao"), responsavel: v("responsavel"), frequencia: v("frequencia"), data_inicio: v("data_inicio") },
                             },
                             "Repetição atualizada. Vale para os próximos cards; os já criados continuam como estão.",
                           );
@@ -312,7 +339,11 @@ export default function Demandas() {
                           <option value="">Prioridade</option>
                           {d.opcoes.prioridades.map((c) => <option key={c}>{c}</option>)}
                         </select>
-                        <select name="duracao" className="input sm:col-span-2" defaultValue={r.duracao ?? ""} aria-label="Duração">
+                        <select name="responsavel" className="input" defaultValue={r.responsavel ?? ""} aria-label="Responsável">
+                          <option value="">Sem responsável</option>
+                          {d.pessoas.map((p) => <option key={p.id} value={p.nome}>{p.nome}</option>)}
+                        </select>
+                        <select name="duracao" className="input" defaultValue={r.duracao ?? ""} aria-label="Duração">
                           <option value="">Duração</option>
                           {d.opcoes.duracoes.map((c) => <option key={c}>{c}</option>)}
                         </select>
@@ -451,6 +482,7 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
 }) {
   const atrasada = !x.concluida && x.data && x.data < hoje;
   const corCli = (x.cliente && dados.cores[x.cliente.toLowerCase()]) || "#8a8984";
+  const resp = x.responsavel ? dados.pessoas.find((p) => p.nome === x.responsavel) : null;
   return (
     <li className={`rounded-[18px] bg-white/80 ${x.concluida ? "opacity-60" : ""}`}>
       <div className="flex items-start gap-2 p-2">
@@ -467,6 +499,12 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
             {x.titulo}
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-1">
+            {x.responsavel && (
+              <span className="chip bg-white pl-0.5 text-ink-2">
+                <Avatar nome={x.responsavel} foto={resp?.foto} tamanho={16} />
+                {compacto ? "" : x.responsavel.split(" ")[0]}
+              </span>
+            )}
             {mostrarCliente && x.cliente && (
               <span className="chip bg-white text-ink-2"><span className="h-1.5 w-1.5 rounded-full" style={{ background: corCli }} />{x.cliente}</span>
             )}
@@ -492,6 +530,15 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
               {dados.opcoes.clientes.map((c) => <option key={c}>{c}</option>)}
             </select>
           </label>
+          {dados.temResponsavel && (
+            <label className="text-xs text-ink-2">Responsável
+              <select className="input mt-0.5 py-1 text-xs" value={x.responsavel ?? ""} onChange={(e) => onAtualizar(x, { responsavel: e.target.value || null })}>
+                <option value="">Sem responsável</option>
+                {dados.pessoas.map((p) => <option key={p.id} value={p.nome}>{p.nome}</option>)}
+                {x.responsavel && !dados.pessoas.some((p) => p.nome === x.responsavel) && <option value={x.responsavel}>{x.responsavel}</option>}
+              </select>
+            </label>
+          )}
           <label className="text-xs text-ink-2">Prioridade
             <select className="input mt-0.5 py-1 text-xs" value={x.prioridade ?? ""} onChange={(e) => onAtualizar(x, { prioridade: e.target.value || null })}>
               <option value="">—</option>

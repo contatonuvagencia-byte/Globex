@@ -18,6 +18,7 @@ export type Demanda = {
   prioridade: string | null;
   duracao: string | null;
   prazoReal: string | null;
+  responsavel: string | null;
   status: string;
   concluida: boolean;
   url: string;
@@ -34,6 +35,7 @@ type Esquema = {
   prioridade?: string;
   duracao?: string;
   prazo?: string;
+  responsavel?: string;
   opcoes: { clientes: string[]; prioridades: string[]; duracoes: string[]; status: string[] };
   concluido: string;
   inicial: string;
@@ -61,6 +63,7 @@ async function esquema(): Promise<Esquema> {
     prioridade: achar(["select"], /priorid/i),
     duracao: achar(["select"], /dura/i),
     prazo: achar(["rich_text"], /prazo/i),
+    responsavel: achar(["select"], /respons/i),
     opcoes: {
       clientes: opcoesDe(achar(["select"], /cliente/i)),
       prioridades: opcoesDe(achar(["select"], /priorid/i)),
@@ -97,6 +100,7 @@ function paginaParaDemanda(e: Esquema, page: any): Demanda {
     prioridade: sel(e.prioridade),
     duracao: sel(e.duracao),
     prazoReal: e.prazo ? richText(p[e.prazo]?.rich_text) || null : null,
+    responsavel: sel(e.responsavel),
     status,
     concluida: status === e.concluido,
     url: page.url,
@@ -148,7 +152,7 @@ export async function listarDemandas() {
       (prio[(a.prioridade ?? "").toLowerCase()] ?? 3) - (prio[(b.prioridade ?? "").toLowerCase()] ?? 3),
   );
 
-  return { demandas, opcoes: e.opcoes, concluido: e.concluido, inicial: e.inicial, cores, hoje: hojeBrasil(), notionUrl: `https://www.notion.so/${DEMANDAS_DB}` };
+  return { demandas, temResponsavel: Boolean(e.responsavel), opcoes: e.opcoes, concluido: e.concluido, inicial: e.inicial, cores, hoje: hojeBrasil(), notionUrl: `https://www.notion.so/${DEMANDAS_DB}` };
 }
 
 export type DadosDemanda = Partial<{
@@ -158,6 +162,7 @@ export type DadosDemanda = Partial<{
   prioridade: string | null;
   duracao: string | null;
   prazoReal: string | null;
+  responsavel: string | null;
   status: string;
   concluida: boolean;
 }>;
@@ -170,6 +175,8 @@ function propriedades(e: Esquema, d: DadosDemanda) {
   if (d.data !== undefined && e.data) props[e.data] = { date: d.data ? { start: d.data } : null };
   if (d.prioridade !== undefined && e.prioridade) props[e.prioridade] = sel(d.prioridade);
   if (d.duracao !== undefined && e.duracao) props[e.duracao] = sel(d.duracao);
+  // nome novo vira opção nova da seleção no Notion automaticamente
+  if (d.responsavel !== undefined && e.responsavel) props[e.responsavel] = sel(d.responsavel);
   if (d.prazoReal !== undefined && e.prazo) props[e.prazo] = { rich_text: d.prazoReal ? [{ text: { content: d.prazoReal } }] : [] };
   const status = d.concluida !== undefined ? (d.concluida ? e.concluido : e.inicial) : d.status;
   if (status && e.status) props[e.status] = { [e.statusTipo!]: { name: status } };

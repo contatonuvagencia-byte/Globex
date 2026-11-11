@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { AREAS, PERFIS, normalizarPermissoes } from "@/lib/permissoes";
+import { mapaFotos } from "@/lib/fotos";
 import { db } from "@/lib/supabase";
 import { exigir, gerarHash, limparCacheUsuarios, negado } from "@/lib/usuarios";
 
@@ -13,7 +14,8 @@ export async function GET() {
     .select("id, nome, email, papel, permissoes, clientes, ativo, ultimo_acesso, created_at")
     .order("created_at");
   if (error) return NextResponse.json({ erro: error.message }, { status: 500 });
-  return NextResponse.json({ usuarios: data, perfis: PERFIS, areas: AREAS });
+  const fotos = await mapaFotos().catch(() => ({} as Record<string, string>));
+  return NextResponse.json({ usuarios: (data ?? []).map((p) => ({ ...p, foto: fotos[p.id] ?? null })), perfis: PERFIS, areas: AREAS });
 }
 
 const nivel = z.enum(["nenhum", "ver", "editar"]);

@@ -1,6 +1,7 @@
 "use client";
 import { Eye, EyeOff, Pencil, Plus, Trash2, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { Avatar } from "@/components/Avatar";
 import { AREAS, PERFIS, type Area, type Nivel, type Permissoes } from "@/lib/permissoes";
 
 type Pessoa = {
@@ -12,6 +13,7 @@ type Pessoa = {
   clientes: string[];
   ativo: boolean;
   ultimo_acesso: string | null;
+  foto?: string | null;
 };
 
 const NIVEIS: { v: Nivel; r: string }[] = [
@@ -20,9 +22,6 @@ const NIVEIS: { v: Nivel; r: string }[] = [
   { v: "editar", r: "Editar" },
 ];
 
-function iniciais(nome: string) {
-  return nome.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase()).join("");
-}
 
 export default function Equipe() {
   const [pessoas, setPessoas] = useState<Pessoa[] | null>(null);
@@ -88,7 +87,7 @@ export default function Equipe() {
       <ul className="space-y-3">
         {pessoas?.map((p) => (
           <li key={p.id} className={`card flex flex-wrap items-center gap-4 p-5 ${p.ativo ? "" : "opacity-60"}`}>
-            <span className="grid h-11 w-11 place-items-center rounded-full bg-azul text-sm font-bold text-white">{iniciais(p.nome)}</span>
+            <Avatar nome={p.nome} foto={p.foto} tamanho={44} />
             <div className="min-w-0 flex-1">
               <p className="font-bold">{p.nome} {!p.ativo && <span className="chip ml-1 bg-surface-2 text-ink-2">desativado</span>}</p>
               <p className="text-sm text-ink-2">{p.email}</p>
