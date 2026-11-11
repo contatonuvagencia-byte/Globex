@@ -1,5 +1,5 @@
 "use client";
-import { Briefcase, Building2, CalendarDays, CheckSquare, LineChart, LogOut, Settings2, UserCog, Users, Wallet } from "lucide-react";
+import { Briefcase, Building2, CalendarDays, Handshake, CheckSquare, LineChart, LogOut, Settings2, UserCog, Users, Wallet } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Area } from "@/lib/permissoes";
@@ -20,6 +20,7 @@ const GRUPOS: { titulo: string; itens: { href: string; rotulo: string; Icone: ty
     itens: [
       { href: "/clientes", rotulo: "Clientes", Icone: Building2, area: "clientes" },
       { href: "/servicos", rotulo: "Serviços freela", Icone: Briefcase, area: "servicos" },
+      { href: "/comercial", rotulo: "Comercial", Icone: Handshake, area: "leads" },
       { href: "/leads", rotulo: "Leads", Icone: Users, area: "leads" },
       { href: "/financeiro", rotulo: "Financeiro", Icone: Wallet, area: "financeiro" },
     ],

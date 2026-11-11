@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { pedidoLeadParaClaude } from "@/lib/prompts-leads";
 import { useUsuario } from "./Usuario";
+import { ViraCliente } from "./ViraCliente";
 import { ORDEM_STATUS, ROT_IG, ROT_INTERACAO, ROT_NICHO, ROT_PORTE, ROT_SITE, ROT_STATUS, linkWhatsapp, preencherModelo } from "@/lib/leads-rotulos";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -157,6 +158,7 @@ export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () =
                 {lead.website && <a className="chip bg-surface-2 text-ink-2 hover:text-nuv" href={lead.website} target="_blank" rel="noreferrer">Site ↗</a>}
                 {lead.maps_url && <a className="chip bg-surface-2 text-ink-2 hover:text-nuv" href={lead.maps_url} target="_blank" rel="noreferrer">Maps ↗</a>}
               </div>
+              <ViraCliente lead={lead as { id: string; name: string; status: string }} onMudou={() => { carregar(); onMudou(); }} />
               <nav className="mt-4 flex gap-1 text-sm">
                 {(["mensagem", "ficha", "historico"] as const).map((a) => (
                   <button key={a} onClick={() => setAba(a)} className={`rounded-lg px-3 py-1.5 font-medium ${aba === a ? "bg-ink text-white" : "text-ink-2 hover:bg-surface-2"}`}>
