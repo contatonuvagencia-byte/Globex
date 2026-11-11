@@ -26,7 +26,7 @@ export const useUsuario = () => useContext(Contexto);
 export function areaDaRota(path: string): Area | "admin" | null {
   if (path === "/") return "calendario";
   if (path.startsWith("/calendarios") || path.startsWith("/equipe")) return "admin";
-  for (const a of ["demandas", "metricas", "leads", "servicos", "financeiro"] as const) if (path.startsWith(`/${a}`)) return a;
+  for (const a of ["clientes", "demandas", "metricas", "leads", "servicos", "financeiro"] as const) if (path.startsWith(`/${a}`)) return a;
   return null;
 }
 

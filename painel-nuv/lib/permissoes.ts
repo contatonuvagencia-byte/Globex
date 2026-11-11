@@ -2,6 +2,7 @@
 
 export const AREAS = {
   calendario: "Calendário",
+  clientes: "Fichas de clientes",
   demandas: "Demandas",
   metricas: "Métricas",
   leads: "Leads",
@@ -12,7 +13,7 @@ export type Area = keyof typeof AREAS;
 export type Nivel = "nenhum" | "ver" | "editar";
 export type Permissoes = Record<Area, Nivel>;
 
-const tudo = (n: Nivel): Permissoes => ({ calendario: n, demandas: n, metricas: n, leads: n, servicos: n, financeiro: n });
+const tudo = (n: Nivel): Permissoes => ({ calendario: n, clientes: n, demandas: n, metricas: n, leads: n, servicos: n, financeiro: n });
 
 /** Perfis prontos. "Personalizado" deixa escolher área por área. */
 export const PERFIS: Record<string, { nome: string; descricao: string; permissoes: Permissoes }> = {
@@ -20,7 +21,7 @@ export const PERFIS: Record<string, { nome: string; descricao: string; permissoe
   social: {
     nome: "Social media",
     descricao: "Edita calendário, demandas e métricas; não vê Leads, Serviços e Financeiro",
-    permissoes: { ...tudo("nenhum"), calendario: "editar", demandas: "editar", metricas: "editar" },
+    permissoes: { ...tudo("nenhum"), calendario: "editar", clientes: "ver", demandas: "editar", metricas: "editar" },
   },
   design: {
     nome: "Design / vídeo",
@@ -30,7 +31,7 @@ export const PERFIS: Record<string, { nome: string; descricao: string; permissoe
   comercial: {
     nome: "Comercial",
     descricao: "Edita Leads e Serviços; vê o calendário",
-    permissoes: { ...tudo("nenhum"), calendario: "ver", leads: "editar", servicos: "editar" },
+    permissoes: { ...tudo("nenhum"), calendario: "ver", clientes: "ver", leads: "editar", servicos: "editar" },
   },
   leitura: {
     nome: "Só visualizar",
