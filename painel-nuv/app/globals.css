@@ -21,3 +21,6 @@ body { background: #f5f5f5; color: #121212; -webkit-font-smoothing: antialiased;
   .titulo-pagina { @apply text-[28px] font-bold leading-tight tracking-tight md:text-[34px]; }
   .tabular { font-variant-numeric: tabular-nums; }
 }
+
+/* perfil "só visualizar": esconde os controles de edição */
+.somente-leitura .so-editor { display: none !important; }

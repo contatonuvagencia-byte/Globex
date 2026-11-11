@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { extrairRelatorio, type ArquivoEnviado } from "@/lib/metricas";
+import { exigir, negado } from "@/lib/usuarios";
 
 export const maxDuration = 300;
 
@@ -8,6 +9,8 @@ const TIPOS = ["image/png", "image/jpeg", "image/webp", "image/gif", "applicatio
 const MAX_TOTAL = 30 * 1024 * 1024;
 
 export async function POST(req: Request) {
+  const eu = await exigir("metricas", "editar");
+  if (negado(eu)) return eu;
   const form = await req.formData();
   const cliente = String(form.get("cliente") ?? "").slice(0, 80);
   const rede = String(form.get("rede") ?? "Instagram").slice(0, 40);

@@ -192,7 +192,7 @@ export default function Demandas() {
           <h1 className="titulo-pagina">Demandas</h1>
         </div>
         {d && <a className="btn-ghost" href={d.notionUrl} target="_blank" rel="noreferrer">Abrir no Notion ↗</a>}
-        <button className="btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Nova demanda"}</button>
+        <button className="so-editor btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Nova demanda"}</button>
       </header>
 
       <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -333,7 +333,7 @@ export default function Demandas() {
                       <span className="text-xs text-ink-2">
                         {r.ativo ? (r.proxima ? `próxima: ${dataBR(r.proxima).slice(0, 5)}` : "") : "pausada"}
                       </span>
-                      <span className="ml-auto flex gap-1">
+                      <span className="so-editor ml-auto flex gap-1">
                         <button className="grid h-8 w-8 place-items-center rounded-full hover:bg-white" title="Editar" aria-label="Editar" onClick={() => setEditandoRegra(r.id)}><Pencil size={14} /></button>
                         <button
                           className="grid h-8 w-8 place-items-center rounded-full hover:bg-white"
@@ -456,7 +456,7 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
       <div className="flex items-start gap-2 p-2">
         <input
           type="checkbox"
-          className="mt-0.5 h-4 w-4 shrink-0 accent-[#1f3fd1]"
+          className="so-editor mt-0.5 h-4 w-4 shrink-0 accent-[#1f3fd1]"
           checked={x.concluida}
           onChange={(e) => onAtualizar(x, { concluida: e.target.checked })}
           aria-label={`Concluir ${x.titulo}`}
@@ -482,7 +482,7 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
         </button>
       </div>
       {aberta && (
-        <div className="grid gap-2 border-t border-black/5 p-2 sm:grid-cols-2">
+        <div className="grid gap-2 border-t border-black/5 p-2 sm:grid-cols-2 [.somente-leitura_&>label]:hidden">
           <label className="text-xs text-ink-2">Data
             <input type="date" className="input mt-0.5 py-1 text-xs" defaultValue={x.data ?? ""} onChange={(e) => onAtualizar(x, { data: e.target.value || null })} />
           </label>

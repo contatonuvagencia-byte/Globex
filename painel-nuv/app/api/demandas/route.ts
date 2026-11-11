@@ -2,11 +2,21 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { atualizarDemanda, criarDemanda, listarDemandas } from "@/lib/demandas";
 import { FREQUENCIAS, atualizarRecorrente, excluirRecorrente, gerarRecorrentes, listarRecorrentes, salvarRecorrente } from "@/lib/recorrentes";
+import { exigir, negado } from "@/lib/usuarios";
+import { pode, veCliente } from "@/lib/permissoes";
 
 export async function GET() {
+  const eu = await exigir("demandas", "ver");
+  if (negado(eu)) return eu;
   try {
     const [dados, recorrentes] = await Promise.all([listarDemandas(), listarRecorrentes().catch(() => [])]);
-    return NextResponse.json({ ...dados, recorrentes });
+    const restrito = !eu.admin && eu.clientes.length > 0;
+    return NextResponse.json({
+      ...dados,
+      demandas: restrito ? dados.demandas.filter((d) => veCliente(eu, d.cliente)) : dados.demandas,
+      opcoes: restrito ? { ...dados.opcoes, clientes: dados.opcoes.clientes.filter((c) => veCliente(eu, c)) } : dados.opcoes,
+      recorrentes: restrito ? recorrentes.filter((r) => veCliente(eu, r.cliente)) : recorrentes,
+    });
   } catch (e) {
     return NextResponse.json({ erro: (e as Error).message }, { status: 500 });
   }
@@ -44,11 +54,17 @@ const Acao = z.discriminatedUnion("acao", [
 ]);
 
 export async function POST(req: Request) {
+  const eu = await exigir("demandas", "ver");
+  if (negado(eu)) return eu;
   const corpo = Acao.safeParse(await req.json().catch(() => null));
   if (!corpo.success) return NextResponse.json({ erro: "Dados inválidos" }, { status: 400 });
   try {
     const a = corpo.data;
     if (a.acao === "gerar") return NextResponse.json(await gerarRecorrentes());
+    if (!pode(eu, "demandas", "editar")) return NextResponse.json({ erro: "Seu perfil pode ver as demandas, mas não editar." }, { status: 403 });
+    if ((a.acao === "criar" || a.acao === "criar_recorrente") && !veCliente(eu, a.dados.cliente ?? null)) {
+      return NextResponse.json({ erro: "Seu perfil não tem acesso a este cliente." }, { status: 403 });
+    }
     if (a.acao === "criar_recorrente") {
       await salvarRecorrente(a.dados);
       return NextResponse.json(await gerarRecorrentes());

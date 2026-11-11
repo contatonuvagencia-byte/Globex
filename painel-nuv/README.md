@@ -63,9 +63,26 @@ npm install
 npm run dev                  # http://localhost:3000
 ```
 
+## Equipe e perfis de acesso
+
+Na aba **Equipe** (só a administração vê) você cadastra cada pessoa com e-mail e senha e escolhe um perfil:
+
+| Perfil | O que faz |
+|---|---|
+| Administração | Tudo, inclusive Financeiro, Equipe e configuração de calendários |
+| Social media | Edita Calendário, Demandas e Métricas |
+| Design / vídeo | Vê o Calendário e edita Demandas |
+| Comercial | Edita Leads e Serviços, vê o Calendário |
+| Só visualizar | Vê tudo menos Financeiro, sem editar |
+| Personalizado | Você escolhe área por área: sem acesso, só ver ou editar |
+
+Também dá para limitar **quais clientes** a pessoa vê (Calendário, Demandas e Métricas). Desativar ou remover alguém corta o acesso em até 20 segundos.
+A administração entra com o e-mail em branco e a `APP_PASSWORD`.
+
 ## Segurança
 
-- Todo o painel exige login, inclusive as rotas `/api`.
+- Todo o painel exige login, inclusive as rotas `/api`. Cada rota confere o perfil da pessoa (área, nível e clientes) no servidor, não só na tela.
+- Senhas da equipe são guardadas com scrypt; a sessão é um cookie assinado (HMAC) que vale 30 dias.
 - A única exceção é `/r/<código>`: o link do relatório que você gera para o cliente. O código é aleatório e pode ser desativado a qualquer momento.
 - As chaves do Notion e do Supabase ficam só no servidor.
 - As tabelas têm RLS ligado. As do painel não têm nenhuma policy pública; as de leads mantêm as policies da equipe do nuv-leads.

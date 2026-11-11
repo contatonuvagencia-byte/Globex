@@ -1,4 +1,5 @@
 "use client";
+import { useUsuario } from "@/components/Usuario";
 import { CheckCircle2, ChevronLeft, ChevronRight, Clock, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -24,6 +25,8 @@ function segundaDa(iso: string) {
 }
 
 export default function Calendario() {
+  const { usuario, podeEditar } = useUsuario();
+  const editavel = podeEditar("calendario");
   const hoje = hojeISO();
   const [visao, setVisao] = useState<"semana" | "mes">("semana");
   const [mes, setMes] = useState(hoje.slice(0, 7));
@@ -160,7 +163,7 @@ export default function Calendario() {
     },
   });
   const arrastavel = (p: Post) => ({
-    draggable: true,
+    draggable: editavel,
     onDragStart: (e: React.DragEvent) => {
       e.dataTransfer.setData("text/plain", p.id);
       e.dataTransfer.effectAllowed = "move";
@@ -183,7 +186,7 @@ export default function Calendario() {
       <header className="mb-6 flex flex-wrap items-end gap-4">
         <div className="mr-auto">
           <p className="text-sm font-medium text-ink-2 first-letter:uppercase">{diaSemanaLongo(hoje)}, {dataBR(hoje)}</p>
-          <h1 className="titulo-pagina">{saudacao()}, Isabela</h1>
+          <h1 className="titulo-pagina">{saudacao()}{usuario ? `, ${usuario.nome.split(" ")[0]}` : ""}</h1>
           <p className="mt-1 text-sm text-ink-2">
             {deHoje.length ? `Hoje tem ${deHoje.length} conteúdo${deHoje.length > 1 ? "s" : ""} programado${deHoje.length > 1 ? "s" : ""}.` : "Nenhum conteúdo programado para hoje."}
           </p>

@@ -284,14 +284,14 @@ export default function Metricas() {
           <>
             <button className="btn-ghost" onClick={() => { setRascunho(null); setAberto(null); }}>← Voltar</button>
             <button className="btn-ghost" onClick={() => exportarXlsx(exibido)}>Baixar planilha (.xlsx)</button>
-            {rascunho && <button className="btn-ghost" onClick={gerarAnaliseAutomatica} title="Escreve o resumo, o que melhorou e o que piorou a partir dos números">Análise automática</button>}
-            {rascunho && <button className="btn-primary" onClick={salvar} disabled={salvando}>{salvando ? "Salvando..." : "Salvar relatório"}</button>}
-            {aberto && !editando && <button className="btn-ghost" onClick={() => setEditando(true)}>Editar textos</button>}
-            {aberto && editando && <button className="btn-primary" onClick={salvarEdicao} disabled={salvando}>{salvando ? "Salvando..." : "Salvar alterações"}</button>}
-            {aberto && !editando && <button className="btn-ghost text-[#b42318]" onClick={() => excluir(aberto.id)}>Excluir</button>}
+            {rascunho && <button className="so-editor btn-ghost" onClick={gerarAnaliseAutomatica} title="Escreve o resumo, o que melhorou e o que piorou a partir dos números">Análise automática</button>}
+            {rascunho && <button className="so-editor btn-primary" onClick={salvar} disabled={salvando}>{salvando ? "Salvando..." : "Salvar relatório"}</button>}
+            {aberto && !editando && <button className="so-editor btn-ghost" onClick={() => setEditando(true)}>Editar textos</button>}
+            {aberto && editando && <button className="so-editor btn-primary" onClick={salvarEdicao} disabled={salvando}>{salvando ? "Salvando..." : "Salvar alterações"}</button>}
+            {aberto && !editando && <button className="so-editor btn-ghost text-[#b42318]" onClick={() => excluir(aberto.id)}>Excluir</button>}
           </>
         ) : (
-          <button className="btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Novo relatório"}</button>
+          <button className="so-editor btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Novo relatório"}</button>
         )}
       </header>
 
@@ -319,10 +319,10 @@ export default function Metricas() {
                     {copiado ? "Copiado!" : "Copiar link"}
                   </button>
                   <a className="btn-ghost" href={linkPublico} target="_blank" rel="noreferrer">Abrir</a>
-                  <button className="text-xs text-ink-2 hover:text-[#b42318]" onClick={despublicar}>Desativar link</button>
+                  <button className="so-editor text-xs text-ink-2 hover:text-[#b42318]" onClick={despublicar}>Desativar link</button>
                 </>
               ) : (
-                <button className="btn-primary" onClick={publicar}>Gerar link para o cliente</button>
+                <button className="so-editor btn-primary" onClick={publicar}>Gerar link para o cliente</button>
               )}
               <a className="btn-ghost" href={`/api/metricas/${aberto.id}?formato=html`}>Baixar HTML</a>
             </section>

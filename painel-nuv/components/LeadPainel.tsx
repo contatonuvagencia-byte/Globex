@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { pedidoLeadParaClaude } from "@/lib/prompts-leads";
+import { useUsuario } from "./Usuario";
 import { ORDEM_STATUS, ROT_IG, ROT_INTERACAO, ROT_NICHO, ROT_PORTE, ROT_SITE, ROT_STATUS, linkWhatsapp, preencherModelo } from "@/lib/leads-rotulos";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -42,6 +43,7 @@ function Campo({ rotulo, valor, onSalvar, tipo = "text", opcoes, area }: {
 }
 
 export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () => void; onMudou: () => void }) {
+  const editavel = useUsuario().podeEditar("leads");
   const [lead, setLead] = useState<Lead | null>(null);
   const [interacoes, setInteracoes] = useState<Interacao[]>([]);
   const [modelos, setModelos] = useState<Modelo[]>([]);
@@ -139,7 +141,7 @@ export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () =
                 <button onClick={onClose} className="rounded-lg p-1 text-xl leading-none text-ink-2 hover:bg-surface-2" aria-label="Fechar">×</button>
               </div>
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <select className="input w-auto py-1 text-sm font-medium" value={lead.status} onChange={(e) => salvar("status")(e.target.value)} aria-label="Status">
+                <select disabled={!editavel} className="input w-auto py-1 text-sm font-medium" value={lead.status} onChange={(e) => salvar("status")(e.target.value)} aria-label="Status">
                   {ORDEM_STATUS.map((s) => <option key={s} value={s}>{ROT_STATUS[s]}</option>)}
                 </select>
                 <label className="flex items-center gap-1.5 text-xs text-ink-2">
@@ -238,7 +240,7 @@ export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () =
                       <a className="btn-ghost" href={wa} target="_blank" rel="noreferrer">Abrir no WhatsApp</a>
                     )}
                     <button
-                      className="btn-primary ml-auto"
+                      className="so-editor btn-primary ml-auto"
                       disabled={!texto}
                       onClick={async () => {
                         await executar({ acao: "interacao", tipo: canal, conteudo: texto, followupDias: 3 });
@@ -254,7 +256,7 @@ export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () =
               )}
 
               {aba === "ficha" && (
-                <div className="grid gap-3 sm:grid-cols-2">
+                <fieldset disabled={!editavel} className="grid gap-3 sm:grid-cols-2">
                   <Campo rotulo="Nome" valor={lead.name} onSalvar={salvar("name")} />
                   <Campo rotulo="Nicho" valor={lead.niche} onSalvar={salvar("niche")} opcoes={ROT_NICHO} />
                   <Campo rotulo="Categoria" valor={lead.category} onSalvar={salvar("category")} />
@@ -278,13 +280,13 @@ export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () =
                   <div className="sm:col-span-2"><Campo rotulo="Observações" valor={lead.notes} onSalvar={salvar("notes")} area /></div>
                   {lead.status === "perdido" && <div className="sm:col-span-2"><Campo rotulo="Motivo da perda" valor={lead.lost_reason} onSalvar={salvar("lost_reason")} /></div>}
                   <p className="text-xs text-ink-3 sm:col-span-2">Fonte: {lead.source ?? "–"}. A pontuação é recalculada sozinha quando site, Instagram, porte ou avaliações mudam.</p>
-                </div>
+                </fieldset>
               )}
 
               {aba === "historico" && (
                 <>
                   <form
-                    className="flex gap-2"
+                    className="so-editor flex gap-2"
                     onSubmit={async (e) => {
                       e.preventDefault();
                       await executar({ acao: "interacao", tipo: "nota", conteudo: nota });

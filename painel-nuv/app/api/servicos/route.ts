@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { ServicoIn, excluirServico, listarServicos, marcarParcela, salvarServico } from "@/lib/servicos";
+import { exigir, negado } from "@/lib/usuarios";
 
 export async function GET() {
+  const eu = await exigir("servicos", "ver");
+  if (negado(eu)) return eu;
   try {
     return NextResponse.json(await listarServicos());
   } catch (e) {
@@ -19,6 +22,8 @@ const Acao = z.discriminatedUnion("acao", [
 ]);
 
 export async function POST(req: Request) {
+  const eu = await exigir("servicos", "editar");
+  if (negado(eu)) return eu;
   const corpo = Acao.safeParse(await req.json().catch(() => null));
   if (!corpo.success) return NextResponse.json({ erro: "Dados inválidos", detalhes: corpo.error.issues }, { status: 400 });
   try {

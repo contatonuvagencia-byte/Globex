@@ -1,4 +1,5 @@
 "use client";
+import { useUsuario } from "@/components/Usuario";
 import { useCallback, useEffect, useState } from "react";
 import { GraficoMeses } from "@/components/GraficoMeses";
 import { brl, dataBR, hojeISO, rotuloMes, somaMes } from "@/lib/format";
@@ -37,6 +38,7 @@ function Tile({ rotulo, valor, detalhe, destaque, fundo }: { rotulo: string; val
 }
 
 export default function Financeiro() {
+  const editavel = useUsuario().podeEditar("financeiro");
   const [mes, setMes] = useState(hojeISO().slice(0, 7));
   const [d, setD] = useState<Dados | null>(null);
   const [erro, setErro] = useState("");
@@ -179,7 +181,7 @@ export default function Financeiro() {
                     {{ todos: "Todos", entrada: "Entradas", saida: "Saídas", pendentes: "Pendentes" }[f]}
                   </button>
                 ))}
-                <div className="ml-auto flex gap-2">
+                <div className="so-editor ml-auto flex gap-2">
                   <button className="btn-ghost" onClick={() => setForm("entrada")}>+ Entrada</button>
                   <button className="btn-ghost" onClick={() => setForm("saida")}>+ Saída</button>
                 </div>
@@ -231,10 +233,10 @@ export default function Financeiro() {
                             <span className="text-ink-2">{l.tipo === "entrada" ? "+" : "−"} </span>{brl(l.valor)}
                           </td>
                           <td className="px-3 py-2 text-center">
-                            <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={l.pago} onChange={(e) => executar({ acao: "editar_lancamento", id: l.id, dados: { pago: e.target.checked } })} aria-label="Pago" />
+                            <input type="checkbox" disabled={!editavel} className="h-4 w-4 accent-[#1f3fd1]" checked={l.pago} onChange={(e) => executar({ acao: "editar_lancamento", id: l.id, dados: { pago: e.target.checked } })} aria-label="Pago" />
                           </td>
                           <td className="px-4 py-2 text-right">
-                            <button className="text-xs text-ink-3 hover:text-[#b42318]" onClick={() => confirm(`Excluir "${l.descricao}"?`) && executar({ acao: "excluir_lancamento", id: l.id })}>Excluir</button>
+                            <button className="so-editor text-xs text-ink-3 hover:text-[#b42318]" onClick={() => confirm(`Excluir "${l.descricao}"?`) && executar({ acao: "excluir_lancamento", id: l.id })}>Excluir</button>
                           </td>
                         </tr>
                       );
@@ -244,7 +246,7 @@ export default function Financeiro() {
               </div>
             </section>
           ) : (
-            <Configuracoes d={d} mes={mes} executar={executar} />
+            <fieldset disabled={!editavel}><Configuracoes d={d} mes={mes} executar={executar} /></fieldset>
           )}
         </>
       )}

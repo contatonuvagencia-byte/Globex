@@ -123,7 +123,7 @@ export function PostModal({
                 {c.feito ? "☑" : "☐"} {c.nome}
               </span>
             ))}
-            <label className="ml-auto flex items-center gap-1.5 text-ink-2">
+            <label className="so-editor ml-auto flex items-center gap-1.5 text-ink-2">
               Mudar data
               <input
                 type="date"
@@ -138,7 +138,7 @@ export function PostModal({
             <button
               onClick={alternarPostado}
               disabled={salvando}
-              className={`${post.postado ? "btn-ghost" : "btn-primary"} px-3 py-1.5 text-xs`}
+              className={`so-editor ${post.postado ? "btn-ghost" : "btn-primary"} px-3 py-1.5 text-xs`}
             >
               {salvando ? "Salvando no Notion..." : post.postado ? "✓ Postado · desfazer" : "Marcar como postado"}
             </button>

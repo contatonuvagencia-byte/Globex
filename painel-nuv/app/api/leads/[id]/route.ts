@@ -2,12 +2,15 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { INTERACOES, LeadIn, atualizarLead, detalharLead, excluirInteracao, gerarMensagem, registrarInteracao } from "@/lib/leads";
+import { exigir, negado } from "@/lib/usuarios";
 
 export const maxDuration = 60;
 
 const uuid = z.string().uuid();
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
+  const eu = await exigir("leads", "ver");
+  if (negado(eu)) return eu;
   if (!uuid.safeParse(params.id).success) return NextResponse.json({ erro: "ID inválido" }, { status: 400 });
   try {
     return NextResponse.json(await detalharLead(params.id));
@@ -34,6 +37,8 @@ const Acao = z.discriminatedUnion("acao", [
 ]);
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
+  const eu = await exigir("leads", "editar");
+  if (negado(eu)) return eu;
   const corpo = Acao.safeParse(await req.json().catch(() => null));
   if (!uuid.safeParse(params.id).success || !corpo.success) return NextResponse.json({ erro: "Dados inválidos" }, { status: 400 });
   const a = corpo.data;

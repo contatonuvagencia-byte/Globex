@@ -74,7 +74,7 @@ export default function Leads() {
           <p className="text-sm text-ink-2">Prospecção</p>
           <h1 className="titulo-pagina">Leads</h1>
         </div>
-        <button className="btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Novo lead"}</button>
+        <button className="so-editor btn-primary" onClick={() => setNovo((v) => !v)}>{novo ? "Cancelar" : "+ Novo lead"}</button>
       </header>
 
       <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { RelatorioSchema } from "@/lib/metricas";
 import { db } from "@/lib/supabase";
+import { exigir, negado } from "@/lib/usuarios";
+import { veCliente } from "@/lib/permissoes";
 
 const Salvar = z.object({
   cliente: z.string().trim().min(1).max(80),
@@ -13,6 +15,8 @@ const Salvar = z.object({
 });
 
 export async function GET(req: Request) {
+  const eu = await exigir("metricas", "ver");
+  if (negado(eu)) return eu;
   const cliente = new URL(req.url).searchParams.get("cliente");
   try {
     let q = db()
@@ -23,16 +27,19 @@ export async function GET(req: Request) {
     if (cliente) q = q.eq("cliente", cliente);
     const { data, error } = await q;
     if (error) throw new Error(error.message);
-    return NextResponse.json({ relatorios: data });
+    return NextResponse.json({ relatorios: (data ?? []).filter((r) => veCliente(eu, r.cliente)) });
   } catch (e) {
     return NextResponse.json({ erro: (e as Error).message }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
+  const eu = await exigir("metricas", "editar");
+  if (negado(eu)) return eu;
   const corpo = Salvar.safeParse(await req.json().catch(() => null));
   if (!corpo.success) return NextResponse.json({ erro: "Dados inválidos", detalhes: corpo.error.issues }, { status: 400 });
   const { relatorio, ...resto } = corpo.data;
+  if (!veCliente(eu, resto.cliente)) return NextResponse.json({ erro: "Seu perfil não tem acesso a este cliente." }, { status: 403 });
   try {
     const { data, error } = await db()
       .from("metricas_relatorios")

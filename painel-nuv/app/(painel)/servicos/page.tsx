@@ -1,4 +1,5 @@
 "use client";
+import { useUsuario } from "@/components/Usuario";
 import { AlertTriangle, CalendarClock, ExternalLink, Plus, Trash2, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { brl, dataBR, hojeISO } from "@/lib/format";
@@ -86,7 +87,7 @@ export default function Servicos() {
           <h1 className="titulo-pagina">Serviços freela</h1>
           <p className="mt-1 text-sm text-ink-2">Cada serviço entra sozinho no Financeiro, com as parcelas e o custo.</p>
         </div>
-        <button className="btn-primary" onClick={() => setEditando("novo")}><Plus size={16} /> Novo serviço</button>
+        <button className="so-editor btn-primary" onClick={() => setEditando("novo")}><Plus size={16} /> Novo serviço</button>
       </header>
 
       <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -186,6 +187,7 @@ function Formulario({ servico, tipoInicial, onFechar, onSalvo, onRecarregar }: {
   servico: Servico | null; tipoInicial: Tipo; onFechar: () => void; onSalvo: () => void; onRecarregar: () => Promise<void>;
 }) {
   const hoje = hojeISO();
+  const editavel = useUsuario().podeEditar("servicos");
   const [f, setF] = useState({
     tipo: servico?.tipo ?? tipoInicial,
     titulo: servico?.titulo ?? "",
@@ -277,7 +279,7 @@ function Formulario({ servico, tipoInicial, onFechar, onSalvo, onRecarregar }: {
           <button type="button" onClick={onFechar} className="grid h-9 w-9 place-items-center rounded-full bg-white/10 hover:bg-white/20" aria-label="Fechar"><X size={16} /></button>
         </header>
 
-        <div className="flex-1 space-y-4 overflow-y-auto p-6">
+        <fieldset disabled={!editavel} className="flex-1 space-y-4 overflow-y-auto p-6">
           {erro && <p className="rounded-2xl bg-[#fdecea] px-4 py-3 text-sm text-[#a1261f]">{erro}</p>}
 
           <div>
@@ -364,9 +366,9 @@ function Formulario({ servico, tipoInicial, onFechar, onSalvo, onRecarregar }: {
           {f.link && /^https?:\/\//.test(f.link) && (
             <a href={f.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-semibold text-azul">Abrir link <ExternalLink size={13} /></a>
           )}
-        </div>
+        </fieldset>
 
-        <footer className="flex items-center gap-2 border-t border-black/5 bg-white px-6 py-4">
+        <footer className="so-editor flex items-center gap-2 border-t border-black/5 bg-white px-6 py-4">
           {servico && (
             <button type="button" onClick={excluir} className="btn-ghost text-[#b42318]"><Trash2 size={15} /> Excluir</button>
           )}
