@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Post Autonomia</title>
+<!-- Post 1080x1350 (4:5), identidade do site BEAWST: branco, preto, laranja, Inter. Gerar: node render.mjs -->
+<style>
+@font-face{font-family:I;font-weight:500;src:url(assets/Inter-Medium.otf)}
+@font-face{font-family:I;font-weight:600;src:url(assets/Inter-SemiBold.otf)}
+@font-face{font-family:I;font-weight:800;src:url(assets/Inter-ExtraBold.otf)}
+@font-face{font-family:I;font-weight:900;src:url(assets/Inter-Black.otf)}
+:root{--laranja:#C24A0B;--laranja2:#F06B21;--pessego:#FFDBCB;--tinta:#141110}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:#fff}
+body{font-family:I,sans-serif;color:var(--tinta);-webkit-font-smoothing:antialiased;position:relative}
+.top{position:absolute;left:96px;right:96px;top:90px;display:flex;justify-content:space-between;align-items:center}
+.top img{height:84px}
+.top span{font-weight:600;font-size:24px;letter-spacing:.18em;color:#9a918c}
+.kicker{position:absolute;left:96px;top:330px;display:flex;align-items:center;gap:22px;font-weight:800;font-size:28px;letter-spacing:.2em;color:var(--laranja)}
+.kicker:before{content:"";width:56px;height:4px;background:var(--laranja2);border-radius:2px}
+h1{position:absolute;left:96px;right:96px;top:400px;font-weight:900;font-size:100px;line-height:1.04;letter-spacing:-.045em;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--laranja2)}
+h1 s{text-decoration:none;position:relative;white-space:nowrap}
+h1 s:after{content:"";position:absolute;left:-6px;right:-6px;top:41%;height:10px;background:var(--laranja2);border-radius:6px;transform:rotate(-2deg)}
+p{position:absolute;left:96px;width:780px;top:880px;font-weight:500;font-size:38px;line-height:1.38;color:#5b5450}
+.btn{position:absolute;left:96px;top:1100px;display:inline-flex;align-items:center;gap:22px;background:var(--tinta);color:#fff;font-weight:800;font-size:30px;letter-spacing:.12em;padding:30px 44px;border-radius:999px}
+.btn i{font-style:normal;display:inline-flex;width:46px;height:46px;border-radius:50%;background:var(--laranja2);align-items:center;justify-content:center;font-size:26px;letter-spacing:0}
+.foot{position:absolute;right:96px;top:1132px;font-weight:600;font-size:24px;color:#9a918c}
+.dot{position:absolute;right:96px;top:340px;width:150px;height:150px;border-radius:50%;background:var(--pessego)}
+</style></head><body>
+  <div class="top"><img src="assets/logo-laranja.png"><span>BE A WORLD STUDENT</span></div>
+    <div class="kicker">AUTONOMIA E PROVA</div>
+  <h1>Você não precisa<br>receber um<br><s>pacote pronto</s></h1>
+  <p>A gente ajuda a entender cenários, comparar alternativas e conversar direto com a instituição.</p>
+  <div class="btn">COMENTE <span style="color:var(--laranja2)">AUTONOMIA</span> <i>→</i></div>
+</body></html>
