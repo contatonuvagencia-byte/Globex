@@ -42,12 +42,21 @@ export function PostModal({
   const [salvando, setSalvando] = useState(false);
 
   async function alternarPostado() {
+    await atualizar({ postado: !post.postado });
+  }
+
+  async function mudarDia(novaData: string) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(novaData) || novaData === post.data) return;
+    await atualizar({ data: novaData });
+  }
+
+  async function atualizar(mudanca: { postado: boolean } | { data: string }) {
     setSalvando(true);
     setErro("");
     try {
       const r = await fetch(`/api/posts/${post.id}`, {
         method: "PATCH",
-        body: JSON.stringify({ cliente: post.cliente, postado: !post.postado }),
+        body: JSON.stringify({ cliente: post.cliente, ...mudanca }),
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j.erro ?? "Não consegui atualizar o Notion");
@@ -114,10 +123,22 @@ export function PostModal({
                 {c.feito ? "☑" : "☐"} {c.nome}
               </span>
             ))}
+            <label className="ml-auto flex items-center gap-1.5 text-ink-2">
+              Mudar data
+              <input
+                type="date"
+                className="input w-auto py-1 text-xs"
+                defaultValue={post.data}
+                key={post.data}
+                disabled={salvando}
+                onChange={(e) => mudarDia(e.target.value)}
+                aria-label="Mudar a data do post"
+              />
+            </label>
             <button
               onClick={alternarPostado}
               disabled={salvando}
-              className={`ml-auto ${post.postado ? "btn-ghost" : "btn-primary"} px-3 py-1.5 text-xs`}
+              className={`${post.postado ? "btn-ghost" : "btn-primary"} px-3 py-1.5 text-xs`}
             >
               {salvando ? "Salvando no Notion..." : post.postado ? "✓ Postado · desfazer" : "Marcar como postado"}
             </button>

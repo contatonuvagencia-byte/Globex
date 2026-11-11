@@ -378,3 +378,59 @@ export async function marcarPostado(calId: string, pageId: string, postado: bool
   if (!post) throw new Error("Post sem data");
   return post;
 }
+
+/* ---------- Mudar a data (arrastar no calendário) ---------- */
+
+const MESES_PT = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+function diasEntre(de: string, ate: string) {
+  return Math.round((Date.parse(`${ate}T12:00:00Z`) - Date.parse(`${de}T12:00:00Z`)) / 86_400_000);
+}
+
+/**
+ * Leva o post para outro dia no Notion, mantendo o horário (se houver) e,
+ * quando o post tem data de término, mantendo a duração.
+ * Se o banco tem o campo "Mês e ano" (template Gestão de Mídias), ele é atualizado junto.
+ */
+export async function mudarData(calId: string, pageId: string, novaData: string): Promise<Post> {
+  const cal = await calendarioOuErro(calId);
+  const page = await notion(`/pages/${pageId}`);
+  const prop = page.properties?.[cal.campos.data];
+  const atual = propData(prop);
+  if (!atual) throw new Error("Esse post não tem data no Notion.");
+  if (atual.data === novaData) {
+    const p = paginaParaPost(cal, page);
+    if (!p) throw new Error("Post sem data");
+    return p;
+  }
+
+  // Brasil não tem horário de verão desde 2019: -03:00 fixo
+  const inicio = atual.hora ? `${novaData}T${atual.hora}:00.000-03:00` : novaData;
+  let fim: string | null = null;
+  const fimOriginal = propData({ date: { start: prop?.date?.end } });
+  if (prop?.date?.end && fimOriginal) {
+    const d = new Date(`${fimOriginal.data}T12:00:00Z`);
+    d.setUTCDate(d.getUTCDate() + diasEntre(atual.data, novaData));
+    const dia = d.toISOString().slice(0, 10);
+    fim = fimOriginal.hora ? `${dia}T${fimOriginal.hora}:00.000-03:00` : dia;
+  }
+
+  const props: Record<string, unknown> = { [cal.campos.data]: { date: { start: inicio, end: fim } } };
+  const campoMes = Object.keys(page.properties ?? {}).find(
+    (n) => /^m[eê]s/i.test(n) && page.properties[n].type === "select",
+  );
+  if (campoMes) props[campoMes] = { select: { name: MESES_PT[Number(novaData.slice(5, 7)) - 1] } };
+
+  let atualizado;
+  try {
+    atualizado = await notion(`/pages/${pageId}`, { method: "PATCH", body: { properties: props } });
+  } catch (e) {
+    // se o "Mês e ano" der problema, muda só a data
+    if (!campoMes) throw e;
+    delete props[campoMes];
+    atualizado = await notion(`/pages/${pageId}`, { method: "PATCH", body: { properties: props } });
+  }
+  const post = paginaParaPost(cal, atualizado);
+  if (!post) throw new Error("Post sem data");
+  return post;
+}

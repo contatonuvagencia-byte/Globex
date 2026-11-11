@@ -24,6 +24,8 @@ export default function Calendario() {
   const [aviso, setAviso] = useState("");
   const [versao, setVersao] = useState(0);
   const fechar = useCallback(() => setAberto(null), []);
+  const [arrastando, setArrastando] = useState<string | null>(null);
+  const [alvo, setAlvo] = useState<string | null>(null);
 
   const grade = useMemo(() => gradeDoMes(mes), [mes]);
 
@@ -98,6 +100,27 @@ export default function Calendario() {
     setAberto(p);
   }
 
+  /** Leva o post para outro dia: muda na tela na hora e grava no Notion; se der erro, volta. */
+  async function moverPost(id: string, novaData: string) {
+    const post = posts.find((p) => p.id === id);
+    if (!post || post.data === novaData) return;
+    setPosts((lista) => lista.map((x) => (x.id === id ? { ...x, data: novaData } : x)));
+    setAviso("");
+    try {
+      const r = await fetch(`/api/posts/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ cliente: post.cliente, data: novaData }),
+      });
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.erro ?? "Não consegui mudar a data no Notion");
+      setPosts((lista) => lista.map((x) => (x.id === id ? j : x)));
+      setAviso(`“${post.titulo}” foi para ${dataBR(novaData)}. Já está atualizado no Notion.`);
+    } catch (e) {
+      setPosts((lista) => lista.map((x) => (x.id === id ? post : x)));
+      setErros([{ cliente: grupoDe(post.cliente)?.nome ?? "Notion", mensagem: (e as Error).message }]);
+    }
+  }
+
   return (
     <div className="mx-auto max-w-7xl">
       <header className="mb-5 flex flex-wrap items-end gap-3">
@@ -167,11 +190,28 @@ export default function Calendario() {
               const selecionado = d === dia;
               const gruposDoDia = grupos.filter((g) => lista.some((p) => g.ids.includes(p.cliente)));
               return (
-                <button
+                <div
                   key={d}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setDia(d)}
-                  className={`relative min-h-[64px] border-b border-r border-black/5 p-1.5 text-left align-top transition sm:min-h-[104px] sm:p-2 ${
-                    selecionado ? "bg-nuv-soft" : "hover:bg-surface"
+                  onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setDia(d)}
+                  onDragOver={(e) => {
+                    if (!e.dataTransfer.types.includes("text/plain")) return;
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = "move";
+                    if (alvo !== d) setAlvo(d);
+                  }}
+                  onDragLeave={() => alvo === d && setAlvo(null)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const id = e.dataTransfer.getData("text/plain") || arrastando;
+                    setAlvo(null);
+                    setArrastando(null);
+                    if (id) moverPost(id, d);
+                  }}
+                  className={`relative min-h-[64px] cursor-pointer border-b border-r border-black/5 p-1.5 text-left align-top transition sm:min-h-[112px] sm:p-2 ${
+                    alvo === d ? "bg-nuv-soft ring-2 ring-inset ring-nuv" : selecionado ? "bg-nuv-soft" : "hover:bg-surface"
                   } ${foraDoMes ? "text-ink-3" : ""}`}
                   aria-label={`${dataBR(d)}: ${lista.length} posts`}
                 >
@@ -183,22 +223,42 @@ export default function Calendario() {
                       <span key={g.nome} className="h-2 w-2 rounded-full" style={{ background: g.cor }} />
                     ))}
                   </div>
+                  {/* no computador cada post vira uma etiqueta que pode ser arrastada para outro dia */}
                   <div className="mt-1 hidden space-y-1 sm:block">
-                    {gruposDoDia.map((g) => {
-                      const doGrupo = lista.filter((p) => g.ids.includes(p.cliente));
-                      const todosPostados = doGrupo.every((p) => p.postado);
+                    {lista.slice(0, 3).map((p) => {
+                      const g = grupoDe(p.cliente);
                       return (
-                        <div key={g.nome} className="flex items-center gap-1.5 truncate rounded-md bg-white px-1.5 py-0.5 text-[11px] font-medium text-ink shadow-[0_0_0_1px_rgba(0,0,0,0.05)]">
-                          <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: g.cor }} />
-                          <span className="truncate">{g.nome}</span>
-                          <span className="tabular ml-auto text-ink-2">
-                            {todosPostados ? "✓" : doGrupo.length > 1 ? doGrupo.length : ""}
-                          </span>
+                        <div
+                          key={p.id}
+                          draggable
+                          onDragStart={(e) => {
+                            e.dataTransfer.setData("text/plain", p.id);
+                            e.dataTransfer.effectAllowed = "move";
+                            setArrastando(p.id);
+                          }}
+                          onDragEnd={() => {
+                            setArrastando(null);
+                            setAlvo(null);
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDia(d);
+                            setAberto(p);
+                          }}
+                          title={`${g?.nome}: ${p.titulo} (arraste para mudar o dia)`}
+                          className={`flex cursor-grab items-center gap-1.5 rounded-md bg-white px-1.5 py-0.5 text-[11px] font-medium text-ink shadow-[0_0_0_1px_rgba(0,0,0,0.05)] active:cursor-grabbing ${
+                            arrastando === p.id ? "opacity-40" : ""
+                          }`}
+                        >
+                          <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: g?.cor }} />
+                          <span className="truncate">{p.titulo}</span>
+                          {p.postado && <span className="ml-auto shrink-0 text-ink-2">✓</span>}
                         </div>
                       );
                     })}
+                    {lista.length > 3 && <p className="px-1 text-[11px] text-ink-2">+{lista.length - 3} mais</p>}
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
@@ -250,7 +310,14 @@ export default function Calendario() {
 
 function CartaoPost({ post, grupo, onClick, mostrarData }: { post: Post; grupo?: Grupo; onClick: () => void; mostrarData?: boolean }) {
   return (
-    <button onClick={onClick} className="w-full rounded-xl border border-black/5 bg-surface p-3 text-left transition hover:border-nuv/40 hover:bg-white">
+    <button
+      onClick={onClick}
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData("text/plain", post.id);
+        e.dataTransfer.effectAllowed = "move";
+      }}
+      className="w-full rounded-xl border border-black/5 bg-surface p-3 text-left transition hover:border-nuv/40 hover:bg-white">
       <div className="flex items-center gap-2 text-xs text-ink-2">
         <span className="h-2.5 w-2.5 rounded-full" style={{ background: grupo?.cor }} />
         <span className="font-medium text-ink">{grupo?.nome}</span>
