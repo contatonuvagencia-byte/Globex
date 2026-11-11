@@ -6,7 +6,7 @@ import { ORDEM_STATUS, ROT_IG, ROT_NICHO, ROT_SITE, ROT_STATUS, type LeadResumo 
 
 const ABERTOS = ["novo", "contatado", "respondeu", "reuniao", "proposta"];
 const COR_COLUNA: Record<string, string> = {
-  novo: "#d9d1f7", contatado: "#f5dc5a", respondeu: "#f4cbe9", reuniao: "#d8f26a", proposta: "#bcd3f5", fechado: "#121212", perdido: "#e9e4d8",
+  novo: "#dfe6ff", contatado: "#c7d3ff", respondeu: "#a8b9ff", reuniao: "#7d95ff", proposta: "#1f3fd1", fechado: "#121212", perdido: "#e6e6e6",
 };
 
 export default function Leads() {
@@ -143,7 +143,7 @@ export default function Leads() {
             return (
               <section key={s} className="w-64 shrink-0">
                 <h2
-                  className={`mb-2 flex items-center gap-2 rounded-full px-3.5 py-2 text-sm font-bold ${s === "fechado" ? "text-white" : "text-ink"}`}
+                  className={`mb-2 flex items-center gap-2 rounded-full px-3.5 py-2 text-sm font-bold ${s === "fechado" || s === "proposta" ? "text-white" : "text-ink"}`}
                   style={{ background: COR_COLUNA[s] }}
                 >
                   {ROT_STATUS[s]} <span className="tabular ml-auto rounded-full bg-white/70 px-2 text-xs text-ink">{coluna.length}</span>

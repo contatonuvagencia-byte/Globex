@@ -190,7 +190,8 @@ export async function descobrir(): Promise<Descoberta> {
     resultado.analisados += lote.length;
     lote.forEach((c, j) => {
       const cliente = clientes[j];
-      if (cliente?.ativo) achados.push({ id: c.id, titulo: c.titulo, campos: c.campos!, cliente });
+      // páginas de modelo dentro de CLIENTES (ex.: "TEMPLATE ÁREA DO CLIENTE") não são clientes
+      if (cliente?.ativo && !/template|modelo/i.test(cliente.nome)) achados.push({ id: c.id, titulo: c.titulo, campos: c.campos!, cliente });
     });
   }
   resultado.incompleto = resultado.analisados < fila.length;

@@ -4,9 +4,9 @@ import { MESES, brl } from "@/lib/format";
 
 type Linha = { mes: string; entradas: number; saidas: number; lucro: number };
 
-// cores categóricas 1 e 2 da paleta validada (azul / laranja)
-const COR_ENTRADA = "#2a78d6";
-const COR_SAIDA = "#eb6834";
+// azul da NUV para entradas, preto para saídas
+const COR_ENTRADA = "#1f3fd1";
+const COR_SAIDA = "#121212";
 
 function arredondaEscala(v: number) {
   if (v <= 0) return 1000;

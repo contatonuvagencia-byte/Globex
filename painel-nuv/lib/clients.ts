@@ -31,7 +31,7 @@ export type Calendario = {
 export type CalendarioPublico = Pick<Calendario, "id" | "nome" | "cor">;
 
 /**
- * Paleta categórica validada para daltonismo, em ordem fixa.
+ * Cores da NUV (azuis, cinzas e preto), em ordem fixa. O nome do cliente sempre aparece junto da cor.
  * Clientes novos recebem a próxima cor livre.
  */
-export const PALETA = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"];
+export const PALETA = ["#1f3fd1", "#121212", "#7d95ff", "#8a8f98", "#0b1f7a", "#b4c3ff", "#4a4a4a", "#3b5bfd"];

@@ -151,7 +151,7 @@ export default function Calendarios() {
               />
               <span className="chip bg-surface-2 text-ink-2">{c.origem === "auto" ? "encontrado sozinho" : "manual"}</span>
               <label className="ml-auto flex items-center gap-2 text-sm">
-                <input type="checkbox" className="h-4 w-4 accent-[#6250d6]" checked={c.ativo} onChange={(e) => atualizar(c.id, { ativo: e.target.checked })} />
+                <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={c.ativo} onChange={(e) => atualizar(c.id, { ativo: e.target.checked })} />
                 Mostrar no calendário
               </label>
             </div>

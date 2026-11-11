@@ -1,7 +1,7 @@
 const ESTILOS: Record<string, { cls: string; icone: string }> = {
   Publicado: { cls: "bg-ink text-white", icone: "✓" },
-  Aprovado: { cls: "bg-lima text-ink", icone: "●" },
-  "Aguardando aprovação": { cls: "bg-amarelo text-ink", icone: "◐" },
+  Aprovado: { cls: "bg-azul text-white", icone: "●" },
+  "Aguardando aprovação": { cls: "bg-azul-claro text-azul-escuro", icone: "◐" },
   "Em produção": { cls: "bg-white/80 text-ink", icone: "◐" },
   "Em Produção": { cls: "bg-white/80 text-ink", icone: "◐" },
 };

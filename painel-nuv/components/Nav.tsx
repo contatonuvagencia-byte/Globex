@@ -33,7 +33,7 @@ export function Nav() {
       {/* celular: barra escura no topo */}
       <header className="sticky top-0 z-30 bg-ink px-4 pb-3 pt-3 text-white md:hidden">
         <div className="flex items-center gap-2">
-          <span className="text-lg font-extrabold tracking-tight">nuv<span className="text-lima">.</span></span>
+          <span className="text-lg font-extrabold tracking-tight">nuv<span className="text-azul-medio">.</span></span>
           <span className="text-xs text-white/50">painel</span>
           <button onClick={sair} className="ml-auto text-xs text-white/60" aria-label="Sair">Sair</button>
         </div>
@@ -49,7 +49,7 @@ export function Nav() {
       {/* computador: painel escuro flutuante */}
       <aside className="sticky top-3 m-3 hidden h-[calc(100vh-24px)] w-60 shrink-0 flex-col rounded-[28px] bg-ink p-4 text-white md:flex">
         <div className="flex items-center gap-2 px-2 pb-6 pt-2">
-          <span className="text-2xl font-extrabold tracking-tight">nuv<span className="text-lima">.</span></span>
+          <span className="text-2xl font-extrabold tracking-tight">nuv<span className="text-azul-medio">.</span></span>
           <span className="mt-1 rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/60">painel</span>
         </div>
         <nav className="flex-1 space-y-6 overflow-y-auto">
@@ -65,7 +65,7 @@ export function Nav() {
                         ativo(href) ? "bg-white text-ink" : "text-white/70 hover:bg-white/10 hover:text-white"
                       }`}
                     >
-                      <span className={`grid h-7 w-7 place-items-center rounded-xl ${ativo(href) ? "bg-lima" : "bg-white/10"}`}>
+                      <span className={`grid h-7 w-7 place-items-center rounded-xl ${ativo(href) ? "bg-azul text-white" : "bg-white/10"}`}>
                         <Icone size={15} strokeWidth={2.2} />
                       </span>
                       {rotulo}

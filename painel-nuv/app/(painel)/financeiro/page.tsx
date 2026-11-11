@@ -152,7 +152,7 @@ export default function Financeiro() {
                           <span className="tabular">{brl(c.receita)}</span>
                         </div>
                         <div className="mt-1 h-1.5 rounded-full bg-surface-2">
-                          <div className="h-1.5 rounded-full bg-[#2a78d6]" style={{ width: `${(c.receita / maxR) * 100}%` }} />
+                          <div className="h-1.5 rounded-full bg-azul" style={{ width: `${(c.receita / maxR) * 100}%` }} />
                         </div>
                         {c.custo > 0 && <p className="mt-0.5 text-xs text-ink-2">Custos ligados: {brl(c.custo)} · sobra {brl(c.receita - c.custo)}</p>}
                       </li>
@@ -231,7 +231,7 @@ export default function Financeiro() {
                             <span className="text-ink-2">{l.tipo === "entrada" ? "+" : "−"} </span>{brl(l.valor)}
                           </td>
                           <td className="px-3 py-2 text-center">
-                            <input type="checkbox" className="h-4 w-4 accent-[#6250d6]" checked={l.pago} onChange={(e) => executar({ acao: "editar_lancamento", id: l.id, dados: { pago: e.target.checked } })} aria-label="Pago" />
+                            <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={l.pago} onChange={(e) => executar({ acao: "editar_lancamento", id: l.id, dados: { pago: e.target.checked } })} aria-label="Pago" />
                           </td>
                           <td className="px-4 py-2 text-right">
                             <button className="text-xs text-ink-3 hover:text-[#b42318]" onClick={() => confirm(`Excluir "${l.descricao}"?`) && executar({ acao: "excluir_lancamento", id: l.id })}>Excluir</button>
@@ -301,7 +301,7 @@ function FormLancamento({ tipo, mes, clientes, categorias, onCancelar, onSalvar 
         </select>
       </div>
       <label className="flex items-center gap-2 self-end pb-2 text-sm">
-        <input type="checkbox" className="h-4 w-4 accent-[#6250d6]" checked={f.pago} onChange={(e) => set("pago", e.target.checked)} />
+        <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={f.pago} onChange={(e) => set("pago", e.target.checked)} />
         Já {tipo === "entrada" ? "recebido" : "pago"}
       </label>
       <div className="flex gap-2 self-end sm:col-span-4 sm:justify-end">
@@ -350,7 +350,7 @@ function Configuracoes({ d, mes, executar }: { d: Dados; mes: string; executar: 
                     onBlur={(e) => Number(e.target.value) !== c.dia_vencimento && executar({ acao: "salvar_cliente", dados: { ...c, dia_vencimento: Number(e.target.value) } })} />
                 </td>
                 <td className="px-3 py-2">
-                  <input type="checkbox" className="h-4 w-4 accent-[#6250d6]" checked={c.ativo} onChange={(e) => executar({ acao: "salvar_cliente", dados: { ...c, ativo: e.target.checked } })} aria-label={`${c.nome} ativo`} />
+                  <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={c.ativo} onChange={(e) => executar({ acao: "salvar_cliente", dados: { ...c, ativo: e.target.checked } })} aria-label={`${c.nome} ativo`} />
                 </td>
               </tr>
             ))}
@@ -377,7 +377,7 @@ function Configuracoes({ d, mes, executar }: { d: Dados; mes: string; executar: 
                 <td className="px-3 py-2 text-ink-2">{r.categoria}</td>
                 <td className="tabular px-3 py-2 text-right">{brl(r.valor)}</td>
                 <td className="tabular px-3 py-2">{r.dia}</td>
-                <td className="px-3 py-2"><input type="checkbox" className="h-4 w-4 accent-[#6250d6]" checked={r.ativo} onChange={(e) => executar({ acao: "salvar_recorrente", dados: { ...r, ativo: e.target.checked } })} aria-label={`${r.descricao} ativa`} /></td>
+                <td className="px-3 py-2"><input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={r.ativo} onChange={(e) => executar({ acao: "salvar_recorrente", dados: { ...r, ativo: e.target.checked } })} aria-label={`${r.descricao} ativa`} /></td>
                 <td className="px-3 py-2 text-right"><button className="text-xs text-ink-3 hover:text-[#b42318]" onClick={() => confirm(`Excluir "${r.descricao}"? Lançamentos já gerados continuam.`) && executar({ acao: "excluir_recorrente", id: r.id })}>Excluir</button></td>
               </tr>
             ))}

@@ -253,7 +253,7 @@ export default function Demandas() {
           {[...(d?.opcoes.clientes ?? []), SEM_CLIENTE].map((c) => <option key={c}>{c}</option>)}
         </select>
         <label className="flex items-center gap-2 text-sm text-ink-2">
-          <input type="checkbox" className="h-4 w-4 accent-[#6250d6]" checked={verConcluidas} onChange={(e) => setVerConcluidas(e.target.checked)} />
+          <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={verConcluidas} onChange={(e) => setVerConcluidas(e.target.checked)} />
           Mostrar concluídas (últimos 14 dias)
         </label>
         <div className="pill-tabs ml-auto">
@@ -456,7 +456,7 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
       <div className="flex items-start gap-2 p-2">
         <input
           type="checkbox"
-          className="mt-0.5 h-4 w-4 shrink-0 accent-[#6250d6]"
+          className="mt-0.5 h-4 w-4 shrink-0 accent-[#1f3fd1]"
           checked={x.concluida}
           onChange={(e) => onAtualizar(x, { concluida: e.target.checked })}
           aria-label={`Concluir ${x.titulo}`}
