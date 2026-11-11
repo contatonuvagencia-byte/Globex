@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Globex Cargo — Dia Internacional do Despachante Aduaneiro</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  /* Paleta oficial Globex (Notion › GLOBEX › Identidade Visual & Moodboards) */
+  :root{ --preto:#131313; --verde:#2e402b; --oliva:#52573e; --areia:#d9c9ba; --gelo:#e7e7e6; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1080px;height:1350px;overflow:hidden;background:var(--preto)}
+  #post{position:relative;width:1080px;height:1350px;overflow:hidden;background:var(--preto);
+    font-family:'Montserrat',sans-serif;color:var(--gelo)}
+  .glow{position:absolute;right:-160px;top:-60px;width:980px;height:980px;border-radius:50%;
+    background:radial-gradient(circle, rgba(46,64,43,.85) 0%, rgba(46,64,43,0) 68%)}
+
+  /* carimbo */
+  .stamp{position:absolute;right:80px;top:110px;width:420px;height:420px;transform:rotate(-14deg)}
+  .stamp circle{fill:none;stroke:var(--oliva)}
+  .stamp text{font-family:'Montserrat',sans-serif;font-weight:600;font-size:27px;letter-spacing:.32em;fill:var(--areia)}
+  .stamp .shield{fill:none;stroke:var(--areia);stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+
+  .pad{position:absolute;left:96px;right:96px}
+  .tag{top:110px;display:flex;align-items:center;gap:22px;font-weight:600;font-size:28px;letter-spacing:.26em;text-transform:uppercase;color:var(--areia)}
+  .tag i{display:block;height:7px;width:72px;background:var(--oliva)}
+
+  .head{bottom:220px;font-family:'Poppins',sans-serif;font-weight:800;font-size:84px;line-height:1.08;letter-spacing:-.015em}
+  .head em{font-style:normal;color:var(--areia)}
+  .bar{height:12px;width:420px;background:linear-gradient(90deg,var(--verde),var(--oliva));margin-top:48px}
+  .sub{margin-top:40px;font-size:33px;font-weight:500;line-height:1.4;color:var(--gelo);opacity:.9}
+  .sub b{font-weight:600;color:var(--areia)}
+
+  .foot{bottom:84px;display:flex;align-items:flex-end;justify-content:space-between}
+  .mark{font-family:'Poppins',sans-serif;font-weight:800;font-size:44px;letter-spacing:.08em;line-height:1}
+  .mark small{display:block;font-family:'Montserrat',sans-serif;font-weight:500;font-size:19px;letter-spacing:.62em;color:var(--areia);margin-top:8px}
+  .handle{font-size:26px;font-weight:500;color:var(--areia);opacity:.85;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div id="post">
+  <div class="glow"></div>
+
+  <svg class="stamp" viewBox="0 0 560 560">
+    <defs><path id="ring" d="M280,280 m-212,0 a212,212 0 1,1 424,0 a212,212 0 1,1 -424,0"/></defs>
+    <circle cx="280" cy="280" r="262" stroke-width="5"/>
+    <circle cx="280" cy="280" r="176" stroke-width="3"/>
+    <text><textPath href="#ring" startOffset="0">27·11 · DIA INTERNACIONAL DO DESPACHANTE ADUANEIRO ·</textPath></text>
+    <!-- escudo com check: proteção da operação -->
+    <path class="shield" d="M280 178 L356 206 V276 C356 326 324 362 280 382 C236 362 204 326 204 276 V206 Z"/>
+    <path class="shield" d="M246 280 L272 306 L318 256"/>
+  </svg>
+
+  <div class="pad tag"><i></i><span>Data comemorativa</span></div>
+
+  <div class="pad head">
+    Despachante aduaneiro não carimba papel.<br><em>Protege a sua operação.</em>
+    <div class="bar"></div>
+    <div class="sub"><b>27/11</b>, Dia Internacional do Despachante Aduaneiro.</div>
+  </div>
+
+  <div class="pad foot">
+    <div class="mark">GLOBEX<small>CARGO</small></div>
+    <div class="handle">@globexcargo</div>
+  </div>
+</div>
+</body>
+</html>
