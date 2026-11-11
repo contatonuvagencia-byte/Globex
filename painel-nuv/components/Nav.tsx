@@ -1,5 +1,5 @@
 "use client";
-import { CalendarDays, CheckSquare, LineChart, LogOut, Settings2, Users, Wallet } from "lucide-react";
+import { Briefcase, CalendarDays, CheckSquare, LineChart, LogOut, Settings2, Users, Wallet } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,6 +15,7 @@ const GRUPOS = [
   {
     titulo: "Agência",
     itens: [
+      { href: "/servicos", rotulo: "Serviços freela", Icone: Briefcase },
       { href: "/leads", rotulo: "Leads", Icone: Users },
       { href: "/financeiro", rotulo: "Financeiro", Icone: Wallet },
     ],

@@ -223,7 +223,7 @@ export default function Financeiro() {
                           <td className="px-3 py-2">
                             <p className="font-medium">{l.descricao}</p>
                             <p className="text-xs text-ink-3">
-                              {[nomeCliente(l.cliente_id), l.forma_pagamento, l.origem !== "manual" ? (l.origem === "mensalidade" ? "mensalidade automática" : "conta fixa") : null].filter(Boolean).join(" · ")}
+                              {[nomeCliente(l.cliente_id), l.forma_pagamento, l.origem === "mensalidade" ? "mensalidade automática" : l.origem === "recorrente" ? "conta fixa" : l.origem === "servico" ? "serviço freela" : null].filter(Boolean).join(" · ")}
                             </p>
                           </td>
                           <td className="px-3 py-2 text-ink-2">{l.categoria}</td>

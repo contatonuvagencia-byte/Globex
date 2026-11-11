@@ -2,8 +2,8 @@ import "server-only";
 import { z } from "zod";
 import { db, hojeBrasil } from "./supabase";
 
-export const CATEGORIAS_ENTRADA = ["Mensalidade", "Projeto avulso", "Consultoria", "Site", "Identidade visual", "Outros"];
-export const CATEGORIAS_SAIDA = ["Ferramentas", "Freelancers", "Impostos", "Tráfego / anúncios", "Pró-labore", "Equipamentos", "Cursos", "Outros"];
+export const CATEGORIAS_ENTRADA = ["Mensalidade", "Área de membros", "Landing Page", "E-book", "Arte", "Vídeo", "Notion", "Projeto avulso", "Consultoria", "Site", "Identidade visual", "Outros"];
+export const CATEGORIAS_SAIDA = ["Ferramentas", "Freelancers", "Custo de serviço", "Impostos", "Tráfego / anúncios", "Pró-labore", "Equipamentos", "Cursos", "Outros"];
 
 export type Lancamento = {
   id: string;
@@ -15,7 +15,7 @@ export type Lancamento = {
   cliente_id: string | null;
   forma_pagamento: string | null;
   pago: boolean;
-  origem: "manual" | "mensalidade" | "recorrente";
+  origem: "manual" | "mensalidade" | "recorrente" | "servico";
   origem_id: string | null;
   competencia: string;
   observacao: string | null;
@@ -79,6 +79,7 @@ export async function gerarMes(mes: string) {
       origem: "mensalidade",
       origem_id: c.id,
       competencia: mes,
+      parcela: 1,
     })),
     ...(recorrentes ?? []).map((r) => ({
       tipo: r.tipo,
@@ -90,12 +91,13 @@ export async function gerarMes(mes: string) {
       origem: "recorrente",
       origem_id: r.id,
       competencia: mes,
+      parcela: 1,
     })),
   ];
   if (!linhas.length) return 0;
   const { error, data } = await sb
     .from("fin_lancamentos")
-    .upsert(linhas, { onConflict: "origem,origem_id,competencia", ignoreDuplicates: true })
+    .upsert(linhas, { onConflict: "origem,origem_id,competencia,parcela", ignoreDuplicates: true })
     .select("id");
   if (error) throw new Error(error.message);
   return data?.length ?? 0;
