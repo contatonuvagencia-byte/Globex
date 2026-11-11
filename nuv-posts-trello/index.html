@@ -45,6 +45,7 @@ const IMG = { // [arquivo, largura, altura] das fotos originais
   gelado: ['fotos-hd/cafe-gelado.jpg', 1200, 1500], sofa: ['fotos-hd/notebook-sofa.jpg', 1080, 1920],
   tablet: ['fotos-hd/tablet-cafe.jpg', 1122, 1402],
   estudio: ['fotos-hd/retrato-estudio.jpg', 941, 1672], poltrona: ['fotos-hd/isa-poltrona.jpg', 1086, 1448],
+  siteSinait: ['fotos-hd/site-sinait.jpg', 790, 2000], siteMix: ['fotos-hd/site-mix.jpg', 377, 2000],
   veludo: ['fotos-hd/textura-veludo.jpg', 1200, 1600], cimento: ['fotos-hd/textura-cimento.jpg', 960, 1920],
   isaNoite: ['fotos-hd/isa-noite.jpg', 1086, 1448], isaNote: ['fotos-hd/isa-notebook.jpg', 1086, 1448], isaRua: ['fotos-hd/isa-rua.jpg', 1086, 1448],
   mesaAzul: ['fotos-hd/mesa-azul.jpg', 736, 1308], maoCel: ['fotos-hd/mao-celular.jpg', 1038, 1294], blazer: ['fotos-hd/cadeira-blazer.jpg', 922, 1382],
@@ -148,13 +149,18 @@ const POSTS = {
     [false, `${box(0, 0, 1080, 1350, photo('ripada', 1080, 1350, .5, .5))}${BRAND(C.navy)}${LAB('portfólio<br>de sites', C.navy)}
       <div class="abs H" style="left:58px;top:330px;width:960px;font-size:170px;color:${C.navy}">sites que saíram do forno <em>por aqui</em></div>
       ${FOOT('um lugar só do seu<br>negócio na internet', C.navy)}${ARROW(C.navy)}`],
-    ...[['agência de viagens', 'Apresentar os roteiros e levar pro WhatsApp.'], ['professora universitária', 'Reunir pesquisas, aulas e contato num lugar só.']].map(([n, obj]) => [false, `${BRAND(C.navy)}${LAB('portfólio<br>de sites', C.navy)}
-      <div class="abs" style="left:110px;top:230px;width:860px">
+    ...[
+      ['siteSinait', 'sinait ds/mg', 'sindicato', 'Apresentar a entidade, mostrar os convênios exclusivos e <b>levar à filiação.</b>', .43],
+      ['siteMix', 'mix massagem', 'curso online', 'Apresentar o método e <b>transformar visita em venda</b> do curso.', .57],
+    ].map(([k, n, nicho, obj, fy2]) => [false, `${BRAND(C.navy)}${LAB('portfólio<br>de sites', C.navy)}
+      <div class="abs" style="left:110px;top:200px;width:860px">
         <div style="background:#1b1d22;border-radius:26px 26px 6px 6px;padding:22px 22px 26px">
-          <div style="height:500px;border-radius:6px;background:${C.off};border:2.5px dashed ${C.indigo};display:flex;align-items:center;justify-content:center;color:${C.indigo};font-size:22px;letter-spacing:.06em;text-transform:uppercase;text-align:center;line-height:1.5">inserir<br>print do site</div></div>
+          <div style="position:relative;height:500px;border-radius:6px;overflow:hidden;background:#fff">${(() => { const [src, iw] = IMG[k], kk = 816 / iw; return `<div class="ph" style="width:816px;height:500px;background-image:url(${src});background-size:816px auto;background-position:0 0"></div>`; })()}</div></div>
         <div style="height:26px;margin:0 -60px;background:linear-gradient(#c9ccd1,#9a9ea5);border-radius:0 0 30px 30px"></div></div>
-      <div class="abs H" style="left:58px;top:930px;font-size:84px;color:${C.navy}">${n}</div>
-      <div class="abs lead" style="left:66px;top:1030px;width:900px">${obj}</div>
+      <div class="abs" style="left:700px;top:560px;width:300px;height:400px;overflow:hidden;transform:rotate(4deg);box-shadow:0 0 0 12px ${C.off}">${(() => { const [src, iw, ih] = IMG[k], kk = 300 / iw; return `<div class="ph" style="width:300px;height:400px;background-image:url(${src});background-size:300px auto;background-position:0 ${-(ih * kk * fy2 - 200)}px"></div>`; })()}</div>
+      <div class="abs s" style="left:66px;top:940px;color:${C.indigo};font-weight:700">${nicho}</div>
+      <div class="abs H" style="left:58px;top:985px;font-size:110px;color:${C.navy}">${n}</div>
+      <div class="abs lead" style="left:66px;top:1110px;width:900px">${obj}</div>
       ${ARROW(C.navy)}`]),
     [true, fim({ bg: C.navy, title: 'o seu negócio também merece um lugar <em>só dele.</em>', size: 140, foot: 'me chama no direct que eu<br>te mando um orçamento.' })],
   ],
