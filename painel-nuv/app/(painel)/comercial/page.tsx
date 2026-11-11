@@ -196,7 +196,7 @@ export default function Comercial() {
         </div>
       </section>
 
-      <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[320px_1fr]">
         {/* funil */}
         <section className="card h-fit p-5">
           <div className="mb-3 flex items-center">

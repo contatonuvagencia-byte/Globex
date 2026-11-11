@@ -2,6 +2,9 @@
 
 Um lugar só para tocar a agência:
 
+- **Hoje** (tela inicial): posts do dia (com miniatura), não postados e aguardando aprovação, suas demandas de hoje e atrasadas, follow-ups e propostas abertas pelo cliente, o que receber e pagar, entregas de serviços, contratos para renovar e a meta do mês. Cada pessoa só vê os blocos que o perfil dela permite.
+- **Clientes**: a ficha de cada cliente com contatos, serviços contratados, contrato (início, duração, aviso 30 dias antes de vencer e botão de renovar), mensalidade, pagamentos, posts do mês, demandas abertas, relatórios, serviços freela, briefing e acessos.
+- **Comercial**: meta do mês com progresso (faturamento, novos clientes, leads contatados, propostas), funil de leads e **propostas com link** para o cliente abrir, aceitar ou recusar sem login. O painel avisa quando o cliente abriu, e o aceite fecha o lead sozinho. No lead, “Fechou! Virar cliente” cria a ficha e a mensalidade em um clique.
 - **Calendário unificado**: os posts de todos os clientes, lidos ao vivo do Notion. Clique num post para ver **arte, copy e legenda** e **marcar como postado** (grava no Notion).
 - **Calendários automáticos**: cliente novo marcado como *Ativo* em CLIENTES no Notion, com um banco “Gestão de Mídias” (o do template), aparece sozinho. Também dá para colar o link de qualquer banco em *Gerenciar calendários*.
 - **Métricas**: leve os prints para o seu Claude com o pedido pronto e cole a resposta, ou digite os números. O painel monta a planilha comparativa, calcula as variações e organiza o que deu certo, o que deu errado e os próximos passos. Baixe em **Excel** ou gere a **versão do cliente**: um link com a identidade da NUV (ou o arquivo **HTML**) para mandar.

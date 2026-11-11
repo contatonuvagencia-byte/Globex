@@ -24,7 +24,8 @@ export const useUsuario = () => useContext(Contexto);
 
 /** Qual área do painel é cada endereço. */
 export function areaDaRota(path: string): Area | "admin" | null {
-  if (path === "/") return "calendario";
+  if (path === "/") return null; // Hoje: cada bloco já vem filtrado pelo perfil
+  if (path.startsWith("/calendario") && !path.startsWith("/calendarios")) return "calendario";
   if (path.startsWith("/calendarios") || path.startsWith("/equipe")) return "admin";
   if (path.startsWith("/comercial")) return "leads";
   for (const a of ["clientes", "demandas", "metricas", "leads", "servicos", "financeiro"] as const) if (path.startsWith(`/${a}`)) return a;

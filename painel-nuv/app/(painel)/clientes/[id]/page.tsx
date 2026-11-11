@@ -94,7 +94,7 @@ export default function FichaCliente() {
       {aviso && <p className="mb-4 rounded-2xl bg-azul-claro px-4 py-3 text-sm font-semibold text-azul-escuro">{aviso}</p>}
       {erro && <p className="mb-4 rounded-2xl bg-[#fdecea] px-4 py-3 text-sm text-[#a1261f]">{erro}</p>}
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* coluna 1 */}
         <div className="space-y-4">
           <Bloco titulo="Contato">

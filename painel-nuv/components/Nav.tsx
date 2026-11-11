@@ -1,16 +1,17 @@
 "use client";
-import { Briefcase, Building2, CalendarDays, Handshake, CheckSquare, LineChart, LogOut, Settings2, UserCog, Users, Wallet } from "lucide-react";
+import { Briefcase, Building2, CalendarDays, Handshake, Sun, CheckSquare, LineChart, LogOut, Settings2, UserCog, Users, Wallet } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Area } from "@/lib/permissoes";
 import { Avatar } from "./Avatar";
 import { useUsuario } from "./Usuario";
 
-const GRUPOS: { titulo: string; itens: { href: string; rotulo: string; Icone: typeof CalendarDays; area: Area }[] }[] = [
+const GRUPOS: { titulo: string; itens: { href: string; rotulo: string; Icone: typeof CalendarDays; area: Area | null }[] }[] = [
   {
     titulo: "Geral",
     itens: [
-      { href: "/", rotulo: "Calendário", Icone: CalendarDays, area: "calendario" },
+      { href: "/", rotulo: "Hoje", Icone: Sun, area: null },
+      { href: "/calendario", rotulo: "Calendário", Icone: CalendarDays, area: "calendario" },
       { href: "/demandas", rotulo: "Demandas", Icone: CheckSquare, area: "demandas" },
       { href: "/metricas", rotulo: "Métricas", Icone: LineChart, area: "metricas" },
     ],
@@ -31,7 +32,7 @@ export function Nav() {
   const path = usePathname();
   const { usuario, nivel } = useUsuario();
   const ativo = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
-  const grupos = GRUPOS.map((g) => ({ ...g, itens: g.itens.filter((i) => usuario && nivel(i.area) !== "nenhum") })).filter((g) => g.itens.length);
+  const grupos = GRUPOS.map((g) => ({ ...g, itens: g.itens.filter((i) => usuario && (!i.area || nivel(i.area) !== "nenhum")) })).filter((g) => g.itens.length);
   async function sair() {
     await fetch("/api/logout", { method: "POST" });
     window.location.href = "/login";
@@ -83,7 +84,7 @@ export function Nav() {
                         <Icone size={15} strokeWidth={2.2} />
                       </span>
                       {rotulo}
-                      {nivel(area) === "ver" && <span className="ml-auto text-[10px] font-semibold uppercase tracking-wider opacity-50">ver</span>}
+                      {area && nivel(area) === "ver" && <span className="ml-auto text-[10px] font-semibold uppercase tracking-wider opacity-50">ver</span>}
                     </Link>
                   </li>
                 ))}
