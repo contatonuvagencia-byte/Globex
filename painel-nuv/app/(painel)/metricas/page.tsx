@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { exportarXlsx, RelatorioView, type DadosRelatorio } from "@/components/RelatorioView";
 import { MESES, hojeISO } from "@/lib/format";
+import { METRICAS_PADRAO, analiseAutomatica, lerJsonColado, pedidoParaClaude } from "@/lib/relatorio-schema";
 
 type Resumo = { id: string; cliente: string; rede: string; periodo_atual: string; periodo_anterior: string | null; created_at: string };
 type Gravado = DadosRelatorio & { id: string; token_publico: string | null };
@@ -91,6 +92,55 @@ export default function Metricas() {
   const [salvando, setSalvando] = useState(false);
   const [editando, setEditando] = useState(false);
   const [copiado, setCopiado] = useState(false);
+  const [iaLigada, setIaLigada] = useState(false);
+  const [modo, setModo] = useState<"claude" | "manual" | "ia">("claude");
+  const [colado, setColado] = useState("");
+  const [pedidoCopiado, setPedidoCopiado] = useState(false);
+  const [versao, setVersao] = useState(0);
+
+  useEffect(() => {
+    fetch("/api/status")
+      .then((r) => r.json())
+      .then((j) => setIaLigada(Boolean(j.ia)))
+      .catch(() => {});
+  }, []);
+
+  function abrirRascunho(dados: Omit<DadosRelatorio, "cliente" | "rede" | "periodo_atual" | "periodo_anterior">, comAnterior: boolean) {
+    setRascunho({ cliente, rede, periodo_atual: pAtual, periodo_anterior: comAnterior ? pAnterior || null : null, arquivos: [], ...dados });
+    setVersao((v) => v + 1);
+    setNovo(false);
+    setColado("");
+  }
+
+  function montarDoClaude() {
+    setErro("");
+    try {
+      const r = lerJsonColado(colado);
+      abrirRascunho(r, r.metricas.some((m) => m.periodo_anterior !== null));
+    } catch (e) {
+      setErro((e as Error).message);
+    }
+  }
+
+  function montarManual() {
+    const base = METRICAS_PADRAO[rede] ?? METRICAS_PADRAO.Instagram;
+    abrirRascunho(
+      {
+        perfil: null,
+        metricas: base.map((m) => ({ ...m, periodo_atual: null, periodo_anterior: null })),
+        posts: [],
+        analise: { resumo: "", deu_certo: [], deu_errado: [], recomendacoes: [] },
+      },
+      true,
+    );
+  }
+
+  function gerarAnaliseAutomatica() {
+    if (!rascunho) return;
+    const nova = analiseAutomatica(rascunho.metricas, rascunho.periodo_anterior);
+    setRascunho({ ...rascunho, analise: { ...nova, recomendacoes: rascunho.analise.recomendacoes } });
+    setVersao((v) => v + 1);
+  }
 
   async function acaoRelatorio(corpo: unknown) {
     if (!aberto) return null;
@@ -234,6 +284,7 @@ export default function Metricas() {
           <>
             <button className="btn-ghost" onClick={() => { setRascunho(null); setAberto(null); }}>← Voltar</button>
             <button className="btn-ghost" onClick={() => exportarXlsx(exibido)}>Baixar planilha (.xlsx)</button>
+            {rascunho && <button className="btn-ghost" onClick={gerarAnaliseAutomatica} title="Escreve o resumo, o que melhorou e o que piorou a partir dos números">Análise automática</button>}
             {rascunho && <button className="btn-primary" onClick={salvar} disabled={salvando}>{salvando ? "Salvando..." : "Salvar relatório"}</button>}
             {aberto && !editando && <button className="btn-ghost" onClick={() => setEditando(true)}>Editar textos</button>}
             {aberto && editando && <button className="btn-primary" onClick={salvarEdicao} disabled={salvando}>{salvando ? "Salvando..." : "Salvar alterações"}</button>}
@@ -276,7 +327,14 @@ export default function Metricas() {
               <a className="btn-ghost" href={`/api/metricas/${aberto.id}?formato=html`}>Baixar HTML</a>
             </section>
           )}
+          {rascunho && (
+            <p className="mb-4 rounded-xl bg-nuv-soft p-3 text-sm text-nuv">
+              Confira e complete os números e os textos. Depois clique em “Análise automática” se quiser que o painel escreva o resumo,
+              e em “Salvar relatório”. Os campos de “Recomendações” são seus: um item por linha.
+            </p>
+          )}
           <RelatorioView
+            key={versao}
             dados={exibido}
             editavel={Boolean(rascunho) || editando}
             onChange={(d) => (rascunho ? setRascunho({ ...rascunho, ...d }) : aberto && setAberto({ ...aberto, ...d }))}
@@ -285,7 +343,7 @@ export default function Metricas() {
       ) : (
         <>
           {novo && (
-            <form onSubmit={gerar} className="card mb-6 space-y-4 p-5">
+            <form onSubmit={(e) => (modo === "ia" ? gerar(e) : e.preventDefault())} className="card mb-6 space-y-4 p-5">
               <div className="grid gap-3 sm:grid-cols-4">
                 <div>
                   <label className="label" htmlFor="cli">Cliente</label>
@@ -307,16 +365,66 @@ export default function Metricas() {
                   <input id="pan" className="input" value={pAnterior} onChange={(e) => setPAnterior(e.target.value)} />
                 </div>
               </div>
-              <div className="grid gap-3 md:grid-cols-2">
-                <Dropzone titulo="Prints / PDF do período atual" ajuda="Arraste aqui ou clique. Painel profissional, insights dos posts, PDF do Meta." arquivos={arqAtual} setArquivos={setArqAtual} />
-                <Dropzone titulo="Prints / PDF do período anterior (opcional)" ajuda="Para comparar. Se o print já mostra a comparação, pode deixar vazio." arquivos={arqAnterior} setArquivos={setArqAnterior} />
+              <div className="flex flex-wrap gap-1 rounded-xl bg-surface-2 p-1 text-sm" role="tablist">
+                {([
+                  ["claude", "Usar meu Claude (grátis)"],
+                  ["manual", "Digitar os números (grátis)"],
+                  ...(iaLigada ? [["ia", "Leitura automática (API)"]] : []),
+                ] as [typeof modo, string][]).map(([m, r]) => (
+                  <button key={m} type="button" role="tab" aria-selected={modo === m} onClick={() => setModo(m)}
+                    className={`flex-1 rounded-lg px-3 py-1.5 font-medium ${modo === m ? "bg-white shadow-sm" : "text-ink-2"}`}>
+                    {r}
+                  </button>
+                ))}
               </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <button className="btn-primary" disabled={processando || !arqAtual.length}>
-                  {processando ? "Lendo os arquivos..." : "Gerar relatório"}
-                </button>
-                {processando && <span className="text-sm text-ink-2">O Claude está lendo os prints e montando a planilha. Leva cerca de 1 minuto.</span>}
-              </div>
+
+              {modo === "claude" && (
+                <ol className="space-y-4 text-sm">
+                  <li className="rounded-xl border border-black/5 p-4">
+                    <p className="font-medium">1. Copie o pedido e abra o Claude</p>
+                    <p className="mt-1 text-ink-2">Numa conversa nova, cole o pedido e anexe os prints (ou o PDF) do período. Se tiver prints do mês anterior, diga quais são.</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <button type="button" className="btn-primary" onClick={async () => {
+                        await navigator.clipboard.writeText(pedidoParaClaude({ cliente, rede, periodoAtual: pAtual, periodoAnterior: pAnterior }));
+                        setPedidoCopiado(true);
+                        setTimeout(() => setPedidoCopiado(false), 2000);
+                      }}>{pedidoCopiado ? "Pedido copiado!" : "Copiar pedido"}</button>
+                      <a className="btn-ghost" href="https://claude.ai/new" target="_blank" rel="noreferrer">Abrir o Claude ↗</a>
+                    </div>
+                  </li>
+                  <li className="rounded-xl border border-black/5 p-4">
+                    <p className="font-medium">2. Cole aqui a resposta do Claude</p>
+                    <textarea className="input mt-2 min-h-[140px] font-mono text-xs" value={colado} onChange={(e) => setColado(e.target.value)}
+                      placeholder="Cole a resposta inteira (o bloco que começa com { )" aria-label="Resposta do Claude" />
+                    <button type="button" className="btn-primary mt-3" disabled={!colado.trim()} onClick={montarDoClaude}>Montar relatório</button>
+                  </li>
+                </ol>
+              )}
+
+              {modo === "manual" && (
+                <div className="rounded-xl border border-black/5 p-4 text-sm">
+                  <p className="text-ink-2">
+                    O painel abre a planilha com as métricas mais usadas no {rede}. Você preenche o mês atual e o anterior olhando o painel
+                    profissional, e o painel calcula as variações e escreve uma análise básica.
+                  </p>
+                  <button type="button" className="btn-primary mt-3" onClick={montarManual}>Abrir planilha para preencher</button>
+                </div>
+              )}
+
+              {modo === "ia" && (
+                <>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <Dropzone titulo="Prints / PDF do período atual" ajuda="Arraste aqui ou clique. Painel profissional, insights dos posts, PDF do Meta." arquivos={arqAtual} setArquivos={setArqAtual} />
+                    <Dropzone titulo="Prints / PDF do período anterior (opcional)" ajuda="Para comparar. Se o print já mostra a comparação, pode deixar vazio." arquivos={arqAnterior} setArquivos={setArqAnterior} />
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <button className="btn-primary" disabled={processando || !arqAtual.length}>
+                      {processando ? "Lendo os arquivos..." : "Gerar relatório"}
+                    </button>
+                    {processando && <span className="text-sm text-ink-2">O Claude está lendo os prints e montando a planilha. Leva cerca de 1 minuto.</span>}
+                  </div>
+                </>
+              )}
             </form>
           )}
 
@@ -329,7 +437,7 @@ export default function Metricas() {
               </select>
             </div>
             {lista.length === 0 ? (
-              <p className="p-5 text-sm text-ink-2">Nenhum relatório ainda. Clique em “Novo relatório” e envie os prints do mês.</p>
+              <p className="p-5 text-sm text-ink-2">Nenhum relatório ainda. Clique em “Novo relatório” para montar o do mês.</p>
             ) : (
               <ul>
                 {lista.map((r) => (

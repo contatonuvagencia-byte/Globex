@@ -1,0 +1,9 @@
+# Publicação gratuita no Netlify (o plano grátis permite uso comercial).
+# O painel fica na pasta painel-nuv; o Netlify detecta o Next.js sozinho.
+[build]
+  base = "painel-nuv"
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"

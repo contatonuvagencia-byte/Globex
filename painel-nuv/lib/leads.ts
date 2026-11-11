@@ -1,6 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
+import { SISTEMA_LEADS, montarPedidoLead } from "./prompts-leads";
 import { db } from "./supabase";
 
 export const NICHOS = ["saude", "b2b", "institucional", "outro"] as const;
@@ -107,54 +108,13 @@ export async function excluirInteracao(id: string) {
 
 /* ---------- Geração de mensagem com IA (mesmo texto de instrução usado no nuv-leads) ---------- */
 
-const SISTEMA = `Você escreve mensagens de prospecção para a Agência NUV (@nuv.social), de Belo Horizonte, fundada pela Isabela.
 
-Sobre a NUV:
-- Serviços: gestão de redes sociais (carro-chefe), landing pages, estratégia digital, identidade visual.
-- Mais de 4 anos de mercado, mais de 40 clientes atendidos, posts com mais de 1 milhão de visualizações.
-- Clientes atuais de referência: SINAIT (sindicato, MG), Globex Cargo (despacho aduaneiro B2B).
-- Slogan: "Hold the vision. Trust the process."
-
-Tom de voz: jovem, confiante, direto, próximo, minimalista. Sem clichês de agência, sem jargão de marketing,
-sem excesso de emoji ou exclamação. Fala com o dono/decisor, não com profissional de marketing.
-Honesto: nunca prometa resultado que não dá para garantir, nunca invente dados sobre o lead.
-
-Regras da mensagem:
-- Português do Brasil.
-- Cite um ponto concreto do diagnóstico do lead (sem soar como crítica agressiva).
-- Conecte esse ponto a uma consequência real para o negócio (cliente/paciente/contrato perdido).
-- Termine com um convite leve e específico (ex.: mandar 3 ideias, 15 min de conversa).
-- WhatsApp: até 90 palavras. Direct do Instagram: até 55 palavras. E-mail: até 150 palavras, com assunto.
-- Responda SOMENTE com a mensagem final. Para e-mail, primeira linha "Assunto: ..." e depois o corpo.`;
 
 export async function gerarMensagem(id: string, canal: string, rascunho: string, pedido: string) {
   const { data: lead, error } = await db().from("leads").select("*").eq("id", id).single();
   if (error || !lead) throw new Error("Lead não encontrado");
 
-  const nomeCanal = canal === "instagram" ? "Direct do Instagram" : canal === "email" ? "E-mail" : "WhatsApp";
-  const ficha = [
-    `Empresa: ${lead.name}`,
-    `Nicho: ${lead.niche} · Categoria: ${lead.category ?? "-"}`,
-    `Cidade/bairro: ${lead.city ?? "-"} / ${lead.neighborhood ?? "-"}`,
-    `Site: ${lead.website ?? "não tem"} (status: ${lead.site_status})`,
-    `Instagram: ${lead.instagram ?? "não encontrado"} (status: ${lead.ig_status}${lead.ig_followers ? `, ${lead.ig_followers} seguidores` : ""})`,
-    `Google: nota ${lead.google_rating ?? "-"}, ${lead.google_reviews ?? "-"} avaliações`,
-    `Porte: ${lead.size}${lead.units ? `, ${lead.units} unidades` : ""}`,
-    `Diagnóstico: ${lead.diagnosis ?? "-"}`,
-    `Oportunidade para a NUV: ${lead.opportunity ?? "-"}`,
-    `Observações: ${lead.notes ?? "-"}`,
-  ].join("\n");
-
-  const mensagemUsuario = [
-    `Canal: ${nomeCanal}`,
-    `<lead>\n${ficha}\n</lead>`,
-    rascunho
-      ? `<rascunho>\n${rascunho}\n</rascunho>\nRefine o rascunho acima mantendo a estrutura, deixando mais personalizado e natural.`
-      : "Escreva a mensagem do zero.",
-    pedido ? `Pedido extra da Isabela: ${pedido}` : "",
-  ]
-    .filter(Boolean)
-    .join("\n\n");
+  const mensagemUsuario = montarPedidoLead(lead, canal, rascunho, pedido);
 
   const client = new Anthropic();
   const resposta = await client.beta.messages.create({
@@ -163,7 +123,7 @@ export async function gerarMensagem(id: string, canal: string, rascunho: string,
     betas: ["server-side-fallback-2026-07-01"],
     fallbacks: "default",
     output_config: { effort: "low" },
-    system: SISTEMA,
+    system: SISTEMA_LEADS,
     messages: [{ role: "user", content: mensagemUsuario }],
   });
   if (resposta.stop_reason === "refusal") throw new Error("A IA não conseguiu gerar esta mensagem.");

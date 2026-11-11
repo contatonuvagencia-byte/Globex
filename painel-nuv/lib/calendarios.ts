@@ -145,7 +145,7 @@ async function clienteDoBanco(parent: any, profundidade = 0): Promise<ClienteNot
   return resultado;
 }
 
-export type Descoberta = { adicionados: string[]; desligados: string[]; analisados: number };
+export type Descoberta = { adicionados: string[]; desligados: string[]; analisados: number; incompleto?: boolean };
 
 /**
  * Procura no Notion bancos de conteúdo (Gestão de Mídias, Calendário, Editorial...) que estejam
@@ -174,17 +174,28 @@ export async function descobrir(): Promise<Descoberta> {
   const peso = (b: any) => (/gest[aã]o de m[ií]dias/i.test(richText(b.title)) ? 1 : 0);
   candidatos.sort((a, b) => peso(b) - peso(a) || String(b.last_edited_time).localeCompare(String(a.last_edited_time)));
 
-  for (const banco of candidatos) {
-    const id = banco.id.replace(/-/g, "");
-    const titulo = richText(banco.title);
-    if (conhecidos.has(id) || id === CLIENTES_DB || !RE_TITULO_CALENDARIO.test(titulo)) continue;
-    resultado.analisados++;
+  // filtros sem rede primeiro; depois sobe a hierarquia do Notion em paralelo, com limite de tempo
+  // (hospedagem gratuita corta requisições longas; o que faltar é visto na próxima rodada)
+  const fila = candidatos
+    .map((banco) => ({ banco, id: banco.id.replace(/-/g, ""), titulo: richText(banco.title) }))
+    .filter((c) => !conhecidos.has(c.id) && c.id !== CLIENTES_DB && RE_TITULO_CALENDARIO.test(c.titulo))
+    .map((c) => ({ ...c, campos: detectarCampos(c.banco.properties) }))
+    .filter((c) => c.campos);
 
-    const campos = detectarCampos(banco.properties);
-    if (!campos) continue;
-    const cliente = await clienteDoBanco(banco.parent);
-    if (!cliente?.ativo) continue;
+  const prazo = Date.now() + 7_000;
+  const achados: { id: string; titulo: string; campos: Campos; cliente: ClienteNotion }[] = [];
+  for (let i = 0; i < fila.length && Date.now() < prazo; i += 5) {
+    const lote = fila.slice(i, i + 5);
+    const clientes = await Promise.all(lote.map((c) => clienteDoBanco(c.banco.parent)));
+    resultado.analisados += lote.length;
+    lote.forEach((c, j) => {
+      const cliente = clientes[j];
+      if (cliente?.ativo) achados.push({ id: c.id, titulo: c.titulo, campos: c.campos!, cliente });
+    });
+  }
+  resultado.incompleto = resultado.analisados < fila.length;
 
+  for (const { id, titulo, campos, cliente } of achados) {
     const chave = cliente.nome.toLowerCase();
     const jaTem = clientesComCalendario.has(chave);
     const { error } = await db().from("calendarios").insert({

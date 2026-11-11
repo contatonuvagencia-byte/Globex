@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import { pedidoLeadParaClaude } from "@/lib/prompts-leads";
 import { ORDEM_STATUS, ROT_IG, ROT_INTERACAO, ROT_NICHO, ROT_PORTE, ROT_SITE, ROT_STATUS, linkWhatsapp, preencherModelo } from "@/lib/leads-rotulos";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -52,6 +53,15 @@ export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () =
   const [gerando, setGerando] = useState(false);
   const [nota, setNota] = useState("");
   const [copiado, setCopiado] = useState(false);
+  const [iaLigada, setIaLigada] = useState(false);
+  const [pedidoCopiado, setPedidoCopiado] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/status")
+      .then((r) => r.json())
+      .then((j) => setIaLigada(Boolean(j.ia)))
+      .catch(() => {});
+  }, []);
 
   const carregar = useCallback(async () => {
     try {
@@ -186,11 +196,32 @@ export function LeadPainel({ id, onClose, onMudou }: { id: string; onClose: () =
                   </div>
                   <textarea className="input min-h-[200px] text-sm leading-relaxed" value={texto} onChange={(e) => setTexto(e.target.value)} placeholder="Escolha um modelo, escreva, ou peça para a IA escrever." aria-label="Mensagem" />
                   <div className="flex flex-wrap gap-2">
-                    <input className="input flex-1 text-sm" placeholder="Pedido extra para a IA (opcional): mais curto, citar o case do SINAIT..." value={pedido} onChange={(e) => setPedido(e.target.value)} />
-                    <button className="btn-ghost" onClick={gerar} disabled={gerando}>
-                      {gerando ? "Escrevendo..." : texto ? "Refinar com IA" : "Escrever com IA"}
-                    </button>
+                    <input className="input flex-1 text-sm" placeholder="Pedido extra (opcional): mais curto, citar o case do SINAIT..." value={pedido} onChange={(e) => setPedido(e.target.value)} />
+                    {iaLigada ? (
+                      <button className="btn-ghost" onClick={gerar} disabled={gerando}>
+                        {gerando ? "Escrevendo..." : texto ? "Refinar com IA" : "Escrever com IA"}
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          className="btn-ghost"
+                          onClick={async () => {
+                            await navigator.clipboard.writeText(pedidoLeadParaClaude(lead, canal, texto, pedido));
+                            setPedidoCopiado(true);
+                            setTimeout(() => setPedidoCopiado(false), 2000);
+                          }}
+                        >
+                          {pedidoCopiado ? "Pedido copiado!" : texto ? "Copiar pedido para refinar no Claude" : "Copiar pedido para o Claude"}
+                        </button>
+                        <a className="btn-ghost" href="https://claude.ai/new" target="_blank" rel="noreferrer">Abrir o Claude ↗</a>
+                      </>
+                    )}
                   </div>
+                  {!iaLigada && (
+                    <p className="text-xs text-ink-3">
+                      Grátis: o pedido já leva a ficha do lead e o jeito NUV de escrever. Cole numa conversa do Claude e traga a mensagem de volta para a caixa acima.
+                    </p>
+                  )}
                   <div className="flex flex-wrap gap-2 border-t border-black/5 pt-4">
                     <button
                       className="btn-ghost"
