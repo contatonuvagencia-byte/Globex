@@ -1,5 +1,5 @@
-"""Gera as páginas do site SINAIT DS/MG (index.html, convenios.html, noticias.html).
-Para atualizar notícias ou convênios, edite as listas abaixo e rode: python3 build.py
+"""Gera as páginas do site SINAIT DS/MG (index.html e convenios.html).
+Para atualizar convênios ou textos, edite as listas abaixo e rode: python3 build.py
 """
 from html import escape
 
@@ -98,7 +98,6 @@ def topo(atual):
       {item("index.html", "Início", "inicio")}
       {item("index.html#sobre", "Quem somos", "sobre")}
       {item("convenios.html", "Convênios", "convenios")}
-      {item("noticias.html", "Notícias", "noticias")}
       {item("index.html#contato", "Contato", "contato")}
       <span class="redes-topo"><a href="{INSTAGRAM}" target="_blank" rel="noopener" aria-label="Instagram">{ICON_IG}</a><a href="{FACEBOOK}" target="_blank" rel="noopener" aria-label="Facebook">{ICON_FB}</a></span>
       <a class="btn btn-laranja" href="{FILIAR}" target="_blank" rel="noopener">Quero me filiar</a>
@@ -137,7 +136,6 @@ def rodape():
       <h4>Navegue</h4>
       <ul>
         <li><a href="convenios.html">Convênios</a></li>
-        <li><a href="noticias.html">Notícias</a></li>
         <li><a href="http://sinait.org.br/" target="_blank" rel="noopener">SINAIT nacional</a></li>
         <li><a href="{INSTAGRAM}" target="_blank" rel="noopener">Instagram @sinaitmg</a></li>
         <li><a href="{FACEBOOK}" target="_blank" rel="noopener">Facebook</a></li>
@@ -170,7 +168,7 @@ def index():
         f'<a class="parceiro" href="convenios.html#{c["img"]}"><img src="img/{c["img"]}.jpg" alt="" loading="lazy"><span><b>{escape(c["nome"].split(",")[0])}</b><small>{escape(c["curto"])}</small></span></a>'
         for c in CONVENIOS)
     return head("SINAIT DS/MG · Auditores-Fiscais do Trabalho em Minas Gerais",
-                "Delegacia Sindical do SINAIT em Minas Gerais: notícias, convênios exclusivos e ações em defesa dos Auditores-Fiscais do Trabalho.") + topo("inicio") + f"""
+                "Delegacia Sindical do SINAIT em Minas Gerais: convênios exclusivos e ações em defesa dos Auditores-Fiscais do Trabalho.") + topo("inicio") + f"""
 <section class="hero">
   <img class="hero-foto" src="img/noticia-06.jpg" alt="Auditor-Fiscal do Trabalho com colete da Auditoria em fiscalização">
   <div class="container">
@@ -184,7 +182,7 @@ def index():
   </div>
 </section>
 
-<section class="bloco" id="sobre">
+<section class="bloco" id="sobre" style="padding-bottom:110px">
   <div class="container sobre">
     <div>
       <span class="eyebrow">Quem somos</span>
@@ -197,17 +195,6 @@ def index():
       </ul>
     </div>
     <div class="foto"><img src="img/noticia-07.jpg" alt="Auditora-Fiscal do Trabalho em fiscalização" loading="lazy"></div>
-  </div>
-</section>
-
-<section class="bloco" style="padding-top:0">
-  <div class="container">
-    <div class="cabeca">
-      <div><span class="eyebrow">Notícias SINAIT/MG</span><h2 class="display">Na <span class="faixa">mídia</span></h2></div>
-      <p>Matérias, notícias e atualizações sobre a atuação do sindicato. Informação com credibilidade e compromisso com os Auditores-Fiscais do Trabalho.</p>
-    </div>
-    <div class="grade">{"".join(card(n) for n in NOTICIAS[:3])}</div>
-    <p style="text-align:center;margin:40px 0 0"><a class="btn btn-escuro" href="noticias.html">Ver todas as notícias {SETA}</a></p>
   </div>
 </section>
 
@@ -307,6 +294,6 @@ def noticias():
 """ + rodape()
 
 
-for nome, fn in [("index.html", index), ("convenios.html", convenios), ("noticias.html", noticias)]:
+for nome, fn in [("index.html", index), ("convenios.html", convenios)]:
     open(nome, "w", encoding="utf-8").write(fn())
 print("ok")
