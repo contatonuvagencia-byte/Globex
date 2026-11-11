@@ -11,6 +11,7 @@ export type Post = {
   pilar: string | null;
   notionUrl: string;
   checks: { nome: string; feito: boolean }[] | null;
+  capa?: string | null; // primeira imagem do campo de arquivos (miniatura do card)
 };
 
 export type Midia = { tipo: "imagem" | "video" | "arquivo"; url: string; nome: string };

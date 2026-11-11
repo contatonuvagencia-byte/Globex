@@ -22,7 +22,7 @@ async function trello(path: string) {
 }
 
 export type Quadro = { id: string; nome: string; url: string };
-export type Anexo = { id: string; nome: string; largura: number | null; urlOriginal: string; urlMiniatura: string | null };
+export type Anexo = { id: string; nome: string; largura: number | null; urlOriginal: string; urlMiniatura: string | null; urlMini: string | null };
 export type Card = { id: string; nome: string; url: string; atividade: string; lista: string; anexos: Anexo[] };
 
 /* ---------- quadros ---------- */
@@ -73,7 +73,9 @@ export async function cardsDoQuadro(boardId: string): Promise<Card[]> {
         // miniatura de até ~1200px para carregar rápido; a original fica para o "abrir"
         const previas = (a.previews ?? []).filter((p: any) => p.url && p.width);
         const boa = previas.filter((p: any) => p.width <= 1300).sort((x: any, y: any) => y.width - x.width)[0];
-        return { id: a.id, nome: a.name, largura: boa?.width ?? null, urlOriginal: a.url, urlMiniatura: boa?.url ?? null };
+        // e uma bem pequena para a miniatura no card do calendário
+        const mini = previas.filter((p: any) => p.width >= 120).sort((x: any, y: any) => x.width - y.width)[0];
+        return { id: a.id, nome: a.name, largura: boa?.width ?? null, urlOriginal: a.url, urlMiniatura: boa?.url ?? null, urlMini: mini?.url ?? null };
       }),
   }));
   cacheCards.set(boardId, { em: Date.now(), cards: resultado });
@@ -142,4 +144,17 @@ export async function baixarAnexo(url: string) {
   const res = await fetch(`https://api.trello.com${u.pathname}`, { headers: { Authorization: autorizacao() }, cache: "no-store" });
   if (!res.ok) throw new Error(`Trello respondeu ${res.status}`);
   return res;
+}
+
+/* ---------- enviar uma arte para o card ---------- */
+
+export async function anexarNoCard(cardId: string, arquivo: Blob, nome: string) {
+  if (!trelloConfigurado()) throw new Error("Trello não configurado (TRELLO_KEY e TRELLO_TOKEN).");
+  const form = new FormData();
+  form.append("file", arquivo, nome);
+  form.append("name", nome);
+  const res = await fetch(`${API}/cards/${cardId}/attachments`, { method: "POST", headers: { Authorization: autorizacao() }, body: form, cache: "no-store" });
+  if (res.status === 401) throw new Error("O token do Trello só tem permissão de leitura. Gere um novo token com leitura e escrita (veja o README).");
+  if (!res.ok) throw new Error(`Trello respondeu ${res.status}`);
+  cacheCards.clear(); // a nova arte aparece na hora
 }

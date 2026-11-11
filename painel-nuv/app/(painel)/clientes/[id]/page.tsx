@@ -143,7 +143,7 @@ export default function FichaCliente() {
                       <span className="tabular text-ink-2">{dataBR(l.data).slice(0, 5)}</span>
                       <span className="truncate">{l.descricao}</span>
                       <span className="tabular ml-auto font-semibold">{brl(l.valor)}</span>
-                      <span className={`chip ${l.pago ? "bg-azul text-white" : l.atrasado ? "bg-[#fdecea] text-[#a1261f]" : "bg-surface-2 text-ink-2"}`}>{l.pago ? "pago" : l.atrasado ? "atrasado" : "a receber"}</span>
+                      <span className={`chip whitespace-nowrap ${l.pago ? "bg-azul text-white" : l.atrasado ? "bg-[#fdecea] text-[#a1261f]" : "bg-surface-2 text-ink-2"}`}>{l.pago ? "pago" : l.atrasado ? "atrasado" : "a receber"}</span>
                     </li>
                   ))}
                 </ul>

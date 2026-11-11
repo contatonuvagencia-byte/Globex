@@ -2,7 +2,8 @@
 import { useUsuario } from "@/components/Usuario";
 import { CheckCircle2, ChevronLeft, ChevronRight, Clock, Settings2 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Miniatura } from "@/components/Miniatura";
 import { PostModal } from "@/components/PostModal";
 import { StatusBadge } from "@/components/StatusBadge";
 import type { CalendarioPublico } from "@/lib/clients";
@@ -43,6 +44,9 @@ export default function Calendario() {
   const [arrastando, setArrastando] = useState<string | null>(null);
   const [alvo, setAlvo] = useState<string | null>(null);
   const fechar = useCallback(() => setAberto(null), []);
+  const [capas, setCapas] = useState<Record<string, string>>({});
+  const pedidas = useRef(new Set<string>());
+  const capaDe = (p: Post) => p.capa ?? capas[p.id] ?? null;
 
   // a semana sempre cabe na grade do mês da sua segunda-feira
   const mesBusca = visao === "semana" ? semana.slice(0, 7) : mes;
@@ -112,6 +116,32 @@ export default function Calendario() {
   const postados = doPeriodo.filter((p) => p.postado).length;
   const aguardando = doPeriodo.filter((p) => /aguardando|aprova/i.test(p.status) && !p.postado && p.status !== "Aprovado").length;
   const deHoje = visiveis.filter((p) => p.data === hoje);
+
+  // miniaturas: os posts sem imagem no campo de arquivos buscam a arte no Trello ou dentro da página
+  const naTela = visao === "semana" ? daSemana : doPeriodo;
+  useEffect(() => {
+    const faltam = naTela.filter((p) => !p.capa && !pedidas.current.has(p.id));
+    if (!faltam.length) return;
+    faltam.forEach((p) => pedidas.current.add(p.id));
+    for (let i = 0; i < faltam.length; i += 40) {
+      const lote = faltam.slice(i, i + 40).map(({ cliente, id, titulo }) => ({ cliente, id, titulo }));
+      fetch("/api/posts/capas", { method: "POST", body: JSON.stringify({ itens: lote }) })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j) => j?.capas && setCapas((c) => ({ ...c, ...j.capas })))
+        .catch(() => lote.forEach((p) => pedidas.current.delete(p.id)));
+    }
+  }, [naTela]);
+
+  /** Depois de enviar uma arte pelo painel: recarrega a lista e a miniatura desse post. */
+  function arteEnviada(id: string) {
+    pedidas.current.delete(id);
+    setCapas((c) => {
+      const resto = { ...c };
+      delete resto[id];
+      return resto;
+    });
+    setVersao((v) => v + 1);
+  }
 
   function navegar(delta: number) {
     if (visao === "semana") setSemana((s) => somaDias(s, delta * 7));
@@ -284,6 +314,7 @@ export default function Calendario() {
                         style={{ background: tom(g?.cor ?? "#999999") }}
                         title="Clique para abrir · arraste para mudar o dia"
                       >
+                        <Miniatura src={capaDe(p)} className="mb-2 h-20 w-full !rounded-[14px]" />
                         <div className="flex items-center gap-1.5 text-[11px] font-bold">
                           <span className="h-2 w-2 rounded-full" style={{ background: g?.cor }} />
                           <span className="truncate">{g?.nome}</span>
@@ -355,6 +386,7 @@ export default function Calendario() {
                             className={`flex cursor-grab items-center gap-1 truncate rounded-lg px-1.5 py-1 text-[11px] font-semibold ${arrastando === p.id ? "opacity-40" : ""}`}
                             style={{ background: tom(g?.cor ?? "#999999") }}
                           >
+                            <Miniatura src={capaDe(p)} className="h-5 w-4 rounded" />
                             <span className="truncate">{p.titulo}</span>
                             {p.postado && <CheckCircle2 size={11} className="ml-auto shrink-0" />}
                           </div>
@@ -375,10 +407,13 @@ export default function Calendario() {
                 const g = grupoDe(p.cliente);
                 return (
                   <li key={p.id}>
-                    <button {...arrastavel(p)} onClick={() => setAberto(p)} className="block w-full rounded-[20px] p-3 text-left" style={{ background: tom(g?.cor ?? "#999999") }}>
-                      <p className="text-[11px] font-bold">{g?.nome}{p.hora ? ` · ${p.hora}` : ""}</p>
-                      <p className="mt-1 text-sm font-bold leading-snug">{p.titulo}</p>
-                      <div className="mt-2"><StatusBadge status={p.status} /></div>
+                    <button {...arrastavel(p)} onClick={() => setAberto(p)} className="flex w-full items-start gap-3 rounded-[20px] p-3 text-left" style={{ background: tom(g?.cor ?? "#999999") }}>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] font-bold">{g?.nome}{p.hora ? ` · ${p.hora}` : ""}</p>
+                        <p className="mt-1 text-sm font-bold leading-snug">{p.titulo}</p>
+                        <div className="mt-2"><StatusBadge status={p.status} /></div>
+                      </div>
+                      <Miniatura src={capaDe(p)} className="h-[70px] w-14" />
                     </button>
                   </li>
                 );
@@ -389,7 +424,7 @@ export default function Calendario() {
         </div>
       )}
 
-      {aberto && <PostModal post={aberto} cliente={grupoDe(aberto.cliente)} onClose={fechar} onAtualizado={atualizarPost} />}
+      {aberto && <PostModal post={aberto} cliente={grupoDe(aberto.cliente)} onClose={fechar} onAtualizado={atualizarPost} onArte={arteEnviada} />}
     </div>
   );
 }

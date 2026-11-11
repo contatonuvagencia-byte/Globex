@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { dataBR } from "@/lib/format";
 import type { Post, PostDetalhe } from "@/lib/types";
 import { ArteTrello } from "./ArteTrello";
+import { EnviarArte } from "./EnviarArte";
 import { StatusBadge } from "./StatusBadge";
 
 function BlocoTexto({ titulo, texto }: { titulo: string; texto: string }) {
@@ -32,12 +33,15 @@ export function PostModal({
   cliente,
   onClose,
   onAtualizado,
+  onArte,
 }: {
   post: Post;
   cliente?: { nome: string; cor: string };
   onClose: () => void;
   onAtualizado: (p: Post) => void;
+  onArte?: (id: string) => void;
 }) {
+  const [recarga, setRecarga] = useState(0);
   const [detalhe, setDetalhe] = useState<PostDetalhe | null>(null);
   const [erro, setErro] = useState("");
   const [salvando, setSalvando] = useState(false);
@@ -84,7 +88,7 @@ export function PostModal({
       vivo = false;
       window.removeEventListener("keydown", esc);
     };
-  }, [post.id, post.cliente, onClose]);
+  }, [post.id, post.cliente, onClose, recarga]);
 
   const d = detalhe;
   const [artesTrello, setArtesTrello] = useState(0);
@@ -174,12 +178,19 @@ export function PostModal({
                     )}
                   </div>
                 )}
-                <ArteTrello post={post} onQuantidade={contarTrello} />
+                <ArteTrello key={recarga} post={post} onQuantidade={contarTrello} />
                 {!d.midias.length && !artesTrello && (
                   <p className="rounded-xl border border-dashed border-black/10 p-4 text-sm text-ink-2">
-                    Nenhuma arte encontrada. Anexe as imagens na página do post no Notion ou no card do Trello do cliente.
+                    Nenhuma arte encontrada ainda. Anexe aqui embaixo ou direto no Notion/Trello.
                   </p>
                 )}
+                <EnviarArte
+                  post={post}
+                  onEnviada={() => {
+                    setRecarga((n) => n + 1);
+                    onArte?.(post.id);
+                  }}
+                />
                 </div>
               </section>
               {d.copy && <BlocoTexto titulo="Copy da arte" texto={d.copy} />}

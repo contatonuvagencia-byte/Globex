@@ -16,7 +16,8 @@ export async function GET(req: Request) {
     const card = (await cardsDoQuadro(quadro.id)).find((c) => c.id === q.get("card"));
     const anexo = card?.anexos.find((a) => a.id === q.get("anexo"));
     if (!anexo) return new Response(null, { status: 404 });
-    const url = q.get("tamanho") === "original" || !anexo.urlMiniatura ? anexo.urlOriginal : anexo.urlMiniatura;
+    const t = q.get("tamanho");
+    const url = (t === "mini" && (anexo.urlMini ?? anexo.urlMiniatura)) || (t !== "original" && anexo.urlMiniatura) || anexo.urlOriginal;
     const res = await baixarAnexo(url);
     return new Response(res.body, {
       headers: {

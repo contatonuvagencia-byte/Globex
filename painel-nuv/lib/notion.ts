@@ -17,7 +17,7 @@ export class NotionErro extends Error {
   }
 }
 
-export async function notion(path: string, init?: { method?: string; body?: unknown }) {
+export async function notion(path: string, init?: { method?: string; body?: unknown; form?: FormData }) {
   const token = process.env.NOTION_TOKEN;
   if (!token) throw new Error("NOTION_TOKEN não configurado");
   const res = await fetch(`${NOTION_API}${path}`, {
@@ -25,9 +25,9 @@ export async function notion(path: string, init?: { method?: string; body?: unkn
     headers: {
       Authorization: `Bearer ${token}`,
       "Notion-Version": NOTION_VERSION,
-      "Content-Type": "application/json",
+      ...(init?.form ? {} : { "Content-Type": "application/json" }),
     },
-    body: init?.body ? JSON.stringify(init.body) : undefined,
+    body: init?.form ?? (init?.body ? JSON.stringify(init.body) : undefined),
     cache: "no-store",
   });
   if (!res.ok) {
@@ -104,7 +104,7 @@ function propData(p: NotionProp): { data: string; hora: string | null } | null {
   return { data: `${get("year")}-${get("month")}-${get("day")}`, hora: `${get("hour")}:${get("minute")}` };
 }
 
-function propArquivos(p: NotionProp): Midia[] {
+export function propArquivos(p: NotionProp): Midia[] {
   if (p?.type !== "files") return [];
   return p.files
     .map((f: any) => {
@@ -172,6 +172,7 @@ function paginaParaPost(cal: Calendario, page: any): Post | null {
     pilar: cal.campos.pilar ? propTexto(props[cal.campos.pilar]) : null,
     notionUrl: page.url,
     checks,
+    capa: propArquivos(props[cal.campos.arquivos ?? ""]).find((m) => m.tipo === "imagem")?.url ?? null,
   };
 }
 
@@ -315,7 +316,7 @@ function percorrer(blocos: NotionBlock[], coleta: Coleta) {
 const RE_LEGENDA = /legenda|caption/i;
 const RE_COPY = /slide|copy|roteiro|texto da arte|telas|cenas/i;
 
-async function calendarioOuErro(calId: string) {
+export async function calendarioOuErro(calId: string) {
   const cal = await calendarioPorId(calId);
   if (!cal) throw new Error("Calendário não encontrado");
   return cal;

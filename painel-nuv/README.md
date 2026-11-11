@@ -67,6 +67,15 @@ npm run dev                  # http://localhost:3000
 
 Com `TRELLO_KEY` e `TRELLO_TOKEN` (grátis, só leitura; no Trello: power-ups/admin → sua integração → Autorização → **Autenticação do Trello** → chave e link “Token”; no Netlify: Site configuration → Environment variables), cada post do calendário mostra as imagens anexadas ao card do Trello com o título mais parecido, no quadro do cliente (achado pelo nome, ex.: "Calendário de aprovação - GLOBEX", ou escolhido em *Calendários*). Se a busca não acertar, “trocar card” deixa escolher o card certo e o painel lembra.
 
+
+## Miniaturas e envio de artes
+
+- O card do post no calendário mostra a arte em miniatura: primeiro a imagem do campo de arquivos do Notion; se não tiver, a do card do Trello; se não tiver, a primeira imagem dentro da página do post.
+- No post aberto, **Anexar arte** (ou arrastar a imagem) envia o arquivo para o Notion e/ou para o card do Trello:
+  - Notion: vai para o campo de arquivos do post se ele estiver vazio; senão, entra como imagem no fim da página. A integração do Notion precisa da capacidade **Inserir conteúdo** (notion.so/profile/integrations → sua integração → Capacidades).
+  - Trello: anexa no card do post. O token precisa ser de **leitura e escrita**. Para gerar: `https://trello.com/1/authorize?expiration=never&scope=read,write&response_type=token&name=Painel%20NUV&key=SUA_CHAVE` (troque SUA_CHAVE pela TRELLO_KEY) e troque a TRELLO_TOKEN no Netlify.
+  - Limite de 4,5 MB por arquivo (imagens maiores são reduzidas para 2160 px automaticamente). Vídeos grandes: envie direto no Notion/Trello.
+
 ## Equipe e perfis de acesso
 
 Na aba **Equipe** (só a administração vê) você cadastra cada pessoa com e-mail e senha e escolhe um perfil:
