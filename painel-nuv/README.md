@@ -5,6 +5,7 @@ Um lugar só para tocar a agência:
 - **Calendário unificado**: os posts de todos os clientes, lidos ao vivo do Notion. Clique num post para ver **arte, copy e legenda** e **marcar como postado** (grava no Notion).
 - **Calendários automáticos**: cliente novo marcado como *Ativo* em CLIENTES no Notion, com um banco “Gestão de Mídias” (o do template), aparece sozinho. Também dá para colar o link de qualquer banco em *Gerenciar calendários*.
 - **Métricas**: leve os prints para o seu Claude com o pedido pronto e cole a resposta, ou digite os números. O painel monta a planilha comparativa, calcula as variações e organiza o que deu certo, o que deu errado e os próximos passos. Baixe em **Excel** ou gere a **versão do cliente**: um link com a identidade da NUV (ou o arquivo **HTML**) para mandar.
+- **Demandas**: as tarefas de “Minha Semana Produtiva - NUV” agrupadas por cliente ou na semana, com atrasadas e prioridades. Concluir, mudar data/prioridade/status e criar demanda gravam direto no Notion.
 - **Leads**: funil de prospecção (trazido do nuv-leads), ficha do lead, histórico de contatos, modelos de mensagem, mensagem escrita pela IA e follow-ups do dia.
 - **Financeiro**: entradas, saídas, mensalidades automáticas por cliente (com aviso de atraso), contas fixas, lucro, margem e gráfico de 6 meses.
 
@@ -38,7 +39,7 @@ A API paga do Claude é **opcional**. Sem ela, nas Métricas você usa “Usar m
 ## Como colocar no ar
 
 ### 1. Notion
-1. Em https://www.notion.so/profile/integrations, crie uma integração **interna** com as capacidades **Ler conteúdo** e **Atualizar conteúdo**.
+1. Em https://www.notion.so/profile/integrations, crie uma integração **interna** com as capacidades **Ler conteúdo**, **Atualizar conteúdo** e **Inserir conteúdo** (para criar demandas).
 2. Copie o token (começa com `ntn_`).
 3. No Notion, abra a página **NUVDash** → `•••` → **Conexões** → adicione a integração.
 

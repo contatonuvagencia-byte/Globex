@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 
 const ITENS = [
   { href: "/", rotulo: "Calendário", icone: "▦" },
+  { href: "/demandas", rotulo: "Demandas", icone: "☑" },
   { href: "/metricas", rotulo: "Métricas", icone: "↗" },
   { href: "/leads", rotulo: "Leads", icone: "◎" },
   { href: "/financeiro", rotulo: "Financeiro", icone: "R$" },
