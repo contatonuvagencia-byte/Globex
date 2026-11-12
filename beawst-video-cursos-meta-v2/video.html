@@ -74,6 +74,7 @@ body{font-family:I,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
   <div class="scene" id="s1">
     <div class="bg" style="background-image:url(assets/hook-grupo.jpg)"></div><div class="tint"></div>
     <div class="pcard" id="a0" style="left:60px;top:265px;width:960px;height:520px;transform:rotate(-2deg)"><img src="assets/hook-grupo.jpg" style="object-position:55% 50%"></div>
+    <div class="pcard" id="a4" style="left:90px;top:1290px;width:930px;height:430px;transform:rotate(2.5deg)"><img src="assets/hook-grupo2.jpg" style="object-position:50% 12%"></div>
     <div class="el h" id="a1" style="top:845px;font-size:104px">Seu inglês está</div>
     <div class="el h" id="a2" style="top:965px;font-size:140px"><span class="mark">travando</span></div>
     <div class="el h" id="a3" style="top:1095px;font-size:104px">seu salário?</div>
@@ -173,7 +174,7 @@ function render(t) {
   document.querySelectorAll('.pcard img').forEach(im => im.style.transform = `scale(${1.12 - .06 * eOut(seg(lt, 0, 3))})`);
 
   // gancho: zoom no rosto + tremida na palavra "travando"
-  show('a0', t, -1, 'pop'); show('a1', t, .05); show('a2', t, .45, 'slam'); show('a3', t, .9);
+  show('a0', t, -1, 'pop'); show('a4', t, .25, 'pop'); show('a1', t, .05); show('a2', t, .45, 'slam'); show('a3', t, .9);
   if (t > .85 && t < 1.25) $('a2').style.transform += ` translateX(${Math.sin(t * 90) * 10 * (1.25 - t) / .4}px)`;
   show('b0', t, 2.5, 'pop'); show('b1', t, 2.6, 'pop'); show('b2', t, 3.7);
   $('bu').style.setProperty('--w', 100 * eOut(seg(t, 3.0, .5)) + '%');
