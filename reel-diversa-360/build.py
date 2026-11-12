@@ -8,11 +8,13 @@ with T(o) = OFFSET + o / SPEED onto the final timeline.
 Steps: cut + grade each take -> assemble (hard cuts / whip pans) -> timeline.json for
 the overlay renderer (render_overlay.mjs), which composites graphics + audio.
 
-usage: python3 build.py <bruto.mp4> <narracao.mp3> <workdir>
+usage: python3 build.py <bruto.mp4> <narracao.mp3> <workdir> <bruto2.mp4>
 """
 import json, os, subprocess, sys
 
 BRUTO, NARR, WORK = sys.argv[1], sys.argv[2], sys.argv[3]
+# second batch of takes (Canva Video Export.mp4), referenced with f='b2'
+BRUTO2 = sys.argv[4] if len(sys.argv) > 4 else None
 os.makedirs(WORK, exist_ok=True)
 HERE = os.path.dirname(os.path.abspath(__file__))
 SPEED = 1.08
@@ -47,6 +49,8 @@ G = {
     'ca': 'colorbalance=rs=.06:gs=.015:bs=-.08:rm=.06:gm=.01:bm=-.06:rh=.05:bh=-.05,eq=contrast=1.07:saturation=1.12:gamma=0.98',
     # New York: cooler, denser
     'ny': 'colorbalance=rs=-.05:bs=.07:rm=-.04:bm=.06:rh=-.02:bh=.03,eq=contrast=1.1:saturation=0.9:brightness=-0.035',
+    # restaurant / toast: warm candlelight, deep shadows
+    'dine': 'colorbalance=rs=.05:bs=-.05:rm=.05:bm=-.04:rh=.03,eq=contrast=1.1:saturation=1.05:brightness=-0.03:gamma=0.95',
     # NY at dusk/night (Statue of Liberty): deep blue, lifted contrast, darker
     'night': 'colorbalance=rs=-.1:gs=-.03:bs=.14:rm=-.08:gm=-.02:bm=.12:rh=-.04:bh=.06,eq=contrast=1.16:saturation=0.82:brightness=-0.12:gamma=0.92',
 }
@@ -67,36 +71,37 @@ EDL = [
     dict(a=at('fronteiras'),  src=61.3,  sp=1.0, g='soft', tr='cut',  push=0.04, low=1.35),   # fechando a tampa
     dict(a=at('descobrir'),   src=71.08, sp=0.75, g='soft', tr='cut', push=0.03, low=1.2),   # erguendo a mala
     dict(a=at('destinos'),    src=15.3,  sp=1.0, g='soft', tr='cut',  push=0.04),   # corredor do aeroporto
-    dict(a=at('viver'),       src=22.8,  sp=0.9, g='soft', tr='cut',  push=0.04),   # corredor, outro trecho
+    dict(a=at('viver'),       src=2.0,   sp=0.9, g='ca',   tr='cut',  push=0.04, f='b2'),   # janela do avião, asa ao pôr do sol
     # 3 · OS DESTINOS (whip pans between cities, card on each name)
-    dict(a=at('Santa'),       src=141.0, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Santa Monica', '')),
+    dict(a=at('Santa'),       src=12.0,  sp=1.0, g='soft', tr='whip', push=0.03, city=('Santa Monica', ''), f='b2'),  # Santa Monica Pier
     dict(a=at('Califórnia'),  src=75.4,  sp=1.0, g='ca',   tr='whip', push=0.03, city=('Califórnia', '')),
     dict(a=at('Los'),         src=161.0, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Los Angeles', '')),
     dict(a=at('Nova'),        src=99.4,  sp=1.0, g='ny',   tr='whip', push=0.05, city=('Nova York', '')),
     # 4 · AS EXPERIÊNCIAS (fast, one per beat)
     dict(a=at('Cada', 1),     src=108.0, sp=1.0, g='ny',   tr='cut',  push=0.04),   # Manhattan Bridge
     dict(a=at('descoberta'),  src=80.2,  sp=1.0, g='ca',   tr='cut',  push=0.03),   # palmeiras girando
-    dict(a=at('cada', 2),     src=89.0,  sp=1.0, g='ca',   tr='cut',  push=0.03),   # orla ao pôr do sol
-    dict(a=at('história'),    src=154.6, sp=1.0, g='ca',   tr='cut',  push=0.03),   # semáforo / Ocean Ave
+    dict(a=at('cada', 2),     src=34.0,  sp=1.0, g='dine', tr='cut',  push=0.03, f='b2'),   # jantar, mãos cortando o prato
+    dict(a=at('história'),    src=21.0,  sp=1.0, g='ny',   tr='cut',  push=0.03, f='b2'),   # Times Square
     dict(a=at('cada', 3),     src=174.0, sp=1.0, g='ny',   tr='cut',  push=0.04),   # Empire State
-    dict(a=at('inspiração'),  src=166.2, sp=1.0, g='ca',   tr='cut',  push=0.03),   # avenida de palmeiras
+    dict(a=at('inspiração'),  src=6.5,   sp=1.0, g='ca',   tr='cut',  push=0.03, f='b2'),   # asa do avião
     # 5 · O SIGNIFICADO (slower, contemplative)
     dict(a=at('Mas'),         src=86.2,  sp=0.7, g='ca',   tr='cut',  push=0.05),   # sol baixo na orla
     dict(a=at('reconhecimento'), src=34.4, sp=0.7, g='soft', tr='cut', push=0.05),  # mão sobre o mapa
     dict(a=at('parcerias'),   src=102.4, sp=0.7, g='ny',   tr='cut',  push=0.05),   # skyline ao entardecer
-    dict(a=at('sonhos'),   src=96.0,  sp=0.7, g='ca',   tr='cut',  push=0.05),   # sol atrás das árvores
+    dict(a=at('sonhos'),   src=8.6,   sp=0.7, g='ca',   tr='cut',  push=0.05, f='b2'),   # asa sobre as nuvens
     # 6 · O CONVITE
     dict(a=at('Fomos'),       src=111.0, sp=0.9, g='ny',   tr='cut',  push=0.04),   # Manhattan Bridge
     dict(a=at('Top'),         src=176.0, sp=0.9, g='ny',   tr='cut',  push=0.04, card='topseller'),
-    dict(a=at('parceiro'),    src=93.2,  sp=1.0, g='ca',   tr='cut',  push=0.04),
-    dict(a=at('clientes'),    src=77.6,  sp=1.0, g='ca',   tr='cut',  push=0.03),
-    dict(a=at('mundo'),       src=115.0, sp=1.0, g='ny',   tr='cut',  push=0.04),
+    dict(a=at('parceiro'),    src=37.0,  sp=1.0, g='dine', tr='cut',  push=0.04, f='b2'),   # prato gourmet
+    dict(a=at('clientes'),    src=42.0,  sp=1.0, g='dine', tr='cut',  push=0.03, f='b2'),   # garfo no prato
+    dict(a=at('mundo'),       src=16.0,  sp=1.0, g='soft', tr='cut',  push=0.04, f='b2'),   # Santa Monica Pier
     dict(a=at('redescobrir'), src=82.0,  sp=0.9, g='ca',   tr='cut',  push=0.03),
     dict(a=at('Santa', 2),    src=146.4, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Santa Monica', '')),
     dict(a=at('Los', 2),      src=168.2, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Los Angeles', '')),
     dict(a=at('Nova', 3),     src=104.3, sp=1.0, g='ny',   tr='whip', push=0.04, city=('Nova York', '')),
     # 7 · O BRINDE — Estátua, slow rotation, night grade, music peak
-    dict(a=at('Obrigado'),    src=120.2, sp=0.75, g='night', tr='fade', push=0.09, rot=2.2),
+    dict(a=at('Obrigado'),    src=30.3,  sp=0.8, g='dine', tr='cut',  push=0.05, low=1.2, f='b2'),   # brinde (topo cortado: garçom ao fundo)
+    dict(a=at('sempre'),      src=120.2, sp=0.75, g='night', tr='cut', push=0.09, rot=2.2),
     # 8 · CONVITE PARA ACOMPANHAR — Estátua desacelerando, logos
     dict(a=at('Embarcamos'),  src=134.0, sp=0.6, g='night', tr='cut', push=0.05, rot=-1.2, end=True),
 ]
@@ -144,7 +149,7 @@ def render_shot(i, s):
         "format=yuv420p",
     ]
     out = os.path.join(WORK, f'shot_{i:02d}.mp4')
-    cmd = ['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{src_in:.3f}', '-t', f'{src_len:.3f}', '-i', BRUTO,
+    cmd = ['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{src_in:.3f}', '-t', f'{src_len:.3f}', '-i', BRUTO2 if s.get('f') == 'b2' else BRUTO,
            '-an', '-vf', ','.join(vf), '-t', f'{out_len:.3f}', '-c:v', 'libx264', '-preset', 'fast', '-crf', '12', out]
     subprocess.run(cmd, check=True)
     return out, out_len
