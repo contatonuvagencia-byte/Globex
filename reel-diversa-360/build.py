@@ -62,7 +62,7 @@ G = {
 # at ~44, 46, 50–51, 60, 69–70 s, so only face-free windows are used.
 EDL = [
     # 1 · O SONHO
-    dict(a=0.0,               src=1.0,   sp=0.8, g='soft', tr='fade', push=0.06),   # mãos no celular
+    dict(a=0.0,               img='assets/foto-abertura.jpg', g='soft', tr='fade', push=0.03, cropx=105),  # foto no aeroporto com a mala
     dict(a=at('sonho'),       src=28.2,  sp=0.8, g='soft', tr='cut',  push=0.05),   # mapa, aviãozinho, passaporte
     dict(a=at('jornadas'),    src=32.6,  sp=0.8, g='soft', tr='cut',  push=0.05),   # dedo percorrendo o mapa
     # 2 · A PARTIDA
@@ -103,6 +103,8 @@ EDL = [
     dict(a=at('sempre'),      src=120.2, sp=0.75, g='night', tr='cut', push=0.09, rot=2.2),
     # 8 · CONVITE PARA ACOMPANHAR — Estátua desacelerando, logos
     dict(a=at('Embarcamos'),  src=133.0, sp=0.5, g='night', tr='cut', push=0.05, rot=-1.2, end=True),
+    # final hold: couple photo framed over a blurred, darkened copy of itself
+    dict(a=at('Vai', lead=0.3), img='assets/foto-final.jpg', g='soft', tr='cut', push=0.03, framed=True, photo_end=True),
 ]
 
 for i, s in enumerate(EDL):
@@ -112,7 +114,29 @@ for i, s in enumerate(EDL):
     s['dur'] = round(s['t1'] - s['t0'], 3)
 
 
+def render_photo(i, s):
+    D = s['dur']
+    img = os.path.join(HERE, s['img'])
+    zoom = f"(1+{s['push']}*t/{D:.3f})"
+    if s.get('framed'):
+        fc = (f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,gblur=sigma=40,"
+              f"eq=brightness=-0.22:saturation=0.8[bg];"
+              f"[0:v]scale=w='1000*{zoom}':h=-2:eval=frame,format=rgba[fg];"
+              f"[bg][fg]overlay=x='(W-w)/2':y='250-(h-1115)/2':format=auto,{G[s['g']]},vignette=PI/6,format=yuv420p[v]")
+    else:
+        cx = s.get('cropx', 0)
+        fc = (f"[0:v]scale=-2:1920,scale=w='iw*{zoom}':h=-2:eval=frame,"
+              f"crop=1080:1920:'{cx}+(iw-1440)/2':'(ih-1920)/2',{G[s['g']]},vignette=PI/5,format=yuv420p[v]")
+    out = os.path.join(WORK, f'shot_{i:02d}.mp4')
+    subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-loop', '1', '-framerate', str(FPS), '-t', f'{D:.3f}', '-i', img,
+                    '-filter_complex', fc, '-map', '[v]', '-t', f'{D:.3f}', '-r', str(FPS),
+                    '-c:v', 'libx264', '-preset', 'fast', '-crf', '12', out], check=True)
+    return out, D
+
+
 def render_shot(i, s):
+    if 'img' in s:
+        return render_photo(i, s)
     whip_in = s['tr'] == 'whip'
     whip_out = i + 1 < len(EDL) and EDL[i + 1]['tr'] == 'whip'
     out_len = s['dur']
@@ -158,7 +182,7 @@ shots = []
 for i, s in enumerate(EDL):
     path, L = render_shot(i, s)
     shots.append((path, L))
-    print(f"shot {i:02d}  {s['t0']:6.2f}–{s['t1']:6.2f}s  src {s['src']:6.2f}s  x{s['sp']}  {s['g']:5s}  {s['tr']}")
+    print(f"shot {i:02d}  {s['t0']:6.2f}–{s['t1']:6.2f}s  {s.get('img') or 'src %.2fs x%s' % (s['src'], s['sp'])}  {s['g']:5s}  {s['tr']}")
 
 # Assemble with the concat demuxer, then a finishing pass (fades + film grain)
 lst = os.path.join(WORK, 'shots.txt')
@@ -215,6 +239,8 @@ TAKES = {None: [(0, 15), (15, 28), (28, 39), (39, 74), (74, 86), (86, 99), (99, 
          'b2': [(0, 11), (11, 21), (21, 29), (29, 33), (33, 41.2), (41.2, 46)]}
 UNSAFE = {None: [(43.5, 46.6), (49.8, 51.4), (59.5, 61.0), (68.8, 71.05)], 'b2': [(29.0, 30.25), (24.5, 29.0)]}
 for i, s_ in enumerate(EDL):
+    if 'img' in s_:
+        continue
     a_, b_ = s_['src'], s_['src'] + s_['dur'] * s_['sp']
     ok_take = any(x <= a_ and b_ <= y for x, y in TAKES[s_.get('f')])
     clash = [u for u in UNSAFE[s_.get('f')] if a_ < u[1] and b_ > u[0]]
@@ -226,6 +252,7 @@ timeline = dict(
     cities=CITIES,
     topseller=[dict(t0=s['t0'], t1=s['t0'] + 4.2) for s in EDL if s.get('card') == 'topseller'][0],
     end=dict(t0=[s for s in EDL if s.get('end')][0]['t0']),
+    photo_end=dict(t0=[s for s in EDL if s.get('photo_end')][0]['t0']),
     music=dict(partida=T(at('Desta')), destinos=T(at('Santa')), experiencias=T(at('Cada')), significado=T(at('Mas')),
                convite=T(at('Fomos')), brinde=T(at('Obrigado')), final=T(at('Embarcamos'))),
     subs=subs,

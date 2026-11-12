@@ -53,6 +53,17 @@ body { font-family: "Open Sauce", sans-serif; color: #fff; -webkit-font-smoothin
 #cta .e { display: inline-block; font-weight: 700; font-size: 86px; letter-spacing: 0.02em; }
 #cta .ul { height: 6px; background: var(--wine); margin: 8px auto 0; }
 #cta .a { font-size: 72px; margin-top: 18px; }
+
+/* final photo hold */
+#fin { }
+#fin .logo { position: absolute; left: 0; right: 0; top: 1395px; display: flex; flex-direction: column; align-items: center; }
+#word2 { display: flex; align-items: flex-end; font-family: "Cinzel"; line-height: 0.8; letter-spacing: 0.02em; color: #fff; }
+#word2 span { display: inline-block; }
+#rule2 { height: 1.5px; background: rgba(255,255,255,0.75); margin-top: 10px; }
+#tours2 { margin-top: 12px; width: 120px; }
+#fin .cta { position: absolute; left: 0; right: 0; top: 1545px; text-align: center; }
+#fin .cta .e { font-weight: 700; font-size: 58px; }
+#fin .cta .a { font-size: 50px; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -71,6 +82,11 @@ body { font-family: "Open Sauce", sans-serif; color: #fff; -webkit-font-smoothin
   <div id="div2" class="shadow">360° · USA EDITION 2026</div>
 </div>
 <div class="layer" id="cta"><span class="e shadow">Embarque 15/11</span><div class="ul"></div><div class="script a shadow">Acompanhe a viagem</div></div>
+<div class="layer" id="fin">
+  <div class="logo"><div id="word2" class="shadow"></div><div id="rule2"></div>
+    <svg id="tours2" viewBox="0 0 686.92 152.69"><path fill="#ffffff" d="M19.31 55.52H0V43.07H19.31V0H33.66V43.07H54.71V55.52H33.66v92.57H19.31Zm157.25 83.56c11.52 0 21.29-4.16 29.29-12.48s12-18.51 12-30.59c0-12.24-4-22.46-11.96-30.75s-17.74-12.44-29.33-12.44c-11.52 0-21.25 4.16-29.21 12.44S135.4 83.76 135.4 96c0 12.08 4 22.26 11.96 30.59s17.7 12.48 29.21 12.48Zm-.48 13.62c-7.47 0-14.67-1.49-21.54-4.44s-13.09-7.19-18.71-12.73c-5.290-5.21-9.29-11.19-12.04-17.98-2.79-6.79-4.16-14.06-4.16-21.78 0-7.64 1.41-14.91 4.24-21.78 2.87-6.87 6.91-12.93 12.2-18.22 5.37-5.37 11.47-9.45 18.34-12.32 6.87-2.83 14.1-4.24 21.66-4.24 7.76 0 15.11 1.41 22.1 4.24 6.95 2.87 13.17 6.95 18.63 12.32s9.62 11.47 12.48 18.34 4.32 14.1 4.32 21.66c0 7.6-1.41 14.79-4.24 21.62-2.87 6.83-6.95 12.85-12.32 18.14-5.54 5.54-11.84 9.78-18.87 12.73-7.07 2.95-14.42 4.44-22.1 4.44ZM330.27 43.07V95.52c0 15.92 2.26 27.19 6.83 33.74 4.53 6.55 12.2 9.82 23.03 9.82 10.71 0 18.42-3.31 23.07-9.94s6.99-17.86 6.99-33.62V43.07h14.42v59.88c0 16.36-3.76 28.73-11.23 37.13-7.52 8.4-18.51 12.61-33.05 12.61-14.59 0-25.66-4.2-33.25-12.61-7.56-8.4-11.35-20.77-11.35-37.13V43.07ZM510.03 64.16c5.37-9.09 10.63-15.52 15.8-19.27 5.17-3.8 11.19-5.7 18.06-5.7 2.06 0 4.12.2 6.22.61 2.1.36 4.16.93 6.22 1.62L551.6 55.15c-1.58-.48-3.23-.85-4.93-1.17s-3.31-.49-4.89-.49c-8.77 0-16.28 4.12-22.46 12.32s-9.29 18.42-9.29 30.67v51.6H495.48V43.07h14.55Zm101.94 65.17l13.86-7.92c2.3 5.86 5.62 10.26 9.94 13.21 4.36 2.95 9.66 4.44 16 4.44 6.14 0 11.03-1.58 14.67-4.69s5.45-7.27 5.45-12.48c0-8.04-7.15-14.87-21.41-20.49-1.54-.53-2.71-1.01-3.56-1.41-11.07-4.32-18.79-8.81-23.23-13.41-4.4-4.61-6.63-10.34-6.63-17.09 0-8.93 3.15-16.24 9.5-21.98 6.3-5.7 14.46-8.57 24.48-8.57 8.53 0 15.8 1.86 21.82 5.58 5.98 3.72 10.38 8.97 13.13 15.84l-13.37 7.47c-1.66-4.97-4.44-8.77-8.32-11.35-3.84-2.63-8.57-3.92-14.18-3.92-5.05 0-9.21 1.49-12.48 4.44s-4.93 6.63-4.93 11.07c0 4.32 1.62 7.92 4.85 10.75s9.94 5.98 20.12 9.33c11.56 4.04 19.27 8.4 23.27 13.17 4 4.73 5.98 11.27 5.98 19.64 0 9.62-3.43 17.33-10.3 23.07-6.87 5.78-16.08 8.65-27.72 8.65-8.89 0-16.57-2.02-23.03-6.1-6.42-4.08-11.07-9.82-13.9-17.25"/></svg></div>
+  <div class="cta"><div class="e shadow">Embarque 15/11</div><div class="script a shadow">Acompanhe a viagem</div></div>
+</div>
 <div id="sub"><span class="shadow"></span></div>
 
 <script>
@@ -87,6 +103,10 @@ const base = 64;
 [...'CARL'].map((c) => [c, 1]).concat([['A', 1.42, -0.02], ['V', 1.42, -0.36]], [...'IEIRA'].map((c) => [c, 1]))
   .forEach(([c, s, ml]) => { const e = document.createElement('span'); e.textContent = c; e.style.fontSize = base * s + 'px'; if (ml) e.style.marginLeft = ml + 'em'; word.appendChild(e); });
 const glyphs = [...word.children];
+const word2 = document.querySelector('#word2');
+[...'CARL'].map((c) => [c, 1]).concat([['A', 1.42, -0.02], ['V', 1.42, -0.36]], [...'IEIRA'].map((c) => [c, 1]))
+  .forEach(([c, s, ml]) => { const e = document.createElement('span'); e.textContent = c; e.style.fontSize = 38 * s + 'px'; if (ml) e.style.marginLeft = ml + 'em'; word2.appendChild(e); });
+const fin = document.querySelector('#fin');
 
 const sub = $('#sub span');
 const city = $('#city'), cityName = $('#city .name'), citySub = $('#city .sub'), cityBar = $('#city .bar');
@@ -142,14 +162,31 @@ window.renderFrame = (t) => {
       $(q).style.opacity = p; $(q).style.transform = `translateY(${(1 - p) * 14}px)`;
     });
     const cp = eOut5(prog(t, e0 + 3.0, e0 + 3.7));
-    cta.style.opacity = clamp(cp * 1.4);
+    // with a final photo, the call to action lives on the photo instead
+    cta.style.opacity = TL.photo_end ? 0 : clamp(cp * 1.4);
     $('#cta .e').style.transform = `translateY(${(1 - cp) * 24}px)`;
     $('#cta .ul').style.width = 300 * eOut(prog(t, e0 + 3.3, e0 + 4.0)) + 'px';
     $('#cta .a').style.opacity = eOut(prog(t, e0 + 3.8, e0 + 4.5));
-    // everything fades with the picture at the very end
-    const out = prog(t, TL.duration - 0.6, TL.duration);
-    [endbg, logos, cta].forEach((el) => { el.style.opacity = Math.min(+el.style.opacity || 1, 1 - out); });
+    // statue end card gives way to the couple photo
+    const pe = TL.photo_end ? TL.photo_end.t0 : Infinity;
+    const away = prog(t, pe - 0.05, pe + 0.25);
+    [endbg, logos, cta].forEach((el) => { const o = parseFloat(el.style.opacity); el.style.opacity = Math.min(isNaN(o) ? 1 : o, 1 - away); });
   } else { endbg.style.opacity = 0; logos.style.opacity = 0; cta.style.opacity = 0; }
+
+  // final photo hold: small white logo, then the call to action once the voice ends
+  const pe2 = TL.photo_end ? TL.photo_end.t0 : Infinity;
+  if (t >= pe2) {
+    fin.style.opacity = 1;
+    const lp = eOut(prog(t, pe2 + 0.3, pe2 + 1.1));
+    document.querySelector('#fin .logo').style.opacity = lp;
+    document.querySelector('#fin .logo').style.transform = `translateY(${(1 - lp) * 14}px)`;
+    document.querySelector('#rule2').style.width = word2.getBoundingClientRect().width * lp + 'px';
+    const lastSub = TL.subs[TL.subs.length - 1].t1;
+    const cp = eOut5(prog(t, lastSub + 0.1, lastSub + 0.7));
+    const c = document.querySelector('#fin .cta');
+    c.style.opacity = cp;
+    c.style.transform = `translateY(${(1 - cp) * 18}px)`;
+  } else fin.style.opacity = 0;
 };
 </script>
 </body>
