@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Globex Cargo — Stories: custo da importação</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  /* Paleta oficial Globex (Notion › GLOBEX › Identidade Visual & Moodboards) */
+  :root{ --preto:#131313; --verde:#2e402b; --oliva:#52573e; --areia:#d9c9ba; --gelo:#e7e7e6; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#000;display:flex;gap:40px;padding:40px;width:max-content}
+  .story{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:'Montserrat',sans-serif}
+  .pad{position:absolute;left:96px;right:96px}
+
+  /* estrutura padrão: tag no topo · barra verde · título · apoio · logo */
+  .tag{top:270px;display:flex;align-items:center;gap:22px;font-weight:600;font-size:30px;letter-spacing:.26em;text-transform:uppercase}
+  .tag i{display:block;height:7px;width:72px}
+  .h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:96px;line-height:1.08;letter-spacing:-.015em}
+  .h1 em{font-style:normal}
+  .bar{height:12px;width:380px;margin-top:46px}
+  .sub{margin-top:40px;font-size:46px;font-weight:500;line-height:1.35}
+  .mark{position:absolute;left:0;right:0;bottom:250px;text-align:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:46px;letter-spacing:.08em;line-height:1}
+  .mark small{display:block;font-family:'Montserrat',sans-serif;font-weight:500;font-size:20px;letter-spacing:.62em;margin-right:-.62em;margin-top:8px}
+
+  /* STORY 1 · gancho (preto) */
+  #s1{background:var(--preto);color:var(--gelo)}
+  #s1 .tag{color:var(--areia)} #s1 .tag i{background:var(--oliva)}
+  #s1 .bar{background:linear-gradient(90deg,var(--verde),var(--oliva))}
+  #s1 .sub em{font-style:normal;color:var(--areia);font-weight:600}
+  #s1 .mark small{color:var(--areia)}
+  .proforma{position:absolute;left:96px;top:420px;width:600px;background:var(--gelo);color:var(--preto);border-radius:22px;
+    padding:44px 48px;transform:rotate(-4deg);box-shadow:0 30px 60px rgba(0,0,0,.45)}
+  .proforma .t{font-weight:700;font-size:28px;letter-spacing:.24em;color:var(--oliva)}
+  .proforma .ln{height:14px;border-radius:7px;background:rgba(19,19,19,.12);margin-top:22px}
+  .proforma .tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:40px;padding-top:28px;border-top:3px dashed rgba(19,19,19,.25)}
+  .proforma .tot span{font-weight:600;font-size:28px;white-space:nowrap}
+  .proforma .tot b{font-family:'Poppins',sans-serif;font-weight:800;font-size:48px;color:var(--verde);white-space:nowrap}
+  .qmark{position:absolute;right:120px;top:470px;width:250px;height:250px;border-radius:50%;background:var(--areia);color:var(--preto);
+    display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:170px;transform:rotate(8deg)}
+  #s1 .text{top:1000px}
+
+  /* STORY 2 · contexto (claro) */
+  #s2{background:var(--gelo);color:var(--preto)}
+  #s2 .frame{position:absolute;inset:40px;border:3px solid var(--verde);border-radius:36px}
+  #s2 .tag{color:var(--oliva)} #s2 .tag i{background:var(--verde)}
+  #s2 .text{top:360px}
+  #s2 .h1{font-size:88px}
+  #s2 .h1 em{color:var(--verde)}
+  #s2 .bar{background:var(--verde)}
+  #s2 .sub{color:var(--oliva)}
+  .stack{position:absolute;left:96px;right:96px;top:1050px;display:flex;gap:30px;align-items:flex-end}
+  .blocks{flex:1;display:flex;flex-direction:column;gap:10px}
+  .blk{border-radius:16px;padding:18px 28px;font-size:32px;font-weight:600;display:flex;align-items:center}
+  .blk.c{background:var(--verde);color:var(--gelo)}
+  .blk.c:nth-child(even){background:var(--oliva)}
+  .blk.p{background:var(--areia);color:var(--preto);border:3px solid var(--preto)}
+  .brace{width:150px;align-self:stretch;position:relative}
+  .brace svg{position:absolute;left:0;top:0;width:44px;height:100%}
+  .brace svg path{fill:none;stroke:var(--preto);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+  .brace span{position:absolute;left:56px;top:50%;transform:translateY(-50%);font-family:'Poppins',sans-serif;font-weight:800;font-size:34px;line-height:1.1}
+  #s2 .mark{bottom:150px} #s2 .mark small{color:var(--oliva)}
+
+  /* STORY 3 · CTA (verde) */
+  #s3{background:var(--verde);color:var(--gelo)}
+  #s3 .tag{color:var(--areia)} #s3 .tag i{background:var(--areia)}
+  #s3 .text{top:560px}
+  #s3 .h1 em{color:var(--areia)}
+  #s3 .bar{background:var(--areia)}
+  .btn{display:inline-flex;align-items:center;gap:24px;margin-top:80px;background:var(--areia);color:var(--preto);border-radius:999px;
+    padding:36px 66px;font-family:'Poppins',sans-serif;font-weight:700;font-size:50px}
+  .btn svg{width:48px;height:48px;fill:none;stroke:var(--preto);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  #s3 .mark small{color:var(--areia)}
+  .ring{position:absolute;right:-220px;top:-160px;width:760px;height:760px;border-radius:50%;border:3px solid rgba(217,201,186,.18)}
+  .ring.r2{right:-120px;top:-60px;width:560px;height:560px}
+</style>
+</head>
+<body>
+
+<!-- STORY 1 · Gancho -->
+<div class="story" id="s1">
+  <div class="pad tag"><i></i><span>Importação</span></div>
+  <div class="proforma">
+    <div class="t">PROFORMA INVOICE</div>
+    <div class="ln" style="width:90%"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:80%"></div>
+    <div class="tot"><span>Total</span><b>US$ ••••</b></div>
+  </div>
+  <div class="qmark">?</div>
+  <div class="pad text">
+    <div class="h1">Seu fornecedor te passou um preço.</div>
+    <div class="bar"></div>
+    <div class="sub">Mas esse é o <em>custo real</em> da importação?</div>
+  </div>
+  <div class="mark">GLOBEX<small>CARGO</small></div>
+</div>
+
+<!-- STORY 2 · Contexto -->
+<div class="story" id="s2">
+  <div class="frame"></div>
+  <div class="pad tag"><i></i><span>O que ninguém soma</span></div>
+  <div class="pad text">
+    <div class="h1">Frete, imposto, taxa e armazenagem <em>entram depois.</em></div>
+    <div class="bar"></div>
+    <div class="sub">E a conta final muda bastante.</div>
+  </div>
+  <div class="stack">
+    <div class="blocks">
+      <div class="blk c">Honorários</div>
+      <div class="blk c">Armazenagem</div>
+      <div class="blk c">Taxas portuárias</div>
+      <div class="blk c">Tributos</div>
+      <div class="blk c">Seguro</div>
+      <div class="blk c">Frete internacional</div>
+      <div class="blk p">Preço do fornecedor</div>
+    </div>
+    <div class="brace">
+      <svg viewBox="0 0 44 100" preserveAspectRatio="none"><path d="M4 2 C24 2 20 10 20 30 L20 44 C20 48 26 50 40 50 C26 50 20 52 20 56 L20 70 C20 90 24 98 4 98"/></svg>
+      <span>Custo<br>real</span>
+    </div>
+  </div>
+  <div class="mark">GLOBEX<small>CARGO</small></div>
+</div>
+
+<!-- STORY 3 · CTA -->
+<div class="story" id="s3">
+  <div class="ring"></div><div class="ring r2"></div>
+  <div class="pad tag"><i></i><span>Fale com a Globex</span></div>
+  <div class="pad text">
+    <div class="h1">A Globex calcula o <em>custo total</em> antes de você fechar o pedido.</div>
+    <div class="bar"></div>
+    <div class="sub">Fala com a gente.</div>
+    <div class="btn"><svg viewBox="0 0 48 48"><path d="M8 38l3-9a16 16 0 1 1 7 7z"/></svg>Fale com a gente</div>
+  </div>
+  <div class="mark">GLOBEX<small>CARGO</small></div>
+</div>
+
+</body>
+</html>
