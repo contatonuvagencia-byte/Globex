@@ -198,9 +198,14 @@ assert k == len(WORDS), (k, len(WORDS))
 for a_, b_ in zip(subs, subs[1:]):
     a_['t1'] = round(min(a_['t1'], b_['t0'] - 0.02), 3)
 
+# a city card may outlive its shot (min 1.7 s) but never overlaps the next card
+CITIES = [dict(t0=s['t0'], t1=max(s['t1'], s['t0'] + 1.7), name=s['city'][0], sub=s['city'][1]) for s in EDL if 'city' in s]
+for c, n in zip(CITIES, CITIES[1:]):
+    c['t1'] = min(c['t1'], n['t0'])
+
 timeline = dict(
     duration=DURATION, fps=FPS, speed=SPEED, offset=OFFSET,
-    cities=[dict(t0=s['t0'], t1=max(s['t1'], s['t0'] + 1.7), name=s['city'][0], sub=s['city'][1]) for s in EDL if 'city' in s],
+    cities=CITIES,
     topseller=[dict(t0=s['t0'], t1=T(at('Santa', 2))) for s in EDL if s.get('card') == 'topseller'][0],
     end=dict(t0=[s for s in EDL if s.get('end')][0]['t0']),
     subs=subs,
