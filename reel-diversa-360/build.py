@@ -17,9 +17,9 @@ BRUTO, NARR, WORK = sys.argv[1], sys.argv[2], sys.argv[3]
 BRUTO2 = sys.argv[4] if len(sys.argv) > 4 else None
 os.makedirs(WORK, exist_ok=True)
 HERE = os.path.dirname(os.path.abspath(__file__))
-SPEED = 1.08
-OFFSET = 0.10
-TAIL = 0.18
+SPEED = 1.0   # narration v2 (Carla Vieira voice) runs 70.9 s, kept at natural speed
+OFFSET = 1.0  # 1 s of picture + score before the voice
+TAIL = 3.4    # hold on the end card
 FPS = 30
 WHIP = 0.2  # whip-pan transition length
 
@@ -80,9 +80,8 @@ EDL = [
     # 4 · AS EXPERIÊNCIAS (fast, one per beat)
     dict(a=at('Cada', 1),     src=108.0, sp=1.0, g='ny',   tr='cut',  push=0.04),   # Manhattan Bridge
     dict(a=at('descoberta'),  src=80.2,  sp=1.0, g='ca',   tr='cut',  push=0.03),   # palmeiras girando
-    dict(a=at('cada', 2),     src=34.0,  sp=1.0, g='dine', tr='cut',  push=0.03, f='b2'),   # jantar, mãos cortando o prato
-    dict(a=at('história'),    src=21.0,  sp=1.0, g='ny',   tr='cut',  push=0.03, f='b2'),   # Times Square
-    dict(a=at('cada', 3),     src=44.0,  sp=1.0, g='dine', tr='cut',  push=0.04, f='b2'),   # garfo no prato
+    dict(a=at('cada', 2),     src=21.0,  sp=1.0, g='ny',   tr='cut',  push=0.03, f='b2'),   # Times Square (cada encontro, uma história)
+    dict(a=at('cada', 3),     src=43.6,  sp=1.0, g='dine', tr='cut',  push=0.04, f='b2'),   # garfo no prato
     dict(a=at('inspiração'),  src=6.5,   sp=1.0, g='ca',   tr='cut',  push=0.03, f='b2'),   # asa do avião
     # 5 · O SIGNIFICADO (slower, contemplative)
     dict(a=at('Mas'),         src=86.2,  sp=0.7, g='ca',   tr='cut',  push=0.05),   # sol baixo na orla
@@ -103,7 +102,7 @@ EDL = [
     dict(a=at('Obrigado'),    src=30.3,  sp=0.8, g='dine', tr='cut',  push=0.05, low=1.2, f='b2'),   # brinde (topo cortado: garçom ao fundo)
     dict(a=at('sempre'),      src=120.2, sp=0.75, g='night', tr='cut', push=0.09, rot=2.2),
     # 8 · CONVITE PARA ACOMPANHAR — Estátua desacelerando, logos
-    dict(a=at('Embarcamos'),  src=134.0, sp=0.6, g='night', tr='cut', push=0.05, rot=-1.2, end=True),
+    dict(a=at('Embarcamos'),  src=133.0, sp=0.5, g='night', tr='cut', push=0.05, rot=-1.2, end=True),
 ]
 
 for i, s in enumerate(EDL):
@@ -204,15 +203,31 @@ for a_, b_ in zip(subs, subs[1:]):
     a_['t1'] = round(min(a_['t1'], b_['t0'] - 0.02), 3)
 
 # a city card may outlive its shot (min 1.7 s) but never overlaps the next card
-CITIES = [dict(t0=s['t0'], t1=max(s['t1'], s['t0'] + 1.7), name=s['city'][0], sub=s['city'][1]) for s in EDL if 'city' in s]
+# extend a short card only when the next shot is still the same city look (e.g. NY skyline -> NY bridge)
+CITIES = [dict(t0=s['t0'], name=s['city'][0], sub=s['city'][1],
+               t1=max(s['t1'], s['t0'] + 1.7) if i + 1 < len(EDL) and EDL[i + 1]['g'] == s['g'] else s['t1'])
+          for i, s in enumerate(EDL) if 'city' in s]
 for c, n in zip(CITIES, CITIES[1:]):
     c['t1'] = min(c['t1'], n['t0'])
+
+# safety: every shot must stay inside its take and outside face/background-person windows
+TAKES = {None: [(0, 15), (15, 28), (28, 39), (39, 74), (74, 86), (86, 99), (99, 107), (107, 120), (120, 139), (139, 160), (160, 173), (173, 181)],
+         'b2': [(0, 11), (11, 21), (21, 29), (29, 33), (33, 41.2), (41.2, 46)]}
+UNSAFE = {None: [(43.5, 46.6), (49.8, 51.4), (59.5, 61.0), (68.8, 71.05)], 'b2': [(29.0, 30.25), (24.5, 29.0)]}
+for i, s_ in enumerate(EDL):
+    a_, b_ = s_['src'], s_['src'] + s_['dur'] * s_['sp']
+    ok_take = any(x <= a_ and b_ <= y for x, y in TAKES[s_.get('f')])
+    clash = [u for u in UNSAFE[s_.get('f')] if a_ < u[1] and b_ > u[0]]
+    if not ok_take or clash:
+        raise SystemExit(f"shot {i}: src {a_:.2f}-{b_:.2f} ({s_.get('f') or 'b1'}) out of take or unsafe {clash}")
 
 timeline = dict(
     duration=DURATION, fps=FPS, speed=SPEED, offset=OFFSET,
     cities=CITIES,
     topseller=[dict(t0=s['t0'], t1=s['t0'] + 4.2) for s in EDL if s.get('card') == 'topseller'][0],
     end=dict(t0=[s for s in EDL if s.get('end')][0]['t0']),
+    music=dict(partida=T(at('Desta')), destinos=T(at('Santa')), experiencias=T(at('Cada')), significado=T(at('Mas')),
+               convite=T(at('Fomos')), brinde=T(at('Obrigado')), final=T(at('Embarcamos'))),
     subs=subs,
 )
 json.dump(timeline, open(os.path.join(WORK, 'timeline.json'), 'w'), ensure_ascii=False, indent=1)
