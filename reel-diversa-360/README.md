@@ -12,9 +12,33 @@ e da narração (ElevenLabs), acelerada 1,08× sem alterar o tom.
   junto com a narração.
 
 ```bash
-python3 build.py bruto.mp4 narracao.mp3 work/
+python3 build.py bruto.mp4 narracao.mp3 work/ canva-video-export.mp4 sandiego.mp4
 node render.mjs work/ narracao.mp3 out/reel-carlavieira-diversa360.mp4
 ```
+
+Os vídeos brutos não ficam no repositório (tamanho): `bruto.mp4` (~3 min: mala, mapa,
+Califórnia, Nova York, Estátua), `canva-video-export.mp4` (~46 s: avião, Times Square, brinde,
+pratos) e `sandiego.mp4` (65 s: torre, skyline de drone, palmeiras no pôr do sol).
+
+### Narração v3 (com San Diego)
+
+- `roteiro-v3.txt`: texto com as tags de entonação, do jeito que foi colado no ElevenLabs.
+- `words.json`: tempo de cada palavra. Sem reconhecedor de voz disponível, ele sai do
+  `align.py`: as pausas do áudio são casadas com o texto (`breaks-narracao-v3.txt`, conferido
+  pela energia do áudio) e, dentro de cada frase, as palavras dividem o tempo na proporção da
+  narração anterior (`words-narracao-v2.json`).
+
+```bash
+python3 align.py narracao.mp3 roteiro-v3.txt words-narracao-v2.json breaks-narracao-v3.txt > words.json
+```
+
+### Fotos e logos
+
+- Abertura: foto do casal emoldurada, símbolo Diversa 360° acima e as logos Carla Vieira Tours
+  e Diversa Turismo abaixo.
+- Final: foto do Anderson com a mala, com as duas logos e o "Embarque 15/11".
+- `logos.py` gera as versões brancas transparentes (`assets/logo-*.png`) a partir dos originais
+  em `assets/logos-src/`.
 
 Fontes: Open Sauce Sans (OFL). A Yellowtail substitui a Biro Script Plus, que é comercial.
 

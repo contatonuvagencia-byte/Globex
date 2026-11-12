@@ -8,16 +8,22 @@ with T(o) = OFFSET + o / SPEED onto the final timeline.
 Steps: cut + grade each take -> assemble (hard cuts / whip pans) -> timeline.json for
 the overlay renderer (render_overlay.mjs), which composites graphics + audio.
 
-usage: python3 build.py <bruto.mp4> <narracao.mp3> <workdir> <bruto2.mp4>
+usage: python3 build.py <bruto.mp4> <narracao.mp3> <workdir> <bruto2.mp4> [<sandiego.mp4>]
 """
 import json, os, subprocess, sys
 
 BRUTO, NARR, WORK = sys.argv[1], sys.argv[2], sys.argv[3]
 # second batch of takes (Canva Video Export.mp4), referenced with f='b2'
 BRUTO2 = sys.argv[4] if len(sys.argv) > 4 else None
+# San Diego takes (Canva_Video_Export.mp4 sent on 12/11), referenced with f='b3':
+#   0–10 s drone push on the pointed-roof hotel tower, blue sky
+#   10–54 s drone orbit over the downtown towers, bay in the back
+#   54–65 s palm silhouettes and ocean at sunset (from 58 s: sky and sea only)
+BRUTO3 = sys.argv[5] if len(sys.argv) > 5 else None
+SRCS = {None: BRUTO, 'b2': BRUTO2, 'b3': BRUTO3}
 os.makedirs(WORK, exist_ok=True)
 HERE = os.path.dirname(os.path.abspath(__file__))
-SPEED = 1.0   # narration v2 (Carla Vieira voice) runs 70.9 s, kept at natural speed
+SPEED = 1.0   # narration v3 (Carla Vieira voice, with San Diego) runs 75.2 s, kept at natural speed
 OFFSET = 1.0  # 1 s of picture + score before the voice
 TAIL = 3.4    # hold on the end card
 FPS = 30
@@ -27,11 +33,12 @@ WORDS = json.load(open(os.path.join(HERE, 'words.json')))
 T = lambda o: OFFSET + o / SPEED
 
 
-def at(word, nth=1, lead=0.08):
+def at(word, nth=1, lead=0.08, exact=False):
     """Original-time start of the nth occurrence of a word (prefix match), minus a lead."""
     k = 0
     for w in WORDS:
-        if w['w'].strip(' ,.').lower().startswith(word.lower()):
+        x = w['w'].strip(' ,.!?:').lower()
+        if (x == word.lower()) if exact else x.startswith(word.lower()):
             k += 1
             if k == nth:
                 return w['s'] - lead
@@ -62,7 +69,8 @@ G = {
 # at ~44, 46, 50–51, 60, 69–70 s, so only face-free windows are used.
 EDL = [
     # 1 · O SONHO
-    dict(a=0.0,               img='assets/foto-abertura.jpg', g='soft', tr='fade', push=0.03, cropx=105),  # foto no aeroporto com a mala
+    # opening: couple photo framed, Diversa 360° symbol above it and both logos below
+    dict(a=0.0,               img='assets/foto-casal.jpg', g='soft', tr='fade', push=0.03, framed=(800, 440), photo_open=True),
     dict(a=at('sonho'),       src=28.2,  sp=0.8, g='soft', tr='cut',  push=0.05),   # mapa, aviãozinho, passaporte
     dict(a=at('jornadas'),    src=32.6,  sp=0.8, g='soft', tr='cut',  push=0.05),   # dedo percorrendo o mapa
     # 2 · A PARTIDA
@@ -76,6 +84,7 @@ EDL = [
     dict(a=at('Santa'),       src=12.0,  sp=1.0, g='soft', tr='whip', push=0.03, city=('Santa Monica', ''), f='b2'),  # Santa Monica Pier
     dict(a=at('Califórnia'),  src=75.4,  sp=1.0, g='ca',   tr='whip', push=0.03, city=('Califórnia', '')),
     dict(a=at('Los'),         src=161.0, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Los Angeles', '')),
+    dict(a=at('San', exact=True), src=54.3, sp=1.0, g='ca', tr='whip', push=0.04, city=('San Diego', ''), f='b3'),  # palmeiras no pôr do sol
     dict(a=at('Nova'),        src=99.4,  sp=1.0, g='ny',   tr='whip', push=0.05, city=('Nova York', '')),
     # 4 · AS EXPERIÊNCIAS (fast, one per beat)
     dict(a=at('Cada', 1),     src=108.0, sp=1.0, g='ny',   tr='cut',  push=0.04),   # Manhattan Bridge
@@ -93,18 +102,19 @@ EDL = [
     dict(a=at('Top'),         src=18.0,  sp=0.9, g='soft', tr='cut',  push=0.04, card='topseller', f='b2'),  # píer
     dict(a=at('parceiro'),    src=37.0,  sp=1.0, g='dine', tr='cut',  push=0.04, f='b2'),   # prato gourmet
     dict(a=at('clientes'),    src=42.0,  sp=1.0, g='dine', tr='cut',  push=0.03, f='b2'),   # garfo no prato
-    dict(a=at('mundo'),       src=16.0,  sp=1.0, g='soft', tr='cut',  push=0.04, f='b2'),   # Santa Monica Pier
+    dict(a=at('mundo'),       src=1.0,   sp=1.0, g='ca',   tr='cut',  push=0.03, f='b3'),   # torre de San Diego (drone)
     dict(a=at('redescobrir'), src=82.0,  sp=0.9, g='ca',   tr='cut',  push=0.03),
     dict(a=at('Santa', 2),    src=146.4, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Santa Monica', '')),
     dict(a=at('Los', 2),      src=168.2, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Los Angeles', '')),
+    dict(a=at('San', 2, exact=True), src=14.0, sp=1.0, g='ca', tr='whip', push=0.03, city=('San Diego', ''), f='b3'),  # skyline de San Diego (drone)
     dict(a=at('Nova', 3),     src=104.3, sp=1.0, g='ny',   tr='whip', push=0.04, city=('Nova York', '')),
     # 7 · O BRINDE — Estátua, slow rotation, night grade, music peak
     dict(a=at('Obrigado'),    src=30.3,  sp=0.8, g='dine', tr='cut',  push=0.05, low=1.2, f='b2'),   # brinde (topo cortado: garçom ao fundo)
     dict(a=at('sempre'),      src=120.2, sp=0.75, g='night', tr='cut', push=0.09, rot=2.2),
     # 8 · CONVITE PARA ACOMPANHAR — Estátua desacelerando, logos
     dict(a=at('Embarcamos'),  src=133.0, sp=0.5, g='night', tr='cut', push=0.05, rot=-1.2, end=True),
-    # final hold: couple photo framed over a blurred, darkened copy of itself
-    dict(a=at('Vai', lead=0.3), img='assets/foto-final.jpg', g='soft', tr='cut', push=0.03, framed=True, photo_end=True),
+    # final hold: Anderson with the suitcase, framed over a blurred copy of itself, both logos below
+    dict(a=at('Vai', lead=0.3), img='assets/foto-anderson-mala.jpg', g='soft', tr='cut', push=0.03, framed=(760, 230), photo_end=True),
 ]
 
 for i, s in enumerate(EDL):
@@ -114,15 +124,25 @@ for i, s in enumerate(EDL):
     s['dur'] = round(s['t1'] - s['t0'], 3)
 
 
+def _imsize(p):
+    out = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height',
+                          '-of', 'csv=p=0', p], capture_output=True, text=True, check=True).stdout
+    return tuple(int(v) for v in out.strip().split(','))
+
+
 def render_photo(i, s):
     D = s['dur']
     img = os.path.join(HERE, s['img'])
     zoom = f"(1+{s['push']}*t/{D:.3f})"
     if s.get('framed'):
+        # framed=(width, top): photo centered horizontally, growing around its own center
+        fw, fy = s['framed']
+        iw, ih = _imsize(img)
+        fh = round(fw * ih / iw)
         fc = (f"[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,gblur=sigma=40,"
               f"eq=brightness=-0.22:saturation=0.8[bg];"
-              f"[0:v]scale=w='1000*{zoom}':h=-2:eval=frame,format=rgba[fg];"
-              f"[bg][fg]overlay=x='(W-w)/2':y='250-(h-1115)/2':format=auto,{G[s['g']]},vignette=PI/6,format=yuv420p[v]")
+              f"[0:v]scale=w='{fw}*{zoom}':h=-2:eval=frame,format=rgba[fg];"
+              f"[bg][fg]overlay=x='(W-w)/2':y='{fy}-(h-{fh})/2':format=auto,{G[s['g']]},vignette=PI/6,format=yuv420p[v]")
     else:
         cx = s.get('cropx', 0)
         fc = (f"[0:v]scale=-2:1920,scale=w='iw*{zoom}':h=-2:eval=frame,"
@@ -172,7 +192,7 @@ def render_shot(i, s):
         "format=yuv420p",
     ]
     out = os.path.join(WORK, f'shot_{i:02d}.mp4')
-    cmd = ['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{src_in:.3f}', '-t', f'{src_len:.3f}', '-i', BRUTO2 if s.get('f') == 'b2' else BRUTO,
+    cmd = ['ffmpeg', '-loglevel', 'error', '-y', '-ss', f'{src_in:.3f}', '-t', f'{src_len:.3f}', '-i', SRCS[s.get('f')],
            '-an', '-vf', ','.join(vf), '-t', f'{out_len:.3f}', '-c:v', 'libx264', '-preset', 'fast', '-crf', '12', out]
     subprocess.run(cmd, check=True)
     return out, out_len
@@ -202,20 +222,20 @@ LINES = [
     "Toda grande conquista", "começa com um sonho.", "E algumas jornadas começam", "quando menos esperamos.",
     "Desta vez, nossa missão", "é atravessar fronteiras,", "descobrir novos destinos,", "conhecer pessoas",
     "e viver experiências extraordinárias.",
-    "Do charme de Santa Monica", "ao sol da Califórnia,", "passando pela magia de Los Angeles,",
-    "até chegar à grandiosidade", "de Nova York.",
+    "Do charme de Santa Monica", "ao sol da Califórnia,", "passando pela magia de Los Angeles",
+    "e pelo pôr do sol de San Diego,", "até chegar à grandiosidade", "de Nova York.",
     "Cada lugar, uma descoberta.", "Cada encontro, uma história.", "Cada experiência,", "uma nova inspiração.",
     "Mas essa viagem representa", "muito mais do que", "conhecer lugares incríveis.",
     "É o reconhecimento", "de uma trajetória,", "de parcerias construídas", "e de sonhos realizados.",
     "Fomos convidados,", "como agência Top Seller,", "pelo nosso grande parceiro,",
     "que atende tão bem os nossos clientes", "em viagens pelo mundo todo,",
-    "para redescobrir", "três destinos marcantes", "nos Estados Unidos:", "Santa Monica, Los Angeles", "e Nova York.",
+    "para redescobrir", "quatro destinos marcantes", "nos Estados Unidos:", "Santa Monica, Los Angeles,", "San Diego e Nova York.",
     "Obrigado, Diversa Turismo,", "sempre na vanguarda", "das boas experiências", "para nossa agência!",
     "Embarcamos dia 15.", "Vamos contar tudo por aqui,", "então nos acompanhem.",
     "Vai ter novidade fresquinha", "direto de lá!",
 ]
-# the narration says "como a agência"; one extra spoken word on that line
-EXTRA = {"como agência Top Seller,": 1}
+# words spoken but not shown on a line (narration v2 said "como a agência"; v3 matches the text)
+EXTRA = {}
 subs, k = [], 0
 for line in LINES:
     n = len(line.split()) + EXTRA.get(line, 0)
@@ -236,8 +256,9 @@ for c, n in zip(CITIES, CITIES[1:]):
 
 # safety: every shot must stay inside its take and outside face/background-person windows
 TAKES = {None: [(0, 15), (15, 28), (28, 39), (39, 74), (74, 86), (86, 99), (99, 107), (107, 120), (120, 139), (139, 160), (160, 173), (173, 181)],
-         'b2': [(0, 11), (11, 21), (21, 29), (29, 33), (33, 41.2), (41.2, 46)]}
-UNSAFE = {None: [(43.5, 46.6), (49.8, 51.4), (59.5, 61.0), (68.8, 71.05)], 'b2': [(29.0, 30.25), (24.5, 29.0)]}
+         'b2': [(0, 11), (11, 21), (21, 29), (29, 33), (33, 41.2), (41.2, 46)],
+         'b3': [(0, 10), (10, 54), (54, 65)]}
+UNSAFE = {None: [(43.5, 46.6), (49.8, 51.4), (59.5, 61.0), (68.8, 71.05)], 'b2': [(29.0, 30.25), (24.5, 29.0)], 'b3': []}
 for i, s_ in enumerate(EDL):
     if 'img' in s_:
         continue
@@ -253,6 +274,7 @@ timeline = dict(
     topseller=[dict(t0=s['t0'], t1=s['t0'] + 4.2) for s in EDL if s.get('card') == 'topseller'][0],
     end=dict(t0=[s for s in EDL if s.get('end')][0]['t0']),
     photo_end=dict(t0=[s for s in EDL if s.get('photo_end')][0]['t0']),
+    photo_open=[dict(t0=s['t0'], t1=s['t1']) for s in EDL if s.get('photo_open')][0],
     music=dict(partida=T(at('Desta')), destinos=T(at('Santa')), experiencias=T(at('Cada')), significado=T(at('Mas')),
                convite=T(at('Fomos')), brinde=T(at('Obrigado')), final=T(at('Embarcamos'))),
     subs=subs,

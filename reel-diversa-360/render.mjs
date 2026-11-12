@@ -17,6 +17,8 @@ page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));
 await page.addInitScript((tl) => { window.TIMELINE = tl; }, TL);
 await page.goto(pathToFileURL(path.join(dir, 'overlay.html')).href);
 await page.evaluate(() => document.fonts.ready);
+// logo PNGs must be decoded before the first frame is captured
+await page.evaluate(() => Promise.all([...document.images].map((i) => i.decode().catch(() => {}))));
 
 if (flag === '--stills') {
   // QA: composite overlay onto the assembled picture at given times
