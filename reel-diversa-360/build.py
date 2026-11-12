@@ -69,10 +69,10 @@ EDL = [
     dict(a=at('destinos'),    src=15.3,  sp=1.0, g='soft', tr='cut',  push=0.04),   # corredor do aeroporto
     dict(a=at('viver'),       src=22.8,  sp=0.9, g='soft', tr='cut',  push=0.04),   # corredor, outro trecho
     # 3 · OS DESTINOS (whip pans between cities, card on each name)
-    dict(a=at('Santa'),       src=141.0, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Santa Monica', '16 a 20 de novembro')),
-    dict(a=at('Califórnia'),  src=75.4,  sp=1.0, g='ca',   tr='whip', push=0.03, city=('Califórnia', 'sol da costa oeste')),
-    dict(a=at('Los'),         src=161.0, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Los Angeles', '16 a 20 de novembro')),
-    dict(a=at('Nova'),        src=99.4,  sp=1.0, g='ny',   tr='whip', push=0.05, city=('Nova York', '20 a 23 de novembro')),
+    dict(a=at('Santa'),       src=141.0, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Santa Monica', '')),
+    dict(a=at('Califórnia'),  src=75.4,  sp=1.0, g='ca',   tr='whip', push=0.03, city=('Califórnia', '')),
+    dict(a=at('Los'),         src=161.0, sp=1.0, g='ca',   tr='whip', push=0.03, city=('Los Angeles', '')),
+    dict(a=at('Nova'),        src=99.4,  sp=1.0, g='ny',   tr='whip', push=0.05, city=('Nova York', '')),
     # 4 · AS EXPERIÊNCIAS (fast, one per beat)
     dict(a=at('Cada', 1),     src=108.0, sp=1.0, g='ny',   tr='cut',  push=0.04),   # Manhattan Bridge
     dict(a=at('descoberta'),  src=80.2,  sp=1.0, g='ca',   tr='cut',  push=0.03),   # palmeiras girando
