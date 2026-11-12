@@ -17,3 +17,11 @@ node render.mjs work/ narracao.mp3 out/reel-carlavieira-diversa360.mp4
 ```
 
 Fontes: Open Sauce Sans (OFL). A Yellowtail substitui a Biro Script Plus, que é comercial.
+
+## Trilha
+
+`music.py` gera uma trilha original por síntese (sem áudio de terceiros), com a curva presa aos tempos das cenas. Para usar no render: `MUSIC=trilha.wav node render.mjs ...`. A música entra com ducking (sidechain) sob a narração.
+
+```bash
+python3 music.py trilha.wav 80.0
+```

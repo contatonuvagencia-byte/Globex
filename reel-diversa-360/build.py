@@ -18,8 +18,8 @@ BRUTO2 = sys.argv[4] if len(sys.argv) > 4 else None
 os.makedirs(WORK, exist_ok=True)
 HERE = os.path.dirname(os.path.abspath(__file__))
 SPEED = 1.08
-OFFSET = 0.15
-TAIL = 0.45
+OFFSET = 0.10
+TAIL = 0.18
 FPS = 30
 WHIP = 0.2  # whip-pan transition length
 
@@ -82,7 +82,7 @@ EDL = [
     dict(a=at('descoberta'),  src=80.2,  sp=1.0, g='ca',   tr='cut',  push=0.03),   # palmeiras girando
     dict(a=at('cada', 2),     src=34.0,  sp=1.0, g='dine', tr='cut',  push=0.03, f='b2'),   # jantar, mãos cortando o prato
     dict(a=at('história'),    src=21.0,  sp=1.0, g='ny',   tr='cut',  push=0.03, f='b2'),   # Times Square
-    dict(a=at('cada', 3),     src=174.0, sp=1.0, g='ny',   tr='cut',  push=0.04),   # Empire State
+    dict(a=at('cada', 3),     src=44.0,  sp=1.0, g='dine', tr='cut',  push=0.04, f='b2'),   # garfo no prato
     dict(a=at('inspiração'),  src=6.5,   sp=1.0, g='ca',   tr='cut',  push=0.03, f='b2'),   # asa do avião
     # 5 · O SIGNIFICADO (slower, contemplative)
     dict(a=at('Mas'),         src=86.2,  sp=0.7, g='ca',   tr='cut',  push=0.05),   # sol baixo na orla
@@ -91,7 +91,7 @@ EDL = [
     dict(a=at('sonhos'),   src=8.6,   sp=0.7, g='ca',   tr='cut',  push=0.05, f='b2'),   # asa sobre as nuvens
     # 6 · O CONVITE
     dict(a=at('Fomos'),       src=111.0, sp=0.9, g='ny',   tr='cut',  push=0.04),   # Manhattan Bridge
-    dict(a=at('Top'),         src=176.0, sp=0.9, g='ny',   tr='cut',  push=0.04, card='topseller'),
+    dict(a=at('Top'),         src=18.0,  sp=0.9, g='soft', tr='cut',  push=0.04, card='topseller', f='b2'),  # píer
     dict(a=at('parceiro'),    src=37.0,  sp=1.0, g='dine', tr='cut',  push=0.04, f='b2'),   # prato gourmet
     dict(a=at('clientes'),    src=42.0,  sp=1.0, g='dine', tr='cut',  push=0.03, f='b2'),   # garfo no prato
     dict(a=at('mundo'),       src=16.0,  sp=1.0, g='soft', tr='cut',  push=0.04, f='b2'),   # Santa Monica Pier
@@ -211,7 +211,7 @@ for c, n in zip(CITIES, CITIES[1:]):
 timeline = dict(
     duration=DURATION, fps=FPS, speed=SPEED, offset=OFFSET,
     cities=CITIES,
-    topseller=[dict(t0=s['t0'], t1=T(at('Santa', 2))) for s in EDL if s.get('card') == 'topseller'][0],
+    topseller=[dict(t0=s['t0'], t1=s['t0'] + 4.2) for s in EDL if s.get('card') == 'topseller'][0],
     end=dict(t0=[s for s in EDL if s.get('end')][0]['t0']),
     subs=subs,
 )

@@ -1,6 +1,6 @@
 // Composites the overlay (overlay.html, rendered frame by frame with a transparent
 // background) over the assembled picture and mixes the sped-up narration.
-// usage: node render.mjs <workdir> <narracao.mp3> <out.mp4> [--stills t1,t2,...]
+// usage: [MUSIC=trilha.wav] node render.mjs <workdir> <narracao.mp3> <out.mp4> [--stills t1,t2,...]
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -8,6 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 
 const [work, narr, out, flag, list] = process.argv.slice(2);
+const MUSIC = process.env.MUSIC; // optional score (music.py output)
 const dir = path.dirname(fileURLToPath(import.meta.url));
 const TL = JSON.parse(readFileSync(path.join(work, 'timeline.json'), 'utf8'));
 const browser = await chromium.launch();
@@ -37,11 +38,18 @@ const ff = spawn('ffmpeg', ['-loglevel', 'error', '-y',
   '-i', path.join(work, 'assembled.mp4'),
   '-f', 'image2pipe', '-framerate', String(TL.fps), '-c:v', 'png', '-i', '-',
   '-i', narr,
+  ...(MUSIC ? ['-i', MUSIC] : []),
   '-filter_complex',
   `[0:v][1:v]overlay=format=auto,format=yuv420p[v];` +
   `[2:a]atempo=${TL.speed},adelay=${delayMs}|${delayMs},` +
   `highpass=f=70,acompressor=threshold=-20dB:ratio=2.5:attack=10:release=200,` +
-  `loudnorm=I=-14:TP=-1.5:LRA=9,aresample=48000,apad[a]`,
+  (MUSIC
+    // music ducked under the voice (sidechain), then the mix is normalized for Reels
+    ? `aresample=48000,aformat=channel_layouts=stereo,volume=2.0,asplit=2[vo][sc];` +
+      `[3:a]aresample=48000,aformat=channel_layouts=stereo,volume=0.55[mu];` +
+      `[mu][sc]sidechaincompress=threshold=0.02:ratio=5:attack=20:release=450:knee=4[md];` +
+      `[vo][md]amix=inputs=2:normalize=0:duration=longest,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,apad[a]`
+    : `loudnorm=I=-14:TP=-1.5:LRA=9,aresample=48000,apad[a]`),
   '-map', '[v]', '-map', '[a]', '-t', String(TL.duration),
   '-c:v', 'libx264', '-preset', 'slow', '-crf', '17', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-r', String(TL.fps),
   '-c:a', 'aac', '-b:a', '192k', '-ac', '2', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
