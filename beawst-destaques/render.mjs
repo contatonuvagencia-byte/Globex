@@ -9,11 +9,14 @@ const PASTA = { comece: '1-comece-aqui', roi: '2-roi', volta: '3-na-volta', cami
 const CAPA = Object.values(PASTA);
 fs.rmSync(out, { recursive: true, force: true });
 for (const p of [...CAPA, '0-capas']) fs.mkdirSync(path.join(out, p), { recursive: true });
+let TRILHAS = [];
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
 const url = pathToFileURL(path.join(dir, 'destaques.html')).href;
 await page.goto(url);
 const ids = await page.evaluate(() => window.IDS);
+TRILHAS = await page.evaluate(() => window.TRILHAS);
+TRILHAS.forEach((t, i) => fs.mkdirSync(path.join(out, `t${i + 1}-trilha-${t}`), { recursive: true }));
 for (const id of ids) {
   await page.goto(url + '?p=' + id);
   await page.evaluate(async () => { await document.fonts.ready; await Promise.all([...document.images].map(i => i.decode().catch(() => {}))); });
@@ -21,7 +24,9 @@ for (const id of ids) {
     .filter(e => { const b = e.getBoundingClientRect(); return b.top < 250 || b.bottom > 1580 || b.right > 1000; }).map(e => e.textContent.trim().slice(0, 30)));
   if (bad.length) console.log(id, 'FORA:', bad.join(' | '));
   const [k, n] = id.split('-');
-  const file = k === 'capa' ? path.join(out, '0-capas', `capa-${CAPA[n - 1]}.png`) : path.join(out, PASTA[k], `story-${n}.png`);
+  const file = k === 'tcapa' ? path.join(out, '0-capas', `capa-t${n}-trilha-${TRILHAS[n - 1]}.png`)
+    : k.startsWith('trilha') ? path.join(out, `t${k.slice(6)}-trilha-${TRILHAS[k.slice(6) - 1]}`, `story-${n}.png`)
+    : k === 'capa' ? path.join(out, '0-capas', `capa-${CAPA[n - 1]}.png`) : path.join(out, PASTA[k], `story-${n}.png`);
   await page.screenshot({ path: file });
 }
 await browser.close();
