@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Stories Recap Global Connect</title>
+<!-- Sequência de 6 stories (1080x1920) que complementa o carrossel de recap da Global Connect.
+     Identidade BEAWST (branco, preto, laranja, Inter); da feira só a etiqueta em degradê e o logo do evento.
+     ?p=1..6 (&guia=1 mostra onde colar os stickers). Texto entre 250px e 1580px. Gerar: node render.mjs -->
+<style>
+@font-face{font-family:I;font-weight:500;src:url(assets/Inter-Medium.otf)}
+@font-face{font-family:I;font-weight:600;src:url(assets/Inter-SemiBold.otf)}
+@font-face{font-family:I;font-weight:700;src:url(assets/Inter-Bold.otf)}
+@font-face{font-family:I;font-weight:800;src:url(assets/Inter-ExtraBold.otf)}
+@font-face{font-family:I;font-weight:900;src:url(assets/Inter-Black.otf)}
+:root{--l:#C24A0B;--l2:#F06B21;--p:#FFDBCB;--p2:#FFF3EC;--t:#141110;--g:#6b625d;--feira:linear-gradient(90deg,#5B00D6,#A3127F,#F0102A)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#fff}
+body{font-family:I,sans-serif;color:var(--t);-webkit-font-smoothing:antialiased}
+.s{position:absolute;inset:0;overflow:hidden;display:none;background:
+  radial-gradient(800px 800px at 100% 0%,#F06B21 0%,rgba(240,107,33,.82) 22%,rgba(246,150,100,.5) 45%,rgba(255,219,203,.3) 65%,rgba(255,255,255,0) 82%),
+  radial-gradient(900px 820px at 0% 100%,#C24A0B 0%,rgba(240,107,33,.82) 26%,rgba(246,150,100,.45) 48%,rgba(255,219,203,.25) 66%,rgba(255,255,255,0) 82%),#fff}
+.s.orange{background:linear-gradient(160deg,#F06B21,#C24A0B 60%,#8E3206);color:#fff}
+.s.dark{background:radial-gradient(900px 800px at 100% 0%,rgba(240,107,33,.55),rgba(240,107,33,0) 70%),var(--t);color:#fff}
+.abs{position:absolute}
+.top{position:absolute;left:90px;right:90px;top:270px;display:flex;justify-content:space-between;align-items:center}
+.top img{height:92px}
+.tag{display:inline-block;font-weight:800;font-size:24px;letter-spacing:.16em;text-transform:uppercase;padding:13px 24px;border-radius:999px;background:var(--feira);color:#fff}
+.kick{display:flex;align-items:center;gap:20px;font-weight:800;font-size:29px;letter-spacing:.2em;color:var(--l);text-transform:uppercase}
+.dark .kick,.orange .kick{color:var(--p)}
+.kick:before{content:"";width:56px;height:5px;background:var(--l2);border-radius:3px}
+.orange .kick:before{background:#fff}
+.huge{font-weight:900;line-height:.98;letter-spacing:-.045em}
+.huge em{font-style:normal;color:var(--l2)}
+.orange .huge em{color:var(--t)}
+.mk{background:var(--l2);color:#fff;padding:0 .12em;border-radius:.08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.txt{font-weight:500;font-size:40px;line-height:1.38;color:var(--g)}
+.dark .txt,.orange .txt{color:rgba(255,255,255,.88)}
+.name{display:inline-block;background:var(--t);color:#fff;border-radius:22px;padding:20px 34px;font-weight:900;font-size:54px;line-height:1.1;letter-spacing:-.02em;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+.name small{display:block;font-weight:600;font-size:26px;letter-spacing:0;color:var(--p);margin-top:6px}
+.circ{border-radius:50%;overflow:hidden;box-shadow:0 0 0 7px #fff,0 14px 30px rgba(0,0,0,.18);flex:none}
+.circ img{width:100%;height:100%;object-fit:cover}
+.halo{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,219,203,.95) 0%,rgba(255,219,203,.5) 45%,rgba(255,255,255,0) 70%)}
+.chip{display:inline-block;background:#fff;color:var(--l);font-weight:800;font-size:34px;padding:16px 28px;border-radius:16px;margin:0 16px 18px 0;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.foot{position:absolute;left:90px;right:90px;top:1520px;display:flex;justify-content:space-between;font-weight:800;font-size:26px;letter-spacing:.12em;opacity:.55}
+.guide{position:absolute;left:150px;right:150px;border:5px dashed var(--t);border-radius:36px;display:none;align-items:center;justify-content:center;text-align:center;font-weight:800;font-size:32px;letter-spacing:.06em;background:rgba(255,255,255,.55);color:var(--t)}
+.dark .guide,.orange .guide{border-color:#fff;color:#fff;background:rgba(255,255,255,.12)}
+body.guia .guide{display:flex}
+</style></head><body>
+
+<!-- 1 | Chamada pro post -->
+<div class="s" id="s1">
+  <div class="top"><img src="assets/logo-laranja.png"><span class="tag">Global Connect 2026</span></div>
+  <div class="abs kick" style="left:90px;top:470px">Saiu no feed</div>
+  <div class="abs huge" style="left:84px;right:90px;top:540px;font-size:128px">O recap da<br><em>Global Connect</em><br>tá no ar!</div>
+  <div class="abs txt" style="left:90px;right:90px;top:960px">Palestrantes, ganhadoras e um recado especial pra você.</div>
+  <div class="guide" style="top:1120px;height:360px">STICKER DO POST<br>(compartilhar o carrossel)</div>
+  <div class="foot"><span>1/6</span><span>TOQUE PRA AVANÇAR →</span></div>
+</div>
+
+<!-- 2 | Enquete -->
+<div class="s dark" id="s2">
+  <div class="top"><img src="assets/logo-branco.png"><span class="tag">Enquete</span></div>
+  <div class="abs" style="left:0;right:0;top:470px;display:flex;justify-content:center">
+    <div class="circ" style="width:150px;height:150px"><img src="assets/apresentadora.jpg" style="object-position:50% 22%;transform:scale(1.45);transform-origin:50% 30%"></div>
+    <div class="circ" style="width:150px;height:150px;margin-left:-30px"><img src="assets/camila.jpg" style="object-position:50% 22%;transform:scale(1.6);transform-origin:42% 24%"></div>
+    <div class="circ" style="width:150px;height:150px;margin-left:-30px"><img src="assets/leia.jpg" style="object-position:55% 30%"></div>
+    <div class="circ" style="width:150px;height:150px;margin-left:-30px"><img src="assets/alessandra.jpg" style="object-position:100% 38%;transform:scale(1.12);transform-origin:100% 45%"></div>
+    <div class="circ" style="width:150px;height:150px;margin-left:-30px"><img src="assets/daniel.jpg" style="object-position:50% 30%;transform:scale(1.1);transform-origin:48% 35%"></div>
+    <div class="circ" style="width:150px;height:150px;margin-left:-30px"><img src="assets/rafael.jpg" style="object-position:50% 18%;transform:scale(1.25);transform-origin:48% 22%"></div>
+  </div>
+  <div class="abs huge" style="left:84px;right:90px;top:700px;font-size:110px">Você assistiu à <em>Global Connect?</em></div>
+  <div class="guide" style="top:1080px;height:300px">STICKER DE ENQUETE<br>"Assisti 🙌" · "Perdi 😢"</div>
+  <div class="foot"><span>2/6</span><span>BEAWST</span></div>
+</div>
+
+<!-- 3 | Parabéns ganhadoras -->
+<div class="s" id="s3">
+  <div class="top"><img src="assets/logo-laranja.png"><span class="tag">🎉 Ganhadoras</span></div>
+  <div class="abs huge" style="left:84px;right:90px;top:460px;font-size:120px">Parabéns,<br><span class="mk">ganhadoras!</span></div>
+  <div class="abs" style="left:90px;top:770px"><span class="name">Isadora Oliveira Gomes<small>kit completo com mala</small></span></div>
+  <div class="abs" style="left:90px;top:960px"><span class="name">Erica Blanco<small>kit viagem</small></span></div>
+  <div class="abs" style="left:90px;top:1150px"><span class="name">Cristina Viana<small>kit viagem</small></span></div>
+  <div class="abs txt" style="left:90px;right:90px;top:1360px;font-size:34px;color:var(--t);font-weight:600">A gente vai te chamar no direct<br>pra combinar a entrega 💛</div>
+  <div class="foot"><span>3/6</span><span>BEAWST</span></div>
+</div>
+
+<!-- 4 | Próxima edição: o que você quer ver -->
+<div class="s" id="s4">
+  <div class="top"><img src="assets/logo-laranja.png"><span class="tag">Próxima edição</span></div>
+  <div class="abs kick" style="left:90px;top:470px">Sua opinião</div>
+  <div class="abs huge" style="left:84px;right:90px;top:540px;font-size:112px">O que você quer ver na <em>próxima?</em></div>
+  <div class="abs" style="left:90px;right:90px;top:880px"><span class="chip">Carreira e salário</span><span class="chip">Study &amp; Work</span><span class="chip">Vistos</span><span class="chip">Novos destinos</span></div>
+  <div class="guide" style="top:1130px;height:380px">STICKER DE ENQUETE<br>ou CAIXINHA DE PERGUNTAS</div>
+  <div class="foot"><span>4/6</span><span>BEAWST</span></div>
+</div>
+
+<!-- 5 | Ponte pra oferta -->
+<div class="s dark" id="s5">
+  <div class="top"><img src="assets/logo-branco.png"><span class="tag">Global Connect 2026</span></div>
+  <div class="abs kick" style="left:90px;top:470px">E agora?</div>
+  <div class="abs huge" style="left:84px;right:90px;top:540px;font-size:112px">A feira acabou. Seu <em>intercâmbio</em> pode começar.</div>
+  <div class="abs txt" style="left:90px;right:90px;top:990px">A gente planeja com você, de olho na sua carreira: da escola ao visto, e na volta.</div>
+  <div class="abs" style="left:90px;right:90px;top:1220px;background:#fff;color:var(--t);border-radius:30px;padding:28px 34px;display:flex;gap:26px;align-items:center">
+    <img src="assets/kit-mala.png" style="width:170px;flex:none">
+    <div style="font-weight:800;font-size:34px;line-height:1.25;letter-spacing:-.01em">Quem fecha ganha o <span style="color:var(--l2)">kit de viagem oficial</span><span style="font-weight:600;font-size:24px;display:block;color:var(--g);margin-top:8px">Mala de bordo em programas a partir de 6 meses.</span></div>
+  </div>
+  <div class="foot"><span>5/6</span><span>BEAWST</span></div>
+</div>
+
+<!-- 6 | CTA -->
+<div class="s orange" id="s6">
+  <div class="top"><img src="assets/logo-branco.png"><span class="tag">Fale com a gente</span></div>
+  <div class="abs huge" style="left:84px;right:90px;top:470px;font-size:130px">O próximo embarque pode ser <em>o seu!</em></div>
+  <div class="abs txt" style="left:90px;right:90px;top:890px">Responde <b style="color:#fff">QUERO</b> aqui que a gente te chama pra planejar seu intercâmbio.</div>
+  <div class="guide" style="top:1110px;height:180px">STICKER DE LINK<br>(WhatsApp ou teste de inglês)</div>
+  <div class="guide" style="top:1330px;height:180px">CAIXA "RESPONDA AQUI" (opcional)</div>
+  <div class="foot"><span>6/6</span><span>BEAWST</span></div>
+</div>
+
+<script>
+const q = new URLSearchParams(location.search);
+document.getElementById('s' + (q.get('p') || '1')).style.display = 'block';
+if (q.get('guia')) document.body.classList.add('guia');
+</script>
+</body></html>
