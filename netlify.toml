@@ -4,6 +4,9 @@
   base = "painel-nuv"
   command = "npm run build"
   publish = ".next"
+  # Cada publicação gasta créditos do plano grátis (cerca de 20 por mês).
+  # Só publica quando a mensagem do commit tiver [deploy]; os outros envios são ignorados.
+  ignore = "git log -1 --pretty=%B | grep -qF '[deploy]' && exit 1 || exit 0"
 
 [build.environment]
   NODE_VERSION = "20"
