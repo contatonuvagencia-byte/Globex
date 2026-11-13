@@ -31,7 +31,7 @@ export const SITUACAO: Record<ClienteFicha["contrato"]["situacao"], { r: (d: num
   vencido: { r: (d) => `Venceu há ${Math.abs(d ?? 0)} dias`, cls: "bg-[#fdecea] text-[#a1261f]" },
 };
 
-export const SERVICOS_NUV = ["Gestão de redes sociais", "Tráfego pago", "Landing page", "Site", "Identidade visual", "Consultoria", "Notion", "Vídeos"];
+export const SERVICOS_NUV = ["Gestão de redes sociais", "Tráfego pago", "Landing page", "Site", "Identidade visual", "Consultoria", "Gestão de projetos", "Notion", "Vídeos"];
 
 /** Criar ou editar a ficha de um cliente. */
 export function FichaForm({ cliente, podeFinanceiro, onFechar, onSalvo }: {
