@@ -43,6 +43,15 @@ export async function notion(path: string, init?: { method?: string; body?: unkn
   return res.json();
 }
 
+/** Sobe um arquivo para o Notion (até 5 MB no plano grátis) e devolve o id para usar num bloco ou campo. */
+export async function subirArquivo(arquivo: File): Promise<string> {
+  const criado = await notion("/file_uploads", { method: "POST", body: { filename: arquivo.name, content_type: arquivo.type || "application/octet-stream" } });
+  const form = new FormData();
+  form.append("file", arquivo, arquivo.name);
+  await notion(`/file_uploads/${criado.id}/send`, { method: "POST", form });
+  return criado.id as string;
+}
+
 /** Aceita um link do Notion ou um ID e devolve o ID de 32 caracteres. */
 export function extrairId(texto: string): string | null {
   const limpo = texto.split("?")[0].replace(/-/g, "");

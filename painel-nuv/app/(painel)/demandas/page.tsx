@@ -1,7 +1,8 @@
 "use client";
-import { Hammer, Pause, Pencil, Play, Repeat, Trash2 } from "lucide-react";
+import { Hammer, MessageSquareText, Pause, Pencil, Play, Repeat, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Avatar } from "@/components/Avatar";
+import { DemandaExtras } from "@/components/DemandaExtras";
 import { tom } from "@/lib/cores";
 import { DIAS_SEMANA, dataBR } from "@/lib/format";
 
@@ -15,6 +16,7 @@ type Demanda = {
   duracao: string | null;
   prazoReal: string | null;
   responsavel: string | null;
+  observacoes: string | null;
   status: string;
   concluida: boolean;
   url: string;
@@ -33,6 +35,7 @@ type Dados = {
   pessoas: { id: string; nome: string; foto: string | null }[];
   eu: string;
   temResponsavel: boolean;
+  temObservacoes: boolean;
 };
 type Frequencia = "diaria" | "dias_uteis" | "semanal" | "quinzenal" | "mensal";
 type Regra = {
@@ -519,6 +522,7 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
           <p className={`text-sm leading-snug ${x.concluida ? "line-through" : "font-medium"} ${compacto ? "line-clamp-3" : ""}`}>
             {x.recorrente && <Repeat size={12} className="mr-1 inline -translate-y-px text-ink-2" aria-label="Se repete" />}
             {x.titulo}
+            {x.observacoes && <MessageSquareText size={12} className="ml-1 inline -translate-y-px text-ink-3" aria-label="Tem observações" />}
           </p>
           <div className="mt-1 flex flex-wrap items-center gap-1">
             {x.responsavel && (
@@ -606,6 +610,7 @@ function Item({ x, hoje, dados, aberta, onAbrir, onAtualizar, compacto, mostrarC
             </select>
           </label>
           {x.prazoReal && <p className="text-xs text-ink-2 sm:col-span-2">Prazo real: {x.prazoReal}</p>}
+          <DemandaExtras id={x.id} observacoes={x.observacoes} temObservacoes={dados.temObservacoes} onObservacoes={(t) => onAtualizar(x, { observacoes: t })} />
           <a className="text-xs font-medium text-nuv hover:underline sm:col-span-2" href={x.url} target="_blank" rel="noreferrer">Abrir no Notion ↗</a>
         </div>
       )}

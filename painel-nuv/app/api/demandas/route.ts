@@ -38,6 +38,7 @@ const Dados = z.object({
   prioridade: opcional,
   duracao: opcional,
   prazoReal: z.string().trim().max(500).nullable().optional(),
+  observacoes: z.string().max(8000).nullable().optional(),
   responsavel: opcional,
   status: z.string().trim().min(1).max(60).optional(),
   concluida: z.boolean().optional(),

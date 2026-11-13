@@ -1,7 +1,7 @@
 import "server-only";
 import { listarCalendarios } from "./calendarios";
 import type { Calendario } from "./clients";
-import { calendarioOuErro, notion, propArquivos } from "./notion";
+import { calendarioOuErro, notion, propArquivos, subirArquivo } from "./notion";
 import { anexarNoCard, cardsDoQuadro, melhorCard, quadroDoCalendario, trelloConfigurado, type Card } from "./trello";
 import { db } from "./supabase";
 
@@ -95,10 +95,7 @@ export async function buscarCapas(pedidos: PedidoCapa[], podeVer: (nome: string)
 export const LIMITE_ARTE = 4.5 * 1024 * 1024; // Netlify aceita até ~6 MB por pedido; Notion grátis, 5 MB por arquivo
 
 async function enviarAoNotion(cal: Calendario, pageId: string, arquivo: File) {
-  const criado = await notion("/file_uploads", { method: "POST", body: { filename: arquivo.name, content_type: arquivo.type } });
-  const form = new FormData();
-  form.append("file", arquivo, arquivo.name);
-  await notion(`/file_uploads/${criado.id}/send`, { method: "POST", form });
+  const criado = { id: await subirArquivo(arquivo) };
 
   // Se o calendário tem campo de arquivos vazio, a arte vai para ele (vira a capa do card).
   // Senão, entra como imagem no fim da página do post.

@@ -1,6 +1,6 @@
 import "server-only";
 import { listarCalendarios } from "./calendarios";
-import { notion, richText } from "./notion";
+import { notion, richText, subirArquivo } from "./notion";
 import { db } from "./supabase";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -19,6 +19,7 @@ export type Demanda = {
   duracao: string | null;
   prazoReal: string | null;
   responsavel: string | null;
+  observacoes: string | null;
   status: string;
   concluida: boolean;
   url: string;
@@ -36,6 +37,7 @@ type Esquema = {
   duracao?: string;
   prazo?: string;
   responsavel?: string;
+  observacoes?: string;
   opcoes: { clientes: string[]; prioridades: string[]; duracoes: string[]; status: string[] };
   concluido: string;
   inicial: string;
@@ -66,6 +68,7 @@ async function esquema(): Promise<Esquema> {
     duracao: achar(["select"], /dura/i),
     prazo: achar(["rich_text"], /prazo/i),
     responsavel: achar(["select"], /respons/i),
+    observacoes: achar(["rich_text"], /observa|nota|coment/i),
     opcoes: {
       clientes: opcoesDe(achar(["select"], /cliente/i)),
       prioridades: opcoesDe(achar(["select"], /priorid/i)),
@@ -115,6 +118,7 @@ function paginaParaDemanda(e: Esquema, page: any): Demanda {
     duracao: sel(e.duracao),
     prazoReal: e.prazo ? richText(p[e.prazo]?.rich_text) || null : null,
     responsavel: sel(e.responsavel),
+    observacoes: e.observacoes ? richText(p[e.observacoes]?.rich_text) || null : null,
     status,
     concluida: status === e.concluido,
     url: page.url,
@@ -166,7 +170,7 @@ export async function listarDemandas() {
       (prio[(a.prioridade ?? "").toLowerCase()] ?? 3) - (prio[(b.prioridade ?? "").toLowerCase()] ?? 3),
   );
 
-  return { demandas, temResponsavel: Boolean(e.responsavel), opcoes: e.opcoes, concluido: e.concluido, inicial: e.inicial, andamento: e.andamento, cores, hoje: hojeBrasil(), notionUrl: `https://www.notion.so/${DEMANDAS_DB}` };
+  return { demandas, temResponsavel: Boolean(e.responsavel), temObservacoes: Boolean(e.observacoes), opcoes: e.opcoes, concluido: e.concluido, inicial: e.inicial, andamento: e.andamento, cores, hoje: hojeBrasil(), notionUrl: `https://www.notion.so/${DEMANDAS_DB}` };
 }
 
 export type DadosDemanda = Partial<{
@@ -179,6 +183,7 @@ export type DadosDemanda = Partial<{
   duracao: string | null;
   prazoReal: string | null;
   responsavel: string | null;
+  observacoes: string | null;
   status: string;
   concluida: boolean;
 }>;
@@ -196,6 +201,12 @@ function propriedades(e: Esquema, d: DadosDemanda) {
   if (d.duracao !== undefined && e.duracao) props[e.duracao] = sel(d.duracao);
   // nome novo vira opção nova da seleção no Notion automaticamente
   if (d.responsavel !== undefined && e.responsavel) props[e.responsavel] = sel(d.responsavel);
+  if (d.observacoes !== undefined && e.observacoes) {
+    // o Notion aceita até 2000 caracteres por pedaço de texto
+    const t = d.observacoes ?? "";
+    const partes = t ? (t.match(/[\s\S]{1,2000}/g) ?? []) : [];
+    props[e.observacoes] = { rich_text: partes.map((content) => ({ text: { content } })) };
+  }
   if (d.prazoReal !== undefined && e.prazo) props[e.prazo] = { rich_text: d.prazoReal ? [{ text: { content: d.prazoReal } }] : [] };
   // status escolhido vale mais que o checkbox (senão "Em andamento" voltava para "Não iniciada")
   const status = d.status ?? (d.concluida !== undefined ? (d.concluida ? e.concluido : e.inicial) : undefined);
@@ -216,4 +227,83 @@ export async function atualizarDemanda(id: string, d: DadosDemanda) {
   const e = await esquema();
   const page = await notion(`/pages/${id}`, { method: "PATCH", body: { properties: propriedades(e, d) } });
   return paginaParaDemanda(e, page);
+}
+
+/* ---------- anexos e comentários (ficam na própria página da demanda no Notion) ---------- */
+
+export type Anexo = { id: string | null; tipo: "imagem" | "video" | "pdf" | "arquivo"; nome: string; url: string };
+export type Comentario = { id: string; autor: string; texto: string; em: string };
+
+const TIPOS_BLOCO: Record<string, Anexo["tipo"]> = { image: "imagem", video: "video", pdf: "pdf", file: "arquivo" };
+const semHifen = (id: string) => id.replace(/-/g, "");
+
+function blocoParaAnexo(b: any): Anexo | null {
+  const tipo = TIPOS_BLOCO[b.type];
+  if (!tipo) return null;
+  const d = b[b.type];
+  const url = d?.type === "external" ? d.external?.url : d?.file?.url;
+  if (!url) return null;
+  const nomeUrl = decodeURIComponent(String(url).split("?")[0].split("/").pop() ?? "");
+  return { id: b.id, tipo, nome: d.name || richText(d.caption) || nomeUrl || tipo, url };
+}
+
+/** Lido de um comentário feito pelo painel: "**Nome** — texto". Feito direto no Notion: autor "Notion". */
+function comentarioDe(c: any): Comentario {
+  const partes = c.rich_text ?? [];
+  const negrito = partes[0]?.annotations?.bold;
+  const autor = negrito ? (partes[0].plain_text ?? "").trim() : "Notion";
+  const texto = (negrito ? partes.slice(1) : partes).map((x: any) => x.plain_text ?? "").join("").replace(/^\s*—\s*/, "");
+  return { id: c.id, autor, texto, em: c.created_time };
+}
+
+export async function demandaPorId(id: string) {
+  const e = await esquema();
+  return paginaParaDemanda(e, await notion(`/pages/${id}`));
+}
+
+/** Arquivos (blocos de imagem/arquivo/PDF/vídeo da página) e comentários da demanda. */
+export async function detalheDemanda(id: string) {
+  const [blocos, comentarios] = await Promise.allSettled([
+    notion(`/blocks/${id}/children?page_size=100`),
+    notion(`/comments?block_id=${id}&page_size=100`),
+  ]);
+  const anexos = blocos.status === "fulfilled" ? (blocos.value.results ?? []).map(blocoParaAnexo).filter(Boolean) : [];
+  return {
+    anexos: anexos as Anexo[],
+    comentarios: comentarios.status === "fulfilled" ? (comentarios.value.results ?? []).map(comentarioDe) : [],
+    avisoComentarios:
+      comentarios.status === "rejected"
+        ? "Para ver e escrever comentários, ative “Ler comentários” e “Inserir comentários” nas capacidades da integração do Notion."
+        : null,
+  };
+}
+
+export async function anexarNaDemanda(id: string, arquivo: File) {
+  const uploadId = await subirArquivo(arquivo);
+  const tipo = arquivo.type.startsWith("image/") ? "image" : arquivo.type.startsWith("video/") ? "video" : arquivo.type === "application/pdf" ? "pdf" : "file";
+  const conteudo: Record<string, unknown> = { type: "file_upload", file_upload: { id: uploadId } };
+  if (tipo === "file") conteudo.name = arquivo.name;
+  if (tipo !== "image") conteudo.caption = [{ text: { content: arquivo.name } }];
+  await notion(`/blocks/${id}/children`, { method: "PATCH", body: { children: [{ object: "block", type: tipo, [tipo]: conteudo }] } });
+}
+
+/** Só apaga blocos que estão dentro da página dessa demanda. */
+export async function removerAnexo(id: string, blocoId: string) {
+  const b = await notion(`/blocks/${blocoId}`);
+  if (semHifen(b.parent?.page_id ?? "") !== semHifen(id) || !TIPOS_BLOCO[b.type]) throw new Error("Esse arquivo não é desta demanda.");
+  await notion(`/blocks/${blocoId}`, { method: "DELETE" });
+}
+
+export async function comentarNaDemanda(id: string, autor: string, texto: string) {
+  const c = await notion("/comments", {
+    method: "POST",
+    body: {
+      parent: { page_id: id },
+      rich_text: [
+        { text: { content: autor }, annotations: { bold: true } },
+        { text: { content: ` — ${texto.slice(0, 1900)}` } },
+      ],
+    },
+  });
+  return comentarioDe(c);
 }
