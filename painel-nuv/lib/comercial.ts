@@ -218,7 +218,7 @@ export async function progressoMes(mes: string, eu: UsuarioPublico) {
 
   const [meta, entradas, novos, contatos, enviadas, aceitas] = await Promise.all([
     sb.from("metas").select("*").eq("mes", mes).maybeSingle(),
-    verFin ? sb.from("fin_lancamentos").select("valor, pago").eq("tipo", "entrada").gte("data", ini).lte("data", fim) : Promise.resolve({ data: null }),
+    verFin ? sb.from("fin_lancamentos").select("valor, pago").eq("tipo", "entrada").eq("excluido", false).gte("data", ini).lte("data", fim) : Promise.resolve({ data: null }),
     sb.from("fin_clientes").select("id, nome, created_at").gte("created_at", iniTs).lt("created_at", fimTs),
     sb.from("interactions").select("lead_id").in("type", CONTATOS).gte("created_at", iniTs).lt("created_at", fimTs),
     sb.from("propostas").select("id").gte("enviada_em", iniTs).lt("enviada_em", fimTs),

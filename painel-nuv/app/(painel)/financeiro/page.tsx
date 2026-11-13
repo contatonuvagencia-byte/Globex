@@ -236,7 +236,13 @@ export default function Financeiro() {
                             <input type="checkbox" disabled={!editavel} className="h-4 w-4 accent-[#1f3fd1]" checked={l.pago} onChange={(e) => executar({ acao: "editar_lancamento", id: l.id, dados: { pago: e.target.checked } })} aria-label="Pago" />
                           </td>
                           <td className="px-4 py-2 text-right">
-                            <button className="so-editor text-xs text-ink-3 hover:text-[#b42318]" onClick={() => confirm(`Excluir "${l.descricao}"?`) && executar({ acao: "excluir_lancamento", id: l.id })}>Excluir</button>
+                            <button className="so-editor text-xs text-ink-3 hover:text-[#b42318]" onClick={() =>
+                                confirm(
+                                  l.origem === "manual"
+                                    ? `Excluir "${l.descricao}"?`
+                                    : `Excluir "${l.descricao}" só deste mês? ${l.origem === "servico" ? "Para mudar as parcelas de vez, edite o serviço em Serviços freela." : "Ele não volta a ser gerado neste mês. Para parar nos próximos meses, desmarque o “Ativo” lá embaixo (ou mude o valor)."}`,
+                                ) && executar({ acao: "excluir_lancamento", id: l.id })
+                              }>Excluir</button>
                           </td>
                         </tr>
                       );
@@ -337,7 +343,7 @@ function Configuracoes({ d, mes, executar }: { d: Dados; mes: string; executar: 
         <h2 className="border-b border-black/5 px-4 py-3 text-sm font-semibold">Mensalidades dos clientes</h2>
         <table className="w-full min-w-[560px] text-sm">
           <thead className="bg-surface text-left text-xs text-ink-2">
-            <tr><th className="px-4 py-2 font-medium">Cliente</th><th className="px-3 py-2 font-medium">Mensalidade (R$)</th><th className="px-3 py-2 font-medium">Vence dia</th><th className="px-3 py-2 font-medium">Ativo</th></tr>
+            <tr><th className="px-4 py-2 font-medium">Cliente</th><th className="px-3 py-2 font-medium">Mensalidade (R$)</th><th className="px-3 py-2 font-medium">Vence dia</th><th className="px-3 py-2 font-medium">Ativo</th><th /></tr>
           </thead>
           <tbody>
             {d.clientes.map((c) => (
@@ -353,6 +359,17 @@ function Configuracoes({ d, mes, executar }: { d: Dados; mes: string; executar: 
                 </td>
                 <td className="px-3 py-2">
                   <input type="checkbox" className="h-4 w-4 accent-[#1f3fd1]" checked={c.ativo} onChange={(e) => executar({ acao: "salvar_cliente", dados: { ...c, ativo: e.target.checked } })} aria-label={`${c.nome} ativo`} />
+                </td>
+                <td className="px-3 py-2 text-right">
+                  <button
+                    className="text-xs text-ink-3 hover:text-[#b42318]"
+                    onClick={() =>
+                      confirm(`Excluir o cliente "${c.nome}"? A ficha dele em Clientes também é apagada. Os lançamentos já feitos continuam no Financeiro. Se ele só parou de pagar, prefira desmarcar “Ativo”.`) &&
+                      executar({ acao: "excluir_cliente", id: c.id })
+                    }
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
             ))}

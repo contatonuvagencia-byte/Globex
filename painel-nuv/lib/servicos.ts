@@ -41,11 +41,14 @@ export async function sincronizarFinanceiro(s: Servico) {
   const sb = db();
   const { data, error } = await sb
     .from("fin_lancamentos")
-    .select("id, tipo, valor, data, pago, parcela, descricao")
+    .select("id, tipo, valor, data, pago, parcela, descricao, excluido")
     .eq("origem", "servico")
     .eq("origem_id", s.id);
   if (error) throw new Error(error.message);
-  const existentes = (data ?? []).map((l) => ({ ...l, valor: Number(l.valor) })) as Lanc[];
+  const todos = (data ?? []).map((l) => ({ ...l, valor: Number(l.valor) })) as (Lanc & { excluido: boolean })[];
+  // parcelas excluídas no Financeiro ficam de fora: o painel não recria nem mexe nelas
+  const excluidas = new Set(todos.filter((l) => l.excluido).map((l) => `${l.tipo}:${l.parcela}`));
+  const existentes = todos.filter((l) => !l.excluido);
   const entradas = existentes.filter((l) => l.tipo === "entrada");
   const custoAtual = existentes.find((l) => l.tipo === "saida" && l.parcela === PARCELA_CUSTO);
 
@@ -69,6 +72,7 @@ export async function sincronizarFinanceiro(s: Servico) {
   const total = plano.length;
   const ops: PromiseLike<unknown>[] = [];
   for (const p of desejadas) {
+    if (excluidas.has(`entrada:${p.parcela}`)) continue;
     const linha = {
       tipo: "entrada",
       descricao: total > 1 ? `${nome} ${p.parcela}/${total}` : nome,
@@ -96,7 +100,7 @@ export async function sincronizarFinanceiro(s: Servico) {
 
   // custo do serviço (freela, ferramenta...) vira uma saída na data de entrega
   const dataCusto = s.entregue_em ?? s.prazo ?? s.data_inicio;
-  if (vendido && s.custo > 0) {
+  if (vendido && s.custo > 0 && !excluidas.has(`saida:${PARCELA_CUSTO}`)) {
     const linha = {
       tipo: "saida",
       descricao: `Custo: ${nome}`,
@@ -123,7 +127,7 @@ export async function listarServicos() {
   const sb = db();
   const [srv, lan] = await Promise.all([
     sb.from("servicos").select("*").order("created_at", { ascending: false }),
-    sb.from("fin_lancamentos").select("id, tipo, valor, data, pago, parcela, descricao, origem_id").eq("origem", "servico").order("parcela"),
+    sb.from("fin_lancamentos").select("id, tipo, valor, data, pago, parcela, descricao, origem_id").eq("origem", "servico").eq("excluido", false).order("parcela"),
   ]);
   if (srv.error) throw new Error(srv.error.message);
   if (lan.error) throw new Error(lan.error.message);

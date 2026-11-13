@@ -98,7 +98,7 @@ export async function fichaCliente(id: string, eu: UsuarioPublico) {
       ? sb.from("metricas_relatorios").select("id, rede, periodo_atual, created_at, token_publico").ilike("cliente", c.nome).order("created_at", { ascending: false }).limit(12).then((r) => r.data ?? [])
       : Promise.resolve(null),
     pode(eu, "financeiro", "ver")
-      ? sb.from("fin_lancamentos").select("id, tipo, descricao, valor, data, pago, origem").eq("cliente_id", c.id).order("data", { ascending: false }).limit(24).then((r) =>
+      ? sb.from("fin_lancamentos").select("id, tipo, descricao, valor, data, pago, origem").eq("cliente_id", c.id).eq("excluido", false).order("data", { ascending: false }).limit(24).then((r) =>
           (r.data ?? []).map((l) => ({ ...l, valor: Number(l.valor), atrasado: !l.pago && l.data < hoje })),
         )
       : Promise.resolve(null),

@@ -114,8 +114,8 @@ export async function carregarMes(mes: string) {
   const [cli, rec, lan, hist] = await Promise.all([
     sb.from("fin_clientes").select("*").order("nome"),
     sb.from("fin_recorrentes").select("*").order("tipo").order("descricao"),
-    sb.from("fin_lancamentos").select("*").eq("competencia", mes).order("data").order("created_at"),
-    sb.from("fin_lancamentos").select("tipo, valor, competencia, pago, cliente_id").in("competencia", historicoMeses),
+    sb.from("fin_lancamentos").select("*").eq("competencia", mes).eq("excluido", false).order("data").order("created_at"),
+    sb.from("fin_lancamentos").select("tipo, valor, competencia, pago, cliente_id").eq("excluido", false).in("competencia", historicoMeses),
   ]);
   for (const r of [cli, rec, lan, hist]) if (r.error) throw new Error(r.error.message);
 
@@ -212,6 +212,7 @@ export const Acao = z.discriminatedUnion("acao", [
   z.object({ acao: z.literal("salvar_cliente"), dados: ClienteIn }),
   z.object({ acao: z.literal("salvar_recorrente"), dados: RecorrenteIn }),
   z.object({ acao: z.literal("excluir_recorrente"), id: uuid }),
+  z.object({ acao: z.literal("excluir_cliente"), id: uuid }),
   z.object({ acao: z.literal("gerar_mes"), mes: z.string().regex(MES) }),
 ]);
 
@@ -228,8 +229,16 @@ export async function executar(acao: z.infer<typeof Acao>) {
       if (acao.dados.data) dados.competencia = acao.dados.data.slice(0, 7);
       return ok(await sb.from("fin_lancamentos").update(dados).eq("id", acao.id));
     }
-    case "excluir_lancamento":
-      return ok(await sb.from("fin_lancamentos").delete().eq("id", acao.id));
+    case "excluir_lancamento": {
+      // lançamento feito à mão é apagado; o gerado (mensalidade, conta fixa, serviço) fica marcado
+      // como excluído, senão ele seria criado de novo na próxima vez que o mês fosse montado
+      const { data: l } = await sb.from("fin_lancamentos").select("origem").eq("id", acao.id).maybeSingle();
+      if (!l) return;
+      return ok(l.origem === "manual" ? await sb.from("fin_lancamentos").delete().eq("id", acao.id) : await sb.from("fin_lancamentos").update({ excluido: true }).eq("id", acao.id));
+    }
+    case "excluir_cliente":
+      // os lançamentos já feitos continuam, só perdem o vínculo com o cliente
+      return ok(await sb.from("fin_clientes").delete().eq("id", acao.id));
     case "salvar_cliente": {
       const { id, ...dados } = acao.dados;
       return ok(id ? await sb.from("fin_clientes").update(dados).eq("id", id) : await sb.from("fin_clientes").insert(dados));

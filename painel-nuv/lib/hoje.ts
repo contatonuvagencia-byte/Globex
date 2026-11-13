@@ -63,6 +63,7 @@ export async function resumoHoje(eu: UsuarioPublico) {
         .from("fin_lancamentos")
         .select("id, tipo, descricao, valor, data, cliente_id")
         .eq("pago", false)
+        .eq("excluido", false)
         .lte("data", em7)
         .order("data");
       const l = (data ?? []).map((x: any) => ({ ...x, valor: Number(x.valor) }));
