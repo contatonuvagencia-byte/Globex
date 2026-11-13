@@ -299,9 +299,16 @@ function midiaDoBloco(b: NotionBlock): Midia | null {
   return { tipo, url, nome: nome || tipo };
 }
 
-type Coleta = { secoes: Secao[]; midias: Midia[] };
+/** Seção da página (um título e o texto embaixo dele), com os blocos de onde o texto veio, para poder editar. */
+type SecaoBruta = Secao & {
+  tituloId?: string;
+  tituloPai?: string;
+  tituloTemFilhos?: boolean;
+  blocos: { id: string; pai: string }[];
+};
+type Coleta = { secoes: SecaoBruta[]; midias: Midia[] };
 
-function percorrer(blocos: NotionBlock[], coleta: Coleta) {
+function percorrer(blocos: NotionBlock[], coleta: Coleta, pai: string) {
   for (const b of blocos) {
     const m = midiaDoBloco(b);
     if (m) {
@@ -309,16 +316,17 @@ function percorrer(blocos: NotionBlock[], coleta: Coleta) {
       continue;
     }
     if (TITULOS.includes(b.type)) {
-      coleta.secoes.push({ titulo: textoDoBloco(b) ?? "", texto: "" });
+      coleta.secoes.push({ titulo: textoDoBloco(b) ?? "", texto: "", tituloId: b.id, tituloPai: pai, tituloTemFilhos: Boolean(b.has_children), blocos: [] });
     } else {
       const t = textoDoBloco(b);
       if (t !== null) {
-        if (coleta.secoes.length === 0) coleta.secoes.push({ titulo: "", texto: "" });
+        if (coleta.secoes.length === 0) coleta.secoes.push({ titulo: "", texto: "", blocos: [] });
         const atual = coleta.secoes[coleta.secoes.length - 1];
         atual.texto += (atual.texto ? "\n" : "") + t;
+        atual.blocos.push({ id: b.id, pai });
       }
     }
-    if (b._filhos) percorrer(b._filhos, coleta);
+    if (b._filhos) percorrer(b._filhos, coleta, b.id);
   }
 }
 
@@ -331,32 +339,116 @@ export async function calendarioOuErro(calId: string) {
   return cal;
 }
 
-export async function detalharPost(calId: string, pageId: string): Promise<PostDetalhe> {
+/** Lê a página e separa legenda, copy e o resto (com os blocos de cada parte). */
+async function analisarPost(calId: string, pageId: string) {
   const cal = await calendarioOuErro(calId);
   const [page, blocos] = await Promise.all([notion(`/pages/${pageId}`), filhos(pageId)]);
   const post = paginaParaPost(cal, page);
   if (!post) throw new Error("Post sem data");
 
   const coleta: Coleta = { secoes: [], midias: propArquivos(page.properties?.[cal.campos.arquivos ?? ""]) };
-  percorrer(blocos, coleta);
+  percorrer(blocos, coleta, pageId);
 
+  // seção vazia só conta se for de legenda/copy (para dar para preencher pelo painel)
   const secoes = coleta.secoes
-    .map((s) => ({ titulo: s.titulo.trim(), texto: s.texto.trim() }))
-    .filter((s) => s.texto);
+    .map((s) => ({ ...s, titulo: s.titulo.trim(), texto: s.texto.trim() }))
+    .filter((s) => s.texto || (s.tituloId && (RE_LEGENDA.test(s.titulo) || RE_COPY.test(s.titulo))));
   const legendaSec = secoes.find((s) => RE_LEGENDA.test(s.titulo));
   const copySecs = secoes.filter((s) => s !== legendaSec && RE_COPY.test(s.titulo));
   const outras = secoes.filter((s) => s !== legendaSec && !copySecs.includes(s));
-
   const legendaProp = cal.campos.legenda ? propTexto(page.properties?.[cal.campos.legenda]) : null;
+  return { cal, page, post, coleta, legendaSec, copySecs, outras, legendaProp };
+}
+
+export async function detalharPost(calId: string, pageId: string): Promise<PostDetalhe> {
+  const { cal, page, post, coleta, legendaSec, copySecs, outras, legendaProp } = await analisarPost(calId, pageId);
+  const copias = copySecs.filter((s) => s.texto);
+  const legenda = legendaSec?.texto || legendaProp || null;
+
+  // partes de texto que dá para editar pelo painel
+  const editaveis: TextoEditavel[] = [
+    ...(copySecs.length
+      ? copySecs.map((s, i) => ({ chave: `copy:${i}`, titulo: copySecs.length > 1 ? `Copy · ${s.titulo}` : "Copy da arte", texto: s.texto }))
+      : [{ chave: "copy:novo", titulo: "Copy da arte", texto: "" }]),
+    { chave: "legenda", titulo: "Legenda", texto: legenda ?? "" },
+    ...outras.map((s, i) => ({ chave: `outra:${i}`, titulo: s.titulo || "Notas", texto: s.texto })),
+  ];
 
   return {
     ...post,
-    legenda: legendaSec?.texto ?? legendaProp ?? null,
-    copy: copySecs.length ? copySecs.map((s) => (copySecs.length > 1 ? `${s.titulo}\n${s.texto}` : s.texto)).join("\n\n") : null,
+    legenda,
+    copy: copias.length ? copias.map((s) => (copias.length > 1 ? `${s.titulo}\n${s.texto}` : s.texto)).join("\n\n") : null,
     referencias: cal.campos.referencias ? propTexto(page.properties?.[cal.campos.referencias]) : null,
-    outrasSecoes: outras,
+    outrasSecoes: outras.map(({ titulo, texto }) => ({ titulo, texto })),
     midias: coleta.midias,
+    editaveis,
   };
+}
+
+/* ---------- Editar copy / legenda (grava na página do Notion) ---------- */
+
+export type TextoEditavel = { chave: string; titulo: string; texto: string };
+
+const pedacos = (t: string) => (t ? (t.match(/[\s\S]{1,2000}/g) ?? []) : []).map((content) => ({ type: "text", text: { content } }));
+
+/** Cada linha vira um bloco: "• " lista, "☐/☑ " tarefa, o resto parágrafo (linha vazia = espaço). */
+function blocosDeTexto(texto: string) {
+  return texto.replace(/\r/g, "").split("\n").map((linha) => {
+    const lista = linha.match(/^\s*•\s?(.*)$/);
+    if (lista) return { object: "block", type: "bulleted_list_item", bulleted_list_item: { rich_text: pedacos(lista[1]) } };
+    const tarefa = linha.match(/^\s*([☐☑])\s?(.*)$/);
+    if (tarefa) return { object: "block", type: "to_do", to_do: { rich_text: pedacos(tarefa[2]), checked: tarefa[1] === "☑" } };
+    return { object: "block", type: "paragraph", paragraph: { rich_text: pedacos(linha) } };
+  });
+}
+
+async function inserir(pai: string, blocos: unknown[], depois?: string) {
+  let ultimo = depois;
+  for (let i = 0; i < blocos.length; i += 100) {
+    const r = await notion(`/blocks/${pai}/children`, { method: "PATCH", body: { children: blocos.slice(i, i + 100), ...(ultimo ? { after: ultimo } : {}) } });
+    ultimo = r.results?.at(-1)?.id ?? ultimo;
+  }
+}
+
+/** Troca o texto de uma seção: escreve o novo logo depois do antigo e apaga o antigo. */
+async function substituirSecao(sec: SecaoBruta, texto: string) {
+  const ids = new Set(sec.blocos.map((b) => b.id));
+  const topo = sec.blocos.filter((b) => !ids.has(b.pai)); // filhos somem junto com o bloco de cima
+  const novos = texto.trim() ? blocosDeTexto(texto.trim()) : [];
+  if (topo.length) {
+    const pai = topo[0].pai;
+    const ultimoMesmoPai = [...topo].reverse().find((b) => b.pai === pai)!;
+    if (novos.length) await inserir(pai, novos, ultimoMesmoPai.id);
+    for (const b of topo) await notion(`/blocks/${b.id}`, { method: "DELETE" });
+  } else if (sec.tituloId && novos.length) {
+    // seção só com o título: o texto entra logo abaixo dele (ou dentro, se for um título que abre e fecha)
+    if (sec.tituloTemFilhos) await inserir(sec.tituloId, novos);
+    else await inserir(sec.tituloPai!, novos, sec.tituloId);
+  }
+}
+
+export async function editarTextoPost(calId: string, pageId: string, chave: string, texto: string): Promise<PostDetalhe> {
+  const { cal, page, legendaSec, copySecs, outras } = await analisarPost(calId, pageId);
+  const novaSecao = async (titulo: string) => {
+    if (!texto.trim()) return;
+    await inserir(pageId, [{ object: "block", type: "heading_3", heading_3: { rich_text: pedacos(titulo) } }, ...blocosDeTexto(texto.trim())]);
+  };
+
+  if (chave === "legenda") {
+    if (legendaSec) await substituirSecao(legendaSec, texto);
+    else if (cal.campos.legenda && page.properties?.[cal.campos.legenda]?.type === "rich_text") {
+      await notion(`/pages/${pageId}`, { method: "PATCH", body: { properties: { [cal.campos.legenda]: { rich_text: pedacos(texto.trim()) } } } });
+    } else await novaSecao("Legenda");
+  } else if (chave === "copy:novo") {
+    if (copySecs.length) throw new Error("A copy mudou no Notion enquanto você editava. Feche e abra o post de novo.");
+    await novaSecao("Copy");
+  } else {
+    const m = chave.match(/^(copy|outra):(\d+)$/);
+    const sec = m ? (m[1] === "copy" ? copySecs : outras)[Number(m[2])] : undefined;
+    if (!sec) throw new Error("Essa parte do post mudou no Notion. Feche e abra o post de novo.");
+    await substituirSecao(sec, texto);
+  }
+  return detalharPost(calId, pageId);
 }
 
 /* ---------- Marcar como postado ---------- */

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { detalharPost, marcarPostado, mudarData } from "@/lib/notion";
+import { detalharPost, editarTextoPost, marcarPostado, mudarData } from "@/lib/notion";
 import { exigir, negado } from "@/lib/usuarios";
 import { calendarioPorId } from "@/lib/calendarios";
 import { veCliente } from "@/lib/permissoes";
@@ -24,6 +24,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 const Patch = z.union([
   z.object({ cliente: z.string().uuid(), postado: z.boolean() }),
   z.object({ cliente: z.string().uuid(), data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/) }),
+  z.object({ cliente: z.string().uuid(), texto: z.object({ chave: z.string().regex(/^(legenda|copy:novo|copy:\d+|outra:\d+)$/), valor: z.string().max(20000) }) }),
 ]);
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
@@ -35,6 +36,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   if (!cal || !veCliente(eu, cal.nome)) return NextResponse.json({ erro: "Seu perfil não tem acesso a este cliente." }, { status: 403 });
   try {
     const c = corpo.data;
+    if ("texto" in c) return NextResponse.json(await editarTextoPost(c.cliente, params.id, c.texto.chave, c.texto.valor));
     if ("data" in c) return NextResponse.json(await mudarData(c.cliente, params.id, c.data));
     return NextResponse.json(await marcarPostado(c.cliente, params.id, c.postado));
   } catch (e) {

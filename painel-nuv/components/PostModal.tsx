@@ -4,26 +4,82 @@ import { dataBR } from "@/lib/format";
 import type { Post, PostDetalhe } from "@/lib/types";
 import { ArteTrello } from "./ArteTrello";
 import { EnviarArte } from "./EnviarArte";
+import { useUsuario } from "./Usuario";
 import { StatusBadge } from "./StatusBadge";
 
-function BlocoTexto({ titulo, texto }: { titulo: string; texto: string }) {
+function BlocoTexto({ titulo, texto, onSalvar }: { titulo: string; texto: string; onSalvar?: (novo: string) => Promise<void> }) {
   const [copiado, setCopiado] = useState(false);
+  const [editando, setEditando] = useState(false);
+  const [rascunho, setRascunho] = useState(texto);
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState("");
+
+  async function salvar() {
+    if (!onSalvar) return;
+    setSalvando(true);
+    setErro("");
+    try {
+      await onSalvar(rascunho);
+      setEditando(false);
+    } catch (e) {
+      setErro((e as Error).message);
+    } finally {
+      setSalvando(false);
+    }
+  }
+
+  // parte vazia: só quem edita vê o botão para escrever
+  if (!texto && !editando) {
+    return onSalvar ? (
+      <button className="so-editor w-full rounded-xl border border-dashed border-black/15 p-3 text-left text-sm font-semibold text-ink-2 hover:border-azul hover:text-azul" onClick={() => { setRascunho(""); setEditando(true); }}>
+        + Escrever {titulo.toLowerCase()}
+      </button>
+    ) : null;
+  }
   return (
-    <section className="rounded-xl border border-black/5 bg-surface p-4">
-      <div className="mb-2 flex items-center justify-between gap-2">
+    <section className={`rounded-xl border bg-surface p-4 ${editando ? "border-azul" : "border-black/5"}`}>
+      <div className="mb-2 flex items-center justify-between gap-3">
         <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-2">{titulo}</h3>
-        <button
-          className="text-xs font-medium text-nuv hover:underline"
-          onClick={async () => {
-            await navigator.clipboard.writeText(texto);
-            setCopiado(true);
-            setTimeout(() => setCopiado(false), 1500);
-          }}
-        >
-          {copiado ? "Copiado!" : "Copiar"}
-        </button>
+        {!editando && (
+          <span className="flex gap-3">
+            {onSalvar && (
+              <button className="so-editor text-xs font-medium text-nuv hover:underline" onClick={() => { setRascunho(texto); setEditando(true); }}>
+                Editar
+              </button>
+            )}
+            <button
+              className="text-xs font-medium text-nuv hover:underline"
+              onClick={async () => {
+                await navigator.clipboard.writeText(texto);
+                setCopiado(true);
+                setTimeout(() => setCopiado(false), 1500);
+              }}
+            >
+              {copiado ? "Copiado!" : "Copiar"}
+            </button>
+          </span>
+        )}
       </div>
-      <p className="whitespace-pre-wrap text-sm leading-relaxed">{texto}</p>
+      {editando ? (
+        <>
+          <textarea
+            className="input min-h-[160px] text-sm leading-relaxed"
+            value={rascunho}
+            onChange={(e) => setRascunho(e.target.value)}
+            autoFocus
+            disabled={salvando}
+            onKeyDown={(e) => e.key === "Escape" && e.stopPropagation()}
+          />
+          {erro && <p className="mt-2 text-xs text-[#a1261f]">{erro}</p>}
+          <div className="mt-2 flex items-center gap-2">
+            <p className="mr-auto text-[11px] text-ink-3">Grava na página do post no Notion. Negrito e links do texto antigo não são mantidos.</p>
+            <button className="btn-ghost px-3 py-1.5 text-xs" disabled={salvando} onClick={() => setEditando(false)}>Cancelar</button>
+            <button className="btn-primary px-3 py-1.5 text-xs" disabled={salvando || rascunho === texto} onClick={salvar}>{salvando ? "Salvando no Notion..." : "Salvar"}</button>
+          </div>
+        </>
+      ) : (
+        <p className="whitespace-pre-wrap text-sm leading-relaxed">{texto}</p>
+      )}
     </section>
   );
 }
@@ -91,6 +147,15 @@ export function PostModal({
   }, [post.id, post.cliente, onClose, recarga]);
 
   const d = detalhe;
+  const { podeEditar } = useUsuario();
+  const editavel = podeEditar("calendario");
+
+  async function salvarTexto(chave: string, valor: string) {
+    const r = await fetch(`/api/posts/${post.id}`, { method: "PATCH", body: JSON.stringify({ cliente: post.cliente, texto: { chave, valor } }) });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.erro ?? "Não consegui salvar no Notion");
+    setDetalhe(j);
+  }
   const [artesTrello, setArtesTrello] = useState(0);
   const contarTrello = useCallback((n: number) => setArtesTrello(n), []);
   return (
@@ -193,14 +258,18 @@ export function PostModal({
                 />
                 </div>
               </section>
-              {d.copy && <BlocoTexto titulo="Copy da arte" texto={d.copy} />}
-              {d.legenda && <BlocoTexto titulo="Legenda" texto={d.legenda} />}
-              {!d.copy && !d.legenda && (
+              {d.editaveis.filter((t) => t.chave !== "legenda" && !t.chave.startsWith("outra")).map((t) => (
+                <BlocoTexto key={`${t.chave}:${t.texto.length}`} titulo={t.titulo} texto={t.texto} onSalvar={editavel ? (v) => salvarTexto(t.chave, v) : undefined} />
+              ))}
+              {d.editaveis.filter((t) => t.chave === "legenda").map((t) => (
+                <BlocoTexto key={`${t.chave}:${t.texto.length}`} titulo={t.titulo} texto={t.texto} onSalvar={editavel ? (v) => salvarTexto(t.chave, v) : undefined} />
+              ))}
+              {!d.copy && !d.legenda && !editavel && (
                 <p className="text-sm text-ink-2">Esse post ainda não tem legenda nem copy escritas no Notion.</p>
               )}
               {d.referencias && <BlocoTexto titulo="Referências" texto={d.referencias} />}
-              {d.outrasSecoes.map((s, i) => (
-                <BlocoTexto key={i} titulo={s.titulo || "Notas"} texto={s.texto} />
+              {d.editaveis.filter((t) => t.chave.startsWith("outra")).map((t) => (
+                <BlocoTexto key={`${t.chave}:${t.texto.length}`} titulo={t.titulo} texto={t.texto} onSalvar={editavel ? (v) => salvarTexto(t.chave, v) : undefined} />
               ))}
             </>
           )}

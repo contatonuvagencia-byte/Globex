@@ -24,4 +24,6 @@ export type PostDetalhe = Post & {
   referencias: string | null;
   outrasSecoes: Secao[];
   midias: Midia[];
+  /** partes de texto que dá para editar pelo painel (chave identifica a parte na página) */
+  editaveis: { chave: string; titulo: string; texto: string }[];
 };
