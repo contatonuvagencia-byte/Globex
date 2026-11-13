@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Recap Global Connect</title>
+<!-- Carrossel 1080x1350 de recapitulação/agradecimento da Beawst Global Connect 2026 + ganhadoras + CTA.
+     Identidade da feira (roxo, magenta, vermelho, Montserrat). Abrir com ?p=1..5. Gerar: node render.mjs -->
+<style>
+@font-face{font-family:M;font-weight:500;src:url(assets/montserrat-latin-500-normal.woff2)}
+@font-face{font-family:M;font-weight:700;src:url(assets/montserrat-latin-700-normal.woff2)}
+@font-face{font-family:M;font-weight:800;src:url(assets/montserrat-latin-800-normal.woff2)}
+@font-face{font-family:M;font-weight:900;src:url(assets/montserrat-latin-900-normal.woff2)}
+:root{--roxo:#5B00D6;--magenta:#A3127F;--vermelho:#F0102A;--escuro:#0E0716;
+  --gradL:linear-gradient(90deg,#B98CFF 0%,#FF6BB5 50%,#FF6B6B 100%);--grad:linear-gradient(90deg,#5B00D6,#A3127F,#F0102A)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1350px;overflow:hidden;background:var(--escuro)}
+body{font-family:M,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+.s{position:absolute;inset:0;overflow:hidden;display:none;background:var(--escuro)}
+.abs{position:absolute}
+.glow{position:absolute;border-radius:50%;filter:blur(140px)}
+.ring{position:absolute;border-radius:50%;border:3px solid rgba(255,255,255,.13)}
+.gradL{background:var(--gradL);-webkit-background-clip:text;background-clip:text;color:transparent}
+.huge{font-weight:900;line-height:.95;letter-spacing:-.04em}
+.pill{display:inline-block;font-weight:800;font-size:26px;letter-spacing:.14em;text-transform:uppercase;padding:14px 26px;border-radius:999px;background:var(--grad)}
+.pillG{display:inline-block;font-weight:800;font-size:26px;letter-spacing:.14em;text-transform:uppercase;padding:14px 26px;border-radius:999px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.28)}
+.txt{font-weight:700;font-size:38px;line-height:1.35;color:rgba(255,255,255,.9)}
+.circ{border-radius:50%;overflow:hidden;box-shadow:0 0 0 6px #fff;flex:none}
+.circ img{width:100%;height:100%;object-fit:cover}
+.pal{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 30px}
+.pal div{text-align:center}
+.pal .circ{width:200px;height:200px;margin:0 auto 18px}
+.pal b{display:block;font-weight:900;font-size:30px;line-height:1.1}
+.pal span{display:block;font-weight:700;font-size:23px;color:rgba(255,255,255,.72);margin-top:6px;line-height:1.2}
+.name{display:inline-block;background:#fff;color:#0B0B0F;border-radius:26px;padding:20px 36px;font-weight:900;font-size:54px;line-height:1.1;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.halo{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,107,181,.55) 0%,rgba(91,0,214,.35) 45%,transparent 70%);filter:blur(24px)}
+.btn{display:inline-flex;align-items:center;gap:20px;background:#fff;color:var(--roxo);font-weight:900;font-size:38px;padding:28px 44px;border-radius:999px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.btn i{font-style:normal;display:inline-flex;width:54px;height:54px;border-radius:50%;background:var(--grad);color:#fff;align-items:center;justify-content:center;font-size:30px}
+.dots{position:absolute;right:90px;bottom:70px;display:flex;gap:12px}
+.dots i{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.3)}
+.dots i.on{background:#fff;width:40px;border-radius:8px}
+.swipe{position:absolute;left:90px;bottom:62px;font-weight:800;font-size:26px;letter-spacing:.1em;color:rgba(255,255,255,.7)}
+</style></head><body>
+
+<!-- 1 | Capa: obrigada -->
+<div class="s" id="s1">
+  <div class="glow" style="width:1000px;height:1000px;background:var(--roxo);opacity:.75;left:-300px;top:-250px"></div>
+  <div class="glow" style="width:900px;height:900px;background:var(--vermelho);opacity:.42;left:480px;top:700px"></div>
+  <div class="ring" style="left:520px;top:-180px;width:820px;height:820px"></div>
+  <div class="abs" style="left:90px;top:84px"><img src="assets/logo-feira-branco.svg" style="width:330px;display:block"></div>
+  <div class="abs" style="left:90px;top:300px"><span class="pillG">07/11 · foi incrível</span></div>
+  <div class="abs huge" style="left:84px;top:410px;font-size:190px">Obrigada</div>
+  <div class="abs huge gradL" style="left:84px;top:590px;font-size:150px;padding-bottom:12px">por estar</div>
+  <div class="abs huge" style="left:84px;top:740px;font-size:132px">com a gente!</div>
+  <div class="abs txt" style="left:90px;right:90px;top:950px">Relembre a Beawst Global Connect 2026 e conheça as ganhadoras dos prêmios.</div>
+  <div class="swipe">ARRASTA →</div>
+  <div class="dots"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+</div>
+
+<!-- 2 | Recap: quem esteve com a gente -->
+<div class="s" id="s2">
+  <div class="glow" style="width:900px;height:900px;background:var(--roxo);opacity:.7;left:-300px;top:-200px"></div>
+  <div class="glow" style="width:800px;height:800px;background:var(--magenta);opacity:.45;left:500px;top:750px"></div>
+  <div class="abs" style="left:90px;top:84px"><span class="pill">Recap</span></div>
+  <div class="abs huge" style="left:84px;right:90px;top:180px;font-size:84px">Uma manhã de <span class="gradL">conexões</span></div>
+  <div class="abs txt" style="left:90px;right:90px;top:370px;font-size:32px">Carreira, destinos, escolas e vistos, ao vivo e de graça.</div>
+  <div class="abs pal" style="left:90px;right:90px;top:480px">
+    <div><div class="circ"><img src="assets/apresentadora.jpg" style="object-position:50% 22%;transform:scale(1.45);transform-origin:50% 30%"></div><b>Samanta Lopes</b><span>Apresentadora</span></div>
+    <div><div class="circ"><img src="assets/camila.jpg" style="object-position:50% 22%;transform:scale(1.6);transform-origin:42% 24%"></div><b>Camila Fidélis</b><span>Fundadora BEAWST</span></div>
+    <div><div class="circ"><img src="assets/leia.jpg" style="object-position:55% 30%"></div><b>Léia</b><span>Malta</span></div>
+    <div><div class="circ"><img src="assets/alessandra.jpg" style="object-position:100% 38%;transform:scale(1.12);transform-origin:100% 45%"></div><b>Alessandra</b><span>Irlanda</span></div>
+    <div><div class="circ"><img src="assets/daniel.jpg" style="object-position:50% 30%;transform:scale(1.1);transform-origin:48% 35%"></div><b>Daniel Döbereiner</b><span>Gateway School</span></div>
+    <div><div class="circ"><img src="assets/rafael.jpg" style="object-position:50% 18%;transform:scale(1.25);transform-origin:48% 22%"></div><b>Rafael Carvalho</b><span>Mundo dos Vistos</span></div>
+  </div>
+  <div class="dots"><i></i><i class="on"></i><i></i><i></i><i></i></div>
+</div>
+
+<!-- 3 | Ganhadoras do kit -->
+<div class="s" id="s3">
+  <div class="glow" style="width:1000px;height:1000px;background:var(--roxo);opacity:.7;left:-300px;top:-150px"></div>
+  <div class="glow" style="width:900px;height:900px;background:var(--magenta);opacity:.48;left:450px;top:600px"></div>
+  <div class="abs" style="left:90px;top:84px"><span class="pill">🎉 Sorteio</span></div>
+  <div class="abs huge" style="left:84px;top:180px;font-size:100px">Ganhadoras<br>do <span class="gradL">kit viagem</span></div>
+  <div class="halo" style="left:260px;top:390px;width:620px;height:520px"></div>
+  <img class="abs" src="assets/kit-viagem.png" style="left:150px;top:430px;width:560px;filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))">
+  <img class="abs" src="assets/caderneta.png" style="left:640px;top:470px;width:300px;transform:rotate(8deg);filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))">
+  <div class="abs" style="left:90px;right:90px;top:880px"><span class="name">Erica Blanco</span></div>
+  <div class="abs" style="left:90px;right:90px;top:1010px"><span class="name">Cristina Viana</span></div>
+  <div class="abs txt" style="left:90px;right:90px;top:1150px;font-size:32px">levaram almofada, máscara de dormir e caderneta BEAWST 💜</div>
+  <div class="dots"><i></i><i></i><i class="on"></i><i></i><i></i></div>
+</div>
+
+<!-- 4 | Ganhadora do kit completo -->
+<div class="s" id="s4">
+  <div class="glow" style="width:1000px;height:1000px;background:var(--roxo);opacity:.7;left:-300px;top:-100px"></div>
+  <div class="glow" style="width:900px;height:900px;background:var(--vermelho);opacity:.42;left:450px;top:600px"></div>
+  <div class="abs" style="left:90px;top:84px"><span class="pill">🧳 Grande prêmio</span></div>
+  <div class="abs huge" style="left:84px;top:180px;font-size:100px">Kit completo<br><span class="gradL">com mala</span></div>
+  <div class="halo" style="left:300px;top:380px;width:660px;height:600px"></div>
+  <img class="abs" src="assets/kit-mala.png" style="left:280px;top:400px;width:600px;filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))">
+  <div class="abs" style="left:90px;right:90px;top:1000px"><span class="name">Isadora Oliveira Gomes</span></div>
+  <div class="abs txt" style="left:90px;right:90px;top:1135px;font-size:32px">levou mala de bordo, almofada, máscara e caderneta BEAWST 🧳💜</div>
+  <div class="dots"><i></i><i></i><i></i><i class="on"></i><i></i></div>
+</div>
+
+<!-- 5 | CTA -->
+<div class="s" id="s5">
+  <div class="glow" style="width:1000px;height:1000px;background:var(--roxo);opacity:.8;left:-250px;top:-200px"></div>
+  <div class="glow" style="width:900px;height:900px;background:var(--vermelho);opacity:.45;left:450px;top:650px"></div>
+  <div class="ring" style="left:-260px;top:560px;width:900px;height:900px"></div>
+  <div class="abs" style="left:90px;top:84px"><img src="assets/logo-feira-branco.svg" style="width:300px;display:block"></div>
+  <div class="abs huge" style="left:84px;top:270px;font-size:96px">O próximo<br>embarque pode<br>ser <span class="gradL">o seu!</span></div>
+  <div class="abs txt" style="left:90px;right:90px;top:600px">Chama a gente pra planejar seu intercâmbio de olho na sua carreira.</div>
+  <div class="abs" style="left:90px;right:90px;top:780px;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);border-radius:30px;padding:34px 38px;display:flex;gap:30px;align-items:center">
+    <img src="assets/kit-mala.png" style="width:190px;flex:none">
+    <div style="font-weight:800;font-size:33px;line-height:1.3">E quem fecha com a BEAWST também ganha prêmio: <span class="gradL">kit de viagem oficial</span><span style="font-weight:600;font-size:24px;display:block;color:rgba(255,255,255,.75);margin-top:8px">Mala de bordo em programas a partir de 6 meses.</span></div>
+  </div>
+  <div class="abs" style="left:90px;top:1110px"><span class="btn">Chama no direct <i>→</i></span></div>
+  <div class="dots"><i></i><i></i><i></i><i></i><i class="on"></i></div>
+</div>
+
+<script>
+const p = new URLSearchParams(location.search).get('p') || '1';
+document.getElementById('s' + p).style.display = 'block';
+</script>
+</body></html>
