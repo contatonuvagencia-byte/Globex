@@ -1,0 +1,104 @@
+{
+  "_notas": "Texto exatamente como na Parte 2 do brief. [[ ]] só marca a parte destacada em cor; não altera o texto. bg: light | dark | brand. img: foto do contexto (opcional).",
+  "pecas": [
+    { "semana": 1, "slug": "2026-11-18_estatico_intercambio-nao-e-ferias", "tipo": "estatico",
+      "pages": [ { "bg": "light", "layout": "title", "h": "Intercâmbio não é férias. | [[É promoção.]]", "sign": "Be a world student." } ] },
+
+    { "semana": 1, "slug": "2026-11-19_carrossel_9-trilhas", "tipo": "carrossel",
+      "pages": [
+        { "bg": "brand", "layout": "cover", "h": "9 trilhas de carreira. [[Qual é a sua?]]" },
+        { "bg": "light", "layout": "list", "items": [["Finance & Capital Markets.", "EUA e Reino Unido."], ["Tech, Product & Innovation.", "Irlanda e Canadá."], ["Engineering, Projects & Audit.", "EUA e Canadá."]] },
+        { "bg": "light", "layout": "list", "items": [["Business, HR & Administration.", "EUA e Canadá."], ["Marketing, Advertising & Communication.", "Malta, EUA e Canadá."], ["Agribusiness, Commodities & Export.", "Canadá, EUA e Irlanda."]] },
+        { "bg": "light", "layout": "list", "items": [["Senior Leadership & C-Level.", "EUA, Reino Unido e Malta."], ["Health & Medicine.", "EUA e Canadá."], ["Legal & Compliance.", "EUA e Reino Unido."]] },
+        { "bg": "dark", "layout": "cta", "h": "Ainda no básico?", "p": "Você começa pelo General English e depois entra na sua trilha.", "cta": "Comenta a sua área aqui embaixo." }
+      ] },
+
+    { "semana": 1, "slug": "2026-11-20_reel_teste-de-nivel", "tipo": "reel",
+      "pages": [ { "bg": "dark", "layout": "reel", "img": "estudantes-1.jpg", "h": "Seu nível de inglês em [[5 minutos]]" } ] },
+
+    { "semana": 2, "slug": "2026-11-24_estatico_ingles-decide-a-mesa", "tipo": "estatico",
+      "pages": [ { "bg": "dark", "layout": "quote", "h": "O inglês decide quem senta na mesa.", "sign": "Camila Fidelis, fundadora da Beawst" } ] },
+
+    { "semana": 2, "slug": "2026-11-25_reel_20-anos-de-rh", "tipo": "reel",
+      "pages": [ { "bg": "dark", "layout": "reel", "img": "fundadora.jpg", "imgPos": "50% 20%", "h": "20 anos de RH me mostraram [[quem sobe]]" } ] },
+
+    { "semana": 2, "slug": "2026-11-26_carrossel_ingles-geral-x-area", "tipo": "carrossel",
+      "pages": [
+        { "bg": "light", "layout": "cover", "h": "Seu inglês pede café. [[Mas fecha contrato?]]" },
+        { "bg": "light", "layout": "text", "h": "Inglês geral.", "p": "Te leva pra viagem, pra série sem legenda, pra conversa de corredor." },
+        { "bg": "dark", "layout": "text", "h": "Inglês da sua área.", "p": "Te leva pra reunião, pra negociação, pra apresentação pro board. [[É esse que aparece na entrevista.]]" },
+        { "bg": "brand", "layout": "cta", "p": "Na Beawst você treina o vocabulário e as situações do seu mercado.", "h": "9 trilhas. 5 países.", "cta": "Salva pra lembrar na próxima call." }
+      ] },
+
+    { "semana": 3, "slug": "2026-12-01_estatico_ingles-de-ma", "tipo": "estatico",
+      "pages": [ { "bg": "light", "layout": "photo", "img": "corporate-mobility.png", "imgPos": "50% 35%", "h": "Você fala inglês. [[Mas fala inglês de M&A?]]", "sign": "Trilha Finance & Capital Markets. Boston, Nova York e Reino Unido." } ] },
+
+    { "semana": 3, "slug": "2026-12-02_reel_ingles-basico", "tipo": "reel",
+      "pages": [ { "bg": "dark", "layout": "reel", "img": "estudantes-3.jpg", "h": "Inglês básico? [[Tem caminho pra você]]" } ] },
+
+    { "semana": 3, "slug": "2026-12-03_carrossel_onde-sua-carreira-estuda", "tipo": "carrossel",
+      "pages": [
+        { "bg": "dark", "layout": "cover", "h": "Onde a sua carreira [[estuda?]]" },
+        { "bg": "light", "layout": "text", "h": "Tech e Produto.", "k": "Dublin e Toronto.", "p": "Agile, system design, pitch de produto digital." },
+        { "bg": "light", "layout": "text", "h": "Finanças.", "k": "Boston, Nova York e Reino Unido.", "p": "M&A, valuation, auditoria." },
+        { "bg": "light", "layout": "photo", "img": "malta.jpg", "h": "Marketing e Comunicação.", "k": "Malta, EUA e Canadá.", "p": "Branding global, pitch criativo, métricas de growth." },
+        { "bg": "brand", "layout": "cta", "p": "Liderança, RH, Jurídico, Saúde, Agro e Engenharia também têm trilha.", "cta": "Salva e manda pra quem vive adiando." }
+      ] },
+
+    { "semana": 4, "slug": "2026-12-08_estatico_ate-18x", "tipo": "estatico",
+      "pages": [ { "bg": "brand", "layout": "title", "h": "Até 18x. | [[Sem sobretaxa escondida.]]", "sign": "Intercâmbio justo é isso." } ] },
+
+    { "semana": 4, "slug": "2026-12-09_reel_intercambio-justo", "tipo": "reel",
+      "pages": [ { "bg": "brand", "layout": "reel", "h": "O que é [[intercâmbio justo]]" } ] },
+
+    { "semana": 4, "slug": "2026-12-10_carrossel_3-passos", "tipo": "carrossel",
+      "pages": [
+        { "bg": "light", "layout": "cover", "h": "Do diagnóstico ao embarque [[em 3 passos]]" },
+        { "bg": "light", "layout": "step", "n": "1.", "h": "Diagnóstico de perfil.", "p": "Seus objetivos, seu orçamento, seus prazos." },
+        { "bg": "dark", "layout": "step", "n": "2.", "h": "Curadoria de escolas.", "p": "Só o que faz sentido pra você. Sem sobretaxa escondida." },
+        { "bg": "brand", "layout": "step", "n": "3.", "h": "Plano financeiro e suporte.", "p": "Parcelamento em até 18x e acompanhamento até o embarque.", "cta": "Salva pra não esquecer." }
+      ] },
+
+    { "semana": 5, "slug": "2026-12-15_estatico_visto-sem-surto", "tipo": "estatico",
+      "pages": [ { "bg": "dark", "layout": "title", "h": "Visto [[sem surto.]]", "sign": "Tem gente cuidando disso com você." } ] },
+
+    { "semana": 5, "slug": "2026-12-16_reel_rh", "tipo": "reel",
+      "pages": [ { "bg": "dark", "layout": "reel", "img": "camila.jpg", "imgPos": "50% 25%", "h": "RH, essa é [[pra você]]" } ] },
+
+    { "semana": 5, "slug": "2026-12-17_carrossel_beawst-for-business", "tipo": "carrossel",
+      "pages": [
+        { "bg": "dark", "layout": "photo", "img": "corporate-mobility.png", "imgPos": "50% 35%", "cover": true, "h": "Beawst for Business.", "p": "[[Inglês de liderança pra quem lidera.]]" },
+        { "bg": "light", "layout": "list", "h": "Três formatos.", "items": [["Executive Fast-Track,", "de 2 a 4 semanas."], ["Study & Work,", "de médio e longo prazo."], ["Programas sob medida", "por área."]] },
+        { "bg": "light", "layout": "text", "h": "A gente cuida de tudo.", "p": "Escolha da escola, documentação e vistos. Faturamento direto pra empresa." },
+        { "bg": "brand", "layout": "cta", "h": "E o RH acompanha.", "p": "Diagnóstico antes do embarque e relatórios de presença e evolução.", "cta": "Fale com um consultor corporativo." }
+      ] },
+
+    { "semana": 6, "slug": "2026-12-21_carrossel_voltou-e-agora", "tipo": "carrossel",
+      "pages": [
+        { "bg": "dark", "layout": "cover", "h": "Voltou do intercâmbio. [[E agora?]]" },
+        { "bg": "light", "layout": "text", "h": "Entrevista simulada em inglês, com executiva de RH.", "p": "Perguntas comportamentais, estudo de caso e negociação salarial." },
+        { "bg": "light", "layout": "text", "h": "Currículo no padrão internacional.", "p": "Com as suas novas competências em destaque." },
+        { "bg": "brand", "layout": "cta", "h": "LinkedIn pronto pra recrutador global.", "p": "Isso é o suporte de retorno da Beawst.", "cta": "Salva pra quando chegar a sua vez." }
+      ] },
+
+    { "semana": 6, "slug": "2026-12-22_reel_kit", "tipo": "reel",
+      "pages": [ { "bg": "light", "layout": "reel", "img": "kit-beawst.jpg", "imgFit": "contain", "h": "O kit de quem embarca [[com a Beawst]]" } ] },
+
+    { "semana": 6, "slug": "2026-12-23_estatico_boas-festas", "tipo": "estatico",
+      "pages": [ { "bg": "brand", "layout": "quote", "h": "Que em 2027 seu inglês chegue onde sua carreira quer ir.", "sign": "Boas festas. Beawst." } ] },
+
+    { "semana": 7, "slug": "2026-12-28_estatico_meta-2027", "tipo": "estatico",
+      "pages": [ { "bg": "light", "layout": "title", "h": "Meta de 2027: [[parar de adiar o inglês.]]", "sign": "O primeiro passo leva 5 minutos." } ] },
+
+    { "semana": 7, "slug": "2026-12-29_reel_3-perguntas", "tipo": "reel",
+      "pages": [ { "bg": "dark", "layout": "reel", "h": "[[3 perguntas]] antes de fechar seu intercâmbio" } ] },
+
+    { "semana": 7, "slug": "2026-12-30_carrossel_2027-comeca-agora", "tipo": "carrossel",
+      "pages": [
+        { "bg": "brand", "layout": "cover", "h": "2027 começa agora.", "p": "Temporada 2026/2027 aberta." },
+        { "bg": "light", "layout": "step", "n": "Passo 1.", "h": "Faça o teste de nível.", "p": "Gratuito, 5 minutos, resultado na hora." },
+        { "bg": "light", "layout": "step", "n": "Passo 2.", "h": "Diagnóstico com especialista.", "p": "Sua trilha, seu destino, seu orçamento." },
+        { "bg": "dark", "layout": "step", "n": "Passo 3.", "h": "Plano financeiro em até 18x.", "cta": "Chama no WhatsApp e começa o ano com data marcada." }
+      ] }
+  ]
+}

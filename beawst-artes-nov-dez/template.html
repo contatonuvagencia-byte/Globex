@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Beawst artes</title>
+<!--
+  Template único (estático 1080x1350, página de carrossel 1080x1350, capa de Reel 1080x1920).
+  Lê window.PIECE / window.PAGE / window.TOKENS injetados pelo render.mjs (a partir de content.json e tokens.json).
+  Margem de segurança 96px. Na capa de Reel, todo o conteúdo fica na área central 1080x1350 (y 285 a 1635).
+-->
+<style>
+@font-face{font-family:I;font-weight:500;src:url(assets/Inter-Medium.otf)}
+@font-face{font-family:I;font-weight:600;src:url(assets/Inter-SemiBold.otf)}
+@font-face{font-family:I;font-weight:700;src:url(assets/Inter-Bold.otf)}
+@font-face{font-family:I;font-weight:800;src:url(assets/Inter-ExtraBold.otf)}
+@font-face{font-family:I;font-weight:900;src:url(assets/Inter-Black.otf)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow:hidden}
+body{font-family:I,sans-serif;-webkit-font-smoothing:antialiased;--s:1}
+#c{position:relative;overflow:hidden}
+/* fundos */
+.light{background:radial-gradient(620px 560px at 100% 0%,rgba(240,107,33,.16),rgba(240,107,33,0) 72%),#fff;color:#1F1B19}
+.dark{background:radial-gradient(700px 620px at 100% 0%,rgba(240,107,33,.22),rgba(240,107,33,0) 70%),#18120F;color:#fff}
+.brand{background:#C24A0B;color:#fff}
+.light em{font-style:normal;color:#C24A0B}
+.dark em{font-style:normal;color:#F06B21}
+.brand em{font-style:normal;color:#FFDBCB}
+.muted{opacity:1}
+.light .muted{color:#53443D}
+.dark .muted{color:#D8C2B9}
+.brand .muted{color:#FFE9DF}
+/* moldura segura */
+#f{position:absolute;left:0;right:0;padding:96px;display:flex;flex-direction:column}
+#hd{display:flex;justify-content:space-between;align-items:center;flex:none;height:76px}
+#hd img{height:76px;display:block}
+#pg{font-weight:700;font-size:26px;letter-spacing:.12em}
+#m{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding-top:40px}
+#m.center{justify-content:center}
+#ft{flex:none;display:flex;justify-content:space-between;align-items:flex-end;margin-top:40px}
+/* tipografia */
+.h{font-weight:900;letter-spacing:-.045em;line-height:1;text-wrap:balance}
+.p{font-weight:500;line-height:1.36;text-wrap:pretty}
+.k{font-weight:800;letter-spacing:.02em;text-wrap:balance}
+.n{font-weight:900;letter-spacing:-.04em;line-height:.9}
+.sign{font-weight:600;font-size:30px;line-height:1.3;text-wrap:balance;display:flex;gap:22px;align-items:center}
+.sign:before{content:"";flex:none;width:56px;height:4px;border-radius:2px;background:currentColor;opacity:.5}
+.ctab{align-self:flex-start;display:inline-flex;align-items:center;gap:22px;border-radius:9999px;font-weight:800;line-height:1.2;padding:28px 40px}
+.light .ctab{background:#C24A0B;color:#fff}
+.dark .ctab{background:#F06B21;color:#18120F}
+.brand .ctab{background:#fff;color:#C24A0B}
+.ctab i{font-style:normal;font-weight:700}
+.items{display:flex;flex-direction:column}
+.it{padding:34px 0;border-top:2px solid rgba(0,0,0,.12)}
+.dark .it,.brand .it{border-color:rgba(255,255,255,.2)}
+.it:last-child{border-bottom:2px solid rgba(0,0,0,.12)}
+.dark .it:last-child,.brand .it:last-child{border-color:rgba(255,255,255,.2)}
+.it b{display:block;font-weight:900;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+.it span{display:block;font-weight:500;margin-top:10px}
+.swipe{display:flex;align-items:center;gap:14px;font-weight:700;font-size:24px;letter-spacing:.14em}
+.swipe i{display:block;width:70px;height:3px;background:currentColor;position:relative}
+.swipe i:after{content:"";position:absolute;right:0;top:-7px;width:14px;height:14px;border-top:3px solid currentColor;border-right:3px solid currentColor;transform:rotate(45deg)}
+.photo{flex:none;border-radius:32px;overflow:hidden;margin-bottom:56px}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+/* capa de reel: foto ocupa a parte de cima da tela inteira */
+.rbg{position:absolute;left:0;right:0;top:400px;height:860px;overflow:hidden}
+.rbg img{width:100%;height:100%;object-fit:cover;display:block}
+.rbg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#18120F 0%,rgba(24,18,15,0) 14%,rgba(24,18,15,.1) 45%,rgba(24,18,15,.85) 85%,#18120F 100%)}
+.light .rbg:after{background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,0) 12%,rgba(255,255,255,0) 60%,#fff 100%)}
+</style></head><body>
+<div id="c"></div>
+<script>
+const P = window.PIECE, G = window.PAGE, idx = window.IDX, total = window.TOTAL;
+const reel = P.tipo === 'reel', W = 1080, H = reel ? 1920 : 1350;
+const c = document.getElementById('c');
+document.body.style.width = W + 'px'; document.body.style.height = H + 'px';
+c.style.width = W + 'px'; c.style.height = H + 'px'; c.className = G.bg;
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const mk = s => esc(s).replace(/\[\[(.+?)\]\]/g, '<em>$1</em>').replace(/\s*\|\s*/g, '<br>');
+const logo = G.bg === 'light' ? 'logo-laranja.png' : 'logo-branco.png';
+const pager = P.tipo === 'carrossel' && idx > 0 ? `${String(idx + 1).padStart(2, '0')}/${String(total).padStart(2, '0')}` : '';
+let bg = '';
+if (reel && G.img) bg = `<div class="rbg"><img src="assets/${G.img}" style="object-position:${G.imgPos || '50% 40%'};${G.imgFit ? 'object-fit:' + G.imgFit + ';background:#fff' : ''}"></div>`;
+const L = G.layout;
+// tamanhos base por layout (escala --s ajusta se não couber)
+const SZ = {
+  title: { h: 160, sign: 30 }, quote: { h: 124 }, cover: { h: 150, p: 44 }, text: { h: 108, p: 46, k: 34 },
+  list: { h: 64, b: 70, span: 40 }, step: { n: 170, h: 96, p: 44 }, cta: { h: 100, p: 46, cta: 36 },
+  photo: { h: 96, p: 40, k: 32 }, reel: { h: 150 },
+};
+const z = SZ[L], px = (v) => `calc(${v}px * var(--s))`;
+let body = '';
+if (L === 'photo' && G.img) body += `<div class="photo" style="height:${G.cover ? 520 : 470}px"><img src="assets/${G.img}" style="object-position:${G.imgPos || '50% 50%'}"></div>`;
+for (const key of Object.keys(G)) {
+  const v = G[key];
+  if (key === 'n') body += `<div class="n" style="font-size:${px(z.n)};color:${G.bg === 'brand' ? '#FFDBCB' : G.bg === 'dark' ? '#F06B21' : '#C24A0B'};margin-bottom:${px(36)}">${mk(v)}</div>`;
+  if (key === 'h') body += `<div class="h" style="font-size:${px(z.h)};margin-bottom:${px(34)}">${mk(v)}</div>`;
+  if (key === 'k') body += `<div class="k" style="font-size:${px(z.k || 34)};margin-bottom:${px(22)};color:${G.bg === 'light' ? '#C24A0B' : G.bg === 'dark' ? '#F06B21' : '#FFDBCB'}">${mk(v)}</div>`;
+  if (key === 'p') body += `<div class="p ${L === 'cover' || L === 'photo' && G.cover ? '' : 'muted'}" style="font-size:${px(z.p || 44)};margin-bottom:${px(34)}${L === 'photo' && G.cover ? ';font-weight:800;line-height:1.15' : ''}">${mk(v)}</div>`;
+  if (key === 'items') body += `<div class="items">${v.map(([a, b]) => `<div class="it"><b style="font-size:${px(z.b)}">${mk(a)}</b><span class="muted" style="font-size:${px(z.span)}">${mk(b)}</span></div>`).join('')}</div>`;
+  if (key === 'cta') body += `<div class="ctab" style="font-size:${px(z.cta || 36)};margin-top:${px(20)}">${mk(v)} <i>→</i></div>`;
+}
+let foot = '';
+if (G.sign) foot = `<div class="sign">${mk(G.sign)}</div>`;
+if (L === 'cover' || (G.cover && P.tipo === 'carrossel')) foot = `<span></span><div class="swipe">ARRASTE<i></i></div>`;
+const fTop = reel ? 285 : 0, fH = reel ? 1350 : 1350;
+c.innerHTML = `${bg}<div id="f" style="top:${fTop}px;height:${fH}px">
+  <div id="hd"><img src="assets/${logo}"><span id="pg">${pager}</span></div>
+  <div id="m" class="${L === 'quote' || (reel && !G.img) ? 'center' : ''}">${body}</div>
+  ${foot ? `<div id="ft">${foot}</div>` : ''}</div>`;
+// ajuste automático: reduz a escala até caber
+window.fit = () => {
+  const m = document.getElementById('m');
+  let s = 1;
+  while (s > .5 && (m.scrollHeight > m.clientHeight + 1 || [...m.querySelectorAll('.h,.p,.it b,.ctab,.k')].some(e => e.scrollWidth > m.clientWidth + 1))) { s -= .02; document.body.style.setProperty('--s', s); }
+  return s;
+};
+// evita palavra órfã: une as duas últimas palavras do bloco com espaço não separável
+window.orphanFix = (force) => {
+  let n = 0;
+  for (const e of document.querySelectorAll('.h,.p,.it b,.it span,.sign,.k')) {
+    if (!window.isOrphan(e)) continue;
+    const ts = []; const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT); while (w.nextNode()) ts.push(w.currentNode);
+    for (let i = ts.length - 1; i >= 0; i--) { const t = ts[i], d = t.data.replace(/\s+$/, ''); const j = d.lastIndexOf(' '); if (j > 0 || (j === 0 && i > 0)) { const before = t.data; t.data = d.slice(0, j) + '\u00A0' + t.data.slice(j + 1); if (!force && e.scrollWidth > e.clientWidth + 1) t.data = before; else n++; break; } }
+  }
+  return n;
+};
+window.isOrphan = e => {
+  const ys = []; const w = document.createTreeWalker(e, NodeFilter.SHOW_TEXT);
+  while (w.nextNode()) { const t = w.currentNode; const re = /[^\s ]+/g; let mm; while ((mm = re.exec(t.data))) { if (mm[0] === '→') continue; const rg = document.createRange(); rg.setStart(t, mm.index); rg.setEnd(t, mm.index + mm[0].length); const rs = rg.getClientRects(); if (rs.length) { const q = rs[rs.length - 1]; ys.push(q.top + q.height / 2); } } }
+  if (!ys.length) return false;
+  const fs = parseFloat(getComputedStyle(e).fontSize), lines = [];
+  ys.forEach(y => { const l = lines.find(l => Math.abs(l.y - y) < fs * .45); l ? l.n++ : lines.push({ y, n: 1 }); });
+  lines.sort((a, b) => a.y - b.y);
+  return lines.length > 1 && lines[lines.length - 1].n === 1;
+};
+// conferência: palavra órfã (última linha com 1 palavra) e margem
+window.audit = () => {
+  const r = [];
+  document.querySelectorAll('.h,.p,.it b,.it span,.sign,.k,.ctab').forEach(e => {
+    if (!e.matches('.h,.it b') && window.isOrphan(e)) r.push('órfã: ' + e.textContent.trim().slice(0, 40));
+    const b = e.getBoundingClientRect();
+    if (b.left < 95 || b.right > W - 95 || b.top < (reel ? 285 : 95) || b.bottom > (reel ? 1635 : H - 95)) r.push('margem: ' + e.textContent.trim().slice(0, 30));
+  });
+  return r;
+};
+</script>
+</body></html>
