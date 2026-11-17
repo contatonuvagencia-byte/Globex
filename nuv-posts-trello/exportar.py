@@ -4,7 +4,7 @@ import glob, os, re
 from collections import defaultdict
 SRGB = ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes()
 grupos = defaultdict(list)
-for p in sorted(glob.glob('out/png/*.png')):
+for p in sorted(glob.glob('out/png/' + os.environ.get('TEMA', '') + '*.png')):
     grupos[re.sub(r'_\d+\.png$', '', os.path.basename(p))].append(p)
 for tema, fs in grupos.items():
     os.makedirs(f'out/{tema}', exist_ok=True)

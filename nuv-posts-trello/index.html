@@ -232,6 +232,30 @@ const ALGORITMO = [
 if (location.hash === '#algoritmo') { document.querySelectorAll('.post').forEach(e => e.remove());
   ALGORITMO.forEach(([dark, html], i) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_nao_e_algoritmo_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d); }); }
 
+// ---------- post novo (index.html#blackfriday): calendário de black friday pro empresário ----------
+// Capa clara (o post anterior abre em azul), miolo com número gigante em bege (opção B do kit).
+const BF = [
+  [false, `${BRAND(C.navy)}${LAB('black friday<br>27/11', C.navy)}
+    <div class="abs H" style="left:58px;top:230px;width:1000px;font-size:150px;color:${C.navy}">sua black<br>friday<br>começa <em>antes.</em></div>
+    <div class="abs" style="left:64px;top:700px;width:620px;height:14px;background:${C.navy};border-radius:7px"></div>
+    <div class="abs lead" style="left:66px;top:770px;width:820px">O que postar <b>antes, durante e depois</b> pra vender mais do que um dia de desconto.</div>
+    ${FOOT('salva pra usar<br>esse mês', C.navy)}${ARROW(C.navy)}`],
+  ...[
+    ['01', 'até 10 dias antes', 'aquecer.', 'Bastidor, prova de cliente e o que vem aí. <b>Quem ainda não te conhece não compra no impulso.</b>'],
+    ['02', 'a semana', 'avisar.', 'Conte o dia, o horário e onde vai estar a oferta. <b>Uma lista no direct</b> faz você não depender só do alcance.'],
+    ['03', 'o dia', 'vender sem rodeio.', 'Oferta clara, prazo visível e <b>um caminho só até a compra.</b> Story o dia todo.'],
+    ['04', 'a semana seguinte', 'não sumir.', 'Agradeça, mostre quem comprou e <b>fale com quem ficou de fora.</b> Muita venda acontece depois.'],
+  ].map(([n, quando, title, lead]) => [false, `${BRAND(C.navy)}${LAB(quando, C.navy)}
+    <div class="abs H" style="left:40px;top:110px;font-size:440px;color:${C.beige};letter-spacing:-.08em">${n}</div>
+    <div class="abs H" style="left:58px;top:600px;width:960px;font-size:${title.length > 12 ? 140 : 190}px;color:${C.navy}">${title}</div>
+    <div class="abs" style="left:66px;top:930px;width:948px;height:2px;background:${C.navy};opacity:.25"></div>
+    <div class="abs lead" style="left:66px;top:980px;width:880px;font-size:38px;line-height:1.38">${lead}</div>
+    <div class="abs s" style="right:66px;bottom:70px;color:${C.indigo}">${n} / 04</div>`]),
+  [true, fim({ title: `black friday boa é <span style="position:relative;display:inline-block"><em>planejada.</em><span style="position:absolute;left:-34px;top:-12px">${ELLIPSE(640, 190, C.beige)}</span></span>`, size: 170, foot: 'quer ajuda com o seu calendário?<br>me chama no direct.' })],
+];
+if (location.hash === '#blackfriday') { document.querySelectorAll('.post').forEach(e => e.remove());
+  BF.forEach(([dark, html], i) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_black_friday_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d); }); }
+
 // ---------- opções de miolo (index.html#opcoes) ----------
 const PILLS = (arr, fg, bg) => arr.map((t, i) => `<span style="display:inline-block;border-radius:999px;padding:14px 26px;margin:0 10px 12px 0;font-weight:700;font-size:22px;${i % 2 ? `border:2px solid ${fg};color:${fg}` : `background:${fg};color:${bg}`}">${t}</span>`).join('');
 const MIOLO = {
