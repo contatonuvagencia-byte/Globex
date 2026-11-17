@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>NUV posts Trello</title>
+<style>
+  /* Posts do quadro "Posts - Nuv Isa" (lista COPIES), no padrão do kit de feed:
+     títulos em Inter Tight Black minúsculo (+ itálico fino de destaque), apoio em Comfortaa,
+     rótulos pequenos nos cantos, seta fina. Sem sombra/degradê sobre foto: texto sempre em área sólida.
+     Regras do card "Identidade visual NUV": muito respiro, um destaque por slide, sem emoji na arte. */
+  @font-face { font-family: 'Title'; font-weight: 900; src: url(assets/fonts/inter-tight-latin-900-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'TitleI'; font-style: italic; font-weight: 300; src: url(assets/fonts/inter-tight-latin-300-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
+
+  :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #222; display: flex; flex-direction: column; gap: 40px; padding: 40px; }
+  .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'Comfortaa', sans-serif; flex: none; background: var(--off); color: var(--navy); }
+  .post.dark { background: var(--navy); color: var(--off); }
+  .abs { position: absolute; }
+  .ph { position: absolute; left: 0; top: 0; background-repeat: no-repeat; }
+  .H { font-family: 'Title', sans-serif; font-weight: 900; text-transform: lowercase; letter-spacing: -.055em; word-spacing: .12em; line-height: .9; }
+  .H em { font-family: 'TitleI', sans-serif; font-style: italic; font-weight: 300; letter-spacing: -.04em; }
+  .s { font-weight: 400; font-size: 19px; letter-spacing: .03em; line-height: 1.28; text-transform: uppercase; }
+  .brand { position: absolute; left: 66px; top: 62px; font-weight: 700; font-size: 20px; letter-spacing: .06em; }
+  .lab { position: absolute; right: 66px; top: 62px; }
+  .foot { position: absolute; left: 66px; bottom: 70px; }
+  .arrow { position: absolute; right: 66px; bottom: 74px; }
+  .lead { font-size: 32px; line-height: 1.4; }
+  .lead b { font-weight: 700; }
+  .apoio { font-size: 25px; line-height: 1.45; }
+  .num { font-family: 'TitleI', sans-serif; font-style: italic; font-weight: 300; font-size: 44px; letter-spacing: -.02em; }
+  .btn { display: inline-flex; align-items: center; gap: 18px; border-radius: 999px; padding: 24px 40px; font-weight: 700; font-size: 28px; }
+</style>
+</head>
+<body>
+<script>
+const C = { off: '#EFEAE4', beige: '#CBC5B9', navy: '#0A2540', indigo: '#313D65' };
+const IMG = { // [arquivo, largura, altura] das fotos originais
+  setup: ['fotos-hd/setup-monitores.jpg', 1512, 2016], ceu: ['fotos-hd/ceu-nuvens.jpg', 1512, 2016],
+  cidade: ['fotos-hd/janela-cidade.jpg', 1512, 2016], balao: ['fotos-hd/notebook-balao.jpg', 1512, 2016],
+  selfie: ['fotos-hd/selfie-cafe.jpg', 1254, 1254], escada: ['fotos-hd/retrato-escada.jpg', 941, 1672],
+  escuro: ['fotos-hd/notebook-escuro.jpg', 736, 1104], mesa: ['fotos-hd/mesa-janela.jpg', 1200, 1616],
+  gelado: ['fotos-hd/cafe-gelado.jpg', 1200, 1500], sofa: ['fotos-hd/notebook-sofa.jpg', 1080, 1920],
+  tablet: ['fotos-hd/tablet-cafe.jpg', 1122, 1402],
+  estudio: ['fotos-hd/retrato-estudio.jpg', 941, 1672], poltrona: ['fotos-hd/isa-poltrona.jpg', 1086, 1448],
+  siteSinait: ['fotos-hd/site-sinait.jpg', 790, 2000], siteMix: ['fotos-hd/site-mix.jpg', 377, 2000],
+  veludo: ['fotos-hd/textura-veludo.jpg', 1200, 1600], cimento: ['fotos-hd/textura-cimento.jpg', 960, 1920],
+  isaNoite: ['fotos-hd/isa-noite.jpg', 1086, 1448], isaNote: ['fotos-hd/isa-notebook.jpg', 1086, 1448], isaRua: ['fotos-hd/isa-rua.jpg', 1086, 1448],
+  mesaAzul: ['fotos-hd/mesa-azul.jpg', 736, 1308], maoCel: ['fotos-hd/mao-celular.jpg', 1038, 1294], blazer: ['fotos-hd/cadeira-blazer.jpg', 922, 1382],
+  ripada: ['fotos-hd/textura-ripada.jpg', 1080, 1846], listras: ['fotos-hd/textura-listras.jpg', 1200, 2133], lua: ['fotos-hd/cidade-lua.jpg', 1159, 2576], close: ['fotos-hd/close-celular.jpg', 941, 1672],
+};
+// foto preenchendo uma caixa w x h; fx/fy = ponto focal (0..1); zoom > 1 aproxima
+const photo = (key, w, h, fx = .5, fy = .5, zoom = 1, extra = '') => {
+  const [src, iw, ih] = IMG[key];
+  const sw = Math.min(iw, ih * w / h) / zoom, sh = sw * h / w, k = w / sw;
+  const sx = Math.max(0, Math.min(iw - sw, fx * iw - sw / 2)), sy = Math.max(0, Math.min(ih - sh, fy * ih - sh / 2));
+  return `<div class="ph" style="width:${w}px;height:${h}px;background-image:url(${src});background-size:${iw * k}px auto;background-position:${-sx * k}px ${-sy * k}px;${extra}"></div>`;
+};
+const box = (x, y, w, h, inner, radius = 0) => `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;overflow:hidden;border-radius:${radius}px">${inner}</div>`;
+const ARROW = c => `<svg class="arrow" width="72" height="30" viewBox="0 0 72 30"><path d="M2 15h66M54 2l14 13-14 13" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const PLANE = c => `<svg width="30" height="30" viewBox="0 0 24 24"><path d="M21.5 2.5 2.8 9.6l7.4 3.3 3.3 7.4z" fill="${c}"/></svg>`;
+const BRAND = c => `<div class="brand" style="color:${c}">NUV</div>`;
+const LAB = (t, c) => `<div class="lab s" style="color:${c}">${t}</div>`;
+const FOOT = (t, c) => `<div class="foot s" style="color:${c}">${t}</div>`;
+
+// ---------- layouts ----------
+// capa clara: título grande + foto em moldura arredondada
+const capa = ({ lab, title, size = 150, sub, ph, foot }) => `${BRAND(C.navy)}${LAB(lab, C.navy)}
+  <div class="abs H" style="left:58px;top:170px;width:960px;font-size:${size}px;color:${C.navy}">${title}</div>
+  <div class="abs lead" style="left:66px;top:${ph.top - 100}px;width:900px;font-size:30px">${sub}</div>
+  ${box(66, ph.top, 948, 1350 - ph.top - 150, photo(ph.key, 948, 1350 - ph.top - 150, ph.fx, ph.fy, ph.zoom || 1), 26)}
+  ${FOOT(foot, C.navy)}${ARROW(C.navy)}`;
+// slide interno: texto em área sólida em cima, foto embaixo com corte reto
+const etapa = ({ dark, num, title, lead, apoio, ph, cut = 790, lab, size = 118 }) => {
+  const fg = dark ? C.off : C.navy, ac = dark ? C.beige : C.indigo;
+  return `${BRAND(fg)}${LAB(lab, fg)}
+  <div class="abs num" style="left:66px;top:150px;color:${ac}">${num}</div>
+  <div class="abs H" style="left:58px;top:220px;width:960px;font-size:${size}px;color:${fg}">${title}</div>
+  <div class="abs lead" style="left:66px;top:${ph.leadTop || 470}px;width:900px">${lead}</div>
+  ${apoio ? `<div class="abs apoio" style="left:66px;top:${ph.apoioTop || 620}px;width:880px;color:${ac}">${apoio}</div>` : ''}
+  ${box(0, cut, 1080, 1350 - cut, photo(ph.key, 1080, 1350 - cut, ph.fx, ph.fy, ph.zoom || 1))}`;
+};
+// fechamento: azul sólido, convite e botão, foto embaixo
+const cta = ({ title, text, ph, cut = 860, btn = 'me chama no direct' }) => `${BRAND(C.off)}${LAB('vamos<br>conversar', C.off)}
+  <div class="abs H" style="left:58px;top:170px;width:960px;font-size:112px;color:${C.off}">${title}</div>
+  ${text ? `<div class="abs lead" style="left:66px;top:${text.top}px;width:900px">${text.t}</div>` : ''}
+  <div class="abs btn" style="left:66px;top:${cut - 150}px;background:${C.beige};color:${C.navy}">${PLANE(C.navy)}${btn}</div>
+  ${box(0, cut, 1080, 1350 - cut, photo(ph.key, 1080, 1350 - cut, ph.fx, ph.fy, ph.zoom || 1))}`;
+
+// miolo estilo A: foto cheia, título enorme na área lisa/escura da própria foto, uma frase curta
+const fullA = ({ dark, lab, key, fx = .5, fy = .5, zoom = 1, filter = '', title, size = 150, tw = 900, lead, leadAt = 'below', leadTop, lw = 600, leadLeft = 66 }) => {
+  const fg = dark ? C.off : C.navy;
+  const leadY = leadAt === 'bottom' ? 'bottom:110px' : `top:${leadTop}px`;
+  return `${box(0, 0, 1080, 1350, photo(key, 1080, 1350, fx, fy, zoom, filter ? 'filter:' + filter : ''))}
+  ${BRAND(fg)}${LAB(lab, fg)}
+  <div class="abs H" style="left:58px;top:160px;width:${tw}px;font-size:${size}px;color:${fg}">${title}</div>
+  <div class="abs lead" style="left:${leadLeft}px;${leadY};width:${lw}px;color:${fg}">${lead}</div>`;
+};
+const DARKF = 'brightness(.66) contrast(1.12) saturate(.9)';
+// ---------- linha do feed (kit B): capa com foto cheia e fechamento em bloco de cor ----------
+const MOODY = 'brightness(.6) contrast(1.15) saturate(.85) sepia(.1)';
+const capaFull = ({ key, fx = .5, fy = .5, zoom = 1, lab, title, size = 150, sub }) => `${box(0, 0, 1080, 1350, photo(key, 1080, 1350, fx, fy, zoom, 'filter:' + MOODY))}
+  ${BRAND(C.off)}${LAB(lab, C.off)}
+  <div class="abs H" style="left:58px;top:160px;width:960px;font-size:${size}px;color:${C.off}">${title}</div>
+  ${FOOT(sub, C.off)}${ARROW(C.off)}`;
+const ELLIPSE = (w, h, c) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible"><path d="M${w * .18} ${h * .2}C${w * .55} ${-h * .08} ${w * 1.02} ${h * .12} ${w * .98} ${h * .5}C${w * .95} ${h * .92} ${w * .3} ${h * 1.04} ${w * .06} ${h * .72}C${-w * .08} ${h * .5} ${w * .12} ${h * .16} ${w * .5} ${h * .08}" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/></svg>`;
+const fim = ({ bg = C.indigo, title, size = 170, foot, lab = 'vamos<br>conversar', extra = '' }) => `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${bg}"></div>
+  ${BRAND(C.off)}${LAB(lab, C.off)}
+  <div class="abs H" style="left:58px;top:240px;width:960px;font-size:${size}px;color:${C.off}">${title}</div>${extra}
+  ${FOOT(foot, C.off)}${ARROW(C.off)}`;
+// ---------- posts do Trello ----------
+const POSTS = {
+  // Card "O que a NUV faz por você (serviços, fixar)"
+  servicos: [
+    [true, capaFull({ key: 'isaRua', fx: .5, fy: .1, zoom: 1.3, lab: 'nossos<br>serviços', title: 'o que a nuv faz<br><em>por você</em>', size: 128, sub: 'escolhe o que o seu<br>negócio precisa agora' })],
+    [false, fullA({ lab: 'serviço 01', key: 'maoCel', fx: .3, fy: .5, zoom: 1.08, title: 'gestão de redes <em>sociais</em>', size: 132, tw: 520, lead: 'A gente planeja, cria e posta, <b>e você só aprova.</b>', leadAt: 'bottom', lw: 380 })],
+    [false, fullA({ lab: 'serviço 02', key: 'mesa', fy: .45, title: 'sites e <em>landing pages</em>', size: 128, tw: 960, lead: 'Páginas pensadas pra apresentar o seu negócio e <b>transformar visita em contato.</b>', leadTop: 460, lw: 560 })],
+    [true, fullA({ dark: true, lab: 'serviço 03', key: 'lua', fx: .5, fy: .22, filter: 'brightness(.9)', title: 'estratégia <em>digital</em>', size: 140, tw: 800, lead: 'A gente olha o seu negócio, define o caminho e <b>organiza o que precisa ser feito.</b>', leadTop: 470, lw: 400, leadLeft: 440 })],
+    [false, fullA({ lab: 'serviço 04', key: 'blazer', fy: .05, title: 'identidade <em>visual</em>', size: 140, lead: 'Cores, fontes e elementos que deixam a sua marca <b>reconhecível em qualquer lugar.</b>', leadTop: 470, lw: 640 })],
+    [true, fim({ title: 'ficou na <em>dúvida?</em>', size: 190, foot: 'me conta o momento do seu negócio<br>no direct que eu te indico o melhor<br>caminho e mando o orçamento.' })],
+  ],
+  // Card "Como é trabalhar com a NUV"
+  como_trabalhar: [
+    [true, capaFull({ key: 'isaNote', fx: .5, fy: .1, zoom: 1.3, lab: 'passo<br>a passo', title: 'como é trabalhar<br>com a <em>nuv?</em>', size: 120, sub: 'do primeiro contato<br>ao primeiro post' })],
+    [true, fullA({ dark: true, lab: 'etapa 01', key: 'close', fx: .5, fy: .62, zoom: 1.15, filter: DARKF, title: 'a <em>conversa</em>', size: 170, lead: 'A gente começa entendendo <b>o seu negócio, o seu cliente</b> e onde você quer chegar.', leadAt: 'bottom', lw: 440 })],
+    [false, fullA({ lab: 'etapa 02', key: 'mesa', fy: .45, title: 'o <em>plano</em>', size: 190, lead: 'Estratégia e calendário do mês, pra você <b>saber tudo antes de sair.</b>', leadTop: 420, lw: 560 })],
+    [true, fullA({ dark: true, lab: 'etapa 03', key: 'escuro', fx: .6, filter: 'brightness(.72) contrast(1.1)', title: 'a <em>criação</em>', size: 170, lead: 'Roteiro, design, edição e legenda, <b>tudo com a cara da sua marca.</b>', leadAt: 'bottom' })],
+    [true, fullA({ dark: true, lab: 'etapa 04', key: 'tablet', fx: .3, fy: .4, zoom: 1.22, filter: DARKF, title: 'a <em>aprovação</em>', size: 160, lead: 'Você recebe tudo pronto e aprova de um jeito simples, <b>por comentário ou até por áudio.</b>', leadTop: 380, lw: 380 })],
+    [false, fullA({ lab: 'etapa 05', key: 'ceu', fy: .3, title: 'o <em>acompanhamento</em>', size: 104, lead: 'Depois que vai pro ar, a gente analisa os resultados pra deixar <b>o próximo mês ainda melhor.</b>', leadTop: 330, lw: 680 })],
+    [true, fim({ bg: C.navy, title: 'enquanto isso, você cuida do <em>seu negócio.</em>', size: 150, foot: 'o que só você sabe fazer.<br>o resto, deixa com a gente.<br>me chama no direct.' })],
+  ],
+  // Card "Saiu do forno na NUV (portfólio de conteúdos, fixar)": grade com espaços pros conteúdos dos clientes
+  saiu_do_forno: [
+    [false, `${box(0, 0, 1080, 1350, photo('ripada', 1080, 1350, .5, .5))}${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+      <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.navy}">saiu do forno <em>na nuv.</em></div>
+      ${FOOT('o que foi pro ar nos perfis<br>dos nossos clientes esse mês', C.navy)}${ARROW(C.navy)}`],
+    [false, `${box(0, 0, 1080, 1350, photo('listras', 1080, 1350, .5, .5))}<div class="abs" style="left:40px;top:40px;right:40px;bottom:40px;background:${C.off};border-radius:24px"></div>${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+      <div class="abs" style="left:66px;right:66px;top:250px;display:flex;gap:24px">
+        ${['sindicato', 'despacho aduaneiro', 'planejamento financeiro'].map(n => `<div style="flex:1">
+          <div style="height:560px;border-radius:18px;border:2.5px dashed ${C.indigo};display:flex;align-items:center;justify-content:center;text-align:center;color:${C.indigo};font-size:20px;letter-spacing:.06em;text-transform:uppercase;line-height:1.5;padding:20px">inserir<br>conteúdo<br>do cliente</div>
+          <div class="s" style="margin-top:22px">${n}</div></div>`).join('')}</div>
+      ${FOOT('modelo de grade: 3 conteúdos por slide', C.navy)}${ARROW(C.navy)}`],
+    [true, fim({ title: `quer ver o seu perfil <span style="position:relative;display:inline-block">aqui<span style="position:absolute;left:-46px;top:-26px">${ELLIPSE(400, 200, C.beige)}</span></span> no próximo mês?`, size: 150, foot: 'me chama no direct.' })],
+  ],
+  // Card "Sites que saíram do forno (portfólio de sites)": um site por slide
+  sites: [
+    [false, `${box(0, 0, 1080, 1350, photo('ripada', 1080, 1350, .5, .5))}${BRAND(C.navy)}${LAB('portfólio<br>de sites', C.navy)}
+      <div class="abs H" style="left:58px;top:330px;width:960px;font-size:170px;color:${C.navy}">sites que saíram do forno <em>por aqui</em></div>
+      ${FOOT('um lugar só do seu<br>negócio na internet', C.navy)}${ARROW(C.navy)}`],
+    ...[
+      ['siteSinait', 'sinait ds/mg', 'sindicato', 'Apresentar a entidade, mostrar os convênios exclusivos e <b>levar à filiação.</b>', .43],
+      ['siteMix', 'mix massagem', 'curso online', 'Apresentar o método e <b>transformar visita em venda</b> do curso.', .57],
+    ].map(([k, n, nicho, obj, fy2]) => [false, `${BRAND(C.navy)}${LAB('portfólio<br>de sites', C.navy)}
+      <div class="abs" style="left:110px;top:200px;width:860px">
+        <div style="background:#1b1d22;border-radius:26px 26px 6px 6px;padding:22px 22px 26px">
+          <div style="position:relative;height:500px;border-radius:6px;overflow:hidden;background:#fff">${(() => { const [src, iw] = IMG[k], kk = 816 / iw; return `<div class="ph" style="width:816px;height:500px;background-image:url(${src});background-size:816px auto;background-position:0 0"></div>`; })()}</div></div>
+        <div style="height:26px;margin:0 -60px;background:linear-gradient(#c9ccd1,#9a9ea5);border-radius:0 0 30px 30px"></div></div>
+      <div class="abs" style="left:700px;top:560px;width:300px;height:400px;overflow:hidden;transform:rotate(4deg);box-shadow:0 0 0 12px ${C.off}">${(() => { const [src, iw, ih] = IMG[k], kk = 300 / iw; return `<div class="ph" style="width:300px;height:400px;background-image:url(${src});background-size:300px auto;background-position:0 ${-(ih * kk * fy2 - 200)}px"></div>`; })()}</div>
+      <div class="abs s" style="left:66px;top:940px;color:${C.indigo};font-weight:700">${nicho}</div>
+      <div class="abs H" style="left:58px;top:985px;font-size:110px;color:${C.navy}">${n}</div>
+      <div class="abs lead" style="left:66px;top:1110px;width:900px">${obj}</div>
+      ${ARROW(C.navy)}`]),
+    [true, fim({ bg: C.navy, title: 'o seu negócio também merece um lugar <em>só dele.</em>', size: 140, foot: 'me chama no direct que eu<br>te mando um orçamento.' })],
+  ],
+  // Post novo: "Prazer, Isabela" (história da fundadora, guia de marca)
+  prazer_isabela: [
+    [true, capaFull({ key: 'isaNoite', fx: .5, fy: .1, zoom: 1.3, lab: 'quem está<br>por trás', title: 'prazer, <em>isabela.</em>', size: 170, sub: 'a história por trás<br>da nuv' })],
+    [false, `${BRAND(C.navy)}${LAB('capítulo 01', C.navy)}
+      <div class="abs H" style="left:58px;top:300px;width:980px;font-size:156px;color:${C.navy}">comecei<br>como<br><em>estagiária.</em></div>
+      <div class="abs" style="left:64px;top:762px;width:520px;height:14px;background:${C.navy};border-radius:7px"></div>
+      <div class="abs lead" style="left:66px;top:840px;width:820px">Numa agência, aprendendo na prática como uma marca cresce no digital.</div>
+      ${FOOT('cada cargo, uma lição', C.navy)}${ARROW(C.navy)}`],
+    [true, fullA({ dark: true, lab: 'capítulo 02', key: 'escada', fx: .5, fy: .5, zoom: 1, filter: 'brightness(.62) contrast(1.15) saturate(.85) sepia(.1)', title: 'fui crescendo <em>até criar a nuv.</em>', size: 132, tw: 900, lead: 'Uma agência pra cuidar de cada marca <b>com atenção de verdade.</b>', leadAt: 'bottom', lw: 560 })],
+    [true, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.navy}"></div>${BRAND(C.off)}${LAB('4 anos<br>depois', C.off)}
+      <div class="abs H" style="left:58px;top:260px;font-size:300px;color:${C.off}">+40</div>
+      <div class="abs lead" style="left:66px;top:560px;width:800px;color:${C.beige}">marcas atendidas</div>
+      <div class="abs" style="left:66px;top:690px;width:948px;height:2px;background:${C.off};opacity:.3"></div>
+      <div class="abs H" style="left:58px;top:760px;font-size:300px;color:${C.off}">+1 mi</div>
+      <div class="abs lead" style="left:66px;top:1060px;width:800px;color:${C.beige}">de visualizações em um só post</div>
+      ${FOOT('hold the vision.<br>trust the process.', C.off)}${ARROW(C.off)}`],
+    [true, fim({ title: `a próxima marca pode ser <span style="position:relative;display:inline-block">a sua.<span style="position:absolute;left:-40px;top:-20px">${ELLIPSE(420, 210, C.beige)}</span></span>`, size: 160, foot: 'me chama no direct e me conta<br>o momento do seu negócio.' })],
+  ],
+  // Post novo: mitos e verdades do Instagram pra empresário
+  mitos: [
+    [false, `${box(0, 0, 1080, 1350, photo('poltrona', 1080, 1350, .5, .4, 1, 'filter:contrast(1.04) saturate(.92)'))}${BRAND(C.off)}${LAB('mitos<br>e verdades', C.navy)}
+      <div class="abs H" style="left:716px;top:120px;width:360px;font-size:62px;white-space:nowrap;color:${C.navy}">3 mitos que<br>fazem o seu<br>instagram<br><em>não vender.</em></div>
+      <div class="abs" style="left:640px;top:1170px;transform:rotate(-4deg)"><span class="H" style="display:inline-block;font-size:50px;background:${C.navy};color:${C.off};padding:6px 22px 14px">qual você ainda segue?</span></div>`],
+    ...[
+      ['01', 'preciso postar todo dia.', 'Constância vence quantidade. <b>Poucos posts bons por semana</b> fazem mais pela sua marca do que um por dia feito na pressa.'],
+      ['02', 'o que importa é ter muito seguidor.', 'Seguidor não paga conta. <b>Poucas pessoas certas</b> compram mais do que milhares que nunca vão virar cliente.'],
+      ['03', 'é só viralizar que vende.', 'O viral traz visita. <b>Quem vende é o perfil</b> que a pessoa encontra depois: bio clara, prova social e um caminho fácil até o direct.'],
+    ].map(([n, mito, verdade]) => [false, `${BRAND(C.navy)}${LAB('mito ' + n, C.navy)}
+      <div class="abs s" style="left:66px;top:190px;color:${C.indigo};font-weight:700">mito</div>
+      <div class="abs H" style="left:58px;top:240px;width:960px;font-size:118px;color:${C.navy};text-decoration:line-through;text-decoration-thickness:6px;text-decoration-color:${C.indigo}">“${mito}”</div>
+      ${box(0, 720, 1080, 630, photo('cimento', 1080, 630, .5, .5))}
+      <div class="abs s" style="left:66px;top:790px;color:${C.off};font-weight:700">verdade</div>
+      <div class="abs lead" style="left:66px;top:850px;width:880px;color:${C.off};font-size:48px;line-height:1.34">${verdade}</div>
+      <div class="abs s" style="right:66px;top:790px;color:${C.off}">${n} / 03</div>`]),
+    [true, fim({ bg: C.navy, title: 'chega de postar <em>no escuro.</em>', size: 180, foot: 'me chama no direct que eu te ajudo<br>a montar a estratégia do seu perfil.' })],
+  ],
+};
+Object.entries(POSTS).forEach(([tema, slides]) => slides.forEach(([dark, html], i) => {
+  const d = document.createElement('div');
+  d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_${tema}_${String(i + 1).padStart(2, '0')}`;
+  d.innerHTML = html;
+  document.body.appendChild(d);
+}));
+
+// ---------- post novo (index.html#algoritmo): "seu conteúdo não vende. e não é o algoritmo." ----------
+// Só tipografia + blocos de cor (sem foto), para alternar com as capas de foto do feed.
+const ALGORITMO = [
+  [true, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.navy}"></div>${BRAND(C.off)}${LAB('pra quem<br>empreende', C.off)}
+    <div class="abs H" style="left:58px;top:250px;width:980px;font-size:200px;color:${C.off}">seu conteúdo não vende.</div>
+    <div class="abs H" style="left:58px;top:830px;width:980px;font-size:96px;color:${C.beige}"><em>e não é o algoritmo.</em></div>
+    ${FOOT('arrasta que eu te mostro<br>o que costuma ser', C.off)}${ARROW(C.off)}`],
+  ...[
+    ['01', 'ninguém entende o que você vende.', 'Bio, destaques e posts falam de tudo, menos <b>do que você oferece e pra quem.</b> Se a pessoa precisa adivinhar, ela vai embora.'],
+    ['02', 'você posta, mas não chama.', 'Post sem convite termina no like. <b>Diga o próximo passo:</b> chamar no direct, pedir o orçamento, clicar no link.'],
+    ['03', 'o feed só tem promoção.', 'Quem ainda não te conhece não confia. <b>Antes da oferta vem bastidor, prova e explicação.</b> Aí a promoção vende.'],
+    ['04', 'cada post é de um jeito.', 'Sem constância de visual e de assunto, <b>ninguém lembra de você</b> na hora de comprar.'],
+  ].map(([n, erro, porque]) => [false, `${BRAND(C.navy)}${LAB('motivo ' + n, C.navy)}
+    <div class="abs num" style="left:66px;top:170px;color:${C.indigo}">${n}</div>
+    <div class="abs H" style="left:58px;top:250px;width:960px;font-size:124px;color:${C.navy}">${erro}</div>
+    <div class="abs" style="left:0;top:760px;width:1080px;height:590px;background:${C.indigo}"></div>
+    <div class="abs s" style="left:66px;top:830px;color:${C.beige};font-weight:700">por que trava a venda</div>
+    <div class="abs lead" style="left:66px;top:890px;width:900px;color:${C.off};font-size:44px;line-height:1.36">${porque}</div>
+    <div class="abs s" style="right:66px;top:830px;color:${C.beige}">${n} / 04</div>`]),
+  [true, fim({ bg: C.navy, title: `o algoritmo entrega.<br>o resto é <span style="position:relative;display:inline-block"><em>estratégia.</em><span style="position:absolute;left:-36px;top:-14px">${ELLIPSE(720, 190, C.beige)}</span></span>`, size: 160, foot: 'me chama no direct que eu olho<br>o seu perfil com você.' })],
+];
+if (location.hash === '#algoritmo') { document.querySelectorAll('.post').forEach(e => e.remove());
+  ALGORITMO.forEach(([dark, html], i) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_nao_e_algoritmo_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d); }); }
+
+// ---------- opções de miolo (index.html#opcoes) ----------
+const PILLS = (arr, fg, bg) => arr.map((t, i) => `<span style="display:inline-block;border-radius:999px;padding:14px 26px;margin:0 10px 12px 0;font-weight:700;font-size:22px;${i % 2 ? `border:2px solid ${fg};color:${fg}` : `background:${fg};color:${bg}`}">${t}</span>`).join('');
+const MIOLO = {
+  // A · foto cheia, título enorme direto na área lisa/escura da foto, texto curto
+  A_gestao: [true, `${box(0, 0, 1080, 1350, photo('escuro', 1080, 1350, .6, .5, 1, 'filter:brightness(.72) contrast(1.1)'))}
+    ${BRAND(C.off)}${LAB('serviço 01', C.off)}
+    <div class="abs H" style="left:58px;top:160px;width:700px;font-size:150px;color:${C.off}">gestão de redes <em>sociais</em></div>
+    <div class="abs lead" style="left:66px;top:1080px;width:600px;color:${C.off}">A gente planeja, cria e posta, <b>e você só aprova.</b></div>`],
+  A_plano: [false, `${box(0, 0, 1080, 1350, photo('mesa', 1080, 1350, .5, .45))}
+    ${BRAND(C.navy)}${LAB('etapa 02', C.navy)}
+    <div class="abs H" style="left:58px;top:170px;font-size:190px;color:${C.navy}">o <em>plano</em></div>
+    <div class="abs lead" style="left:66px;top:420px;width:560px">Estratégia e calendário do mês, pra você <b>saber tudo antes de sair.</b></div>`],
+  // B · número gigante + foto em moldura alta à direita (editorial)
+  B_gestao: [false, `${BRAND(C.navy)}${LAB('serviço', C.navy)}
+    <div class="abs H" style="left:44px;top:120px;font-size:420px;color:${C.beige};letter-spacing:-.08em">01</div>
+    <div class="abs H" style="left:58px;top:560px;width:520px;font-size:104px;color:${C.navy}">gestão de redes <em>sociais</em></div>
+    <div class="abs lead" style="left:66px;top:900px;width:480px;font-size:29px">A gente planeja, cria e posta, <b>e você só aprova.</b></div>
+    ${box(600, 170, 414, 1040, photo('escuro', 414, 1040, .6, .5), 207)}
+    ${ARROW(C.navy)}`],
+  B_plano: [true, `${BRAND(C.off)}${LAB('etapa', C.off)}
+    <div class="abs H" style="left:44px;top:120px;font-size:420px;color:${C.indigo};letter-spacing:-.08em">02</div>
+    <div class="abs H" style="left:58px;top:560px;width:520px;font-size:120px;color:${C.off}">o <em>plano</em></div>
+    <div class="abs lead" style="left:66px;top:740px;width:480px;font-size:29px">Estratégia e calendário do mês, pra você <b>saber tudo antes de sair.</b></div>
+    ${box(600, 170, 414, 1040, photo('mesa', 414, 1040, .55, .6), 207)}
+    ${ARROW(C.off)}`],
+  // C · foto grande em cartão + título embaixo + pílulas (estilo clean)
+  C_gestao: [false, `${BRAND(C.navy)}${LAB('serviço 01', C.navy)}
+    ${box(66, 140, 948, 640, photo('escuro', 948, 640, .55, .5), 26)}
+    <div class="abs H" style="left:58px;top:830px;width:960px;font-size:112px;color:${C.navy}">gestão de redes <em>sociais</em></div>
+    <div class="abs" style="left:66px;top:1080px;width:948px">${PILLS(['planejamento', 'criação', 'postagem', 'você só aprova'], C.navy, C.off)}</div>`],
+  C_plano: [true, `${BRAND(C.off)}${LAB('etapa 02', C.off)}
+    ${box(66, 140, 948, 640, photo('mesa', 948, 640, .55, .72), 26)}
+    <div class="abs H" style="left:58px;top:830px;font-size:140px;color:${C.off}">o <em>plano</em></div>
+    <div class="abs" style="left:66px;top:1030px;width:948px">${PILLS(['estratégia', 'calendário do mês', 'tudo aprovado antes'], C.beige, C.navy)}</div>`],
+};
+if (location.hash === '#opcoes') { document.querySelectorAll('.post').forEach(e => e.remove());
+  Object.entries(MIOLO).forEach(([id, [dark, html]]) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = 'opcao_' + id; d.innerHTML = html; document.body.appendChild(d); }); }
+
+// ---------- opções de capa do "Saiu do forno" (index.html#capas) ----------
+const SF_T = 'saiu do forno <em>na nuv.</em>', SF_F = 'o que foi pro ar nos perfis<br>dos nossos clientes esse mês';
+const CAPA_SF = {
+  A_clara: [false, `${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+    <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.navy}">${SF_T}</div>
+    <div class="abs" style="left:64px;top:688px;width:700px;height:14px;background:${C.navy};border-radius:7px"></div>
+    ${FOOT(SF_F, C.navy)}${ARROW(C.navy)}`],
+  B_faixa: [false, `${box(760, 0, 320, 1350, photo('listras', 320, 1350, .5, .5))}${BRAND(C.navy)}
+    <div class="abs H" style="left:58px;top:260px;width:660px;font-size:190px;color:${C.navy}">${SF_T}</div>
+    ${FOOT(SF_F, C.navy)}`],
+  C_bloco: [true, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.indigo}"></div>${BRAND(C.off)}${LAB('portfólio<br>do mês', C.off)}
+    <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.off}">${SF_T}</div>
+    ${FOOT(SF_F, C.off)}${ARROW(C.off)}`],
+  D_ripada: [false, `${box(0, 0, 1080, 1350, photo('ripada', 1080, 1350, .5, .5))}${BRAND(C.navy)}${LAB('portfólio<br>do mês', C.navy)}
+    <div class="abs H" style="left:58px;top:260px;width:960px;font-size:230px;color:${C.navy}">${SF_T}</div>
+    ${FOOT(SF_F, C.navy)}${ARROW(C.navy)}`],
+};
+if (location.hash === '#capas') { document.querySelectorAll('.post').forEach(e => { if (!/_(servicos|como_trabalhar)_01$/.test(e.id)) e.remove(); });
+  Object.entries(CAPA_SF).forEach(([id, [dark, html]]) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = 'capa_sf_' + id; d.innerHTML = html; document.body.appendChild(d); }); }
+</script>
+</body>
+</html>
