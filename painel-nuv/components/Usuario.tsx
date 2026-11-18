@@ -28,7 +28,7 @@ export function areaDaRota(path: string): Area | "admin" | null {
   if (path.startsWith("/calendario") && !path.startsWith("/calendarios")) return "calendario";
   if (path.startsWith("/calendarios") || path.startsWith("/equipe")) return "admin";
   if (path.startsWith("/comercial")) return "leads";
-  for (const a of ["clientes", "demandas", "metricas", "leads", "servicos", "financeiro"] as const) if (path.startsWith(`/${a}`)) return a;
+  for (const a of ["clientes", "portfolio", "demandas", "metricas", "leads", "servicos", "financeiro"] as const) if (path.startsWith(`/${a}`)) return a;
   return null;
 }
 

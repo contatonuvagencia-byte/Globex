@@ -5,7 +5,7 @@ import { COOKIE, verificarSessao } from "./lib/auth";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   // /r/... (relatório) e /p/... (proposta) são links públicos para o cliente, protegidos pelo token aleatório
-  if (pathname.startsWith("/login") || pathname.startsWith("/api/login") || pathname.startsWith("/r/") || pathname.startsWith("/p/")) return NextResponse.next();
+  if (pathname.startsWith("/login") || pathname.startsWith("/api/login") || pathname.startsWith("/r/") || pathname.startsWith("/p/") || pathname === "/vitrine") return NextResponse.next();
 
   if (!process.env.APP_PASSWORD || !process.env.AUTH_SECRET) {
     return new NextResponse("Configure APP_PASSWORD e AUTH_SECRET nas variáveis de ambiente.", { status: 500 });
