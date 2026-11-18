@@ -58,6 +58,12 @@ No projeto *painel-nuv*, em **Project Settings → API Keys**, copie a chave **s
 4. Em **Environment variables**, adicione `APP_PASSWORD`, `AUTH_SECRET`, `NOTION_TOKEN`, `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`.
 5. **Deploy**. O endereço fica algo como `nome.netlify.app` (dá para mudar em *Site configuration → Change site name*).
 
+## Publicar atualizações (economizando créditos da Netlify)
+
+O plano grátis da Netlify tem cerca de 20 publicações por mês. Por isso o `netlify.toml` só publica quando a mensagem do commit tiver `[deploy]`; os outros envios ficam guardados no GitHub sem gastar crédito. Para publicar o que estiver guardado: faça um commit com `[deploy]` na mensagem ou, na Netlify, *Deploys → Trigger deploy → Deploy site*.
+
+Se a Netlify mostrar que o time passou do limite, os sites do time ficam pausados até os créditos renovarem no próximo ciclo. Para o painel não dividir créditos com sites de clientes, deixe ele numa conta/time da Netlify só da NUV.
+
 ## Rodar no computador
 
 ```bash
