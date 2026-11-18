@@ -56,6 +56,12 @@ body{font-family:I,sans-serif;-webkit-font-smoothing:antialiased;--s:1}
 .swipe{display:flex;align-items:center;gap:14px;font-weight:700;font-size:24px;letter-spacing:.14em}
 .swipe i{display:block;width:70px;height:3px;background:currentColor;position:relative}
 .swipe i:after{content:"";position:absolute;right:0;top:-7px;width:14px;height:14px;border-top:3px solid currentColor;border-right:3px solid currentColor;transform:rotate(45deg)}
+.strike{position:relative;white-space:nowrap}
+.strike:after{content:"";position:absolute;left:-.04em;right:-.04em;top:50%;height:.11em;background:#F06B21;border-radius:.06em;transform:rotate(-4deg)}
+.mkem .h{line-height:1.08}
+.mkem em{background:#C24A0B;color:#fff;padding:0 .14em;border-radius:.08em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.dcard{position:absolute;overflow:hidden;border-radius:28px;border:12px solid #fff;box-shadow:0 30px 70px rgba(31,27,25,.22)}
+.dcard img{width:100%;height:100%;object-fit:cover;display:block}
 .photo{flex:none;border-radius:32px;overflow:hidden;margin-bottom:56px}
 .photo img{width:100%;height:100%;object-fit:cover;display:block}
 /* capa de reel: foto ocupa a parte de cima da tela inteira */
@@ -72,7 +78,7 @@ const c = document.getElementById('c');
 document.body.style.width = W + 'px'; document.body.style.height = H + 'px';
 c.style.width = W + 'px'; c.style.height = H + 'px'; c.className = G.bg;
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-const mk = s => esc(s).replace(/\[\[(.+?)\]\]/g, '<em>$1</em>').replace(/\s*\|\s*/g, '<br>');
+const mk = s => esc(s).replace(/\[\[(.+?)\]\]/g, '<em>$1</em>').replace(/\{\{(.+?)\}\}/g, '<span class="strike">$1</span>').replace(/\s*\|\s*/g, '<br>');
 const logo = G.bg === 'light' ? 'logo-laranja.png' : 'logo-branco.png';
 const pager = P.tipo === 'carrossel' && idx > 0 ? `${String(idx + 1).padStart(2, '0')}/${String(total).padStart(2, '0')}` : '';
 let bg = '';
@@ -82,10 +88,12 @@ const L = G.layout;
 const SZ = {
   title: { h: 160, sign: 30 }, quote: { h: 124 }, cover: { h: 150, p: 44 }, text: { h: 108, p: 46, k: 34 },
   list: { h: 64, b: 70, span: 40 }, step: { n: 170, h: 96, p: 44 }, cta: { h: 100, p: 46, cta: 36 },
-  photo: { h: 96, p: 40, k: 32 }, reel: { h: 150 },
+  photo: { h: 96, p: 40, k: 32 }, reel: { h: 150 }, duo: { h: 112 },
 };
 const z = SZ[L], px = (v) => `calc(${v}px * var(--s))`;
 let body = '';
+if (L === 'duo') bg += `<div class="dcard" style="left:96px;top:205px;width:470px;height:350px;transform:rotate(-5deg);z-index:1"><img src="assets/${G.img}" style="filter:grayscale(1) contrast(.95) brightness(1.05);object-position:${G.imgPos || '50% 50%'}"></div>
+  <div class="dcard" style="left:410px;top:300px;width:574px;height:470px;transform:rotate(3deg);z-index:2"><img src="assets/${G.img2}" style="object-position:${G.img2Pos || '50% 50%'}"></div>`;
 if (L === 'photo' && G.img) body += `<div class="photo" style="height:${G.cover ? 520 : 470}px"><img src="assets/${G.img}" style="object-position:${G.imgPos || '50% 50%'}"></div>`;
 for (const key of Object.keys(G)) {
   const v = G[key];
@@ -100,7 +108,7 @@ let foot = '';
 if (G.sign) foot = `<div class="sign">${mk(G.sign)}</div>`;
 if (L === 'cover' || (G.cover && P.tipo === 'carrossel')) foot = `<span></span><div class="swipe">ARRASTE<i></i></div>`;
 const fTop = reel ? 285 : 0, fH = reel ? 1350 : 1350;
-c.innerHTML = `${bg}<div id="f" style="top:${fTop}px;height:${fH}px">
+c.innerHTML = `${bg}<div id="f" class="${G.markEm ? 'mkem' : ''}" style="top:${fTop}px;height:${fH}px;z-index:3">
   <div id="hd"><img src="assets/${logo}"><span id="pg">${pager}</span></div>
   <div id="m" class="${L === 'quote' || (reel && !G.img) ? 'center' : ''}">${body}</div>
   ${foot ? `<div id="ft">${foot}</div>` : ''}</div>`;

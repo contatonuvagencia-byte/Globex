@@ -2,7 +2,7 @@
   "_notas": "Texto exatamente como na Parte 2 do brief. [[ ]] só marca a parte destacada em cor; não altera o texto. bg: light | dark | brand. img: foto do contexto (opcional).",
   "pecas": [
     { "semana": 1, "slug": "2026-11-18_estatico_intercambio-nao-e-ferias", "tipo": "estatico",
-      "pages": [ { "bg": "light", "layout": "title", "h": "Intercâmbio não é férias. | [[É promoção.]]", "sign": "Be a world student." } ] },
+      "pages": [ { "bg": "light", "layout": "duo", "markEm": true, "img": "ferias.jpg", "imgPos": "40% 50%", "img2": "promocao.jpg", "img2Pos": "50% 45%", "h": "Intercâmbio não é {{férias.}} | [[É promoção.]]", "sign": "Be a world student." } ] },
 
     { "semana": 1, "slug": "2026-11-19_carrossel_9-trilhas", "tipo": "carrossel",
       "pages": [
