@@ -24,7 +24,8 @@ for (const id of ids) {
     .filter(e => { const b = e.getBoundingClientRect(); return b.top < 250 || b.bottom > 1580 || b.right > 1000; }).map(e => e.textContent.trim().slice(0, 30)));
   if (bad.length) console.log(id, 'FORA:', bad.join(' | '));
   const [k, n] = id.split('-');
-  const file = k === 'tcapa' ? path.join(out, '0-capas', `capa-t${n}-trilha-${TRILHAS[n - 1]}.png`)
+  const file = k === 'xcapa' ? path.join(out, '0-capas', `capa-${n}.png`)
+    : k === 'tcapa' ? path.join(out, '0-capas', `capa-t${n}-trilha-${TRILHAS[n - 1]}.png`)
     : k.startsWith('trilha') ? path.join(out, `t${k.slice(6)}-trilha-${TRILHAS[k.slice(6) - 1]}`, `story-${n}.png`)
     : k === 'capa' ? path.join(out, '0-capas', `capa-${CAPA[n - 1]}.png`) : path.join(out, PASTA[k], `story-${n}.png`);
   await page.screenshot({ path: file });

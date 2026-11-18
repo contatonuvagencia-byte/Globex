@@ -80,6 +80,7 @@ const ICON = {
   como: '<rect x="40" y="40" width="250" height="250" rx="40"/><path d="M95 120 L125 150 L180 95"/><path d="M95 220 H235"/>',
   destinos: '<circle cx="165" cy="165" r="135"/><path d="M30 165 H300"/><path d="M165 30 C95 90 95 240 165 300 C235 240 235 90 165 30"/>',
   alunos: '<path d="M165 60 L310 125 L165 190 L20 125 Z"/><path d="M75 150 V230 C120 275 210 275 255 230 V150"/><path d="M310 125 V215"/>',
+  escolas: '<path d="M30 120 L165 45 L300 120 Z"/><path d="M45 290 H285"/><path d="M60 255 H270"/><path d="M85 145 V245 M135 145 V245 M195 145 V245 M245 145 V245"/>',
   gc: '<rect x="35" y="55" width="260" height="180" rx="30"/><path d="M140 110 L205 145 L140 180 Z"/><path d="M115 290 H215"/><path d="M165 235 V290"/>',
 };
 const CAPAS = ['comece', 'roi', 'volta', 'camila', 'como', 'destinos', 'alunos', 'gc'];
@@ -257,6 +258,7 @@ const P = {
     <div class="p" style="top:1300px;font-size:36px">Toque pra ver como foi →</div>
     ${foot('BEAWST', 'GLOBAL CONNECT')}` },
 };
+P['xcapa-escolas'] = { cls: 'cover', html: `<div class="ring"><svg viewBox="0 0 330 330">${ICON.escolas}</svg></div>` };
 for (const [i, k] of CAPAS.entries()) P['capa-' + (i + 1)] = { cls: 'cover', html: `<div class="ring"><svg viewBox="0 0 330 330">${ICON[k]}</svg></div>` };
 
 // ---------- 9 TRILHAS (briefing "Destaques & 9 Trilhas") ----------
