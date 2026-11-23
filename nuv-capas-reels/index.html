@@ -30,6 +30,7 @@ const IMG = {
   cafe: ['fotos-hd/cafe-mesa.jpg', 941, 1672], isaNote: ['fotos-hd/isa-notebook.jpg', 1086, 1448], isaRua: ['fotos-hd/isa-rua.jpg', 1086, 1448],
   maoCel: ['fotos-hd/mao-celular.jpg', 1038, 1294], escuro: ['fotos-hd/notebook-escuro.jpg', 736, 1104],
   risca: ['fotos-hd/textura-risca.jpg', 400, 800], veludo: ['fotos-hd/textura-veludo.jpg', 1200, 1600], cimento: ['fotos-hd/textura-cimento.jpg', 960, 1920],
+  copo: ['fotos-novas/cafe-gelado-copo.jpg', 1200, 1500], tacas: ['fotos-novas/tacas-vinho.jpg', 1080, 1920],
   estudio: ['fotos-hd/retrato-estudio.jpg', 941, 1672], tablet: ['fotos-hd/tablet-cafe.jpg', 1122, 1402],
 };
 const photo = (key, w, h, fx = .5, fy = .5, zoom = 1, extra = '') => {
@@ -87,7 +88,20 @@ const CAPAS = {
     corners(C.off, 'pra quem<br>empreende', '').replace(/<div class="abs s" style="left:66px;top:1520px[^>]*>[^<]*<\/div>/, '').replace(/<div class="abs s" style="right:66px;top:1520px[^>]*>[^<]*<\/div>/, '') +
     T(1130, 108, C.off, `você tem conteúdo pra <span style="position:relative;display:inline-block">um ano<span style="position:absolute;left:-30px;top:-10px">${ELLIPSE(400, 130, C.beige)}</span></span><br><em>dentro da cabeça.</em>`) +
     tag(66, 1500, 'e nem percebe'),
+  // 6 · papel claro em cima, café gelado embaixo: a pergunta que todo cliente faz
+  '06_posso_ver_algum_trabalho_seu': `<div class="abs" style="left:0;top:0;width:1080px;height:1920px;background:${C.off}"></div>` +
+    `<div class="abs" style="left:0;top:1000px;width:1080px;height:920px;overflow:hidden">${photo('copo', 1080, 920, .5, .62, 1.05, 'filter:contrast(1.05) saturate(.9)')}</div>` +
+    corners(C.navy, 'portfólio', '').replace(/<div class="abs s" style="(left|right):66px;top:1520px[^>]*>[^<]*<\/div>/g, '') +
+    T(400, 138, C.navy, `“posso ver algum <span style="position:relative;display:inline-block;margin-left:22px"><em>trabalho</em><span style="position:absolute;left:-26px;top:-4px">${ELLIPSE(470, 150, C.indigo)}</span></span> seu?”`) +
+    tag(66, 860, 'o que você responde?', C.navy, C.off),
+
+  // 7 · taças de vinho com luz de fim de tarde: o preço que faz o resto parecer barato
+  '07_o_vinho_caro_esta_ali_de_proposito': `<div class="abs" style="left:0;top:0;width:1080px;height:1920px;overflow:hidden">${photo('tacas', 1080, 1920, .5, .5, 1, 'filter:brightness(.55) contrast(1.12) saturate(.9) sepia(.08)')}</div>` +
+    corners(C.off, 'estratégia<br>de preço', '').replace(/<div class="abs s" style="(left|right):66px;top:1520px[^>]*>[^<]*<\/div>/g, '') +
+    T(420, 140, C.off, `o vinho caro está ali <span style="position:relative;display:inline-block"><em>de propósito.</em><span style="position:absolute;left:-34px;top:-10px">${ELLIPSE(700, 160, C.beige)}</span></span>`) +
+    tag(66, 1500, 'e funciona no seu negócio também'),
 };
+if (location.hash === '#novas') Object.keys(CAPAS).forEach(k => { if (!/^0[67]_/.test(k)) delete CAPAS[k]; });
 
 Object.entries(CAPAS).forEach(([id, html]) => {
   const d = document.createElement('div'); d.className = 'post'; d.id = 'NUV_capa_reels_' + id; d.innerHTML = html; document.body.appendChild(d);

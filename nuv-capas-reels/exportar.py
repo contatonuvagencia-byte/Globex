@@ -2,7 +2,7 @@
 from PIL import Image, ImageCms
 import glob, os
 SRGB = ImageCms.ImageCmsProfile(ImageCms.createProfile('sRGB')).tobytes()
-fs = sorted(glob.glob('out/png/*.png')); os.makedirs('out/instagram', exist_ok=True)
+fs = sorted(glob.glob('out/png/' + os.environ.get('TEMA', '') + '*.png')); os.makedirs('out/instagram', exist_ok=True)
 rows = (len(fs) + 2) // 3
 grade = Image.new('RGB', (3 * 360 + 8, rows * 480 + (rows - 1) * 4), 'white')
 cheia = Image.new('RGB', (len(fs) * 304 - 4, 533), 'white')
