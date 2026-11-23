@@ -101,6 +101,42 @@ const CAPAS = {
     T(420, 140, C.off, `o vinho caro está ali <span style="position:relative;display:inline-block"><em>de propósito.</em><span style="position:absolute;left:-34px;top:-10px">${ELLIPSE(700, 160, C.beige)}</span></span>`) +
     tag(66, 1500, 'e funciona no seu negócio também'),
 };
+
+// ---------- opções extras das capas 06 e 07 (index.html#opcoes2) ----------
+const noFoot = h => h.replace(/<div class="abs s" style="(left|right):66px;top:1520px[^>]*>[^<]*<\/div>/g, '');
+const BUBBLE = (x, y, txt, w) => `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px">
+  <div class="s" style="color:${C.indigo};font-weight:700;margin:0 0 14px 8px">mensagem de cliente</div>
+  <div style="background:#fff;border-radius:44px 44px 44px 12px;padding:34px 44px;font-family:Comfortaa;font-size:52px;line-height:1.3;color:${C.navy};box-shadow:0 2px 0 rgba(10,37,64,.08)">${txt}</div></div>`;
+const OPCOES2 = {
+  // 06B · bloco índigo, foto em moldura arredondada, título claro
+  '06B_posso_ver_algum_trabalho_seu': solid(C.indigo) + noFoot(corners(C.off, 'portfólio', '')) +
+    T(390, 132, C.off, `“posso ver algum <em>trabalho</em> seu?”`) +
+    `<div class="abs" style="left:66px;top:880px;width:948px;height:720px;border-radius:30px;overflow:hidden">${photo('copo', 948, 720, .5, .6, 1.1)}</div>` +
+    tag(96, 1500, 'o que você responde?'),
+  // 06C · a pergunta como mensagem no direct, foto do café cheia embaixo
+  '06C_posso_ver_algum_trabalho_seu': `<div class="abs" style="left:0;top:0;width:1080px;height:1920px;background:${C.off}"></div>` +
+    `<div class="abs" style="left:0;top:1060px;width:1080px;height:860px;overflow:hidden">${photo('copo', 1080, 860, .5, .6, 1.05, 'filter:contrast(1.05) saturate(.9)')}</div>` +
+    noFoot(corners(C.navy, 'portfólio', '')) +
+    BUBBLE(66, 420, 'oi! posso ver algum trabalho seu?', 760) +
+    T(780, 118, C.navy, `e aí, o que <em>você responde?</em>`),
+  // 07B · título em bloco azul-marinho sólido, taças na metade de baixo
+  '07B_o_vinho_caro_esta_ali_de_proposito': solid(C.navy) +
+    `<div class="abs" style="left:0;top:1000px;width:1080px;height:920px;overflow:hidden">${photo('tacas', 1080, 920, .5, .52, 1, 'filter:brightness(.9) contrast(1.05)')}</div>` +
+    noFoot(corners(C.off, 'estratégia<br>de preço', '')) +
+    T(400, 136, C.off, `o vinho caro está ali <span style="position:relative;display:inline-block"><em>de propósito.</em><span style="position:absolute;left:-34px;top:-10px">${ELLIPSE(700, 160, C.beige)}</span></span>`) +
+    tag(66, 1500, 'e funciona no seu negócio também'),
+  // 07C · papel claro, foto alta à direita e uma carta de vinhos com o caro em destaque
+  '07C_o_vinho_caro_esta_ali_de_proposito': `<div class="abs" style="left:0;top:0;width:1080px;height:1920px;background:${C.off}"></div>` +
+    pic(600, 330, 414, 1270, 'tacas', .55, .5, 1, ';box-shadow:none;border-radius:207px') +
+    noFoot(corners(C.navy, '', '')).replace('right:66px;top:320px', 'right:9999px;top:320px') +
+    T(400, 112, C.navy, `o vinho caro está ali <em>de propósito.</em>`, 520) +
+    `<div class="abs" style="left:66px;top:1090px;width:470px;font-family:Comfortaa;color:${C.navy}">
+      <div class="s" style="font-weight:700;color:${C.indigo};margin-bottom:22px">carta de vinhos</div>
+      ${[['da casa', '89'], ['reserva', '149'], ['grande reserva', '480']].map(([n, v], i) => `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;border-top:2px solid rgba(10,37,64,.18);font-size:32px;${i === 2 ? 'font-weight:700' : ''}"><span>${n}</span><span>R$ ${v}</span></div>`).join('')}
+    </div>` +
+    `<div class="abs" style="left:230px;top:1350px;transform:rotate(-4deg)"><span class="H" style="display:inline-block;font-size:44px;background:${C.navy};color:${C.off};padding:4px 18px 12px">é pra esse ↑</span></div>`,
+};
+if (location.hash === '#opcoes2') { Object.keys(CAPAS).forEach(k => delete CAPAS[k]); Object.assign(CAPAS, OPCOES2); }
 if (location.hash === '#novas') Object.keys(CAPAS).forEach(k => { if (!/^0[67]_/.test(k)) delete CAPAS[k]; });
 
 Object.entries(CAPAS).forEach(([id, html]) => {
