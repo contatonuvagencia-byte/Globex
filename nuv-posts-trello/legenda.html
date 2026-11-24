@@ -6,7 +6,7 @@
 <style>
   /* Carrossel "a mesma foto. vendas diferentes." — antes x depois de legenda num mockup de post.
      Mesma linha do feed: Inter Tight Black minúsculo + itálico fino, Comfortaa no apoio, paleta NUV.
-     A foto é um post de exemplo (cafeteria fictícia), não um cliente real. */
+     A foto é um post de exemplo (loja de moda fitness fictícia), não um cliente real. */
   @font-face { font-family: 'Title'; font-weight: 900; src: url(assets/fonts/inter-tight-latin-900-normal.woff2) format('woff2'); }
   @font-face { font-family: 'TitleI'; font-style: italic; font-weight: 300; src: url(assets/fonts/inter-tight-latin-300-italic.woff2) format('woff2'); }
   @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
@@ -34,11 +34,11 @@
   .island { position: absolute; left: 50%; top: 14px; width: 130px; height: 36px; margin-left: -65px; border-radius: 20px; background: #000; z-index: 3; }
   .bar { height: 64px; display: flex; justify-content: space-between; align-items: center; padding: 10px 40px 0; font-weight: 600; font-size: 19px; }
   .ighead { display: flex; align-items: center; gap: 14px; padding: 10px 18px 12px; }
-  .av { width: 44px; height: 44px; border-radius: 50%; padding: 3px; background: conic-gradient(#C9A27A, #8a6a4e, #C9A27A); }
-  .av i { display: block; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; background: #6d4f3a; }
+  .av { width: 44px; height: 44px; border-radius: 50%; padding: 3px; background: conic-gradient(#0A2540, #313D65, #CBC5B9, #0A2540); }
+  .av i { display: block; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; background: #111; }
   .ighead b { font-size: 18px; font-weight: 600; }
   .ighead small { display: block; font-size: 14px; color: #666; }
-  .shot { width: 492px; height: 615px; background: url(fotos-novas/cafe-gelado-copo.jpg) center 62% / cover; }
+  .shot { width: 492px; height: 615px; background: url(fotos-novas/conjunto-fitness.jpg) center 100% / cover; }
   .acts { display: flex; gap: 20px; padding: 16px 18px 8px; }
   .acts svg { width: 30px; height: 30px; fill: none; stroke: #111; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .likes { padding: 0 18px; font-size: 17px; font-weight: 600; }
@@ -79,16 +79,16 @@ const ic = (k, extra = '') => `<svg viewBox="0 0 24 24" ${extra}>${IC[k]}</svg>`
 const PHONE = (x, y, { likes, cap, rot = 0, liked = false, scale = 1 }) => `<div class="phone" style="left:${x}px;top:${y}px;transform:rotate(${rot}deg) scale(${scale});transform-origin:top left">
   <div class="screen"><div class="island"></div>
     <div class="bar"><span>9:41</span><span style="display:flex;gap:8px;align-items:center"><svg width="26" height="16" viewBox="0 0 26 16"><rect x="1" y="1" width="21" height="14" rx="4" fill="none" stroke="#111" stroke-width="1.6"/><rect x="3.5" y="3.5" width="14" height="9" rx="2" fill="#111"/><rect x="23" y="5.5" width="2" height="5" rx="1" fill="#111"/></svg></span></div>
-    <div class="ighead"><div class="av"><i></i></div><div><b>cafe.exemplo</b><small>Centro</small></div><span style="margin-left:auto;font-size:26px;letter-spacing:2px">···</span></div>
+    <div class="ighead"><div class="av"><i></i></div><div><b>ativa.exemplo</b><small>Loja online</small></div><span style="margin-left:auto;font-size:26px;letter-spacing:2px">···</span></div>
     <div class="shot"></div>
     <div class="acts">${ic(liked ? 'heartFull' : 'heart')}${ic('comment')}${ic('send')}<span style="margin-left:auto">${ic('save')}</span></div>
     <div class="likes">${likes}</div>
-    <div class="cap"><b>cafe.exemplo</b> ${cap}</div>
+    <div class="cap"><b>ativa.exemplo</b> ${cap}</div>
   </div></div>`;
 const STICK = (src, x, y, w, rot = 0) => `<img class="abs" src="assets/${src}.webp" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${rot}deg);filter:drop-shadow(0 14px 18px rgba(10,37,64,.25))">`;
 
-const CAP_ANTES = 'bom dia, gente! <span class="tagh">#cafe #coffeetime #amocafe #instafood</span>';
-const CAP_DEPOIS = '<span class="mk"><span class="n">1</span>Iced latte com leite de aveia,</span> <span class="mk"><span class="n">2</span>gelado na medida pra tarde quente.</span> <span class="mk"><span class="n">3</span>Pede pelo direct e retira sem fila,</span> <span class="mk"><span class="n">4</span>só hoje até as 18h.</span>';
+const CAP_ANTES = 'partiu treino! <span class="tagh">#fitness #treino #foco #gymlife</span>';
+const CAP_DEPOIS = '<span class="mk"><span class="n">1</span>Conjunto top + short preto em suplex,</span> <span class="mk"><span class="n">2</span>que não marca e não sai do lugar no treino.</span> <span class="mk"><span class="n">3</span>Comenta EU QUERO que eu te mando o link,</span> <span class="mk"><span class="n">4</span>só 12 peças nessa cor.</span>';
 
 const SLIDES = [
   // 1 · capa: o mesmo post, título forte, celular inclinado entrando por baixo
