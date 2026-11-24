@@ -5,188 +5,264 @@
 <title>Cards Boas Festas SINAIT DS/MG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&family=Pinyon+Script&display=swap">
 <style>
-/* Cards de fim de ano SINAIT DS/MG para WhatsApp (1080x1350).
-   Versão clara: fundo gelo/creme, laranja #cc4e00 como destaque, chumbo #2B2B2B no texto. */
+/* Cards de fim de ano SINAIT DS/MG (1080x1350), estilo vintage editorial:
+   papel creme granulado, tipografia condensada cruzada com caligrafia, listras, moldura arredondada
+   e ilustrações com textura de impressão. Laranja #cc4e00, chumbo #2B2B2B, creme. */
 :root {
-  --gelo: #FBF8F4;
-  --creme: #F6EFE4;
+  --papel: #F4EBDD;
+  --papel-claro: #FAF4EA;
   --laranja: #cc4e00;
-  --laranja-claro: #f39a5a;
-  --ouro: #d9a24a;
+  --pessego: #EDC3A0;
+  --cinza: #D9D1C4;
   --chumbo: #2B2B2B;
-  --chumbo-70: rgba(43,43,43,.72);
-  --linha: rgba(204,78,0,.28);
   --f-display: "Anton", Impact, sans-serif;
   --f-body: "Montserrat", Arial, sans-serif;
-  --f-script: "Playfair Display", Georgia, serif;
+  --f-script: "Pinyon Script", "Snell Roundhand", cursive;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: #ddd; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
-.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--chumbo); font-family: var(--f-body);
-  background:
-    radial-gradient(55% 40% at 50% 8%, #fff 0%, transparent 75%),
-    radial-gradient(70% 45% at 50% 105%, rgba(243,154,90,.22) 0%, transparent 70%),
-    var(--gelo);
-  display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 130px; }
-.slide::before { content: ""; position: absolute; inset: 40px; border: 2px solid var(--linha); pointer-events: none; }
-.slide::after { content: ""; position: absolute; inset: 52px; border: 1px solid rgba(204,78,0,.14); pointer-events: none; }
-.deco { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.conteudo { position: relative; display: flex; flex-direction: column; align-items: center; height: 100%; }
-.logo { width: 132px; margin-top: 110px; }
-.script { font-family: var(--f-script); font-style: italic; font-weight: 600; font-size: 54px; line-height: 1.1; color: var(--laranja); }
-h1 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; margin: 0; line-height: .95; color: var(--chumbo); letter-spacing: .01em; }
-.faixa { display: inline-block; background: var(--laranja); color: var(--gelo); padding: .02em .24em .06em; transform: rotate(-3deg);
-  font-family: var(--f-display); text-transform: uppercase; line-height: 1.05; box-shadow: 0 14px 30px rgba(204,78,0,.22); white-space: nowrap; }
-.texto { text-wrap: balance; font-size: 31px; font-weight: 500; line-height: 1.5; color: var(--chumbo-70); margin: 0; max-width: 760px; }
-.texto b { color: var(--chumbo); font-weight: 700; }
-.assina { margin-top: auto; margin-bottom: 104px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.assina .fio { width: 90px; height: 3px; background: var(--laranja); border-radius: 2px; margin-bottom: 8px; }
-.assina strong { font-weight: 800; font-size: 26px; letter-spacing: .32em; padding-left: .32em; color: var(--chumbo); }
-.assina span { font-size: 20px; font-weight: 500; letter-spacing: .08em; color: var(--chumbo-70); }
+body { margin: 0; background: #1d1d1d; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--papel); color: var(--chumbo); font-family: var(--f-body); }
+.slide > * { position: absolute; }
+svg.full { inset: 0; width: 1080px; height: 1350px; }
+.grao { inset: 0; width: 1080px; height: 1350px; pointer-events: none; mix-blend-mode: multiply; opacity: .55; z-index: 10; }
+.script { font-family: var(--f-script); font-weight: 400; line-height: 1; white-space: nowrap; -webkit-text-stroke: 2.5px currentColor; }
+.display { font-family: var(--f-display); text-transform: uppercase; line-height: .86; white-space: nowrap; }
+.miudo { font-size: 23px; font-weight: 600; line-height: 1.35; letter-spacing: .01em; }
+.logo { width: 120px; }
 
-/* 1 · Boas Festas fornecedores */
-.c1 .script { margin-top: 92px; }
-.c1 h1 { font-size: 168px; margin-top: 18px; }
-.c1 .faixa { font-size: 132px; margin-top: 4px; }
-.c1 .texto { margin-top: 70px; }
+/* ===== 1 · Boas Festas fornecedores ===== */
+.c1 .painel { left: 236px; top: 96px; width: 760px; height: 830px; border-radius: 46px; background: var(--papel-claro); border: 5px solid #E0A57A; box-shadow: 0 0 0 14px rgba(250,244,234,.55); }
+.c1 .anos { left: 236px; width: 760px; top: 150px; text-align: center; font-size: 26px; font-weight: 700; letter-spacing: .18em; color: var(--chumbo); }
+.c1 .boas { left: 236px; width: 760px; top: 205px; text-align: center; font-size: 230px; color: var(--laranja); }
+.c1 .festas { left: 236px; width: 760px; top: 365px; text-align: center; font-size: 230px; color: var(--laranja); padding-left: 60px; }
+.c1 .msg { text-wrap: balance; left: 320px; width: 600px; top: 612px; text-align: center; font-size: 25px; font-weight: 600; line-height: 1.45; color: var(--chumbo); }
+.c1 .logo { left: 560px; top: 800px; width: 112px; }
+.c1 .rod { left: 400px; top: 1268px; width: 300px; font-size: 20px; color: var(--chumbo); }
 
-/* 2 · Natal AFTs */
-.c2 .logo { margin-top: 300px; }
-.c2 .script { margin-top: 40px; font-size: 44px; }
-.c2 h1 { font-size: 160px; margin-top: 14px; }
-.c2 .faixa { font-size: 132px; margin-top: 2px; }
-.c2 .texto { margin-top: 64px; }
+/* ===== 2 · Natal AFTs ===== */
+.c2 .feliz { left: 0; width: 1080px; top: 70px; text-align: center; font-size: 400px; color: var(--laranja); letter-spacing: .005em; }
+.c2 .natal { left: 120px; top: 285px; font-size: 330px; color: var(--chumbo); text-shadow: 0 0 0 var(--papel); paint-order: stroke fill; }
+.c2 .natal span { -webkit-text-stroke: 14px var(--papel); position: absolute; left: 0; top: 0; color: var(--papel); z-index: -1; }
+.c2 .msg { left: 640px; top: 640px; width: 370px; text-align: left; font-size: 23px; font-weight: 600; line-height: 1.4; }
+.c2 .rodape { left: 70px; right: 70px; bottom: 58px; display: flex; justify-content: space-between; align-items: flex-end; }
+.c2 .rodape .miudo:nth-child(2) { text-align: center; }
+.c2 .rodape .miudo:nth-child(3) { text-align: right; }
 
-/* 3 · Ano Novo AFTs */
-.c3 .script { margin-top: 70px; font-size: 60px; }
-.c3 .ano { font-family: var(--f-display); font-size: 300px; line-height: .9; margin-top: 18px;
-  background: linear-gradient(180deg, #e0702a 0%, var(--laranja) 60%, #a83f00 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.c3 .faixa { font-size: 64px; margin-top: 6px; background: var(--chumbo); box-shadow: 0 12px 26px rgba(43,43,43,.2); }
-.c3 .texto { margin-top: 60px; }
+/* ===== 3 · Ano Novo AFTs ===== */
+.c3 .painel { left: 100px; top: 330px; width: 820px; height: 760px; border-radius: 46px; background: var(--papel-claro); border: 5px solid #BDB3A4; box-shadow: 0 0 0 14px rgba(250,244,234,.55); }
+.c3 .feliz { left: 92px; top: 150px; font-size: 220px; color: var(--chumbo); transform: rotate(-6deg); transform-origin: left; }
+.c3 .anonovo { left: 170px; top: 300px; font-size: 170px; color: var(--chumbo); transform: rotate(-6deg); transform-origin: left; }
+.c3 .msg { text-wrap: balance; left: 190px; top: 580px; width: 640px; text-align: center; font-size: 26px; font-weight: 600; line-height: 1.5; }
+.c3 .logo { left: 450px; top: 790px; width: 120px; }
+.c3 .ano { right: 70px; top: 1000px; font-size: 270px; color: var(--laranja); }
+.c3 .juntos { right: 120px; top: 1180px; font-size: 104px; color: var(--chumbo); transform: rotate(-6deg); }
+.c3 .rod { left: 150px; top: 1150px; font-size: 20px; }
 </style>
 </head>
 <body>
 
+<!-- filtros e texturas compartilhados -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- textura de impressão: corrói levemente as manchas de cor -->
+    <filter id="impresso" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.75" result="mask"/>
+      <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+    </filter>
+    <filter id="graoF"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="3"/><feColorMatrix type="matrix" values="0 0 0 0 .35  0 0 0 0 .27  0 0 0 0 .18  0 0 0 .55 -.12"/></filter>
+    <pattern id="hachura" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="9" stroke="#2B2B2B" stroke-width="2.2" stroke-opacity=".55"/></pattern>
+    <pattern id="hachuraClara" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)"><line x1="0" y1="0" x2="0" y2="10" stroke="#fff" stroke-width="2" stroke-opacity=".45"/></pattern>
+    <pattern id="pontos" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.8" fill="#2B2B2B" fill-opacity=".55"/></pattern>
+  </defs>
+</svg>
+
 <!-- 1 · BOAS FESTAS · FORNECEDORES -->
 <section class="slide c1" data-out="01-boas-festas-fornecedores.png">
-  <svg class="deco" viewBox="0 0 1080 1350" aria-hidden="true">
-    <defs>
-      <symbol id="brilho" viewBox="-10 -10 20 20"><path d="M0-10 C1-2 2-1 10 0 C2 1 1 2 0 10 C-1 2 -2 1 -10 0 C-2-1 -1-2 0-10Z"/></symbol>
-    </defs>
-    <!-- ramos laterais delicados -->
-    <g fill="none" stroke="#cc4e00" stroke-opacity=".45" stroke-width="2.5" stroke-linecap="round">
-      <path d="M88 1270 C 110 1170, 100 1080, 140 990"/>
-      <path d="M992 1270 C 970 1170, 980 1080, 940 990"/>
-    </g>
-    <g fill="#f39a5a" fill-opacity=".55">
-      <ellipse cx="78" cy="1270" rx="11" ry="26" transform="rotate(-35 78 1270)"/><ellipse cx="110" cy="1236" rx="11" ry="26" transform="rotate(30 110 1236)"/>
-      <ellipse cx="92" cy="1147" rx="11" ry="26" transform="rotate(-30 92 1147)"/><ellipse cx="126" cy="1113" rx="11" ry="26" transform="rotate(35 126 1113)"/>
-      <ellipse cx="110" cy="1024" rx="10" ry="24" transform="rotate(-25 110 1024)"/><ellipse cx="146" cy="990" rx="10" ry="24" transform="rotate(40 146 990)"/>
-      <ellipse cx="1002" cy="1270" rx="11" ry="26" transform="rotate(35 1002 1270)"/><ellipse cx="970" cy="1236" rx="11" ry="26" transform="rotate(-30 970 1236)"/>
-      <ellipse cx="988" cy="1147" rx="11" ry="26" transform="rotate(30 988 1147)"/><ellipse cx="954" cy="1113" rx="11" ry="26" transform="rotate(-35 954 1113)"/>
-      <ellipse cx="970" cy="1024" rx="10" ry="24" transform="rotate(25 970 1024)"/><ellipse cx="934" cy="990" rx="10" ry="24" transform="rotate(-40 934 990)"/>
-    </g>
-    <g fill="#d9a24a">
-      <use href="#brilho" x="150" y="150" width="46" height="46"/><use href="#brilho" x="232" y="250" width="24" height="24"/>
-      <use href="#brilho" x="880" y="140" width="52" height="52"/><use href="#brilho" x="820" y="262" width="22" height="22"/>
-      <use href="#brilho" x="190" y="560" width="28" height="28"/><use href="#brilho" x="866" y="560" width="30" height="30"/>
-    </g>
-    <g fill="#cc4e00" fill-opacity=".5"><circle cx="300" cy="170" r="5"/><circle cx="770" cy="200" r="5"/><circle cx="120" cy="420" r="4"/><circle cx="960" cy="420" r="4"/></g>
-  </svg>
-  <div class="conteudo">
-    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
-    <span class="script">Obrigado pela parceria</span>
-    <h1>Boas</h1>
-    <span class="faixa">Festas</span>
-    <p class="texto">A DS/MG agradece a cada parceiro e fornecedor que esteve ao nosso lado em <b>2026</b>. Que o fim de ano seja de paz e celebração, e que <b>2027</b> traga novos projetos juntos.</p>
-    <div class="assina"><span class="fio"></span><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
-  </div>
+  <svg class="full" viewBox="0 0 1080 1350"><g id="listras1"></g></svg>
+  <div class="painel"></div>
+  <div class="anos">2026 → 2027</div>
+  <div class="script boas">Boas</div>
+  <div class="script festas">Festas</div>
+  <p class="msg">A DS/MG agradece a cada parceiro e fornecedor que esteve ao nosso lado neste ano. Desejamos festas cheias de paz e um 2027 com novos projetos juntos.</p>
+  <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
+  <svg class="full" viewBox="0 0 1080 1350"><g id="arvore1" filter="url(#impresso)"></g><g id="presentes1" filter="url(#impresso)"></g></svg>
+  <svg class="grao"><rect width="100%" height="100%" filter="url(#graoF)"/></svg>
 </section>
 
 <!-- 2 · NATAL · AFTs -->
 <section class="slide c2" data-out="02-feliz-natal-afts.png">
-  <svg class="deco" viewBox="0 0 1080 1350" aria-hidden="true">
-    <defs>
-      <radialGradient id="bolaL" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffb47a"/><stop offset=".55" stop-color="#e0661b"/><stop offset="1" stop-color="#b84500"/></radialGradient>
-      <radialGradient id="bolaO" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffe4a8"/><stop offset=".55" stop-color="#dcaa55"/><stop offset="1" stop-color="#b8842e"/></radialGradient>
-      <radialGradient id="bolaC" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#f3e7d6"/><stop offset="1" stop-color="#dcc9ad"/></radialGradient>
-      <symbol id="estrela" viewBox="-10 -10 20 20"><path d="M0-10 C1-2 2-1 10 0 C2 1 1 2 0 10 C-1 2 -2 1 -10 0 C-2-1 -1-2 0-10Z"/></symbol>
-    </defs>
-    <!-- bolas penduradas -->
-    <g stroke="#2B2B2B" stroke-opacity=".35" stroke-width="2">
-      <line x1="170" y1="42" x2="170" y2="190"/><line x1="290" y1="42" x2="290" y2="120"/><line x1="410" y1="42" x2="410" y2="230"/>
-      <line x1="670" y1="42" x2="670" y2="150"/><line x1="790" y1="42" x2="790" y2="250"/><line x1="910" y1="42" x2="910" y2="140"/>
-    </g>
-    <g>
-      <rect x="160" y="184" width="20" height="14" rx="3" fill="#b8842e"/><circle cx="170" cy="236" r="42" fill="url(#bolaL)"/>
-      <rect x="282" y="114" width="16" height="12" rx="3" fill="#b8842e"/><circle cx="290" cy="156" r="32" fill="url(#bolaO)"/>
-      <rect x="400" y="224" width="20" height="14" rx="3" fill="#b8842e"/><circle cx="410" cy="270" r="36" fill="url(#bolaC)" stroke="#dcaa55" stroke-width="2"/>
-      <rect x="662" y="144" width="16" height="12" rx="3" fill="#b8842e"/><circle cx="670" cy="184" r="30" fill="url(#bolaO)"/>
-      <rect x="780" y="244" width="20" height="14" rx="3" fill="#b8842e"/><circle cx="790" cy="294" r="44" fill="url(#bolaL)"/>
-      <rect x="902" y="134" width="16" height="12" rx="3" fill="#b8842e"/><circle cx="910" cy="172" r="30" fill="url(#bolaC)" stroke="#dcaa55" stroke-width="2"/>
-    </g>
-    <!-- faixas decorativas nas bolas -->
-    <g fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3">
-      <path d="M130 236 q40 14 80 0"/><path d="M748 294 q42 14 84 0"/>
-    </g>
-    <!-- estrela central -->
-    <g fill="#d9a24a"><use href="#estrela" x="515" y="70" width="50" height="50"/></g>
-    <g fill="#d9a24a" fill-opacity=".8">
-      <use href="#estrela" x="540" y="190" width="22" height="22"/><use href="#estrela" x="110" y="360" width="22" height="22"/><use href="#estrela" x="950" y="380" width="24" height="24"/>
-      <use href="#estrela" x="120" y="1000" width="26" height="26"/><use href="#estrela" x="930" y="1040" width="30" height="30"/>
-    </g>
-    <g fill="#cc4e00" fill-opacity=".35"><circle cx="230" cy="350" r="5"/><circle cx="860" cy="410" r="5"/><circle cx="150" cy="1150" r="5"/><circle cx="960" cy="1180" r="4"/><circle cx="560" cy="300" r="4"/></g>
-  </svg>
-  <div class="conteudo">
-    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
-    <span class="script">Às Auditoras e aos Auditores-Fiscais<br>do Trabalho</span>
-    <h1>Feliz</h1>
-    <span class="faixa">Natal</span>
-    <p class="texto">Obrigado por levar <b>dignidade a quem trabalha</b> em Minas, todos os dias do ano. Que este Natal seja de descanso, família e paz.</p>
-    <div class="assina"><span class="fio"></span><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
+  <div class="display feliz">Feliz</div>
+  <div class="script natal">Natal</div>
+  <svg class="full" viewBox="0 0 1080 1350"><g id="fusca" filter="url(#impresso)"></g></svg>
+  <p class="msg">Obrigado por levar dignidade a quem trabalha em Minas, todos os dias do ano. Que este Natal seja de descanso, família e paz.</p>
+  <div class="rodape">
+    <span class="miudo">Às Auditoras e aos<br>Auditores-Fiscais do Trabalho</span>
+    <span class="miudo">2026 → 2027</span>
+    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG" style="position:static;width:104px">
   </div>
+  <svg class="grao"><rect width="100%" height="100%" filter="url(#graoF)"/></svg>
 </section>
 
 <!-- 3 · ANO NOVO · AFTs -->
 <section class="slide c3" data-out="03-feliz-ano-novo-afts.png">
-  <svg class="deco" viewBox="0 0 1080 1350" aria-hidden="true" id="fogos"></svg>
-  <div class="conteudo">
-    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
-    <span class="script">Feliz Ano Novo</span>
-    <span class="ano">2027</span>
-    <span class="faixa">Seguimos juntos</span>
-    <p class="texto">Que o novo ano traga <b>mais valorização</b> da Auditoria-Fiscal do Trabalho, novas conquistas para a categoria e mais <b>trabalho digno</b> em Minas.</p>
-    <div class="assina"><span class="fio"></span><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
-  </div>
+  <svg class="full" viewBox="0 0 1080 1350"><g id="listras3"></g></svg>
+  <div class="painel"></div>
+  <p class="msg">Que o novo ano traga mais valorização da Auditoria-Fiscal do Trabalho, novas conquistas para a categoria e mais trabalho digno em Minas.</p>
+  <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
+  <div class="script feliz">Feliz</div>
+  <div class="script anonovo">Ano Novo</div>
+  <svg class="full" viewBox="0 0 1080 1350"><g id="tacas" filter="url(#impresso)"></g></svg>
+  <div class="display ano">2027</div>
+  <div class="script juntos">seguimos juntos</div>
+  <svg class="grao"><rect width="100%" height="100%" filter="url(#graoF)"/></svg>
 </section>
 
 <script>
-// fogos de artifício em traço fino, só nas laterais e no topo
-(function () {
-  let s = 1234; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
-  const cores = ['#cc4e00', '#f39a5a', '#d9a24a'];
-  const fogo = (cx, cy, raio, n, cor) => {
-    let g = '';
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2, r1 = raio * .28, r2 = raio * (.82 + r() * .18);
-      const x1 = cx + Math.cos(a) * r1, y1 = cy + Math.sin(a) * r1, x2 = cx + Math.cos(a) * r2, y2 = cy + Math.sin(a) * r2;
-      g += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${cor}" stroke-width="3" stroke-linecap="round" opacity=".7"/>`;
-      g += `<circle cx="${(cx + Math.cos(a) * (r2 + 12)).toFixed(1)}" cy="${(cy + Math.sin(a) * (r2 + 12)).toFixed(1)}" r="3.5" fill="${cor}" opacity=".7"/>`;
+let seed = 42; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const L = '#cc4e00', C = '#2B2B2B', P = '#F4EBDD';
+
+function listras(id, cor, largura) {
+  let s = '';
+  for (let x = -20; x < 1100; x += largura * 2) s += `<rect x="${x}" y="0" width="${largura}" height="1350" fill="${cor}"/>`;
+  document.getElementById(id).innerHTML = s;
+}
+
+// pinheiro em gravura: muitas agulhas curtas saindo dos galhos
+function pinheiro(cx, topo, base, larguraBase, cor, laco) {
+  let s = '';
+  const camadas = 9;
+  for (let k = 0; k < camadas; k++) {
+    const y0 = topo + (base - topo) * (k / camadas) * .95;
+    const y1 = topo + (base - topo) * ((k + 1.6) / camadas) * .95;
+    const w = larguraBase * ((k + 1.4) / camadas);
+    for (let i = 0; i < 260; i++) {
+      const t = r(), lado = r() < .5 ? -1 : 1;
+      const yy = y0 + (y1 - y0) * Math.pow(r(), .7);
+      const alcance = w * ((yy - y0) / (y1 - y0)) * (.3 + .7 * t);
+      const x = cx + lado * alcance, len = 10 + r() * 16, ang = (lado < 0 ? 200 : -20) + (r() * 50 - 25) + 25 * lado;
+      const a = ang * Math.PI / 180;
+      s += `<line x1="${x.toFixed(1)}" y1="${yy.toFixed(1)}" x2="${(x + Math.cos(a) * len).toFixed(1)}" y2="${(yy + Math.abs(Math.sin(a)) * len).toFixed(1)}" stroke="${cor}" stroke-width="${(2 + r() * 1.6).toFixed(1)}" stroke-linecap="round" opacity="${(.7 + r() * .3).toFixed(2)}"/>`;
     }
-    return g + `<circle cx="${cx}" cy="${cy}" r="6" fill="${cor}" opacity=".8"/>`;
-  };
-  let svg = fogo(150, 165, 80, 16, '#cc4e00') + fogo(935, 170, 85, 18, '#d9a24a') + fogo(110, 340, 40, 12, '#f39a5a')
-          + fogo(975, 350, 42, 12, '#cc4e00') + fogo(150, 1060, 70, 14, '#d9a24a') + fogo(935, 1020, 80, 16, '#f39a5a');
-  for (let i = 0; i < 40; i++) {
-    const lado = i % 2, x = lado ? 1010 - r() * 70 : 70 + r() * 70, y = 480 + r() * 520;
-    const c = cores[Math.floor(r() * 3)], rot = Math.floor(r() * 180), o = (.3 + r() * .45).toFixed(2);
-    svg += r() < .5 ? `<rect x="${x}" y="${y}" width="${8 + r() * 10}" height="5" rx="2" fill="${c}" opacity="${o}" transform="rotate(${rot} ${x} ${y})"/>`
-                    : `<circle cx="${x}" cy="${y}" r="${3 + r() * 3}" fill="${c}" opacity="${o}"/>`;
+    // galho central da camada
+    s += `<path d="M${cx} ${y0} Q${cx - w * .5} ${y1 - 30} ${cx - w} ${y1}" stroke="${cor}" stroke-width="3" fill="none" opacity=".6"/><path d="M${cx} ${y0} Q${cx + w * .5} ${y1 - 30} ${cx + w} ${y1}" stroke="${cor}" stroke-width="3" fill="none" opacity=".6"/>`;
   }
-  document.getElementById('fogos').innerHTML = svg;
-})();
+  if (laco) {
+    for (let k = 1; k < camadas; k += 1.6) {
+      const yy = topo + (base - topo) * ((k + 1.2) / camadas) * .95, w = larguraBase * ((k + 1.4) / camadas) * .75;
+      s += lacinho(cx + (k % 3.2 < 1.6 ? w * .55 : -w * .2), yy - 10, 1 + k * .05);
+    }
+    s += `<path d="M${cx - larguraBase * .3} ${topo + 180} Q${cx + 40} ${topo + 300} ${cx + larguraBase * .55} ${topo + 260}" stroke="${L}" stroke-width="8" fill="none" opacity=".85"/>`;
+    s += `<path d="M${cx - larguraBase * .7} ${topo + 470} Q${cx} ${topo + 560} ${cx + larguraBase * .8} ${topo + 480}" stroke="${L}" stroke-width="8" fill="none" opacity=".85"/>`;
+  }
+  return s;
+}
+function lacinho(x, y, e) {
+  return `<g transform="translate(${x} ${y}) scale(${e})">
+    <path d="M0 0 C-30 -28 -52 -6 -40 10 C-30 22 -10 10 0 0Z" fill="${L}"/>
+    <path d="M0 0 C30 -28 52 -6 40 10 C30 22 10 10 0 0Z" fill="${L}"/>
+    <path d="M-2 2 C-10 26 -18 44 -26 56 L-14 58 C-6 42 -2 26 0 4Z" fill="${L}"/>
+    <path d="M2 2 C10 26 18 44 24 58 L12 58 C6 42 2 26 0 4Z" fill="${L}"/>
+    <path d="M-32 0 C-22 -10 -12 -6 -4 0 M32 0 C22 -10 12 -6 4 0" stroke="#8a3400" stroke-width="2.5" fill="none"/>
+    <circle r="8" fill="#a84000"/></g>`;
+}
+function presente(x, y, w, h, corCaixa, corFita) {
+  return `<g>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${corCaixa}"/>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#hachuraClara)"/>
+    <rect x="${x - 8}" y="${y - 30}" width="${w + 16}" height="34" fill="${corCaixa}"/>
+    <rect x="${x - 8}" y="${y - 30}" width="${w + 16}" height="34" fill="url(#hachuraClara)"/>
+    <rect x="${x + w / 2 - 12}" y="${y - 30}" width="24" height="${h + 30}" fill="${corFita}"/>
+    <rect x="${x}" y="${y + h * .45}" width="${w}" height="20" fill="${corFita}" opacity=".9"/>
+    ${lacinho(x + w / 2, y - 34, 1.25).replaceAll(L, corFita)}
+  </g>`;
+}
+function fusca() {
+  const g = [];
+  // sombra no chão
+  g.push(`<ellipse cx="380" cy="1072" rx="330" ry="22" fill="url(#pontos)"/>`);
+  // pinheiro deitado no teto (copa para a frente)
+  let arv = '';
+  const x0 = 180, x1 = 640, yc = 618;
+  for (let i = 0; i < 1100; i++) {
+    const t = r(), x = x0 + (x1 - x0) * t, meia = 95 * (1 - t) + 8;
+    const y = yc + (r() * 2 - 1) * meia, len = 12 + r() * 14, ang = (y < yc ? -1 : 1) * (25 + r() * 40) + 180 * 0 + 10;
+    const a = (180 - Math.abs(ang)) * Math.PI / 180 * 0 + (y < yc ? -0.7 : 0.7) + (r() - .5) * .6;
+    arv += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x + Math.cos(a) * len).toFixed(1)}" y2="${(y + Math.sin(a) * len).toFixed(1)}" stroke="${C}" stroke-width="${(2 + r() * 1.5).toFixed(1)}" stroke-linecap="round" opacity="${(.7 + r() * .3).toFixed(2)}"/>`;
+  }
+  g.push(`<rect x="120" y="610" width="70" height="16" rx="5" fill="#6b4a33"/>`);
+  g.push(arv);
+  g.push(`<path d="M190 ${yc} L640 ${yc}" stroke="${C}" stroke-width="4" opacity=".7"/>`);
+  // etiqueta pendurada
+  g.push(`<path d="M200 640 L170 690" stroke="${C}" stroke-width="2"/><rect x="138" y="688" width="56" height="34" rx="4" fill="${P}" stroke="${C}" stroke-width="2.5" transform="rotate(-12 166 705)"/>`);
+  // bagageiro e amarras
+  g.push(`<path d="M230 712 L230 690 M560 712 L560 690 M215 690 L590 690" stroke="${C}" stroke-width="6" stroke-linecap="round"/>`);
+  g.push(`<path d="M300 560 L285 712 M480 555 L495 712" stroke="${L}" stroke-width="5"/>`);
+  // carroceria do fusca (virado para a direita)
+  const corpo = 'M70 980 C62 930 90 895 150 880 C168 800 240 715 380 712 C520 715 600 790 640 870 C700 885 735 920 738 975 L738 990 L70 990 Z';
+  g.push(`<path d="${corpo}" fill="${L}"/>`);
+  g.push(`<path d="${corpo}" fill="url(#hachuraClara)"/>`);
+  // sombra inferior
+  g.push(`<path d="M70 940 C200 960 600 960 738 935 L738 990 L70 990Z" fill="url(#hachura)"/>`);
+  // janelas
+  g.push(`<path d="M200 870 C220 800 270 752 368 748 L368 870 Z" fill="${P}" stroke="${C}" stroke-width="6"/>`);
+  g.push(`<path d="M388 748 C470 750 540 795 578 870 L388 870 Z" fill="${P}" stroke="${C}" stroke-width="6"/>`);
+  g.push(`<path d="M220 860 L300 770 M410 860 L470 770" stroke="${C}" stroke-width="3" opacity=".35"/>`);
+  // porta e maçaneta
+  g.push(`<path d="M378 870 L378 975 M378 975 C460 978 560 970 600 940" stroke="${C}" stroke-width="4" fill="none" opacity=".75"/><rect x="398" y="892" width="34" height="8" rx="3" fill="${C}"/>`);
+  // para-lamas
+  g.push(`<path d="M90 990 C95 905 230 900 250 990" fill="${L}" stroke="${C}" stroke-width="5"/>`);
+  g.push(`<path d="M540 990 C550 900 690 900 712 990" fill="${L}" stroke="${C}" stroke-width="5"/>`);
+  // rodas
+  [[170, 1000], [626, 1000]].forEach(([x, y]) => {
+    g.push(`<circle cx="${x}" cy="${y}" r="62" fill="${C}"/><circle cx="${x}" cy="${y}" r="34" fill="${P}"/><circle cx="${x}" cy="${y}" r="22" fill="none" stroke="${C}" stroke-width="3"/><circle cx="${x}" cy="${y}" r="7" fill="${C}"/>`);
+  });
+  // farol, para-choques, estribo
+  g.push(`<ellipse cx="712" cy="905" rx="20" ry="26" fill="${P}" stroke="${C}" stroke-width="5"/>`);
+  g.push(`<rect x="718" y="968" width="44" height="12" rx="6" fill="${C}"/><rect x="40" y="968" width="44" height="12" rx="6" fill="${C}"/>`);
+  g.push(`<rect x="250" y="986" width="290" height="10" rx="4" fill="${C}"/>`);
+  // contorno geral
+  g.push(`<path d="${corpo}" fill="none" stroke="${C}" stroke-width="6"/>`);
+  // flocos de neve/pontos
+  for (let i = 0; i < 26; i++) g.push(`<circle cx="${(40 + r() * 1000).toFixed(0)}" cy="${(620 + r() * 480).toFixed(0)}" r="${(2 + r() * 3).toFixed(1)}" fill="${C}" opacity=".35"/>`);
+  document.getElementById('fusca').innerHTML = `<g transform="translate(-10 20)">${g.join('')}</g>`;
+}
+function taca(x, y, rot, corBebida) {
+  return `<g transform="translate(${x} ${y}) rotate(${rot})">
+    <path d="M-95 0 C-90 70 -45 100 0 100 C45 100 90 70 95 0 Z" fill="${P}" stroke="${C}" stroke-width="6"/>
+    <path d="M-86 22 C-78 75 -40 92 0 92 C40 92 78 75 86 22 Z" fill="${corBebida}"/>
+    <path d="M-86 22 C-78 75 -40 92 0 92 C40 92 78 75 86 22 Z" fill="url(#hachuraClara)"/>
+    <ellipse cx="0" cy="0" rx="95" ry="16" fill="${P}" stroke="${C}" stroke-width="6"/>
+    <path d="M-6 100 L-6 240 C-6 255 -70 262 -70 272 L70 272 C70 262 6 255 6 240 L6 100" fill="${P}" stroke="${C}" stroke-width="6"/>
+    <path d="M-60 40 C-55 70 -35 82 -20 86" stroke="#fff" stroke-width="6" fill="none" opacity=".55"/>
+    ${[...Array(9)].map(() => `<circle cx="${(r() * 120 - 60).toFixed(0)}" cy="${(35 + r() * 50).toFixed(0)}" r="${(3 + r() * 4).toFixed(1)}" fill="${P}" opacity=".8"/>`).join('')}
+  </g>`;
+}
+function tacas() {
+  let s = `<g transform="translate(140 -30) scale(.88)">` + taca(790, 150, -16, '#e08a3c') + taca(965, 170, 18, L) + `</g>`;
+  // brilho do brinde
+  const br = (x, y, e) => `<path transform="translate(${x} ${y}) scale(${e})" d="M0-30 C3-6 6-3 30 0 C6 3 3 6 0 30 C-3 6 -6 3 -30 0 C-6-3 -3-6 0-30Z" fill="${C}"/>`;
+  s += br(880, 70, 1.2) + br(820, 40, .6) + br(950, 55, .7);
+  s += `<path d="M845 105 L835 80 M880 110 L880 92 M915 105 L925 80" stroke="${C}" stroke-width="4" stroke-linecap="round"/>`;
+  // confete em volta
+  for (let i = 0; i < 30; i++) {
+    const x = 640 + r() * 420, y = 30 + r() * 420, c = [L, C, '#e08a3c'][Math.floor(r() * 3)];
+    s += r() < .5 ? `<rect x="${x}" y="${y}" width="16" height="7" fill="${c}" transform="rotate(${Math.floor(r() * 180)} ${x} ${y})"/>` : `<circle cx="${x}" cy="${y}" r="5" fill="${c}"/>`;
+  }
+  // serpentinas e estrelas na base
+  
+  s += br(80, 1270, .9) + br(210, 1300, .5) + br(1010, 980, .6);
+  document.getElementById('tacas').innerHTML = s;
+}
+
+listras('listras1', '#EDC3A0', 70);
+document.getElementById('arvore1').innerHTML = pinheiro(150, 620, 1360, 300, C, true) + `<rect x="135" y="1320" width="30" height="40" fill="#6b4a33"/>`;
+document.getElementById('presentes1').innerHTML = presente(760, 1170, 190, 180, C, L) + presente(905, 1040, 150, 140, L, C) + presente(640, 1250, 120, 100, '#e08a3c', C);
+fusca();
+listras('listras3', '#DDD5C8', 70);
+tacas();
 </script>
 </body>
 </html>
