@@ -9,10 +9,10 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url));
 mkdirSync(`${ROOT}/out/png`, { recursive: true });
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 1500 }, deviceScaleFactor: 2 });
-await page.goto('file://' + ROOT + '/index.html' + (process.env.HASH || ''));
+await page.goto('file://' + ROOT + '/' + (process.env.PAGE || 'index.html') + (process.env.HASH || ''));
 await page.evaluate(async () => {
-  await Promise.all(['900 40px Title', 'italic 300 40px TitleI', '400 40px Comfortaa', '700 40px Comfortaa'].map(f => document.fonts.load(f, 'Aá')));
-  await document.fonts.ready;
+  await Promise.all(['900 40px Title', 'italic 300 40px TitleI', '400 40px Comfortaa', '700 40px Comfortaa', '400 20px UI', '600 20px UI', '700 20px UI'].map(f => document.fonts.load(f, 'Aá')));
+  await document.fonts.ready; await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => i.onload = i.onerror = r))); await new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = 'fotos-novas/cafe-gelado-copo.jpg'; });
   await Promise.all([...document.querySelectorAll('.ph')].map(el => new Promise(r => {
     const i = new Image(); i.onload = i.onerror = r; i.src = getComputedStyle(el).backgroundImage.slice(5, -2);
   })));

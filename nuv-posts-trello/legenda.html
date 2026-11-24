@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>NUV legenda que vende</title>
+<style>
+  /* Carrossel "a mesma foto. vendas diferentes." — antes x depois de legenda num mockup de post.
+     Mesma linha do feed: Inter Tight Black minúsculo + itálico fino, Comfortaa no apoio, paleta NUV.
+     A foto é um post de exemplo (cafeteria fictícia), não um cliente real. */
+  @font-face { font-family: 'Title'; font-weight: 900; src: url(assets/fonts/inter-tight-latin-900-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'TitleI'; font-style: italic; font-weight: 300; src: url(assets/fonts/inter-tight-latin-300-italic.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 400; src: url(assets/fonts/comfortaa-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'Comfortaa'; font-weight: 700; src: url(assets/fonts/comfortaa-latin-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'UI'; font-weight: 400; src: url(assets/fonts/inter-latin-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'UI'; font-weight: 600; src: url(assets/fonts/inter-latin-600-normal.woff2) format('woff2'); }
+  @font-face { font-family: 'UI'; font-weight: 700; src: url(assets/fonts/inter-latin-700-normal.woff2) format('woff2'); }
+  :root { --off: #EFEAE4; --beige: #CBC5B9; --navy: #0A2540; --indigo: #313D65; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #222; display: flex; flex-direction: column; gap: 40px; padding: 40px; }
+  .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; font-family: 'Comfortaa', sans-serif; flex: none; background: var(--off); color: var(--navy); }
+  .abs { position: absolute; }
+  .grain::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .32  0 0 0 0 .28  0 0 0 .22 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>"); }
+  .grain.dark::after { mix-blend-mode: screen; opacity: .35; }
+  .H { font-family: 'Title', sans-serif; font-weight: 900; text-transform: lowercase; letter-spacing: -.055em; word-spacing: .12em; line-height: .9; }
+  .H em { font-family: 'TitleI', sans-serif; font-style: italic; font-weight: 300; letter-spacing: -.04em; }
+  .s { font-weight: 400; font-size: 19px; letter-spacing: .03em; line-height: 1.28; text-transform: uppercase; }
+  .lead { font-size: 32px; line-height: 1.4; }
+  .lead b { font-weight: 700; }
+  /* celular */
+  .phone { position: absolute; width: 520px; height: 1070px; border-radius: 74px; background: #15171c; padding: 14px;
+    box-shadow: 0 50px 80px -30px rgba(10,37,64,.55), 0 18px 30px -12px rgba(10,37,64,.35), inset 0 0 0 2px #3a3d44; }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 60px; overflow: hidden; background: #fff; font-family: 'UI', sans-serif; color: #111; }
+  .island { position: absolute; left: 50%; top: 14px; width: 130px; height: 36px; margin-left: -65px; border-radius: 20px; background: #000; z-index: 3; }
+  .bar { height: 64px; display: flex; justify-content: space-between; align-items: center; padding: 10px 40px 0; font-weight: 600; font-size: 19px; }
+  .ighead { display: flex; align-items: center; gap: 14px; padding: 10px 18px 12px; }
+  .av { width: 44px; height: 44px; border-radius: 50%; padding: 3px; background: conic-gradient(#C9A27A, #8a6a4e, #C9A27A); }
+  .av i { display: block; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; background: #6d4f3a; }
+  .ighead b { font-size: 18px; font-weight: 600; }
+  .ighead small { display: block; font-size: 14px; color: #666; }
+  .shot { width: 492px; height: 615px; background: url(fotos-novas/cafe-gelado-copo.jpg) center 62% / cover; }
+  .acts { display: flex; gap: 20px; padding: 16px 18px 8px; }
+  .acts svg { width: 30px; height: 30px; fill: none; stroke: #111; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .likes { padding: 0 18px; font-size: 17px; font-weight: 600; }
+  .cap { padding: 8px 18px 0; font-size: 17px; line-height: 1.42; }
+  .cap b { font-weight: 600; }
+  .tagh { color: #2a4f8f; }
+  .mk { background: linear-gradient(transparent 58%, rgba(203,197,185,.95) 58%); padding: 0 2px; }
+  .n { display: inline-flex; width: 26px; height: 26px; border-radius: 50%; background: var(--indigo); color: #fff; font: 700 14px/26px 'UI'; justify-content: center; vertical-align: 2px; margin-right: 4px; }
+  .dot { position: absolute; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 700 26px 'UI'; }
+  .note { position: absolute; font-size: 30px; line-height: 1.32; }
+  .note b { font-weight: 700; }
+  .chip { position: absolute; display: inline-flex; align-items: center; gap: 12px; border-radius: 999px; padding: 16px 26px; font-weight: 700; font-size: 22px; }
+  .card { position: absolute; width: 456px; height: 400px; border-radius: 28px; padding: 40px; }
+</style>
+</head>
+<body>
+<script>
+const C = { off: '#EFEAE4', beige: '#CBC5B9', navy: '#0A2540', indigo: '#313D65' };
+const BRAND = c => `<div class="abs" style="left:66px;top:62px;font-weight:700;font-size:20px;letter-spacing:.06em;color:${c}">NUV</div>`;
+const LAB = (t, c) => `<div class="abs s" style="right:66px;top:62px;text-align:right;color:${c}">${t}</div>`;
+const FOOT = (t, c) => `<div class="abs s" style="left:66px;bottom:70px;color:${c}">${t}</div>`;
+const ARROW = c => `<svg class="abs" style="right:66px;bottom:74px" width="72" height="30" viewBox="0 0 72 30"><path d="M2 15h66M54 2l14 13-14 13" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ELLIPSE = (w, h, c, sw = 5) => `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible"><path d="M${w * .18} ${h * .2}C${w * .55} ${-h * .08} ${w * 1.02} ${h * .12} ${w * .98} ${h * .5}C${w * .95} ${h * .92} ${w * .3} ${h * 1.04} ${w * .06} ${h * .72}C${-w * .08} ${h * .5} ${w * .12} ${h * .16} ${w * .5} ${h * .08}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round"/></svg>`;
+// seta feita à mão: curva de (x1,y1) até (x2,y2), com ponta
+const HAND = (x1, y1, x2, y2, c, bend = 60) => {
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2 - bend, a = Math.atan2(y2 - my, x2 - mx), L = 18;
+  const p1 = [x2 - L * Math.cos(a - .5), y2 - L * Math.sin(a - .5)], p2 = [x2 - L * Math.cos(a + .5), y2 - L * Math.sin(a + .5)];
+  return `<svg class="abs" style="left:0;top:0;overflow:visible" width="1080" height="1350"><path d="M${x1} ${y1}Q${mx} ${my} ${x2} ${y2}M${p1}L${x2} ${y2}L${p2}" fill="none" stroke="${c}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+};
+const IC = {
+  heart: '<path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.4 3.6 4 7 4c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.3 6.8C19.5 15.4 12 20 12 20z"/>',
+  heartFull: '<path d="M12 20s-7.5-4.6-9.3-9.2C1.4 7.4 3.6 4 7 4c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.3 6.8C19.5 15.4 12 20 12 20z" fill="#e8344e" stroke="#e8344e"/>',
+  comment: '<path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20l1.2-4.2A8.5 8.5 0 1 1 20.5 11.5z"/>',
+  send: '<path d="M21.5 3 10 13.5M21.5 3l-7 18-4.5-7.5L2.5 9z"/>',
+  save: '<path d="M6 3h12v18l-6-5-6 5z"/>',
+};
+const ic = (k, extra = '') => `<svg viewBox="0 0 24 24" ${extra}>${IC[k]}</svg>`;
+const PHONE = (x, y, { likes, cap, rot = 0, liked = false, scale = 1 }) => `<div class="phone" style="left:${x}px;top:${y}px;transform:rotate(${rot}deg) scale(${scale});transform-origin:top left">
+  <div class="screen"><div class="island"></div>
+    <div class="bar"><span>9:41</span><span style="display:flex;gap:8px;align-items:center"><svg width="26" height="16" viewBox="0 0 26 16"><rect x="1" y="1" width="21" height="14" rx="4" fill="none" stroke="#111" stroke-width="1.6"/><rect x="3.5" y="3.5" width="14" height="9" rx="2" fill="#111"/><rect x="23" y="5.5" width="2" height="5" rx="1" fill="#111"/></svg></span></div>
+    <div class="ighead"><div class="av"><i></i></div><div><b>cafe.exemplo</b><small>Centro</small></div><span style="margin-left:auto;font-size:26px;letter-spacing:2px">···</span></div>
+    <div class="shot"></div>
+    <div class="acts">${ic(liked ? 'heartFull' : 'heart')}${ic('comment')}${ic('send')}<span style="margin-left:auto">${ic('save')}</span></div>
+    <div class="likes">${likes}</div>
+    <div class="cap"><b>cafe.exemplo</b> ${cap}</div>
+  </div></div>`;
+const STICK = (src, x, y, w, rot = 0) => `<img class="abs" src="assets/${src}.webp" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${rot}deg);filter:drop-shadow(0 14px 18px rgba(10,37,64,.25))">`;
+
+const CAP_ANTES = 'bom dia, gente! <span class="tagh">#cafe #coffeetime #amocafe #instafood</span>';
+const CAP_DEPOIS = '<span class="mk"><span class="n">1</span>Iced latte com leite de aveia,</span> <span class="mk"><span class="n">2</span>gelado na medida pra tarde quente.</span> <span class="mk"><span class="n">3</span>Pede pelo direct e retira sem fila,</span> <span class="mk"><span class="n">4</span>só hoje até as 18h.</span>';
+
+const SLIDES = [
+  // 1 · capa: o mesmo post, título forte, celular inclinado entrando por baixo
+  ['grain', `${BRAND(C.navy)}${LAB('antes<br>x depois', C.navy)}
+    <div class="abs H" style="left:58px;top:150px;font-size:136px;white-space:nowrap;color:${C.navy}">a mesma foto.</div>
+    <div class="abs H" style="left:58px;top:272px;font-size:136px;white-space:nowrap;color:${C.navy}"><em>vendas diferentes.</em></div>
+    <div class="abs lead" style="left:66px;top:520px;width:380px">O que muda quando <b>a legenda trabalha</b> por você.</div>
+    ${PHONE(520, 470, { likes: 'curtido por <b>marina</b> e outras pessoas', cap: CAP_DEPOIS, rot: 5, liked: true })}
+    ${STICK('2728', 440, 420, 120, -8)}
+    ${FOOT('arrasta pra ver<br>o antes e o depois', C.navy)}
+    <div class="abs" style="left:66px;top:780px;transform:rotate(-3deg)"><span class="H" style="display:inline-block;font-size:44px;background:${C.navy};color:${C.off};padding:4px 18px 12px">salva pra usar</span></div>`],
+
+  // 2 · antes: legenda genérica, anotações à mão apontando o que falta
+  ['grain', `${BRAND(C.navy)}${LAB('antes', C.navy)}
+    <div class="abs H" style="left:58px;top:130px;font-size:180px;color:${C.beige}">antes</div>
+    ${PHONE(66, 340, { likes: '3 curtidas', cap: CAP_ANTES, rot: -2 })}
+    <div class="note" style="left:640px;top:520px;width:380px">bonita, mas <b>não diz o que é.</b></div>
+    <div class="note" style="left:640px;top:760px;width:380px"><b>não diz pra quem</b> nem por que agora.</div>
+    <div class="note" style="left:640px;top:1000px;width:380px"><b>não chama pra nada.</b> o like é o fim da linha.</div>
+    ${HAND(630, 560, 470, 700, C.indigo, 40)}${HAND(630, 800, 470, 1180, C.indigo, -30)}${HAND(630, 1040, 380, 1240, C.indigo, -40)}
+    <div class="abs" style="left:96px;top:1172px">${ELLIPSE(440, 70, C.indigo, 4)}</div>`],
+
+  // 3 · depois: azul-marinho, o mesmo post com a legenda marcada em 4 partes
+  ['grain dark', `<div class="abs" style="inset:0;background:${C.navy}"></div>${BRAND(C.off)}${LAB('depois', C.off)}
+    <div class="abs H" style="left:58px;top:130px;font-size:180px;color:${C.off}"><em>depois</em></div>
+    ${PHONE(500, 290, { likes: 'curtido por <b>marina</b> e outras pessoas', cap: CAP_DEPOIS, rot: 2, liked: true })}
+    ${[['o que é', 'o produto, sem rodeio.'], ['por que agora', 'o desejo do momento.'], ['como comprar', 'um caminho só, fácil.'], ['até quando', 'um prazo dá o empurrão.']].map(([t, d], i) => `
+      <div class="abs" style="left:66px;top:${470 + i * 190}px;width:400px;color:${C.off}">
+        <div style="display:flex;align-items:center;gap:16px"><span style="width:52px;height:52px;border-radius:50%;background:${C.beige};color:${C.navy};display:inline-flex;align-items:center;justify-content:center;font:700 24px 'UI'">${i + 1}</span><span class="H" style="font-size:56px">${t}</span></div>
+        <div style="font-size:26px;line-height:1.4;margin:12px 0 0 68px;color:${C.beige}">${d}</div></div>`).join('')}
+    ${STICK('1f4ac', 360, 1170, 110, -8)}`],
+
+  // 4 · a fórmula em 4 cartões, pra salvar
+  ['grain', `${BRAND(C.navy)}${LAB('pra salvar', C.navy)}
+    <div class="abs H" style="left:58px;top:150px;width:980px;font-size:104px;color:${C.navy}">a legenda que vende<br><em>tem 4 partes.</em></div>
+    ${[['o que é', 'Diga o produto ou serviço com todas as letras.', C.navy, C.off], ['por que agora', 'Mostre o desejo ou o problema que ele resolve hoje.', C.indigo, C.off], ['como comprar', 'Um caminho só: direct, link ou WhatsApp.', C.beige, C.navy], ['até quando', 'Prazo, vagas ou estoque. Sem urgência, fica pra depois.', '#fff', C.navy]].map(([t, d, bg, fg], i) => `
+      <div class="card" style="left:${66 + (i % 2) * 492}px;top:${410 + Math.floor(i / 2) * 424}px;background:${bg};color:${fg};${bg === '#fff' ? 'box-shadow:0 0 0 2px rgba(10,37,64,.12)' : ''}">
+        <div style="font:300 italic 64px 'TitleI';letter-spacing:-.02em;opacity:.7">0${i + 1}</div>
+        <div class="H" style="font-size:52px;margin-top:22px;white-space:nowrap">${t}</div>
+        <div style="font-size:26px;line-height:1.4;margin-top:20px">${d}</div></div>`).join('')}`],
+
+  // 5 · fechamento índigo
+  ['grain dark', `<div class="abs" style="inset:0;background:${C.indigo}"></div>${BRAND(C.off)}${LAB('vamos<br>conversar', C.off)}
+    <div class="abs H" style="left:58px;top:200px;width:980px;font-size:140px;color:${C.off}">a foto chama atenção.</div>
+    <div class="abs H" style="left:58px;top:480px;font-size:140px;white-space:nowrap;color:${C.off}"><span style="position:relative;display:inline-block"><em>a legenda vende.</em><span style="position:absolute;left:-34px;top:-18px">${ELLIPSE(930, 170, C.beige)}</span></span></div>
+    <div class="abs lead" style="left:66px;top:760px;width:700px;color:${C.off}">Quer legendas assim no seu perfil, todo mês, <b>sem você precisar escrever?</b></div>
+    <div class="chip" style="left:66px;top:950px;background:${C.beige};color:${C.navy};font-size:28px;padding:24px 40px"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M21.5 2.5 2.8 9.6l7.4 3.3 3.3 7.4z" fill="${C.navy}"/></svg>me chama no direct</div>
+    ${STICK('1f90d', 860, 960, 150, 10)}
+    ${FOOT('nuv · gestão de redes sociais', C.off)}`],
+];
+SLIDES.forEach(([cls, html], i) => {
+  const d = document.createElement('div'); d.className = 'post ' + cls; d.id = `NUV_carrossel_legenda_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d);
+});
+</script>
+</body>
+</html>
