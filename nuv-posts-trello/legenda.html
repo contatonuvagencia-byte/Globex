@@ -97,7 +97,6 @@ const SLIDES = [
     <div class="abs H" style="left:58px;top:272px;font-size:136px;white-space:nowrap;color:${C.navy}"><em>vendas diferentes.</em></div>
     <div class="abs lead" style="left:66px;top:520px;width:380px">O que muda quando <b>a legenda trabalha</b> por você.</div>
     ${PHONE(520, 470, { likes: 'curtido por <b>marina</b> e outras pessoas', cap: CAP_DEPOIS, rot: 5, liked: true })}
-    ${STICK('2728', 440, 420, 120, -8)}
     ${FOOT('arrasta pra ver<br>o antes e o depois', C.navy)}
     <div class="abs" style="left:66px;top:780px;transform:rotate(-3deg)"><span class="H" style="display:inline-block;font-size:44px;background:${C.navy};color:${C.off};padding:4px 18px 12px">salva pra usar</span></div>`],
 
@@ -118,8 +117,7 @@ const SLIDES = [
     ${[['o que é', 'o produto, sem rodeio.'], ['por que agora', 'o desejo do momento.'], ['como comprar', 'um caminho só, fácil.'], ['até quando', 'um prazo dá o empurrão.']].map(([t, d], i) => `
       <div class="abs" style="left:66px;top:${470 + i * 190}px;width:400px;color:${C.off}">
         <div style="display:flex;align-items:center;gap:16px"><span style="width:52px;height:52px;border-radius:50%;background:${C.beige};color:${C.navy};display:inline-flex;align-items:center;justify-content:center;font:700 24px 'UI'">${i + 1}</span><span class="H" style="font-size:56px">${t}</span></div>
-        <div style="font-size:26px;line-height:1.4;margin:12px 0 0 68px;color:${C.beige}">${d}</div></div>`).join('')}
-    ${STICK('1f4ac', 360, 1170, 110, -8)}`],
+        <div style="font-size:26px;line-height:1.4;margin:12px 0 0 68px;color:${C.beige}">${d}</div></div>`).join('')}`],
 
   // 4 · a fórmula em 4 cartões, pra salvar
   ['grain', `${BRAND(C.navy)}${LAB('pra salvar', C.navy)}
@@ -136,7 +134,6 @@ const SLIDES = [
     <div class="abs H" style="left:58px;top:480px;font-size:140px;white-space:nowrap;color:${C.off}"><span style="position:relative;display:inline-block"><em>a legenda vende.</em><span style="position:absolute;left:-34px;top:-18px">${ELLIPSE(930, 170, C.beige)}</span></span></div>
     <div class="abs lead" style="left:66px;top:760px;width:700px;color:${C.off}">Quer legendas assim no seu perfil, todo mês, <b>sem você precisar escrever?</b></div>
     <div class="chip" style="left:66px;top:950px;background:${C.beige};color:${C.navy};font-size:28px;padding:24px 40px"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M21.5 2.5 2.8 9.6l7.4 3.3 3.3 7.4z" fill="${C.navy}"/></svg>me chama no direct</div>
-    ${STICK('1f90d', 860, 960, 150, 10)}
     ${FOOT('nuv · gestão de redes sociais', C.off)}`],
 ];
 SLIDES.forEach(([cls, html], i) => {
