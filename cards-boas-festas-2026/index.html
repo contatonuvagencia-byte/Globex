@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Cards Boas Festas SINAIT DS/MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap">
+<style>
+/* Cards de fim de ano SINAIT DS/MG para WhatsApp (1080x1350).
+   Versão clara: fundo gelo/creme, laranja #cc4e00 como destaque, chumbo #2B2B2B no texto. */
+:root {
+  --gelo: #FBF8F4;
+  --creme: #F6EFE4;
+  --laranja: #cc4e00;
+  --laranja-claro: #f39a5a;
+  --ouro: #d9a24a;
+  --chumbo: #2B2B2B;
+  --chumbo-70: rgba(43,43,43,.72);
+  --linha: rgba(204,78,0,.28);
+  --f-display: "Anton", Impact, sans-serif;
+  --f-body: "Montserrat", Arial, sans-serif;
+  --f-script: "Playfair Display", Georgia, serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #ddd; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; color: var(--chumbo); font-family: var(--f-body);
+  background:
+    radial-gradient(55% 40% at 50% 8%, #fff 0%, transparent 75%),
+    radial-gradient(70% 45% at 50% 105%, rgba(243,154,90,.22) 0%, transparent 70%),
+    var(--gelo);
+  display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 130px; }
+.slide::before { content: ""; position: absolute; inset: 40px; border: 2px solid var(--linha); pointer-events: none; }
+.slide::after { content: ""; position: absolute; inset: 52px; border: 1px solid rgba(204,78,0,.14); pointer-events: none; }
+.deco { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.conteudo { position: relative; display: flex; flex-direction: column; align-items: center; height: 100%; }
+.logo { width: 132px; margin-top: 110px; }
+.script { font-family: var(--f-script); font-style: italic; font-weight: 600; font-size: 54px; line-height: 1.1; color: var(--laranja); }
+h1 { font-family: var(--f-display); font-weight: 400; text-transform: uppercase; margin: 0; line-height: .95; color: var(--chumbo); letter-spacing: .01em; }
+.faixa { display: inline-block; background: var(--laranja); color: var(--gelo); padding: .02em .24em .06em; transform: rotate(-3deg);
+  font-family: var(--f-display); text-transform: uppercase; line-height: 1.05; box-shadow: 0 14px 30px rgba(204,78,0,.22); white-space: nowrap; }
+.texto { text-wrap: balance; font-size: 31px; font-weight: 500; line-height: 1.5; color: var(--chumbo-70); margin: 0; max-width: 760px; }
+.texto b { color: var(--chumbo); font-weight: 700; }
+.assina { margin-top: auto; margin-bottom: 104px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.assina .fio { width: 90px; height: 3px; background: var(--laranja); border-radius: 2px; margin-bottom: 8px; }
+.assina strong { font-weight: 800; font-size: 26px; letter-spacing: .32em; padding-left: .32em; color: var(--chumbo); }
+.assina span { font-size: 20px; font-weight: 500; letter-spacing: .08em; color: var(--chumbo-70); }
+
+/* 1 · Boas Festas fornecedores */
+.c1 .script { margin-top: 92px; }
+.c1 h1 { font-size: 168px; margin-top: 18px; }
+.c1 .faixa { font-size: 132px; margin-top: 4px; }
+.c1 .texto { margin-top: 70px; }
+
+/* 2 · Natal AFTs */
+.c2 .logo { margin-top: 300px; }
+.c2 .script { margin-top: 40px; font-size: 44px; }
+.c2 h1 { font-size: 160px; margin-top: 14px; }
+.c2 .faixa { font-size: 132px; margin-top: 2px; }
+.c2 .texto { margin-top: 64px; }
+
+/* 3 · Ano Novo AFTs */
+.c3 .script { margin-top: 70px; font-size: 60px; }
+.c3 .ano { font-family: var(--f-display); font-size: 300px; line-height: .9; margin-top: 18px;
+  background: linear-gradient(180deg, #e0702a 0%, var(--laranja) 60%, #a83f00 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.c3 .faixa { font-size: 64px; margin-top: 6px; background: var(--chumbo); box-shadow: 0 12px 26px rgba(43,43,43,.2); }
+.c3 .texto { margin-top: 60px; }
+</style>
+</head>
+<body>
+
+<!-- 1 · BOAS FESTAS · FORNECEDORES -->
+<section class="slide c1" data-out="01-boas-festas-fornecedores.png">
+  <svg class="deco" viewBox="0 0 1080 1350" aria-hidden="true">
+    <defs>
+      <symbol id="brilho" viewBox="-10 -10 20 20"><path d="M0-10 C1-2 2-1 10 0 C2 1 1 2 0 10 C-1 2 -2 1 -10 0 C-2-1 -1-2 0-10Z"/></symbol>
+    </defs>
+    <!-- ramos laterais delicados -->
+    <g fill="none" stroke="#cc4e00" stroke-opacity=".45" stroke-width="2.5" stroke-linecap="round">
+      <path d="M88 1270 C 110 1170, 100 1080, 140 990"/>
+      <path d="M992 1270 C 970 1170, 980 1080, 940 990"/>
+    </g>
+    <g fill="#f39a5a" fill-opacity=".55">
+      <ellipse cx="78" cy="1270" rx="11" ry="26" transform="rotate(-35 78 1270)"/><ellipse cx="110" cy="1236" rx="11" ry="26" transform="rotate(30 110 1236)"/>
+      <ellipse cx="92" cy="1147" rx="11" ry="26" transform="rotate(-30 92 1147)"/><ellipse cx="126" cy="1113" rx="11" ry="26" transform="rotate(35 126 1113)"/>
+      <ellipse cx="110" cy="1024" rx="10" ry="24" transform="rotate(-25 110 1024)"/><ellipse cx="146" cy="990" rx="10" ry="24" transform="rotate(40 146 990)"/>
+      <ellipse cx="1002" cy="1270" rx="11" ry="26" transform="rotate(35 1002 1270)"/><ellipse cx="970" cy="1236" rx="11" ry="26" transform="rotate(-30 970 1236)"/>
+      <ellipse cx="988" cy="1147" rx="11" ry="26" transform="rotate(30 988 1147)"/><ellipse cx="954" cy="1113" rx="11" ry="26" transform="rotate(-35 954 1113)"/>
+      <ellipse cx="970" cy="1024" rx="10" ry="24" transform="rotate(25 970 1024)"/><ellipse cx="934" cy="990" rx="10" ry="24" transform="rotate(-40 934 990)"/>
+    </g>
+    <g fill="#d9a24a">
+      <use href="#brilho" x="150" y="150" width="46" height="46"/><use href="#brilho" x="232" y="250" width="24" height="24"/>
+      <use href="#brilho" x="880" y="140" width="52" height="52"/><use href="#brilho" x="820" y="262" width="22" height="22"/>
+      <use href="#brilho" x="190" y="560" width="28" height="28"/><use href="#brilho" x="866" y="560" width="30" height="30"/>
+    </g>
+    <g fill="#cc4e00" fill-opacity=".5"><circle cx="300" cy="170" r="5"/><circle cx="770" cy="200" r="5"/><circle cx="120" cy="420" r="4"/><circle cx="960" cy="420" r="4"/></g>
+  </svg>
+  <div class="conteudo">
+    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
+    <span class="script">Obrigado pela parceria</span>
+    <h1>Boas</h1>
+    <span class="faixa">Festas</span>
+    <p class="texto">A DS/MG agradece a cada parceiro e fornecedor que esteve ao nosso lado em <b>2026</b>. Que o fim de ano seja de paz e celebração, e que <b>2027</b> traga novos projetos juntos.</p>
+    <div class="assina"><span class="fio"></span><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
+  </div>
+</section>
+
+<!-- 2 · NATAL · AFTs -->
+<section class="slide c2" data-out="02-feliz-natal-afts.png">
+  <svg class="deco" viewBox="0 0 1080 1350" aria-hidden="true">
+    <defs>
+      <radialGradient id="bolaL" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffb47a"/><stop offset=".55" stop-color="#e0661b"/><stop offset="1" stop-color="#b84500"/></radialGradient>
+      <radialGradient id="bolaO" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffe4a8"/><stop offset=".55" stop-color="#dcaa55"/><stop offset="1" stop-color="#b8842e"/></radialGradient>
+      <radialGradient id="bolaC" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#f3e7d6"/><stop offset="1" stop-color="#dcc9ad"/></radialGradient>
+      <symbol id="estrela" viewBox="-10 -10 20 20"><path d="M0-10 C1-2 2-1 10 0 C2 1 1 2 0 10 C-1 2 -2 1 -10 0 C-2-1 -1-2 0-10Z"/></symbol>
+    </defs>
+    <!-- bolas penduradas -->
+    <g stroke="#2B2B2B" stroke-opacity=".35" stroke-width="2">
+      <line x1="170" y1="42" x2="170" y2="190"/><line x1="290" y1="42" x2="290" y2="120"/><line x1="410" y1="42" x2="410" y2="230"/>
+      <line x1="670" y1="42" x2="670" y2="150"/><line x1="790" y1="42" x2="790" y2="250"/><line x1="910" y1="42" x2="910" y2="140"/>
+    </g>
+    <g>
+      <rect x="160" y="184" width="20" height="14" rx="3" fill="#b8842e"/><circle cx="170" cy="236" r="42" fill="url(#bolaL)"/>
+      <rect x="282" y="114" width="16" height="12" rx="3" fill="#b8842e"/><circle cx="290" cy="156" r="32" fill="url(#bolaO)"/>
+      <rect x="400" y="224" width="20" height="14" rx="3" fill="#b8842e"/><circle cx="410" cy="270" r="36" fill="url(#bolaC)" stroke="#dcaa55" stroke-width="2"/>
+      <rect x="662" y="144" width="16" height="12" rx="3" fill="#b8842e"/><circle cx="670" cy="184" r="30" fill="url(#bolaO)"/>
+      <rect x="780" y="244" width="20" height="14" rx="3" fill="#b8842e"/><circle cx="790" cy="294" r="44" fill="url(#bolaL)"/>
+      <rect x="902" y="134" width="16" height="12" rx="3" fill="#b8842e"/><circle cx="910" cy="172" r="30" fill="url(#bolaC)" stroke="#dcaa55" stroke-width="2"/>
+    </g>
+    <!-- faixas decorativas nas bolas -->
+    <g fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3">
+      <path d="M130 236 q40 14 80 0"/><path d="M748 294 q42 14 84 0"/>
+    </g>
+    <!-- estrela central -->
+    <g fill="#d9a24a"><use href="#estrela" x="515" y="70" width="50" height="50"/></g>
+    <g fill="#d9a24a" fill-opacity=".8">
+      <use href="#estrela" x="540" y="190" width="22" height="22"/><use href="#estrela" x="110" y="360" width="22" height="22"/><use href="#estrela" x="950" y="380" width="24" height="24"/>
+      <use href="#estrela" x="120" y="1000" width="26" height="26"/><use href="#estrela" x="930" y="1040" width="30" height="30"/>
+    </g>
+    <g fill="#cc4e00" fill-opacity=".35"><circle cx="230" cy="350" r="5"/><circle cx="860" cy="410" r="5"/><circle cx="150" cy="1150" r="5"/><circle cx="960" cy="1180" r="4"/><circle cx="560" cy="300" r="4"/></g>
+  </svg>
+  <div class="conteudo">
+    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
+    <span class="script">Às Auditoras e aos Auditores-Fiscais<br>do Trabalho</span>
+    <h1>Feliz</h1>
+    <span class="faixa">Natal</span>
+    <p class="texto">Obrigado por levar <b>dignidade a quem trabalha</b> em Minas, todos os dias do ano. Que este Natal seja de descanso, família e paz.</p>
+    <div class="assina"><span class="fio"></span><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
+  </div>
+</section>
+
+<!-- 3 · ANO NOVO · AFTs -->
+<section class="slide c3" data-out="03-feliz-ano-novo-afts.png">
+  <svg class="deco" viewBox="0 0 1080 1350" aria-hidden="true" id="fogos"></svg>
+  <div class="conteudo">
+    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
+    <span class="script">Feliz Ano Novo</span>
+    <span class="ano">2027</span>
+    <span class="faixa">Seguimos juntos</span>
+    <p class="texto">Que o novo ano traga <b>mais valorização</b> da Auditoria-Fiscal do Trabalho, novas conquistas para a categoria e mais <b>trabalho digno</b> em Minas.</p>
+    <div class="assina"><span class="fio"></span><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
+  </div>
+</section>
+
+<script>
+// fogos de artifício em traço fino, só nas laterais e no topo
+(function () {
+  let s = 1234; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const cores = ['#cc4e00', '#f39a5a', '#d9a24a'];
+  const fogo = (cx, cy, raio, n, cor) => {
+    let g = '';
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2, r1 = raio * .28, r2 = raio * (.82 + r() * .18);
+      const x1 = cx + Math.cos(a) * r1, y1 = cy + Math.sin(a) * r1, x2 = cx + Math.cos(a) * r2, y2 = cy + Math.sin(a) * r2;
+      g += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${cor}" stroke-width="3" stroke-linecap="round" opacity=".7"/>`;
+      g += `<circle cx="${(cx + Math.cos(a) * (r2 + 12)).toFixed(1)}" cy="${(cy + Math.sin(a) * (r2 + 12)).toFixed(1)}" r="3.5" fill="${cor}" opacity=".7"/>`;
+    }
+    return g + `<circle cx="${cx}" cy="${cy}" r="6" fill="${cor}" opacity=".8"/>`;
+  };
+  let svg = fogo(150, 165, 80, 16, '#cc4e00') + fogo(935, 170, 85, 18, '#d9a24a') + fogo(110, 340, 40, 12, '#f39a5a')
+          + fogo(975, 350, 42, 12, '#cc4e00') + fogo(150, 1060, 70, 14, '#d9a24a') + fogo(935, 1020, 80, 16, '#f39a5a');
+  for (let i = 0; i < 40; i++) {
+    const lado = i % 2, x = lado ? 1010 - r() * 70 : 70 + r() * 70, y = 480 + r() * 520;
+    const c = cores[Math.floor(r() * 3)], rot = Math.floor(r() * 180), o = (.3 + r() * .45).toFixed(2);
+    svg += r() < .5 ? `<rect x="${x}" y="${y}" width="${8 + r() * 10}" height="5" rx="2" fill="${c}" opacity="${o}" transform="rotate(${rot} ${x} ${y})"/>`
+                    : `<circle cx="${x}" cy="${y}" r="${3 + r() * 3}" fill="${c}" opacity="${o}"/>`;
+  }
+  document.getElementById('fogos').innerHTML = svg;
+})();
+</script>
+</body>
+</html>
