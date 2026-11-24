@@ -256,6 +256,30 @@ const BF = [
 if (location.hash === '#blackfriday') { document.querySelectorAll('.post').forEach(e => e.remove());
   BF.forEach(([dark, html], i) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_black_friday_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d); }); }
 
+// ---------- post novo (index.html#tacaro): "tá caro." nem sempre é sobre o preço ----------
+// Capa índigo (os dois anteriores abriram em azul-marinho e em claro); miolo claro com bloco bege.
+const CARO = [
+  [true, `<div class="abs" style="left:0;top:0;width:1080px;height:1350px;background:${C.indigo}"></div>${BRAND(C.off)}${LAB('pra quem<br>vende', C.off)}
+    <div class="abs H" style="left:46px;top:290px;font-size:236px;white-space:nowrap;color:${C.off}">“tá caro.”</div>
+    <div class="abs H" style="left:58px;top:620px;width:960px;font-size:104px;color:${C.beige}"><em>nem sempre é sobre o preço.</em></div>
+    ${FOOT('arrasta que eu te mostro<br>o que ele quis dizer', C.off)}${ARROW(C.off)}`],
+  ...[
+    ['01', 'não entendi o que está incluso.', 'Mostre o que a pessoa leva, item por item. <b>Uma lista clara vende mais do que desconto.</b>'],
+    ['02', 'não sei se funciona.', 'Mostre prova: <b>resultado de cliente, depoimento, antes e depois.</b>'],
+    ['03', 'não tenho com o que comparar.', 'Dê uma referência: <b>quanto custa não resolver</b>, ou uma opção mais completa ao lado.'],
+    ['04', 'ainda não confio em você.', 'Confiança vem de constância: <b>perfil ativo, bastidor e o rosto de quem atende.</b>'],
+  ].map(([n, frase, saida]) => [false, `${BRAND(C.navy)}${LAB('tradução ' + n, C.navy)}
+    <div class="abs" style="left:66px;top:200px"><span class="s" style="display:inline-block;background:${C.indigo};color:${C.off};padding:12px 20px;font-weight:700">quando ele diz “tá caro”, pode ser</span></div>
+    <div class="abs H" style="left:58px;top:300px;width:960px;font-size:122px;color:${C.navy}">“${frase}”</div>
+    <div class="abs" style="left:0;top:820px;width:1080px;height:530px;background:${C.beige}"></div>
+    <div class="abs s" style="left:66px;top:890px;color:${C.navy};font-weight:700">o que fazer</div>
+    <div class="abs lead" style="left:66px;top:950px;width:900px;color:${C.navy};font-size:44px;line-height:1.36">${saida}</div>
+    <div class="abs s" style="right:66px;top:890px;color:${C.navy}">${n} / 04</div>`]),
+  [true, fim({ bg: C.navy, title: `preço se defende <span style="position:relative;display:inline-block"><em>antes</em><span style="position:absolute;left:-36px;top:-14px">${ELLIPSE(330, 170, C.beige)}</span></span> do orçamento.`, size: 160, foot: 'o seu perfil pode fazer esse trabalho<br>por você. me chama no direct.' })],
+];
+if (location.hash === '#tacaro') { document.querySelectorAll('.post').forEach(e => e.remove());
+  CARO.forEach(([dark, html], i) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_ta_caro_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d); }); }
+
 // ---------- opções de miolo (index.html#opcoes) ----------
 const PILLS = (arr, fg, bg) => arr.map((t, i) => `<span style="display:inline-block;border-radius:999px;padding:14px 26px;margin:0 10px 12px 0;font-weight:700;font-size:22px;${i % 2 ? `border:2px solid ${fg};color:${fg}` : `background:${fg};color:${bg}`}">${t}</span>`).join('');
 const MIOLO = {
