@@ -5,264 +5,300 @@
 <title>Cards Boas Festas SINAIT DS/MG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap">
 <style>
-/* Cards de fim de ano SINAIT DS/MG (1080x1350), estilo vintage editorial:
-   papel creme granulado, tipografia condensada cruzada com caligrafia, listras, moldura arredondada
-   e ilustrações com textura de impressão. Laranja #cc4e00, chumbo #2B2B2B, creme. */
+/* Cards de fim de ano SINAIT DS/MG para WhatsApp (1080x1350).
+   Identidade: preto #200100, laranja #cc4e00, creme #F6F4F2, Anton + Montserrat, faixa laranja inclinada.
+   Fundo: luzes de Natal e fogos renderizados em canvas (bokeh, brilho aditivo, granulado e vinheta). */
 :root {
-  --papel: #F4EBDD;
-  --papel-claro: #FAF4EA;
+  --preto: #200100;
   --laranja: #cc4e00;
-  --pessego: #EDC3A0;
-  --cinza: #D9D1C4;
-  --chumbo: #2B2B2B;
+  --laranja-vivo: #f26a12;
+  --ouro: #f2b45a;
+  --creme: #F6F4F2;
+  --creme-70: rgba(246,244,242,.78);
   --f-display: "Anton", Impact, sans-serif;
   --f-body: "Montserrat", Arial, sans-serif;
-  --f-script: "Pinyon Script", "Snell Roundhand", cursive;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: #1d1d1d; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
-.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--papel); color: var(--chumbo); font-family: var(--f-body); }
-.slide > * { position: absolute; }
-svg.full { inset: 0; width: 1080px; height: 1350px; }
-.grao { inset: 0; width: 1080px; height: 1350px; pointer-events: none; mix-blend-mode: multiply; opacity: .55; z-index: 10; }
-.script { font-family: var(--f-script); font-weight: 400; line-height: 1; white-space: nowrap; -webkit-text-stroke: 2.5px currentColor; }
-.display { font-family: var(--f-display); text-transform: uppercase; line-height: .86; white-space: nowrap; }
-.miudo { font-size: 23px; font-weight: 600; line-height: 1.35; letter-spacing: .01em; }
-.logo { width: 120px; }
+body { margin: 0; background: #111; display: flex; flex-direction: column; gap: 40px; align-items: center; padding: 40px 0; }
+.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--preto); color: var(--creme); font-family: var(--f-body); }
+.slide canvas { position: absolute; inset: 0; width: 1080px; height: 1350px; }
+.conteudo { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 110px; }
+.moldura { position: absolute; inset: 38px; border: 1.5px solid rgba(242,180,90,.38); pointer-events: none; }
+.moldura::before, .moldura::after { content: ""; position: absolute; width: 14px; height: 14px; background: var(--ouro); transform: rotate(45deg); left: 50%; margin-left: -7px; }
+.moldura::before { top: -8px; } .moldura::after { bottom: -8px; }
 
-/* ===== 1 · Boas Festas fornecedores ===== */
-.c1 .painel { left: 236px; top: 96px; width: 760px; height: 830px; border-radius: 46px; background: var(--papel-claro); border: 5px solid #E0A57A; box-shadow: 0 0 0 14px rgba(250,244,234,.55); }
-.c1 .anos { left: 236px; width: 760px; top: 150px; text-align: center; font-size: 26px; font-weight: 700; letter-spacing: .18em; color: var(--chumbo); }
-.c1 .boas { left: 236px; width: 760px; top: 205px; text-align: center; font-size: 230px; color: var(--laranja); }
-.c1 .festas { left: 236px; width: 760px; top: 365px; text-align: center; font-size: 230px; color: var(--laranja); padding-left: 60px; }
-.c1 .msg { text-wrap: balance; left: 320px; width: 600px; top: 612px; text-align: center; font-size: 25px; font-weight: 600; line-height: 1.45; color: var(--chumbo); }
-.c1 .logo { left: 560px; top: 800px; width: 112px; }
-.c1 .rod { left: 400px; top: 1268px; width: 300px; font-size: 20px; color: var(--chumbo); }
+.logo { width: 128px; filter: drop-shadow(0 4px 14px rgba(0,0,0,.6)); }
+.rotulo { display: flex; align-items: center; gap: 22px; font-weight: 700; font-size: 21px; letter-spacing: .34em; text-transform: uppercase; color: var(--ouro); }
+.rotulo::before, .rotulo::after { content: ""; width: 70px; height: 1.5px; background: linear-gradient(90deg, transparent, var(--ouro)); }
+.rotulo::after { transform: scaleX(-1); }
+h1 { margin: 0; font-family: var(--f-display); font-weight: 400; text-transform: uppercase; line-height: .9; color: var(--creme);
+  text-shadow: 0 0 40px rgba(255,170,90,.35), 0 6px 24px rgba(0,0,0,.55); letter-spacing: .01em; }
+.faixa { display: inline-block; background: var(--laranja); color: var(--creme); padding: .02em .26em .07em; transform: rotate(-3deg);
+  font-family: var(--f-display); text-transform: uppercase; line-height: 1.05; white-space: nowrap;
+  box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 60px rgba(242,106,18,.35); }
+.texto { margin: 0; max-width: 780px; font-size: 30px; font-weight: 500; line-height: 1.5; color: var(--creme-70); text-wrap: balance; text-shadow: 0 2px 12px rgba(0,0,0,.7); }
+.texto b { color: var(--creme); font-weight: 700; }
+.assina { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.assina strong { font-weight: 800; font-size: 24px; letter-spacing: .34em; padding-left: .34em; }
+.assina span { font-size: 18px; font-weight: 500; letter-spacing: .14em; color: var(--creme-70); text-transform: uppercase; }
 
-/* ===== 2 · Natal AFTs ===== */
-.c2 .feliz { left: 0; width: 1080px; top: 70px; text-align: center; font-size: 400px; color: var(--laranja); letter-spacing: .005em; }
-.c2 .natal { left: 120px; top: 285px; font-size: 330px; color: var(--chumbo); text-shadow: 0 0 0 var(--papel); paint-order: stroke fill; }
-.c2 .natal span { -webkit-text-stroke: 14px var(--papel); position: absolute; left: 0; top: 0; color: var(--papel); z-index: -1; }
-.c2 .msg { left: 640px; top: 640px; width: 370px; text-align: left; font-size: 23px; font-weight: 600; line-height: 1.4; }
-.c2 .rodape { left: 70px; right: 70px; bottom: 58px; display: flex; justify-content: space-between; align-items: flex-end; }
-.c2 .rodape .miudo:nth-child(2) { text-align: center; }
-.c2 .rodape .miudo:nth-child(3) { text-align: right; }
+/* 1 · Boas Festas */
+.c1 .logo { margin-top: 100px; }
+.c1 .rotulo { margin-top: 44px; }
+.c1 h1 { font-size: 250px; margin-top: 34px; }
+.c1 .faixa { font-size: 190px; margin-top: -6px; }
+.c1 .texto { margin-top: 62px; }
+.c1 .assina { margin-top: auto; margin-bottom: 96px; }
 
-/* ===== 3 · Ano Novo AFTs ===== */
-.c3 .painel { left: 100px; top: 330px; width: 820px; height: 760px; border-radius: 46px; background: var(--papel-claro); border: 5px solid #BDB3A4; box-shadow: 0 0 0 14px rgba(250,244,234,.55); }
-.c3 .feliz { left: 92px; top: 150px; font-size: 220px; color: var(--chumbo); transform: rotate(-6deg); transform-origin: left; }
-.c3 .anonovo { left: 170px; top: 300px; font-size: 170px; color: var(--chumbo); transform: rotate(-6deg); transform-origin: left; }
-.c3 .msg { text-wrap: balance; left: 190px; top: 580px; width: 640px; text-align: center; font-size: 26px; font-weight: 600; line-height: 1.5; }
-.c3 .logo { left: 450px; top: 790px; width: 120px; }
-.c3 .ano { right: 70px; top: 1000px; font-size: 270px; color: var(--laranja); }
-.c3 .juntos { right: 120px; top: 1180px; font-size: 104px; color: var(--chumbo); transform: rotate(-6deg); }
-.c3 .rod { left: 150px; top: 1150px; font-size: 20px; }
+/* 2 · Natal */
+.c2 .logo { margin-top: 100px; }
+.c2 .rotulo { margin-top: 36px; font-size: 19px; letter-spacing: .26em; line-height: 1.6; }
+.c2 .rotulo::before, .c2 .rotulo::after { display: none; }
+.c2 h1 { font-size: 180px; margin-top: 26px; }
+.c2 .faixa { font-size: 150px; margin-top: -6px; }
+.c2 .texto { margin-top: auto; }
+.c2 .assina { margin-top: 40px; margin-bottom: 96px; }
+
+/* 3 · Ano Novo */
+.c3 .logo { margin-top: 100px; }
+.c3 .rotulo { margin-top: 40px; }
+.c3 .ano { font-family: var(--f-display); font-size: 380px; line-height: .86; margin-top: 70px;
+  background: linear-gradient(180deg, #fff7ea 0%, #F6F4F2 45%, #f2b45a 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 40px rgba(255,170,90,.45)) drop-shadow(0 10px 30px rgba(0,0,0,.5)); }
+.c3 .faixa { font-size: 92px; margin-top: 4px; }
+.c3 .texto { margin-top: 56px; }
+.c3 .assina { margin-top: auto; margin-bottom: 96px; }
 </style>
 </head>
 <body>
 
-<!-- filtros e texturas compartilhados -->
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <!-- textura de impressão: corrói levemente as manchas de cor -->
-    <filter id="impresso" x="-5%" y="-5%" width="110%" height="110%">
-      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n"/>
-      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.75" result="mask"/>
-      <feComposite in="SourceGraphic" in2="mask" operator="in"/>
-    </filter>
-    <filter id="graoF"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="3"/><feColorMatrix type="matrix" values="0 0 0 0 .35  0 0 0 0 .27  0 0 0 0 .18  0 0 0 .55 -.12"/></filter>
-    <pattern id="hachura" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="9" stroke="#2B2B2B" stroke-width="2.2" stroke-opacity=".55"/></pattern>
-    <pattern id="hachuraClara" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)"><line x1="0" y1="0" x2="0" y2="10" stroke="#fff" stroke-width="2" stroke-opacity=".45"/></pattern>
-    <pattern id="pontos" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1.8" fill="#2B2B2B" fill-opacity=".55"/></pattern>
-  </defs>
-</svg>
-
-<!-- 1 · BOAS FESTAS · FORNECEDORES -->
 <section class="slide c1" data-out="01-boas-festas-fornecedores.png">
-  <svg class="full" viewBox="0 0 1080 1350"><g id="listras1"></g></svg>
-  <div class="painel"></div>
-  <div class="anos">2026 → 2027</div>
-  <div class="script boas">Boas</div>
-  <div class="script festas">Festas</div>
-  <p class="msg">A DS/MG agradece a cada parceiro e fornecedor que esteve ao nosso lado neste ano. Desejamos festas cheias de paz e um 2027 com novos projetos juntos.</p>
-  <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
-  <svg class="full" viewBox="0 0 1080 1350"><g id="arvore1" filter="url(#impresso)"></g><g id="presentes1" filter="url(#impresso)"></g></svg>
-  <svg class="grao"><rect width="100%" height="100%" filter="url(#graoF)"/></svg>
-</section>
-
-<!-- 2 · NATAL · AFTs -->
-<section class="slide c2" data-out="02-feliz-natal-afts.png">
-  <div class="display feliz">Feliz</div>
-  <div class="script natal">Natal</div>
-  <svg class="full" viewBox="0 0 1080 1350"><g id="fusca" filter="url(#impresso)"></g></svg>
-  <p class="msg">Obrigado por levar dignidade a quem trabalha em Minas, todos os dias do ano. Que este Natal seja de descanso, família e paz.</p>
-  <div class="rodape">
-    <span class="miudo">Às Auditoras e aos<br>Auditores-Fiscais do Trabalho</span>
-    <span class="miudo">2026 → 2027</span>
-    <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG" style="position:static;width:104px">
+  <canvas id="fundo1" width="1080" height="1350"></canvas>
+  <div class="moldura"></div>
+  <div class="conteudo">
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <span class="rotulo">Aos nossos parceiros</span>
+    <h1>Boas</h1>
+    <span class="faixa">Festas</span>
+    <p class="texto">A DS/MG agradece a cada parceiro e fornecedor que esteve ao nosso lado em <b>2026</b>. Que as festas sejam de paz e que <b>2027</b> traga novos projetos juntos.</p>
+    <div class="assina"><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
   </div>
-  <svg class="grao"><rect width="100%" height="100%" filter="url(#graoF)"/></svg>
 </section>
 
-<!-- 3 · ANO NOVO · AFTs -->
+<section class="slide c2" data-out="02-feliz-natal-afts.png">
+  <canvas id="fundo2" width="1080" height="1350"></canvas>
+  <div class="moldura"></div>
+  <div class="conteudo">
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <span class="rotulo">Às Auditoras e aos Auditores-Fiscais<br>do Trabalho</span>
+    <h1>Feliz</h1>
+    <span class="faixa">Natal</span>
+    <p class="texto">Obrigado por levar <b>dignidade a quem trabalha</b> em Minas, todos os dias do ano. Que este Natal seja de descanso, família e paz.</p>
+    <div class="assina"><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
+  </div>
+</section>
+
 <section class="slide c3" data-out="03-feliz-ano-novo-afts.png">
-  <svg class="full" viewBox="0 0 1080 1350"><g id="listras3"></g></svg>
-  <div class="painel"></div>
-  <p class="msg">Que o novo ano traga mais valorização da Auditoria-Fiscal do Trabalho, novas conquistas para a categoria e mais trabalho digno em Minas.</p>
-  <img class="logo" src="logo-sinait-dsmg-escuro.png" alt="SINAIT DS/MG">
-  <div class="script feliz">Feliz</div>
-  <div class="script anonovo">Ano Novo</div>
-  <svg class="full" viewBox="0 0 1080 1350"><g id="tacas" filter="url(#impresso)"></g></svg>
-  <div class="display ano">2027</div>
-  <div class="script juntos">seguimos juntos</div>
-  <svg class="grao"><rect width="100%" height="100%" filter="url(#graoF)"/></svg>
+  <canvas id="fundo3" width="1080" height="1350"></canvas>
+  <div class="moldura"></div>
+  <div class="conteudo">
+    <img class="logo" src="logo-sinait-dsmg.png" alt="SINAIT DS/MG">
+    <span class="rotulo">Feliz Ano Novo</span>
+    <span class="ano">2027</span>
+    <span class="faixa">Seguimos juntos</span>
+    <p class="texto">Que o novo ano traga <b>mais valorização</b> da Auditoria-Fiscal do Trabalho, novas conquistas para a categoria e mais <b>trabalho digno</b> em Minas.</p>
+    <div class="assina"><strong>SINAIT DS/MG</strong><span>Delegacia Sindical de Minas Gerais</span></div>
+  </div>
 </section>
 
 <script>
-let seed = 42; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-const L = '#cc4e00', C = '#2B2B2B', P = '#F4EBDD';
+const W = 1080, H = 1350;
+function gerador(s) { return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+const QUENTES = [[255, 196, 110], [255, 150, 60], [242, 106, 18], [255, 226, 170], [204, 78, 0], [255, 240, 215]];
 
-function listras(id, cor, largura) {
-  let s = '';
-  for (let x = -20; x < 1100; x += largura * 2) s += `<rect x="${x}" y="0" width="${largura}" height="1350" fill="${cor}"/>`;
-  document.getElementById(id).innerHTML = s;
+function base(ctx, topo, meio, baixo) {
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, topo); g.addColorStop(.55, meio); g.addColorStop(1, baixo);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
 }
-
-// pinheiro em gravura: muitas agulhas curtas saindo dos galhos
-function pinheiro(cx, topo, base, larguraBase, cor, laco) {
-  let s = '';
-  const camadas = 9;
-  for (let k = 0; k < camadas; k++) {
-    const y0 = topo + (base - topo) * (k / camadas) * .95;
-    const y1 = topo + (base - topo) * ((k + 1.6) / camadas) * .95;
-    const w = larguraBase * ((k + 1.4) / camadas);
-    for (let i = 0; i < 260; i++) {
-      const t = r(), lado = r() < .5 ? -1 : 1;
-      const yy = y0 + (y1 - y0) * Math.pow(r(), .7);
-      const alcance = w * ((yy - y0) / (y1 - y0)) * (.3 + .7 * t);
-      const x = cx + lado * alcance, len = 10 + r() * 16, ang = (lado < 0 ? 200 : -20) + (r() * 50 - 25) + 25 * lado;
-      const a = ang * Math.PI / 180;
-      s += `<line x1="${x.toFixed(1)}" y1="${yy.toFixed(1)}" x2="${(x + Math.cos(a) * len).toFixed(1)}" y2="${(yy + Math.abs(Math.sin(a)) * len).toFixed(1)}" stroke="${cor}" stroke-width="${(2 + r() * 1.6).toFixed(1)}" stroke-linecap="round" opacity="${(.7 + r() * .3).toFixed(2)}"/>`;
+function brilho(ctx, x, y, raio, cor, alfa) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, raio);
+  g.addColorStop(0, `rgba(${cor},${alfa})`); g.addColorStop(1, `rgba(${cor},0)`);
+  ctx.fillStyle = g; ctx.fillRect(x - raio, y - raio, raio * 2, raio * 2);
+}
+// bokeh: discos desfocados com borda levemente mais clara, como lente fotográfica
+function bokeh(ctx, r, n, area, tam, blur, alfa) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < n; i++) {
+    const [x0, y0, x1, y1] = area;
+    const x = x0 + r() * (x1 - x0), y = y0 + r() * (y1 - y0);
+    const raio = tam[0] + r() * (tam[1] - tam[0]);
+    const c = QUENTES[Math.floor(r() * QUENTES.length)], a = alfa * (.4 + r() * .6);
+    ctx.filter = `blur(${blur}px)`;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, raio);
+    g.addColorStop(0, `rgba(${c},${a * .55})`); g.addColorStop(.82, `rgba(${c},${a * .7})`); g.addColorStop(.95, `rgba(${c},${a})`); g.addColorStop(1, `rgba(${c},0)`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, raio, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.restore();
+}
+function ponto(ctx, x, y, raio, c, a) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  brilho(ctx, x, y, raio * 6, c, a * .25);
+  brilho(ctx, x, y, raio * 2.2, c, a * .7);
+  ctx.fillStyle = `rgba(255,248,235,${a})`; ctx.beginPath(); ctx.arc(x, y, raio * .55, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+function estrela(ctx, x, y, e) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  brilho(ctx, x, y, 160 * e, '255,190,110', .55);
+  brilho(ctx, x, y, 50 * e, '255,240,210', .9);
+  // raios de luz
+  for (const [ang, len, w] of [[0, 260, 3], [90, 220, 3], [45, 110, 2], [135, 110, 2]]) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(ang * Math.PI / 180);
+    const g = ctx.createLinearGradient(-len * e, 0, len * e, 0);
+    g.addColorStop(0, 'rgba(255,220,170,0)'); g.addColorStop(.5, 'rgba(255,245,225,.95)'); g.addColorStop(1, 'rgba(255,220,170,0)');
+    ctx.fillStyle = g; ctx.fillRect(-len * e, -w * e / 2, len * 2 * e, w * e); ctx.restore();
+  }
+  ctx.restore();
+}
+// fogos: partículas com rastro curvado pela gravidade, núcleo claro e brilho aditivo
+function fogo(ctx, r, cx, cy, raio, n, cor, intensidade = 1) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  brilho(ctx, cx, cy, raio * 1.4, cor, .16 * intensidade);
+  for (let i = 0; i < n; i++) {
+    const ang = r() * Math.PI * 2, vel = raio * (.55 + r() * .45), queda = raio * (.12 + r() * .1);
+    const passos = 26;
+    let ultimo = null;
+    for (let k = 1; k <= passos; k++) {
+      const t = k / passos;
+      const x = cx + Math.cos(ang) * vel * (1 - Math.pow(1 - t, 2));
+      const y = cy + Math.sin(ang) * vel * (1 - Math.pow(1 - t, 2)) + queda * t * t;
+      const a = Math.pow(t, 1.6) * .85 * intensidade;
+      if (ultimo) {
+        ctx.strokeStyle = `rgba(${cor},${a * .8})`; ctx.lineWidth = .8 + t * 2.2;
+        ctx.beginPath(); ctx.moveTo(ultimo[0], ultimo[1]); ctx.lineTo(x, y); ctx.stroke();
+      }
+      ultimo = [x, y];
     }
-    // galho central da camada
-    s += `<path d="M${cx} ${y0} Q${cx - w * .5} ${y1 - 30} ${cx - w} ${y1}" stroke="${cor}" stroke-width="3" fill="none" opacity=".6"/><path d="M${cx} ${y0} Q${cx + w * .5} ${y1 - 30} ${cx + w} ${y1}" stroke="${cor}" stroke-width="3" fill="none" opacity=".6"/>`;
+    ponto(ctx, ultimo[0], ultimo[1], 2.4 + r() * 1.6, cor, .95 * intensidade);
+    if (r() < .35) ponto(ctx, ultimo[0] + (r() - .5) * 20, ultimo[1] + 10 + r() * 30, 1.2, '255,230,190', .6 * intensidade);
   }
-  if (laco) {
-    for (let k = 1; k < camadas; k += 1.6) {
-      const yy = topo + (base - topo) * ((k + 1.2) / camadas) * .95, w = larguraBase * ((k + 1.4) / camadas) * .75;
-      s += lacinho(cx + (k % 3.2 < 1.6 ? w * .55 : -w * .2), yy - 10, 1 + k * .05);
-    }
-    s += `<path d="M${cx - larguraBase * .3} ${topo + 180} Q${cx + 40} ${topo + 300} ${cx + larguraBase * .55} ${topo + 260}" stroke="${L}" stroke-width="8" fill="none" opacity=".85"/>`;
-    s += `<path d="M${cx - larguraBase * .7} ${topo + 470} Q${cx} ${topo + 560} ${cx + larguraBase * .8} ${topo + 480}" stroke="${L}" stroke-width="8" fill="none" opacity=".85"/>`;
-  }
-  return s;
+  brilho(ctx, cx, cy, raio * .25, '255,245,225', .5 * intensidade);
+  ctx.restore();
 }
-function lacinho(x, y, e) {
-  return `<g transform="translate(${x} ${y}) scale(${e})">
-    <path d="M0 0 C-30 -28 -52 -6 -40 10 C-30 22 -10 10 0 0Z" fill="${L}"/>
-    <path d="M0 0 C30 -28 52 -6 40 10 C30 22 10 10 0 0Z" fill="${L}"/>
-    <path d="M-2 2 C-10 26 -18 44 -26 56 L-14 58 C-6 42 -2 26 0 4Z" fill="${L}"/>
-    <path d="M2 2 C10 26 18 44 24 58 L12 58 C6 42 2 26 0 4Z" fill="${L}"/>
-    <path d="M-32 0 C-22 -10 -12 -6 -4 0 M32 0 C22 -10 12 -6 4 0" stroke="#8a3400" stroke-width="2.5" fill="none"/>
-    <circle r="8" fill="#a84000"/></g>`;
-}
-function presente(x, y, w, h, corCaixa, corFita) {
-  return `<g>
-    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${corCaixa}"/>
-    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#hachuraClara)"/>
-    <rect x="${x - 8}" y="${y - 30}" width="${w + 16}" height="34" fill="${corCaixa}"/>
-    <rect x="${x - 8}" y="${y - 30}" width="${w + 16}" height="34" fill="url(#hachuraClara)"/>
-    <rect x="${x + w / 2 - 12}" y="${y - 30}" width="24" height="${h + 30}" fill="${corFita}"/>
-    <rect x="${x}" y="${y + h * .45}" width="${w}" height="20" fill="${corFita}" opacity=".9"/>
-    ${lacinho(x + w / 2, y - 34, 1.25).replaceAll(L, corFita)}
-  </g>`;
-}
-function fusca() {
-  const g = [];
-  // sombra no chão
-  g.push(`<ellipse cx="380" cy="1072" rx="330" ry="22" fill="url(#pontos)"/>`);
-  // pinheiro deitado no teto (copa para a frente)
-  let arv = '';
-  const x0 = 180, x1 = 640, yc = 618;
-  for (let i = 0; i < 1100; i++) {
-    const t = r(), x = x0 + (x1 - x0) * t, meia = 95 * (1 - t) + 8;
-    const y = yc + (r() * 2 - 1) * meia, len = 12 + r() * 14, ang = (y < yc ? -1 : 1) * (25 + r() * 40) + 180 * 0 + 10;
-    const a = (180 - Math.abs(ang)) * Math.PI / 180 * 0 + (y < yc ? -0.7 : 0.7) + (r() - .5) * .6;
-    arv += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${(x + Math.cos(a) * len).toFixed(1)}" y2="${(y + Math.sin(a) * len).toFixed(1)}" stroke="${C}" stroke-width="${(2 + r() * 1.5).toFixed(1)}" stroke-linecap="round" opacity="${(.7 + r() * .3).toFixed(2)}"/>`;
-  }
-  g.push(`<rect x="120" y="610" width="70" height="16" rx="5" fill="#6b4a33"/>`);
-  g.push(arv);
-  g.push(`<path d="M190 ${yc} L640 ${yc}" stroke="${C}" stroke-width="4" opacity=".7"/>`);
-  // etiqueta pendurada
-  g.push(`<path d="M200 640 L170 690" stroke="${C}" stroke-width="2"/><rect x="138" y="688" width="56" height="34" rx="4" fill="${P}" stroke="${C}" stroke-width="2.5" transform="rotate(-12 166 705)"/>`);
-  // bagageiro e amarras
-  g.push(`<path d="M230 712 L230 690 M560 712 L560 690 M215 690 L590 690" stroke="${C}" stroke-width="6" stroke-linecap="round"/>`);
-  g.push(`<path d="M300 560 L285 712 M480 555 L495 712" stroke="${L}" stroke-width="5"/>`);
-  // carroceria do fusca (virado para a direita)
-  const corpo = 'M70 980 C62 930 90 895 150 880 C168 800 240 715 380 712 C520 715 600 790 640 870 C700 885 735 920 738 975 L738 990 L70 990 Z';
-  g.push(`<path d="${corpo}" fill="${L}"/>`);
-  g.push(`<path d="${corpo}" fill="url(#hachuraClara)"/>`);
-  // sombra inferior
-  g.push(`<path d="M70 940 C200 960 600 960 738 935 L738 990 L70 990Z" fill="url(#hachura)"/>`);
-  // janelas
-  g.push(`<path d="M200 870 C220 800 270 752 368 748 L368 870 Z" fill="${P}" stroke="${C}" stroke-width="6"/>`);
-  g.push(`<path d="M388 748 C470 750 540 795 578 870 L388 870 Z" fill="${P}" stroke="${C}" stroke-width="6"/>`);
-  g.push(`<path d="M220 860 L300 770 M410 860 L470 770" stroke="${C}" stroke-width="3" opacity=".35"/>`);
-  // porta e maçaneta
-  g.push(`<path d="M378 870 L378 975 M378 975 C460 978 560 970 600 940" stroke="${C}" stroke-width="4" fill="none" opacity=".75"/><rect x="398" y="892" width="34" height="8" rx="3" fill="${C}"/>`);
-  // para-lamas
-  g.push(`<path d="M90 990 C95 905 230 900 250 990" fill="${L}" stroke="${C}" stroke-width="5"/>`);
-  g.push(`<path d="M540 990 C550 900 690 900 712 990" fill="${L}" stroke="${C}" stroke-width="5"/>`);
-  // rodas
-  [[170, 1000], [626, 1000]].forEach(([x, y]) => {
-    g.push(`<circle cx="${x}" cy="${y}" r="62" fill="${C}"/><circle cx="${x}" cy="${y}" r="34" fill="${P}"/><circle cx="${x}" cy="${y}" r="22" fill="none" stroke="${C}" stroke-width="3"/><circle cx="${x}" cy="${y}" r="7" fill="${C}"/>`);
-  });
-  // farol, para-choques, estribo
-  g.push(`<ellipse cx="712" cy="905" rx="20" ry="26" fill="${P}" stroke="${C}" stroke-width="5"/>`);
-  g.push(`<rect x="718" y="968" width="44" height="12" rx="6" fill="${C}"/><rect x="40" y="968" width="44" height="12" rx="6" fill="${C}"/>`);
-  g.push(`<rect x="250" y="986" width="290" height="10" rx="4" fill="${C}"/>`);
-  // contorno geral
-  g.push(`<path d="${corpo}" fill="none" stroke="${C}" stroke-width="6"/>`);
-  // flocos de neve/pontos
-  for (let i = 0; i < 26; i++) g.push(`<circle cx="${(40 + r() * 1000).toFixed(0)}" cy="${(620 + r() * 480).toFixed(0)}" r="${(2 + r() * 3).toFixed(1)}" fill="${C}" opacity=".35"/>`);
-  document.getElementById('fusca').innerHTML = `<g transform="translate(-10 20)">${g.join('')}</g>`;
-}
-function taca(x, y, rot, corBebida) {
-  return `<g transform="translate(${x} ${y}) rotate(${rot})">
-    <path d="M-95 0 C-90 70 -45 100 0 100 C45 100 90 70 95 0 Z" fill="${P}" stroke="${C}" stroke-width="6"/>
-    <path d="M-86 22 C-78 75 -40 92 0 92 C40 92 78 75 86 22 Z" fill="${corBebida}"/>
-    <path d="M-86 22 C-78 75 -40 92 0 92 C40 92 78 75 86 22 Z" fill="url(#hachuraClara)"/>
-    <ellipse cx="0" cy="0" rx="95" ry="16" fill="${P}" stroke="${C}" stroke-width="6"/>
-    <path d="M-6 100 L-6 240 C-6 255 -70 262 -70 272 L70 272 C70 262 6 255 6 240 L6 100" fill="${P}" stroke="${C}" stroke-width="6"/>
-    <path d="M-60 40 C-55 70 -35 82 -20 86" stroke="#fff" stroke-width="6" fill="none" opacity=".55"/>
-    ${[...Array(9)].map(() => `<circle cx="${(r() * 120 - 60).toFixed(0)}" cy="${(35 + r() * 50).toFixed(0)}" r="${(3 + r() * 4).toFixed(1)}" fill="${P}" opacity=".8"/>`).join('')}
-  </g>`;
-}
-function tacas() {
-  let s = `<g transform="translate(140 -30) scale(.88)">` + taca(790, 150, -16, '#e08a3c') + taca(965, 170, 18, L) + `</g>`;
-  // brilho do brinde
-  const br = (x, y, e) => `<path transform="translate(${x} ${y}) scale(${e})" d="M0-30 C3-6 6-3 30 0 C6 3 3 6 0 30 C-3 6 -6 3 -30 0 C-6-3 -3-6 0-30Z" fill="${C}"/>`;
-  s += br(880, 70, 1.2) + br(820, 40, .6) + br(950, 55, .7);
-  s += `<path d="M845 105 L835 80 M880 110 L880 92 M915 105 L925 80" stroke="${C}" stroke-width="4" stroke-linecap="round"/>`;
-  // confete em volta
-  for (let i = 0; i < 30; i++) {
-    const x = 640 + r() * 420, y = 30 + r() * 420, c = [L, C, '#e08a3c'][Math.floor(r() * 3)];
-    s += r() < .5 ? `<rect x="${x}" y="${y}" width="16" height="7" fill="${c}" transform="rotate(${Math.floor(r() * 180)} ${x} ${y})"/>` : `<circle cx="${x}" cy="${y}" r="5" fill="${c}"/>`;
-  }
-  // serpentinas e estrelas na base
-  
-  s += br(80, 1270, .9) + br(210, 1300, .5) + br(1010, 980, .6);
-  document.getElementById('tacas').innerHTML = s;
+function acabamento(ctx, r, escurecerTopo, escurecerBase) {
+  // gradientes para leitura do texto
+  let g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, `rgba(32,1,0,${escurecerTopo})`); g.addColorStop(.42, 'rgba(32,1,0,0)'); g.addColorStop(.62, 'rgba(32,1,0,0)'); g.addColorStop(1, `rgba(20,1,0,${escurecerBase})`);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // vinheta
+  g = ctx.createRadialGradient(W / 2, H / 2, H * .3, W / 2, H / 2, H * .78);
+  g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(10,0,0,.62)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // granulado fino
+  const img = ctx.getImageData(0, 0, W, H), d = img.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (r() - .5) * 14; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  ctx.putImageData(img, 0, 0);
 }
 
-listras('listras1', '#EDC3A0', 70);
-document.getElementById('arvore1').innerHTML = pinheiro(150, 620, 1360, 300, C, true) + `<rect x="135" y="1320" width="30" height="40" fill="#6b4a33"/>`;
-document.getElementById('presentes1').innerHTML = presente(760, 1170, 190, 180, C, L) + presente(905, 1040, 150, 140, L, C) + presente(640, 1250, 120, 100, '#e08a3c', C);
-fusca();
-listras('listras3', '#DDD5C8', 70);
-tacas();
+// ===== 1 · Boas Festas: cortina de luzes quentes, guirlanda de bokeh e fogos discretos
+(function () {
+  const ctx = document.getElementById('fundo1').getContext('2d'), r = gerador(11);
+  base(ctx, '#2a0600', '#200100', '#120000');
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  brilho(ctx, 540, 1350, 900, '204,78,0', .45);
+  brilho(ctx, 540, 640, 620, '242,140,60', .12);
+  ctx.restore();
+  bokeh(ctx, r, 34, [-60, 900, 1140, 1420], [60, 130], 10, .35);
+  bokeh(ctx, r, 40, [-40, -40, 1120, 360], [30, 80], 6, .22);
+  // fios de luzinhas em curvas (varal)
+  for (let f = 0; f < 3; f++) {
+    const y0 = 150 + f * 70, caida = 90 + f * 30;
+    for (let i = 0; i <= 34; i++) {
+      const t = i / 34, x = -20 + t * 1120, y = y0 + Math.sin(t * Math.PI) * caida + Math.sin(t * 9 + f) * 6;
+      const c = QUENTES[Math.floor(r() * 4)].join(',');
+      ponto(ctx, x, y, 3.2 + r() * 2, c, .55 + r() * .35);
+    }
+  }
+  fogo(ctx, r, 170, 1080, 120, 70, '255,180,90', .5);
+  fogo(ctx, r, 920, 1040, 140, 80, '242,106,18', .55);
+  bokeh(ctx, r, 18, [-60, 1100, 1140, 1400], [20, 45], 2, .5);
+  acabamento(ctx, r, .2, .55);
+})();
+
+// ===== 2 · Natal: árvore de luzes em espiral, estrela no topo e bokeh em volta
+(function () {
+  const ctx = document.getElementById('fundo2').getContext('2d'), r = gerador(23);
+  base(ctx, '#1a0200', '#200100', '#2a0700');
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  brilho(ctx, 540, 1000, 700, '204,78,0', .35);
+  ctx.restore();
+  bokeh(ctx, r, 60, [-80, -80, 1160, 1430], [40, 120], 12, .22);
+  const cx = 540, topo = 715, base_ = 1010, larg = 250;
+  // brilho interno da árvore
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  ctx.beginPath(); ctx.moveTo(cx, topo); ctx.lineTo(cx + larg, base_); ctx.lineTo(cx - larg, base_); ctx.closePath();
+  ctx.filter = 'blur(60px)'; ctx.fillStyle = 'rgba(242,106,18,.20)'; ctx.fill(); ctx.filter = 'none';
+  ctx.restore();
+  // fios em espiral
+  const voltas = 6, pts = 700;
+  for (let i = 0; i < pts; i++) {
+    const t = i / pts, a = t * voltas * Math.PI * 2, raio = larg * t;
+    const x = cx + Math.cos(a) * raio, y = topo + (base_ - topo) * t + Math.sin(a) * 18 * t, z = Math.sin(a);
+    if (i % 3 === 0) {
+      const a2 = z > 0 ? .9 : .35, c = QUENTES[Math.floor(r() * QUENTES.length)].join(',');
+      ponto(ctx, x, y, (z > 0 ? 3.6 : 2.4) + r() * 1.4, c, a2 * (.6 + r() * .4));
+    }
+  }
+  // pontos soltos para preencher
+  for (let i = 0; i < 220; i++) {
+    const t = Math.sqrt(r()), y = topo + (base_ - topo) * t, x = cx + (r() * 2 - 1) * larg * t * .95;
+    ponto(ctx, x, y, 1.6 + r() * 1.4, QUENTES[Math.floor(r() * 4)].join(','), .35 + r() * .4);
+  }
+  estrela(ctx, cx, topo - 8, .75);
+  // reflexo no chão
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  ctx.translate(cx, base_ + 24); ctx.scale(1, .18); brilho(ctx, 0, 0, 380, '242,140,60', .35); ctx.restore();
+  bokeh(ctx, r, 22, [-60, 1080, 1140, 1420], [30, 70], 4, .4);
+  bokeh(ctx, r, 14, [-60, 200, 220, 1100], [70, 140], 14, .25);
+  bokeh(ctx, r, 14, [860, 200, 1140, 1100], [70, 140], 14, .25);
+  // escurece a faixa do texto de cima e de baixo
+  acabamento(ctx, r, .35, .78);
+})();
+
+// ===== 3 · Ano Novo: céu com fogos em camadas e brilho da cidade
+(function () {
+  const ctx = document.getElementById('fundo3').getContext('2d'), r = gerador(37);
+  base(ctx, '#0f0000', '#1d0100', '#2c0800');
+  // fumaça leve
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let i = 0; i < 14; i++) brilho(ctx, r() * W, 300 + r() * 700, 200 + r() * 260, '120,50,20', .07);
+  ctx.restore();
+  // fogos ao fundo (menores, mais fracos)
+  fogo(ctx, r, 300, 200, 110, 60, '255,150,60', .4);
+  fogo(ctx, r, 830, 330, 110, 60, '255,210,150', .45);
+  fogo(ctx, r, 560, 160, 80, 50, '242,106,18', .35);
+  // fogos principais
+  fogo(ctx, r, 175, 470, 220, 150, '242,106,18', .95);
+  fogo(ctx, r, 915, 420, 240, 170, '255,196,110', .95);
+  fogo(ctx, r, 150, 1090, 150, 100, '255,240,215', .6);
+  fogo(ctx, r, 930, 1070, 170, 110, '204,78,0', .75);
+  // área escura atrás do texto
+  { const g = ctx.createRadialGradient(540, 880, 60, 540, 880, 520); g.addColorStop(0, 'rgba(20,1,0,.72)'); g.addColorStop(1, 'rgba(20,1,0,0)'); ctx.fillStyle = g; ctx.fillRect(0, 300, W, 1100); }
+  // brilho do horizonte e silhueta da cidade
+  ctx.save(); ctx.globalCompositeOperation = 'lighter'; brilho(ctx, 540, 1400, 760, '242,106,18', .4); ctx.restore();
+  ctx.fillStyle = '#120000';
+  ctx.beginPath(); ctx.moveTo(0, H);
+  let x = 0;
+  while (x < W) { const w = 30 + r() * 70, h = 50 + r() * 150; ctx.lineTo(x, H - h); ctx.lineTo(x + w, H - h); x += w; }
+  ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+  // janelas acesas
+  for (let i = 0; i < 120; i++) { const wx = r() * W, wy = H - 10 - r() * 120; ctx.fillStyle = `rgba(255,190,110,${.25 + r() * .5})`; ctx.fillRect(wx, wy, 3, 4); }
+  bokeh(ctx, r, 16, [-40, -40, 1120, 400], [30, 70], 6, .18);
+  acabamento(ctx, r, .45, .6);
+})();
 </script>
 </body>
 </html>
