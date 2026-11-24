@@ -280,6 +280,32 @@ const CARO = [
 if (location.hash === '#tacaro') { document.querySelectorAll('.post').forEach(e => e.remove());
   CARO.forEach(([dark, html], i) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_ta_caro_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d); }); }
 
+// ---------- post novo (index.html#problemas): problema x solução, prático ----------
+// Cada slide dividido: problema em cima (claro), solução embaixo (azul-marinho). A capa já mostra a divisão.
+const CHECK = c => `<svg width="30" height="30" viewBox="0 0 24 24" style="vertical-align:-6px;margin-right:12px"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const PROB = [
+  [false, `<div class="abs" style="left:0;top:700px;width:1080px;height:650px;background:${C.navy}"></div>${BRAND(C.navy)}${LAB('problema<br>x solução', C.navy)}
+    <div class="abs s" style="left:66px;top:190px;color:${C.indigo};font-weight:700">problema</div>
+    <div class="abs H" style="left:58px;top:240px;width:980px;font-size:136px;color:${C.navy}">4 problemas<br>do seu instagram</div>
+    <div class="abs s" style="left:66px;top:770px;color:${C.beige};font-weight:700">${CHECK(C.beige)}solução</div>
+    <div class="abs H" style="left:58px;top:830px;width:960px;font-size:150px;color:${C.off}"><em>e como resolver hoje.</em></div>
+    ${FOOT('salva pra fazer<br>essa semana', C.off)}${ARROW(C.off)}`],
+  ...[
+    ['01', 'visitam o seu perfil e não seguem.', 'Reescreva a bio em 3 linhas: <b>o que você faz, pra quem e como te chamar.</b> Depois fixe 3 posts que expliquem isso.'],
+    ['02', 'o post tem curtida, mas ninguém chama.', 'Termine cada post com um convite claro: <b>“me chama no direct com a palavra X”.</b> E responda no mesmo dia.'],
+    ['03', 'você não sabe o que postar.', 'Anote as <b>10 perguntas que seus clientes mais fazem.</b> Cada resposta vira um post.'],
+    ['04', 'o perfil some quando a rotina aperta.', 'Separe <b>2 horas na semana</b> pra criar e deixe 3 posts agendados.'],
+  ].map(([n, prob, sol]) => [false, `<div class="abs" style="left:0;top:700px;width:1080px;height:650px;background:${C.navy}"></div>${BRAND(C.navy)}${LAB('problema ' + n, C.navy)}
+    <div class="abs s" style="left:66px;top:200px;color:${C.indigo};font-weight:700">problema</div>
+    <div class="abs H" style="left:58px;top:250px;width:960px;font-size:114px;color:${C.navy}">${prob}</div>
+    <div class="abs s" style="left:66px;top:770px;color:${C.beige};font-weight:700">${CHECK(C.beige)}solução</div>
+    <div class="abs lead" style="left:66px;top:840px;width:900px;color:${C.off};font-size:46px;line-height:1.36">${sol}</div>
+    <div class="abs s" style="right:66px;top:770px;color:${C.beige}">${n} / 04</div>`]),
+  [true, fim({ title: `não precisa resolver tudo <span style="position:relative;display:inline-block"><em>hoje.</em><span style="position:absolute;left:-36px;top:-12px">${ELLIPSE(330, 180, C.beige)}</span></span>`, size: 170, foot: 'começa por um. e se quiser ajuda<br>com o resto, me chama no direct.' })],
+];
+if (location.hash === '#problemas') { document.querySelectorAll('.post').forEach(e => e.remove());
+  PROB.forEach(([dark, html], i) => { const d = document.createElement('div'); d.className = 'post' + (dark ? ' dark' : ''); d.id = `NUV_carrossel_problema_solucao_${String(i + 1).padStart(2, '0')}`; d.innerHTML = html; document.body.appendChild(d); }); }
+
 // ---------- opções de miolo (index.html#opcoes) ----------
 const PILLS = (arr, fg, bg) => arr.map((t, i) => `<span style="display:inline-block;border-radius:999px;padding:14px 26px;margin:0 10px 12px 0;font-weight:700;font-size:22px;${i % 2 ? `border:2px solid ${fg};color:${fg}` : `background:${fg};color:${bg}`}">${t}</span>`).join('');
 const MIOLO = {
